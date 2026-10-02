@@ -163,6 +163,13 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
       description: 'Web-based 3D world (Three.js/WebGL) where learners control avatar movement, leap over obstacles, cast spells, and battle bosses using accurate English pronunciation.',
       color: 'amber',
       order: 7
+    },
+    {
+      id: 'epic-backend-infrastructure',
+      title: 'Backend, Database & Cloud Architecture (Scale to 5,000 Paid Users)',
+      description: 'Production-ready PostgreSQL database schema, async GPU worker queues (FastAPI + Redis), VNPay/MoMo/Stripe subscription billing, and cloud audio storage for 5,000 monthly paid subscribers.',
+      color: 'emerald',
+      order: 8
     }
   ],
   stories: [
@@ -1332,6 +1339,176 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
         { id: 't-game-11', title: 'Create university leaderboard ranking schema in SQLite backend', category: 'Backend', completed: false }
       ],
       notes: 'Strong social and competitive motivator for university students and young tech professionals.'
+    },
+
+    // 8. Backend, Database & Cloud Architecture (Scale to 5,000 Paid Users)
+    {
+      id: 'ARCH-101',
+      epicId: 'epic-backend-infrastructure',
+      title: 'Relational Database Schema Design for Users, Phoneme Scoring & Subscriptions (PostgreSQL)',
+      persona: 'Lead Backend & Data Architect',
+      action: 'thiết kế cơ sở dữ liệu quan hệ PostgreSQL chuẩn hóa (Third Normal Form) gồm các bảng: users, subscriptions, payment_transactions, assessment_sessions, phoneme_scores, và user_phoneme_mastery với index B-tree và partition theo tháng',
+      value: 'hệ thống đảm bảo tính toàn vẹn dữ liệu tài chính (ACID) cho 5,000 khách hàng trả phí, và phản hồi truy vấn lịch sử phát âm / radar chart 44 âm của học viên dưới 40ms',
+      priority: 'must',
+      status: 'in-progress',
+      size: 'XL',
+      points: 8,
+      acceptanceCriteria: [
+        {
+          id: 'ac-arch-101-1',
+          given: 'Cơ sở dữ liệu PostgreSQL 16+',
+          when: 'Triển khai migration scripts',
+          then: 'Khởi tạo thành công 6 bảng lõi (users, subscriptions, payment_transactions, assessment_sessions, phoneme_scores, user_phoneme_mastery) có đầy đủ foreign key cascades và indexes.',
+          completed: true
+        },
+        {
+          id: 'ac-arch-101-2',
+          given: 'Bảng phoneme_scores lưu trữ hàng triệu lượt chấm âm vị',
+          when: 'Người dùng tải trang tiến độ cá nhân (Profile Progress View)',
+          then: 'Truy vấn bảng tổng hợp user_phoneme_mastery trả về điểm trung bình của 44 âm IPA trong vòng dưới 30ms mà không phải scan tuần tự bảng lịch sử.',
+          completed: true
+        }
+      ],
+      technicalTasks: [
+        { id: 't-arch-1', title: 'Viết migration file Prisma/Drizzle/SQL DDL định nghĩa 6 bảng quan hệ với constraints và foreign keys', category: 'Database', completed: true },
+        { id: 't-arch-2', title: 'Thiết lập chỉ mục B-tree trên (user_id, created_at) và (user_id, phoneme_symbol) để tối ưu hóa truy vấn lịch sử', category: 'Database', completed: true },
+        { id: 't-arch-3', title: 'Tạo trigger cập nhật tự động bảng tổng hợp user_phoneme_mastery mỗi khi có bản ghi phoneme_scores mới', category: 'Database', completed: true }
+      ],
+      notes: 'Thiết kế chịu tải cho tối thiểu 10 triệu bản ghi âm vị và 5,000 thuê bao hoạt động đồng thời.'
+    },
+    {
+      id: 'ARCH-102',
+      epicId: 'epic-backend-infrastructure',
+      title: 'Asynchronous Audio Ingestion & GPU Worker Queue Pipeline (FastAPI + Redis + FFmpeg)',
+      persona: 'Systems & Performance Engineer',
+      action: 'xây dựng pipeline tiếp nhận và xử lý âm thanh bất đồng bộ sử dụng FastAPI làm API Gateway, Redis Queue (hoặc Celery/BullMQ) để xếp hàng tác vụ, và FFmpeg worker chuyển đổi tức thì định dạng WebM sang 16kHz Mono WAV trước khi nạp vào AI Model',
+      value: 'hệ thống hấp thụ mượt mà lưu lượng giờ cao điểm (19h - 22h tối) với 20 - 30 lượt chấm âm thanh mỗi giây mà không làm nghẽn máy chủ web, độ trễ phản hồi P95 < 600ms',
+      priority: 'must',
+      status: 'in-progress',
+      size: 'XL',
+      points: 8,
+      acceptanceCriteria: [
+        {
+          id: 'ac-arch-102-1',
+          given: 'Frontend gửi file thu âm WebM qua HTTP POST /api/assess/audio',
+          when: 'API Gateway tiếp nhận',
+          then: 'Chuyển đổi file sang 16kHz mono WAV trong in-memory buffer qua FFmpeg trong thời gian < 25ms và đẩy job vào Redis queue.',
+          completed: true
+        },
+        {
+          id: 'ac-arch-102-2',
+          given: '30 requests đồng thời trong giờ cao điểm',
+          when: 'Cụm GPU worker xử lý song song với WhisperX và Wav2Vec2',
+          then: 'Tất cả các requests trả kết quả điểm số GOP và vị trí lỗi sai trong thời gian dưới 800ms mà không bị timeout hoặc rớt kết nối.',
+          completed: true
+        }
+      ],
+      technicalTasks: [
+        { id: 't-arch-4', title: 'Xây dựng FastAPI server với background task và in-memory FFmpeg wrapper (ffmpeg-python)', category: 'Backend', completed: true },
+        { id: 't-arch-5', title: 'Thiết lập Redis Queue và worker pool kết nối mô hình nhận diện âm học WhisperX / Wav2Vec2', category: 'Backend', completed: true },
+        { id: 't-arch-6', title: 'Cấu hình WebSocket endpoint phục vụ phản hồi điểm số theo thời gian thực (Streaming Pronunciation Feedback)', category: 'Backend', completed: true }
+      ],
+      notes: 'Tách rời hoàn toàn Web Server và GPU Worker giúp hệ thống không bao giờ bị sập dù GPU có bị bận.'
+    },
+    {
+      id: 'ARCH-103',
+      epicId: 'epic-backend-infrastructure',
+      title: 'Multi-Gateway Subscription Billing & Webhook Reconciler (Cổng Thanh Toán Tự Động VNPay, MoMo & Stripe)',
+      persona: 'FinTech & Growth Engineer',
+      action: 'tích hợp bộ xử lý thanh toán tự động đa cổng (VNPay QR, Ví MoMo, Thẻ quốc tế Stripe) kèm webhook handler có cơ chế kiểm tra trùng lặp (Idempotency Key) và tự động kích hoạt quyền Pro cho học viên',
+      value: 'tự động hóa 100% dòng tiền thuê bao hàng tháng của 5,000 học viên trả phí (~500 triệu - 1 tỷ VNĐ/tháng), kích hoạt tài khoản ngay sau 1 giây mà không cần nhân viên đối soát thủ công',
+      priority: 'must',
+      status: 'in-progress',
+      size: 'XL',
+      points: 8,
+      acceptanceCriteria: [
+        {
+          id: 'ac-arch-103-1',
+          given: 'Học viên quét mã VNPay QR hoặc MoMo thành công trên website',
+          when: 'Cổng thanh toán gửi IPN Webhook về server',
+          then: 'Hệ thống xác thực chữ ký số (Checksum HMAC-SHA512), ghi nhận giao dịch vào payment_transactions và cập nhật subscriptions.status = active trong vòng 1 giây.',
+          completed: true
+        },
+        {
+          id: 'ac-arch-103-2',
+          given: 'Cổng thanh toán gửi webhook lặp lại (retry do mạng chập chờn)',
+          when: 'Webhook handler tiếp nhận',
+          then: 'Hệ thống dùng transaction_id làm Idempotency Key để bỏ qua các request trùng lặp, ngăn ngừa việc gia hạn 2 lần.',
+          completed: true
+        }
+      ],
+      technicalTasks: [
+        { id: 't-arch-7', title: 'Tích hợp VNPay Merchant SDK và MoMo Payment Gateway API với bảo mật HMAC SHA512', category: 'Backend', completed: true },
+        { id: 't-arch-8', title: 'Viết Webhook Reconciler Service với cơ chế hàng đợi xử lý idempotent và ghi log audit tài chính', category: 'Backend', completed: true },
+        { id: 't-arch-9', title: 'Tạo Cron Job hàng ngày quét các gói thuê bao sắp hết hạn (Grace Period 3 ngày) và gửi thông báo nhắc gia hạn', category: 'Backend', completed: true }
+      ],
+      notes: 'Bảo mật tài chính và tính toàn vẹn giao dịch là yếu tố sống còn khi doanh thu đạt hàng trăm triệu/tháng.'
+    },
+    {
+      id: 'ARCH-104',
+      epicId: 'epic-backend-infrastructure',
+      title: 'Tiered Quota Limiter & Entitlement Enforcement Middleware (Hạn Mức Sử Dụng Gói Free vs Pro 5,000 Users)',
+      persona: 'Security & Cloud Cost Optimizer',
+      action: 'xây dựng middleware kiểm soát phân tầng tài khoản (Tiered Entitlement Middleware) dựa trên Redis: gói Free bị giới hạn 10 câu thu âm/ngày và 3 âm cơ bản; gói Pro (5,000 paid users) mở khóa toàn bộ 44 âm, 14 modules phân vị, video masterclass và phòng thi IELTS ảo',
+      value: 'bảo vệ năng lực tính toán của cụm GPU khỏi bị cày bot hoặc quá tải bởi tài khoản miễn phí, đồng thời tạo phễu chuyển đổi (Paywall Conversion) mạnh mẽ thúc đẩy người dùng mua gói trả phí',
+      priority: 'must',
+      status: 'in-progress',
+      size: 'M',
+      points: 5,
+      acceptanceCriteria: [
+        {
+          id: 'ac-arch-104-1',
+          given: 'Người dùng gói Free đã dùng hết 10 câu thu âm trong ngày',
+          when: 'Bấm thu âm câu thứ 11',
+          then: 'Middleware chặn request tại API Gateway (HTTP 429 / 403) và trả về thông điệp nâng cấp Pro: "Bạn đã hoàn thành 10 câu miễn phí hôm nay. Nâng cấp Pro để luyện tập không giới hạn!"',
+          completed: true
+        },
+        {
+          id: 'ac-arch-104-2',
+          given: 'Người dùng gói Pro đã thanh toán',
+          when: 'Mở bài tập nâng cao hoặc Video Masterclass',
+          then: 'Middleware kiểm tra token quyền hạn trong Redis cache (< 2ms) và cho phép truy cập ngay lập tức không bị gián đoạn.',
+          completed: true
+        }
+      ],
+      technicalTasks: [
+        { id: 't-arch-10', title: 'Xây dựng Redis sliding-window rate limiter đếm số lượt thu âm theo user_id và reset lúc 0h00', category: 'Backend', completed: true },
+        { id: 't-arch-11', title: 'Thiết kế Paywall Modal popover trong React khi học viên chạm trần hạn mức miễn phí', category: 'Frontend', completed: true }
+      ],
+      notes: 'Ngăn chặn tình trạng chi phí GPU tăng vọt ngoài tầm kiểm soát.'
+    },
+    {
+      id: 'ARCH-105',
+      epicId: 'epic-backend-infrastructure',
+      title: 'Cloud Object Storage & Ephemeral Audio Retention Lifecycle (Lưu Trữ Âm Thanh Cloudflare R2 Presigned URLs)',
+      persona: 'DevOps & Storage Cost Engineer',
+      action: 'tích hợp dịch vụ lưu trữ đám mây Cloudflare R2 (hoặc AWS S3) sử dụng Presigned URLs để frontend upload trực tiếp file âm thanh lên bucket, thiết lập vòng đời tự hủy (Lifecycle Rules): xóa file gói Free sau 7 ngày, giữ file gói Pro trong 90 ngày để vẽ biểu đồ tiến bộ',
+      value: 'giảm 100% gánh nặng băng thông tải file qua web server, giữ chi phí lưu trữ âm thanh cho 5,000 học viên ở mức dưới $15/tháng (nhờ chính sách Zero Egress Fee của Cloudflare R2)',
+      priority: 'must',
+      status: 'in-progress',
+      size: 'M',
+      points: 5,
+      acceptanceCriteria: [
+        {
+          id: 'ac-arch-105-1',
+          given: 'Frontend chuẩn bị gửi audio thu âm',
+          when: 'Gọi API /api/storage/presigned-upload-url',
+          then: 'Server sinh URL có chữ ký bảo mật (hết hạn sau 5 phút) để trình duyệt upload trực tiếp lên Cloudflare R2 bucket.',
+          completed: true
+        },
+        {
+          id: 'ac-arch-105-2',
+          given: 'Quy tắc vòng đời lưu trữ (Object Lifecycle Rules)',
+          when: 'File âm thanh của người dùng Free vượt quá 7 ngày tuổi',
+          then: 'Bucket tự động thanh trừng (auto-purge) file để tiết kiệm không gian lưu trữ và tuân thủ quyền riêng tư GDPR.',
+          completed: true
+        }
+      ],
+      technicalTasks: [
+        { id: 't-arch-12', title: 'Tích hợp AWS S3 / Cloudflare R2 SDK (@aws-sdk/client-s3) sinh Presigned PUT URLs trong backend', category: 'Backend', completed: true },
+        { id: 't-arch-13', title: 'Cấu hình CORS và Object Lifecycle Rule trên Cloudflare R2 bucket cho các phân lớp dữ liệu', category: 'DevOps', completed: true }
+      ],
+      notes: 'Cloudflare R2 không tính phí tải về (Zero egress fee), giúp tiết kiệm hàng nghìn USD băng thông so với AWS S3 truyền thống.'
     }
   ]
 };
