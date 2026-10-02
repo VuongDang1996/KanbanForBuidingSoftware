@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PronunciationGameStudio from './PronunciationGameStudio';
 import MouthAnatomyStudio from './MouthAnatomyStudio';
+import SoundPracticeEnrichedStudio from './SoundPracticeEnrichedStudio';
 import {
   Mic,
   Volume2,
@@ -8,6 +9,7 @@ import {
   RotateCcw,
   Sparkles,
   Layers,
+  Headphones,
   Palette,
   ExternalLink,
   CheckCircle2,
@@ -247,12 +249,26 @@ export default function UiDesignStudio({ project }) {
                 >
                   Cặp Âm Dễ Nhầm
                 </button>
+                <button
+                  onClick={() => { setActiveScreenTab('sound-practice'); setSelectedPhoneme(null); }}
+                  className={`px-3 py-1 rounded-md transition-all flex items-center gap-1.5 ${
+                    activeScreenTab === 'sound-practice' ? 'bg-gradient-to-r from-rose-600 to-indigo-600 text-white font-bold shadow-md' : 'text-slate-400 hover:text-white'
+                  }`}
+                >
+                  <Headphones className="w-3.5 h-3.5 text-rose-400" />
+                  <span>Luyện Âm Đa Phương Thức</span>
+                </button>
               </div>
             </div>
 
             {/* Live Interactive UI Content */}
             <div className="p-5 sm:p-7 bg-[#0a0f1d] min-h-[460px] flex flex-col justify-between select-none">
               
+              {/* TAB: Enriched Sound Practice Studio (Dictation, Read Aloud, Waveform Compare) */}
+              {activeScreenTab === 'sound-practice' && (
+                <SoundPracticeEnrichedStudio />
+              )}
+
               {/* TAB 1: Ending Sounds Inspector (Soi Âm Đuôi) */}
               {activeScreenTab === 'ending-sounds' && (
                 <div className="space-y-6">

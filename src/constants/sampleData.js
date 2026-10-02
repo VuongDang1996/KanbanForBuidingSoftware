@@ -540,6 +540,106 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
       ],
       notes: 'Provides instant visual clarity on how to shape sounds.'
     },
+    {
+      id: 'PRON-202',
+      epicId: 'epic-articulation',
+      title: 'Phonemic Audio Dictation & Gap-Fill Exercises (Nghe Chính Tả & Điền Âm Vị Khuyết)',
+      persona: 'Học Viên Muốn Rèn Luyện Thính Giác Nhận Diện Âm Vị',
+      action: 'nghe người bản ngữ phát âm các từ hoặc câu chứa âm đang học, sau đó gõ lại từ hoặc điền vào chỗ trống âm vị còn thiếu (ví dụ: nghe thấy /θɪŋk/ -> điền th_nk hoặc chọn /θ/ vs /t/)',
+      value: 'tôi huấn luyện đôi tai nhận diện chính xác âm thanh bản ngữ trước khi nói, tránh tình trạng nghe một đằng phát âm một nẻo',
+      priority: 'must',
+      status: 'in-progress',
+      size: 'M',
+      points: 5,
+      acceptanceCriteria: [
+        {
+          id: 'ac-pron-202-1',
+          given: 'Một bài tập dictation cho âm /θ/ (ví dụ từ "think")',
+          when: 'Người học bấm nghe âm thanh Oxford và gõ đáp án vào ô chữ',
+          then: 'Hệ thống kiểm tra ngay lập tức, gạch chân âm vị mục tiêu và hiển thị phân tích ngữ âm nếu nhầm lẫn với âm /t/ hoặc /s/.',
+          completed: true
+        },
+        {
+          id: 'ac-pron-202-2',
+          given: 'Người học gõ sai từ quá 2 lần',
+          when: 'Bấm nút "Gợi ý khẩu hình"',
+          then: 'Hệ thống phát lại âm thanh ở tốc độ chậm 0.75x kèm hình ảnh hướng dẫn vị trí đặt đầu lưỡi giữa hai hàm răng.',
+          completed: true
+        }
+      ],
+      technicalTasks: [
+        { id: 't-pron-202-1', title: 'Xây dựng component AudioDictationCard với audio player, input gõ từ và cơ chế kiểm tra tức thì', category: 'Frontend', completed: true },
+        { id: 't-pron-202-2', title: 'Biên soạn ngân hàng 50+ câu dictation chuẩn theo từng âm IPA (/θ/, /iː/, /ʃ/, /æ/, /r/, /l/)', category: 'Content', completed: true }
+      ],
+      notes: 'Bài tập thính giác chủ động (Active Listening) giúp liên kết giữa âm thanh nghe được và ký tự ngữ âm.'
+    },
+    {
+      id: 'PRON-203',
+      epicId: 'epic-articulation',
+      title: 'Targeted Sound Read-Aloud & Contextual Fluency Drills (Đọc To Đoạn Văn Ngữ Cảnh Chứa Âm Đang Luyện)',
+      persona: 'Học Viên Muốn Chuyển Đổi Từ Âm Đơn Sang Phản Xạ Đọc Cả Câu Ngữ Cảnh Dài',
+      action: 'đọc to các câu ngạn ngữ, văn cảnh đời sống hoặc câu lắt léo (Tongue Twisters) tập trung dày đặc âm đang học (ví dụ âm /θ/: "The thirty-three thieves thought that they thrilled the throne throughout Thursday")',
+      value: 'tôi làm quen với việc duy trì phát âm chuẩn khi nói cả câu dài có ngữ cảnh tự nhiên thay vì chỉ phát âm đúng khi đọc từ đơn lẻ',
+      priority: 'must',
+      status: 'in-progress',
+      size: 'M',
+      points: 5,
+      acceptanceCriteria: [
+        {
+          id: 'ac-pron-203-1',
+          given: 'Học viên đọc to câu ngữ cảnh dài chứa nhiều âm mục tiêu',
+          when: 'Giọng nói được thu qua Web Speech API và Forced Alignment',
+          then: 'Mỗi từ chứa âm mục tiêu được tô màu xanh (>80%), vàng (60-80%), đỏ (<60%) theo thời gian thực kèm đếm số lần phát âm đạt (ví dụ 6/8 lần).',
+          completed: true
+        },
+        {
+          id: 'ac-pron-203-2',
+          given: 'Học viên đọc vấp hoặc nuốt âm mục tiêu',
+          when: 'Kết thúc bài đọc',
+          then: 'Hệ thống đánh dấu các điểm vấp và gợi ý đọc chậm lại từng cụm từ (chunking).',
+          completed: true
+        }
+      ],
+      technicalTasks: [
+        { id: 't-pron-203-1', title: 'Xây dựng UI ReadAloudCard với bộ đếm mục tiêu (target sound hits) và hiển thị văn bản ngữ cảnh', category: 'Frontend', completed: true },
+        { id: 't-pron-203-2', title: 'Tích hợp bộ nhận diện giọng nói Web Speech API theo thời gian thực cho câu dài', category: 'Frontend', completed: true }
+      ],
+      notes: 'Cầu nối quan trọng từ việc phát âm âm lẻ sang phản xạ giao tiếp câu dài trong đời sống.'
+    },
+    {
+      id: 'PRON-204',
+      epicId: 'epic-articulation',
+      title: 'Dual-Track Audio Recording & Native Speaker Waveform Comparison (Thu Âm & Đối Chiếu Trực Quan Sóng Âm Với Giọng Bản Ngữ)',
+      persona: 'Học Viên Muốn Nhìn Thấy Và Nghe Thấy Rõ Sự Khác Biệt Giữa Giọng Mình Và Người Bản Ngữ',
+      action: 'thu âm giọng nói của mình cho từ/câu mục tiêu, sau đó nhìn thấy 2 dải sóng âm (Waveform/Spectrogram) đặt song song: Track 1 của Người Bản Ngữ Oxford và Track 2 của Bản Thân, cùng nút nghe luân phiên A/B',
+      value: 'tôi có bằng chứng trực quan về độ dài nguyên âm, độ ma sát hơi và lực bật âm đuôi, từ đó tự điều chỉnh cơ miệng chuẩn xác theo mẫu bản ngữ',
+      priority: 'must',
+      status: 'in-progress',
+      size: 'L',
+      points: 8,
+      acceptanceCriteria: [
+        {
+          id: 'ac-pron-204-1',
+          given: 'Học viên hoàn thành thu âm một từ (ví dụ "think")',
+          when: 'Màn hình hiển thị kết quả phân tích',
+          then: 'Vẽ 2 dải biểu đồ sóng âm thanh (Native Speaker Waveform vs User Spoken Waveform) căn chỉnh cùng trục thời gian để so sánh độ mở âm và thời lượng.',
+          completed: true
+        },
+        {
+          id: 'ac-pron-204-2',
+          given: 'Tính năng A/B Voice Mirroring',
+          when: 'Học viên nhấp nút "Đối chiếu A/B"',
+          then: 'Hệ thống phát lần lượt: 1 lần giọng bản ngữ Oxford và 1 lần giọng học viên để tai cảm nhận rõ điểm khác biệt về âm sắc.',
+          completed: true
+        }
+      ],
+      technicalTasks: [
+        { id: 't-pron-204-1', title: 'Xây dựng component WaveformComparisonCanvas vẽ song song 2 đồ thị sóng âm Canvas API', category: 'Frontend', completed: true },
+        { id: 't-pron-204-2', title: 'Tích hợp MediaRecorder API thu âm 16kHz mono và trích xuất mảng biên độ âm thanh (amplitude buffer)', category: 'Frontend', completed: true },
+        { id: 't-pron-204-3', title: 'Thiết kế cơ chế phát A/B so sánh đối chiếu giọng bản ngữ và giọng người học', category: 'Frontend', completed: true }
+      ],
+      notes: 'Visual & Auditory Biofeedback cực kỳ hiệu quả giúp người học tự điều chỉnh cơ miệng mà không cần giáo viên kè kè bên cạnh.'
+    },
 
     // 5. Conversational AI & IELTS Speaking
     {
