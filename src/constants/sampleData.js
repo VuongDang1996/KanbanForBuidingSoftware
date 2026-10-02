@@ -772,6 +772,105 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
       ],
       notes: 'Đặc trị bẫy ngữ âm kinh điển nhất của người Việt: phát âm "they" thành "đây", "this" thành "đít". Luyện chuyển đổi đan xen giúp làm chủ cơ miệng ở tốc độ cao.'
     },
+    {
+      id: 'PRON-209',
+      epicId: 'epic-articulation',
+      title: 'Numbered Target Phoneme System & Multi-Spelling Sound Annotation (Hệ Thống Đánh Số Âm Vị Mục Tiêu & Gạch Chân Quy Tắc Chính Tả)',
+      persona: 'Học Viên Mới Bắt Đầu Thường Bị Rối Bởi Ký Tự IPA Và Đọc Sai Do Nhìn Chữ Cái Đoán Âm',
+      action: 'luyện tập với các câu được chú thích bằng hệ thống số âm mục tiêu (Target 1, Target 2, Target 3...) đặt ngay trên từng âm tiết và gạch chân các tổ hợp chữ cái đại diện (ví dụ: số 2 trên chữ "I", "ie" trong "tried", "y" trong "flying", "igh" trong "high")',
+      value: 'tôi nắm bắt trực giác quy luật chính tả tiếng Anh (Spelling-to-Sound Mapping), nhận ra ngay nhiều chữ cái khác nhau cùng tạo ra một âm thanh duy nhất mà không bị rào cản IPA gây nản lòng',
+      priority: 'must',
+      status: 'in-progress',
+      size: 'M',
+      points: 5,
+      acceptanceCriteria: [
+        {
+          id: 'ac-pron-209-1',
+          given: 'Một câu luyện tập có chứa âm mục tiêu (ví dụ Target 2 cho âm /aɪ/: "I tried flying high")',
+          when: 'Hệ thống hiển thị văn bản',
+          then: 'Chữ số Target ("2") xuất hiện ngay phía trên các chữ cái tạo âm, và các ký tự "I", "ie", "y", "igh" được gạch chân sắc nét.',
+          completed: true
+        },
+        {
+          id: 'ac-pron-209-2',
+          given: 'Học viên nhấp vào số Target hoặc chữ cái được gạch chân',
+          when: 'Một popover mở ra',
+          then: 'Hiển thị danh sách tất cả các quy tắc chính tả tạo ra âm này (Digraph Rules: i_e, y, igh, ie, i) cùng 3 ví dụ thông dụng.',
+          completed: true
+        }
+      ],
+      technicalTasks: [
+        { id: 't-pron-209-1', title: 'Xây dựng component NumberedAnnotationRenderer hỗ trợ đánh số target trên đầu chữ cái và gạch chân phoneme digraphs', category: 'Frontend', completed: true },
+        { id: 't-pron-209-2', title: 'Thiết kế cơ sở dữ liệu ánh xạ 44 âm IPA sang hệ thống Numbered Targets (Target 1 đến Target 20)', category: 'Database', completed: true }
+      ],
+      notes: 'Phương pháp Numbered Target System được áp dụng rộng rãi bởi các chuyên gia khẩu hình Mỹ (như Luke Priddy / Color Vowel System), giúp học viên ESL nhận diện cấu trúc âm thanh trực quan gấp 3 lần so với chỉ nhìn ký hiệu IPA.'
+    },
+    {
+      id: 'PRON-210',
+      epicId: 'epic-articulation',
+      title: 'Video-Synchronized Masterclass & Exaggerated Articulation Shadowing (Video Khẩu Hình Cường Điệu & Luyện Shadowing Đồng Bộ)',
+      persona: 'Học Viên Cần Nhìn Thấy Chuyển Động Cơ Mặt, Quai Hàm Và Dáng Môi Thực Tế Của Người Bản Ngữ',
+      action: 'xem các video bài giảng của chuyên gia bản ngữ phân tích khẩu hình phóng đại (Exaggerated Facial Articulation), với phụ đề chạy nhịp nhàng đồng bộ theo từng âm vị đánh số và chế độ Shadowing Loop lặp lại câu mẫu',
+      value: 'tôi sao chép chuẩn xác từng cử động cơ hàm và khóe miệng thực tế của người bản xứ, luyện nói nhại (shadowing) để giảm thiểu triệt để giọng điệu cứng ngắc (accent reduction)',
+      priority: 'must',
+      status: 'in-progress',
+      size: 'L',
+      points: 8,
+      acceptanceCriteria: [
+        {
+          id: 'ac-pron-210-1',
+          given: 'Danh sách video bài học theo từng Target Sound (Target 1: /æ/ 7:01, Target 2: /aɪ/ 3:20)',
+          when: 'Học viên bấm phát video',
+          then: 'Video hiển thị hình ảnh giảng viên thị phạm khẩu hình phóng đại kèm phụ đề đồng bộ gắn số mục tiêu nhảy chữ theo giọng nói.',
+          completed: true
+        },
+        {
+          id: 'ac-pron-210-2',
+          given: 'Chế độ Shadowing Practice Mode kích hoạt',
+          when: 'Video phát xong câu mẫu',
+          then: 'Tự động mở mic thu âm giọng học viên đọc nhại lại theo nhịp điệu và đối chiếu tức thời độ tương đồng trường độ âm thanh.',
+          completed: true
+        }
+      ],
+      technicalTasks: [
+        { id: 't-pron-210-1', title: 'Xây dựng VideoLessonPlayer với danh sách bài học (Playlist drawer), time-synced subtitle overlay và điều khiển tốc độ 0.75x/1.0x', category: 'Frontend', completed: true },
+        { id: 't-pron-210-2', title: 'Tích hợp tính năng Shadowing Loop tự động đếm nhịp và thu âm lồng tiếng (Voice Dubbing Shadowing)', category: 'Frontend', completed: true }
+      ],
+      notes: 'Kỹ thuật khẩu hình cường điệu (Exaggeration Technique) là bí quyết cốt lõi trong Accent Reduction, giúp giải phóng cơ mặt vốn quen với khẩu hình hẹp của tiếng Việt.'
+    },
+    {
+      id: 'PRON-211',
+      epicId: 'epic-articulation',
+      title: 'Dense Target Sound Saturation Sentences & Accent Reduction Benchmark (Luyện Câu Bão Hòa Âm Mục Tiêu & Đánh Giá Giảm Giọng Lơ Lớ)',
+      persona: 'Người Học Đã Phát Âm Được Từ Đơn Nhưng Vẫn Giữ Giọng Lơ Lớ Khi Nói Cả Câu',
+      action: 'luyện tập các câu bão hòa âm mục tiêu (Sound Saturation: câu có 70-90% các từ chứa cùng một âm vị mục tiêu, ví dụ: "That access point is absolutely fantastic" hoặc "I tried flying high"), sau đó thu âm để hệ thống tính toán chỉ số Accent Reduction Index',
+      value: 'tôi rèn luyện sức bền cơ miệng và sự đồng nhất của khẩu hình trong suốt câu nói, triệt tiêu phản xạ thả lỏng cơ miệng dẫn đến méo âm ở cuối câu',
+      priority: 'must',
+      status: 'in-progress',
+      size: 'M',
+      points: 5,
+      acceptanceCriteria: [
+        {
+          id: 'ac-pron-211-1',
+          given: 'Một bài luyện bão hòa âm mục tiêu (ví dụ Target 1 với 5 âm /æ/)',
+          when: 'Học viên đọc câu hoàn chỉnh',
+          then: 'Hệ thống đánh giá độ mở hàm và trường độ của từng vị trí âm mục tiêu trong suốt câu, tính toán Consistency Score (độ ổn định khẩu hình).',
+          completed: true
+        },
+        {
+          id: 'ac-pron-211-2',
+          given: 'Học viên phát âm chuẩn ở những từ đầu nhưng bị hẹp hàm ở từ cuối ("fantastic")',
+          when: 'Báo cáo hoàn tất',
+          then: 'Cảnh báo: "Khẩu hình bị hẹp lại ở cuối câu! Giữ nguyên độ mở quai hàm cho cả hai âm /æ/ trong từ \'fantastic\'".',
+          completed: true
+        }
+      ],
+      technicalTasks: [
+        { id: 't-pron-211-1', title: 'Biên soạn ngân hàng câu bão hòa âm vị (Dense Saturation Corpus) cho 20 Target Sounds tiếng Anh', category: 'Content', completed: true },
+        { id: 't-pron-211-2', title: 'Xây dựng thuật toán Accent Reduction Consistency Index đo độ ổn định trường độ âm vị trong chuỗi câu dài', category: 'Backend', completed: true }
+      ],
+      notes: 'Câu bão hòa âm vị đóng vai trò như bài tập tạ cho cơ miệng (muscle training), giúp biến phát âm chuẩn từ nỗ lực gượng gạo thành phản xạ tự nhiên vô điều kiện.'
+    },
 
     // 5. Conversational AI & IELTS Speaking
     {

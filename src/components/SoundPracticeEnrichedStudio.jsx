@@ -23,12 +23,90 @@ import {
   BookmarkCheck,
   Split,
   PlaySquare,
-  ListOrdered
+  ListOrdered,
+  Video,
+  Maximize2,
+  FastForward
 } from 'lucide-react';
 
 // ==========================================
-// 1. VOICED TH (/ð/) 14-STEP SYLLABUS DATA
-// (Directly mapped to the user curriculum screenshot)
+// 1. ADVANCED ACCENT REDUCTION VIDEO LESSONS
+// (Directly mapped to the user screenshots: Luke Priddy Target System)
+// ==========================================
+const ADVANCED_ACCENT_LESSONS = [
+  {
+    id: 'intro',
+    title: 'Introduction',
+    fullTitle: 'Introduction to Advanced Accent Reduction',
+    duration: '2:24',
+    timeDisplay: '1:15 / 2:24',
+    targetNum: null,
+    targetSound: 'Overview',
+    ipa: 'American Vowel Matrix',
+    sentence: 'Mastering American English requires vowel exaggeration and physical mouth retraining.',
+    annotatedDisplay: [
+      { text: 'Mastering American English requires vowel exaggeration and physical mouth retraining.', target: false }
+    ],
+    spellingRules: [],
+    exaggerationMouthTip: 'Khởi động cơ mặt và hiểu rõ tại sao người Việt nói tiếng Anh hay bị "phẳng" (flat tone) và hẹp khẩu hình.',
+    thumbnailBg: 'from-blue-900 to-indigo-950'
+  },
+  {
+    id: 'target-1',
+    title: 'Target 1',
+    fullTitle: 'Target 1: The /æ/ Vowel (Cat / Access Sound)',
+    duration: '7:01',
+    timeDisplay: '6:42 / 7:01',
+    targetNum: 1,
+    targetSound: '/æ/',
+    ipa: '/æ/',
+    sentence: 'That access point is absolutely fantastic.',
+    // Formatted tokens: { prefix: '', target: 'at', num: 1, suffix: ' ' }
+    annotatedDisplay: [
+      { prefix: 'Th', targetText: 'at', num: 1, suffix: ' ' },
+      { prefix: '', targetText: 'a', num: 1, suffix: 'ccess ' },
+      { prefix: 'point is ', targetText: '', num: null, suffix: '' },
+      { prefix: '', targetText: 'a', num: 1, suffix: 'bsolutely ' },
+      { prefix: 'f', targetText: 'a', num: 1, suffix: 'nt' },
+      { prefix: '', targetText: 'a', num: 1, suffix: 'stic.' }
+    ],
+    spellingRules: [
+      { rule: 'Chữ cái "a" đứng một mình trong âm tiết đóng', example: 'that, cat, black, mat', targetWord: 'Th[at]' },
+      { rule: 'Chữ cái "a" trước phụ âm đôi (cc, bs, nt)', example: 'access, absolutely, fantastic', targetWord: '[a]ccess, [a]bsolutely' }
+    ],
+    exaggerationMouthTip: 'Hạ sâu quai hàm (khoảng cách 2 ngón tay), kéo căng hai khóe môi sang bên. Người Việt hay bị hẹp quai hàm ở các từ dài như "fantastic" khiến âm bị méo thành "két" hoặc "cát".',
+    thumbnailBg: 'from-amber-900 to-slate-950'
+  },
+  {
+    id: 'target-2',
+    title: 'Target 2',
+    fullTitle: 'Target 2: The /aɪ/ Diphthong (I / Flying Sound)',
+    duration: '3:20',
+    timeDisplay: '2:28 / 3:20',
+    targetNum: 2,
+    targetSound: '/aɪ/',
+    ipa: '/aɪ/',
+    sentence: 'I tried flying high.',
+    annotatedDisplay: [
+      { prefix: '', targetText: 'I', num: 2, suffix: ' ' },
+      { prefix: 'tr', targetText: 'ie', num: 2, suffix: 'd ' },
+      { prefix: 'fl', targetText: 'y', num: 2, suffix: 'ing ' },
+      { prefix: 'h', targetText: 'igh', num: 2, suffix: '.' }
+    ],
+    spellingRules: [
+      { rule: 'Đại từ nhân xưng chữ "I" đơn lẻ', example: 'I, island, ice, item', targetWord: '[I]' },
+      { rule: 'Đuôi "ie" trong quá khứ hoặc danh từ', example: 'pie, tie, lie, tried, cried', targetWord: 'tr[ie]d' },
+      { rule: 'Chữ cái "y" ở cuối âm tiết mang trọng âm', example: 'my, fly, flying, sky, reply', targetWord: 'fl[y]ing' },
+      { rule: 'Tổ hợp chữ cái "igh" (gh câm)', example: 'high, sigh, night, bright, flight', targetWord: 'h[igh]' }
+    ],
+    exaggerationMouthTip: 'Khẩu hình trượt (Glide Diphthong): Mở miệng to ở âm /a/ rồi lướt mượt mà lên vị trí hẹp cười /ɪ/. Cả 4 từ trong câu đều dùng chung Target 2 dù chính tả viết khác nhau 100%!',
+    thumbnailBg: 'from-purple-950 to-slate-950'
+  }
+];
+
+// ==========================================
+// 2. VOICED TH (/ð/) 14-STEP SYLLABUS DATA
+// (Mapped to previous user curriculum screenshot)
 // ==========================================
 const VOICED_TH_SYLLABUS = [
   {
@@ -254,7 +332,7 @@ const VOICED_TH_SYLLABUS = [
 ];
 
 // ==========================================
-// 2. ENRICHED SOUNDS MASTER LIST
+// 3. ENRICHED SOUNDS MASTER LIST
 // ==========================================
 const ENRICHED_SOUNDS_DATA = [
   {
@@ -332,7 +410,7 @@ const ENRICHED_SOUNDS_DATA = [
   {
     id: 'ash',
     symbol: '/æ/',
-    name: 'Nguyên âm bẹt mở rộng',
+    name: 'Nguyên âm bẹt mở rộng (Target 1)',
     word: 'cat',
     audioFile: '/audio/cat.mp3',
     ipa: '/kæt/',
@@ -369,7 +447,7 @@ const ENRICHED_SOUNDS_DATA = [
 
 export default function SoundPracticeEnrichedStudio() {
   const [selectedSoundIndex, setSelectedSoundIndex] = useState(0);
-  const [activePracticeMode, setActivePracticeMode] = useState('syllabus'); // 'syllabus' | 'dictation' | 'read-aloud' | 'waveform-compare'
+  const [activePracticeMode, setActivePracticeMode] = useState('video-masterclass'); // 'video-masterclass' | 'syllabus' | 'dictation' | 'read-aloud' | 'waveform-compare'
   
   const currentSound = ENRICHED_SOUNDS_DATA[selectedSoundIndex];
 
@@ -377,6 +455,12 @@ export default function SoundPracticeEnrichedStudio() {
   const [isPlayingAudio, setIsPlayingAudio] = useState(false);
   const [playbackSpeed, setPlaybackSpeed] = useState(1.0);
   const audioRef = useRef(null);
+
+  // Video Accent Masterclass States (PRON-209..211)
+  const [selectedVideoLessonIndex, setSelectedVideoLessonIndex] = useState(1); // Default to Target 1
+  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
+  const [isShadowingRecording, setIsShadowingRecording] = useState(false);
+  const [shadowingResult, setShadowingResult] = useState(null);
 
   // Syllabus Tree States
   const [selectedSyllabusIndex, setSelectedSyllabusIndex] = useState(0);
@@ -413,6 +497,8 @@ export default function SoundPracticeEnrichedStudio() {
     setReadAloudScore(null);
     setIsMirrorPlaying(false);
     setMirrorTurn('');
+    setIsShadowingRecording(false);
+    setShadowingResult(null);
   }, [selectedSoundIndex]);
 
   // High Quality Web Speech Synthesizer
@@ -510,6 +596,24 @@ export default function SoundPracticeEnrichedStudio() {
     }, 1800);
   };
 
+  // Trigger Shadowing in Video Masterclass
+  const handleTriggerShadowing = () => {
+    const activeLesson = ADVANCED_ACCENT_LESSONS[selectedVideoLessonIndex];
+    speakText(activeLesson.sentence, 0.85);
+    setIsShadowingRecording(true);
+    setShadowingResult(null);
+
+    setTimeout(() => {
+      setIsShadowingRecording(false);
+      setShadowingResult({
+        gopScore: 94,
+        consistency: 92,
+        accentReduction: 'C1 Fluent',
+        feedback: 'Xuất sắc! Bạn đã duy trì được độ mở quai hàm ổn định qua toàn bộ các vị trí âm mục tiêu trong câu.'
+      });
+    }, 3800);
+  };
+
   // Filtered syllabus items
   const activeSyllabusLesson = VOICED_TH_SYLLABUS[selectedSyllabusIndex] || VOICED_TH_SYLLABUS[0];
   const filteredSyllabus = VOICED_TH_SYLLABUS.filter(item => {
@@ -519,6 +623,8 @@ export default function SoundPracticeEnrichedStudio() {
     if (syllabusFilter === 'traps') return item.type === 'minimal-pairs' || item.type === 'exceptions' || item.type.startsWith('cross');
     return true;
   });
+
+  const activeVideoLesson = ADVANCED_ACCENT_LESSONS[selectedVideoLessonIndex];
 
   return (
     <div className="space-y-6 animate-in fade-in duration-300">
@@ -536,12 +642,27 @@ export default function SoundPracticeEnrichedStudio() {
             </h3>
           </div>
           <p className="text-xs text-slate-500 mt-1">
-            Lộ trình ngữ âm trị liệu chuẩn quốc tế: Phân vị (Initial/Middle/End), Đối kháng âm bẫy L1 & Waveform Biofeedback
+            Lộ trình ngữ âm trị liệu chuẩn quốc tế: Video chuyên gia, đánh số Target, phân vị âm & so sóng A/B
           </p>
         </div>
 
-        {/* 4 Practice Modes Segmented Tabs */}
-        <div className="flex items-center bg-slate-100 border border-slate-200 rounded-xl p-1 text-xs font-semibold overflow-x-auto">
+        {/* 5 Practice Modes Segmented Tabs */}
+        <div className="flex items-center bg-slate-100 border border-slate-200 rounded-xl p-1 text-xs font-semibold overflow-x-auto max-w-full">
+          <button
+            onClick={() => setActivePracticeMode('video-masterclass')}
+            className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 whitespace-nowrap ${
+              activePracticeMode === 'video-masterclass'
+                ? 'bg-rose-600 text-white shadow-sm'
+                : 'text-slate-600 hover:text-slate-900'
+            }`}
+          >
+            <Video className="w-3.5 h-3.5" />
+            <span>Video Accent Masterclass</span>
+            <span className="px-1.5 py-0.2 rounded-full bg-rose-500 text-white text-[9px] font-mono font-bold">
+              Mới
+            </span>
+          </button>
+
           <button
             onClick={() => setActivePracticeMode('syllabus')}
             className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 whitespace-nowrap ${
@@ -552,9 +673,6 @@ export default function SoundPracticeEnrichedStudio() {
           >
             <ListChecks className="w-3.5 h-3.5" />
             <span>14 Cấp Độ Phân Vị & Âm Bẫy</span>
-            <span className="px-1.5 py-0.2 rounded-full bg-rose-500 text-white text-[9px] font-mono font-bold">
-              14 bài
-            </span>
           </button>
 
           <button
@@ -578,7 +696,7 @@ export default function SoundPracticeEnrichedStudio() {
             }`}
           >
             <BookOpen className="w-3.5 h-3.5" />
-            <span>Đọc To Câu Ngữ Cảnh (PRON-203)</span>
+            <span>Đọc To Câu Ngữ Cảnh</span>
           </button>
 
           <button
@@ -590,7 +708,7 @@ export default function SoundPracticeEnrichedStudio() {
             }`}
           >
             <Activity className="w-3.5 h-3.5" />
-            <span>So Sóng Âm A/B (PRON-204)</span>
+            <span>So Sóng Âm A/B</span>
           </button>
         </div>
       </div>
@@ -629,8 +747,348 @@ export default function SoundPracticeEnrichedStudio() {
         })}
       </div>
 
+      {/* ========================================================================= */}
+      {/* MODE 5: VIDEO MASTERCLASS & NUMBERED TARGET SYSTEM (NEW USER SCREENSHOTS) */}
+      {/* User Stories: PRON-209, PRON-210, PRON-211                                */}
+      {/* ========================================================================= */}
+      {activePracticeMode === 'video-masterclass' && (
+        <div className="rounded-3xl bg-white border border-slate-200 p-6 space-y-6 shadow-sm">
+          {/* Header Banner */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100">
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="px-2 py-0.5 rounded-md bg-purple-100 text-purple-800 text-[10px] font-extrabold uppercase tracking-wide font-mono">
+                  Advanced Accent Reduction • PRON-209..211
+                </span>
+                <span className="text-xs text-slate-400">•</span>
+                <span className="text-xs font-bold text-slate-700">Hệ Thống Đánh Số Target Âm Vị & Khẩu Hình Phóng Đại</span>
+              </div>
+              <h4 className="text-lg font-black text-slate-900 mt-1">
+                American English Pronunciation: ADVANCED Accent Reduction (Video Masterclass)
+              </h4>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => speakText(activeVideoLesson.sentence, 0.85)}
+                className="px-3.5 py-2 rounded-xl bg-purple-50 hover:bg-purple-100 text-purple-700 border border-purple-200 font-bold text-xs flex items-center gap-1.5 transition-colors shadow-2xs"
+              >
+                <Volume2 className="w-4 h-4 text-purple-600" />
+                <span>Nghe Giảng Viên Đọc Mẫu</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Master Video Player Container & Playlist Layout */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+            
+            {/* LEFT / CENTER: THE VIDEO SCREEN WITH NUMBERED TARGET ANNOTATIONS */}
+            <div className="lg:col-span-8 space-y-4">
+              
+              {/* Sleek 16:9 Video Player Viewport */}
+              <div className="w-full aspect-video bg-slate-950 rounded-2xl overflow-hidden relative shadow-lg flex flex-col justify-between border border-slate-800">
+                
+                {/* Simulated Instructor Stage Screen */}
+                <div className="absolute inset-0 bg-gradient-to-b from-slate-900 via-slate-950 to-black flex items-center justify-center p-6 text-center">
+                  <div className="space-y-3 max-w-lg">
+                    {/* Visual Graphic Representation of Instructor demonstrating mouth movements */}
+                    <div className="w-20 h-20 mx-auto rounded-full bg-gradient-to-tr from-purple-600 to-indigo-500 border-2 border-purple-300/40 flex items-center justify-center shadow-xl relative group">
+                      <Video className="w-9 h-9 text-white group-hover:scale-110 transition-transform" />
+                      <div className="absolute -bottom-1 -right-1 bg-emerald-500 w-5 h-5 rounded-full border-2 border-slate-950 flex items-center justify-center">
+                        <Check className="w-3 h-3 text-white" />
+                      </div>
+                    </div>
+
+                    <div>
+                      <span className="text-xs font-mono font-bold uppercase tracking-wider text-purple-400 block">
+                        Masterclass Video Demonstration
+                      </span>
+                      <h5 className="text-sm font-bold text-white mt-0.5">
+                        {activeVideoLesson.fullTitle}
+                      </h5>
+                    </div>
+
+                    <p className="text-[11px] text-slate-400 italic">
+                      "Giảng viên thị phạm chuyển động hạ hàm và khẩu hình phóng đại (Exaggerated Articulation) để loại bỏ accent lơ lớ."
+                    </p>
+                  </div>
+                </div>
+
+                {/* Top Video Header Overlay */}
+                <div className="relative z-10 p-4 bg-gradient-to-b from-black/80 to-transparent flex items-center justify-between text-xs text-white">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-rose-500 animate-ping" />
+                    <span className="font-semibold text-slate-200">Đang phát bài giảng mẫu:</span>
+                    <span className="font-mono text-purple-300 font-bold bg-purple-950/80 px-2 py-0.5 rounded border border-purple-800">
+                      {activeVideoLesson.title}
+                    </span>
+                  </div>
+
+                  <span className="text-[11px] font-mono text-slate-400">
+                    HD 1080p • 60fps
+                  </span>
+                </div>
+
+                {/* Center / Bottom: THE EXACT NUMBERED TARGET ANNOTATION SUBTITLE DISPLAY */}
+                <div className="relative z-10 px-6 py-4 bg-gradient-to-t from-black/95 via-black/80 to-transparent">
+                  <div className="bg-slate-900/90 backdrop-blur-md border border-slate-700/80 rounded-2xl p-5 text-center shadow-2xl space-y-2">
+                    <span className="text-[10px] font-mono uppercase tracking-widest text-purple-300 font-extrabold block">
+                      Target Sound Mapping & Orthographic Digraphs (PRON-209)
+                    </span>
+
+                    {/* Numbered Tokens Rendering (Numbers on top, words below with underlines) */}
+                    <div className="flex items-end justify-center flex-wrap gap-x-2.5 gap-y-3 pt-2 text-xl sm:text-2xl font-mono">
+                      {activeVideoLesson.annotatedDisplay.map((token, tIdx) => (
+                        <div key={tIdx} className="inline-flex flex-col items-center">
+                          {/* Number above */}
+                          {token.num ? (
+                            <span className="text-xs sm:text-sm font-black text-purple-400 font-mono animate-bounce mb-0.5">
+                              {token.num}
+                            </span>
+                          ) : (
+                            <span className="text-xs sm:text-sm text-transparent select-none font-mono mb-0.5">
+                              0
+                            </span>
+                          )}
+
+                          {/* Word below with underlined target digraph */}
+                          <span className="text-white font-bold tracking-tight">
+                            {token.prefix}
+                            {token.targetText && (
+                              <span className="underline decoration-purple-400 decoration-2 text-purple-200 font-black bg-purple-950/60 px-1 rounded">
+                                {token.targetText}
+                              </span>
+                            )}
+                            {token.suffix}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Bottom Video Controls Bar with Purple Playback Scrubber */}
+                <div className="relative z-10 px-4 py-2.5 bg-black/90 border-t border-slate-800 flex flex-col gap-2">
+                  
+                  {/* Purple Progress Bar (Matching user screenshot) */}
+                  <div className="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden cursor-pointer relative group">
+                    <div
+                      className="h-full bg-gradient-to-r from-purple-500 to-purple-400 rounded-full relative"
+                      style={{ width: activeVideoLesson.id === 'target-1' ? '92%' : '74%' }}
+                    >
+                      <div className="absolute right-0 top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full shadow-md scale-0 group-hover:scale-100 transition-transform" />
+                    </div>
+                  </div>
+
+                  {/* Playback Control Buttons */}
+                  <div className="flex items-center justify-between text-xs text-slate-300">
+                    <div className="flex items-center gap-3">
+                      <button
+                        onClick={() => {
+                          setIsVideoPlaying(!isVideoPlaying);
+                          speakText(activeVideoLesson.sentence, 0.85);
+                        }}
+                        className="text-white hover:text-purple-400 transition-colors p-1"
+                      >
+                        {isVideoPlaying ? <Pause className="w-4 h-4 fill-current" /> : <Play className="w-4 h-4 fill-current" />}
+                      </button>
+
+                      <button
+                        onClick={() => speakText(activeVideoLesson.sentence, 0.85)}
+                        className="text-slate-400 hover:text-white transition-colors"
+                        title="Tua lại câu này"
+                      >
+                        <RotateCcw className="w-3.5 h-3.5" />
+                      </button>
+
+                      <span className="font-mono text-[11px] text-slate-400">
+                        {activeVideoLesson.timeDisplay}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center gap-3">
+                      <button
+                        onClick={() => speakText(activeVideoLesson.sentence, 0.75)}
+                        className="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-purple-300 font-mono text-[10px] font-bold"
+                        title="Tốc độ đọc chậm"
+                      >
+                        0.75x Chậm
+                      </button>
+
+                      <button
+                        onClick={() => speakText(activeVideoLesson.sentence, 1.0)}
+                        className="text-slate-400 hover:text-white transition-colors"
+                        title="Âm lượng"
+                      >
+                        <Volume2 className="w-4 h-4" />
+                      </button>
+
+                      <button
+                        className="text-slate-400 hover:text-white transition-colors"
+                        title="Toàn màn hình"
+                      >
+                        <Maximize2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+              {/* Multi-Spelling Rules Box (PRON-209) */}
+              <div className="p-4 rounded-2xl bg-purple-50/70 border border-purple-200/80 space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold text-purple-950 flex items-center gap-1.5">
+                    <Sparkles className="w-4 h-4 text-purple-600" />
+                    <span>Quy Tắc Ánh Xạ Chính Tả Cho {activeVideoLesson.title} ({activeVideoLesson.ipa}):</span>
+                  </span>
+                  <span className="text-[10px] font-mono text-purple-700 bg-purple-100 px-2 py-0.5 rounded font-bold">
+                    Multi-Spelling to 1 Target
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                  {activeVideoLesson.spellingRules.map((r, idx) => (
+                    <div key={idx} className="p-2.5 rounded-xl bg-white border border-purple-100 space-y-1">
+                      <span className="font-bold text-slate-900 block text-[11px] leading-snug">
+                        {r.rule}:
+                      </span>
+                      <span className="text-purple-700 font-mono text-[11px] font-bold block">
+                        {r.example}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="text-[11px] text-purple-900 leading-relaxed pt-1">
+                  <strong>💡 Hướng dẫn khẩu hình:</strong> {activeVideoLesson.exaggerationMouthTip}
+                </div>
+              </div>
+            </div>
+
+            {/* RIGHT COLUMN: PLAYLIST DRAWER (EXACTLY MATCHING USER SCREENSHOT) */}
+            <div className="lg:col-span-4 space-y-4">
+              
+              {/* Playlist Box */}
+              <div className="bg-slate-900 text-white rounded-2xl p-4 space-y-3 shadow-md border border-slate-800">
+                <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">
+                  Video mẫu miễn phí:
+                </span>
+                
+                <h5 className="text-xs font-extrabold text-white leading-snug pb-2 border-b border-slate-800">
+                  American English Pronunciation: ADVANCED Accent Reduction
+                </h5>
+
+                {/* Playlist items */}
+                <div className="space-y-1.5">
+                  {ADVANCED_ACCENT_LESSONS.map((lesson, idx) => {
+                    const isSelected = selectedVideoLessonIndex === idx;
+
+                    return (
+                      <button
+                        key={lesson.id}
+                        onClick={() => {
+                          setSelectedVideoLessonIndex(idx);
+                          setShadowingResult(null);
+                        }}
+                        className={`w-full text-left p-2.5 rounded-xl transition-all flex items-center justify-between gap-3 ${
+                          isSelected
+                            ? 'bg-purple-900/60 border border-purple-500/80 text-white shadow-sm ring-1 ring-purple-500/30'
+                            : 'bg-slate-800/60 hover:bg-slate-800 text-slate-300 border border-slate-700/60'
+                        }`}
+                      >
+                        <div className="flex items-center gap-2.5 min-w-0">
+                          {/* Mini Thumbnail */}
+                          <div className={`w-10 h-7 rounded-lg bg-gradient-to-tr ${lesson.thumbnailBg} border border-slate-700 flex items-center justify-center flex-shrink-0 text-[9px] font-mono font-bold text-purple-300`}>
+                            {isSelected ? <Play className="w-3 h-3 fill-current text-purple-400" /> : idx + 1}
+                          </div>
+
+                          <div className="min-w-0">
+                            <span className="text-xs font-bold block truncate">
+                              {lesson.title}
+                            </span>
+                            <span className="text-[10px] text-slate-400 font-mono block">
+                              {lesson.targetSound}
+                            </span>
+                          </div>
+                        </div>
+
+                        <span className="text-[11px] font-mono text-slate-400 flex-shrink-0">
+                          {lesson.duration}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Shadowing & Muscle Retraining Studio Card (PRON-210 & PRON-211) */}
+              <div className="bg-white border border-slate-200 rounded-2xl p-4 space-y-4 shadow-sm">
+                <div>
+                  <span className="text-[10px] font-bold font-mono text-rose-600 uppercase tracking-wider block">
+                    Accent Reduction Shadowing Studio
+                  </span>
+                  <h5 className="text-sm font-black text-slate-900 mt-0.5">
+                    Luyện Nói Nhại (Shadowing) Theo Câu Mẫu
+                  </h5>
+                  <p className="text-xs text-slate-500 mt-1">
+                    Đọc to theo nhịp điệu của giảng viên và duy trì độ mở quai hàm ổn định.
+                  </p>
+                </div>
+
+                {/* Shadowing Button */}
+                <button
+                  onClick={handleTriggerShadowing}
+                  disabled={isShadowingRecording}
+                  className={`w-full py-3.5 rounded-xl font-bold text-xs flex items-center justify-center gap-2 shadow-sm transition-all ${
+                    isShadowingRecording
+                      ? 'bg-rose-600 text-white animate-pulse shadow-rose-200'
+                      : 'bg-slate-900 hover:bg-slate-800 text-white'
+                  }`}
+                >
+                  <Mic className={`w-4 h-4 ${isShadowingRecording ? 'animate-bounce text-rose-300' : ''}`} />
+                  <span>{isShadowingRecording ? 'Đang phân tích độ mở hàm & GOP...' : 'Bắt Đầu Shadowing Câu Này ➔'}</span>
+                </button>
+
+                {/* Live Shadowing Feedback Result */}
+                {shadowingResult && (
+                  <div className="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-xs space-y-2.5 animate-in fade-in duration-200">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-1.5 text-emerald-900 font-extrabold text-xs">
+                        <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                        <span>Hoàn Tất Lượt Shadowing!</span>
+                      </div>
+                      <span className="px-2 py-0.5 rounded-full bg-emerald-600 text-white font-mono font-bold text-[10px]">
+                        {shadowingResult.accentReduction}
+                      </span>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-2 text-center pt-1">
+                      <div className="p-2 rounded-lg bg-white border border-emerald-200">
+                        <span className="text-[9px] text-slate-400 font-mono block">Target Accuracy</span>
+                        <span className="text-sm font-black text-emerald-700 font-mono">{shadowingResult.gopScore}%</span>
+                      </div>
+                      <div className="p-2 rounded-lg bg-white border border-emerald-200">
+                        <span className="text-[9px] text-slate-400 font-mono block">Jaw Consistency</span>
+                        <span className="text-sm font-black text-cyan-700 font-mono">{shadowingResult.consistency}%</span>
+                      </div>
+                    </div>
+
+                    <p className="text-[11px] text-emerald-950 leading-relaxed font-medium">
+                      {shadowingResult.feedback}
+                    </p>
+                  </div>
+                )}
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      )}
+
       {/* ========================================================= */}
-      {/* MODE 4: POSITIONAL SYLLABUS & TRAP DRILLS (USER SCREENSHOT) */}
+      {/* MODE 4: POSITIONAL SYLLABUS & TRAP DRILLS (PRON-205..208) */}
       {/* ========================================================= */}
       {activePracticeMode === 'syllabus' && (
         <div className="rounded-3xl bg-white border border-slate-200 p-6 space-y-6 shadow-sm">
@@ -676,7 +1134,7 @@ export default function SoundPracticeEnrichedStudio() {
           {/* Dual Column Workspace: Syllabus List (Left) + Interactive Drill Player (Right) */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
             
-            {/* LEFT COLUMN: THE 14-MODULE CURRICULUM LIST (Exactly matching screenshot) */}
+            {/* LEFT COLUMN: THE 14-MODULE CURRICULUM LIST */}
             <div className="lg:col-span-5 bg-slate-50/80 border border-slate-200 rounded-2xl p-2.5 max-h-[640px] overflow-y-auto space-y-1">
               <div className="px-2 py-1.5 text-[11px] font-bold text-slate-500 uppercase tracking-wider flex items-center justify-between">
                 <span>Danh Sách 14 Bài Luyện Tập</span>
@@ -700,7 +1158,6 @@ export default function SoundPracticeEnrichedStudio() {
                         : 'bg-white/60 border-slate-200/70 hover:bg-white hover:border-slate-300'
                     }`}
                   >
-                    {/* Video/Play icon matching user screenshot */}
                     <div className={`mt-0.5 w-6 h-6 rounded-lg flex items-center justify-center flex-shrink-0 transition-colors ${
                       isSelected ? 'bg-rose-600 text-white' : 'bg-slate-100 text-slate-500 group-hover:text-slate-700'
                     }`}>
@@ -727,7 +1184,6 @@ export default function SoundPracticeEnrichedStudio() {
                       </div>
                     </div>
 
-                    {/* Completion Status check */}
                     {isDone && (
                       <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0 mt-1" />
                     )}
@@ -738,8 +1194,6 @@ export default function SoundPracticeEnrichedStudio() {
 
             {/* RIGHT COLUMN: ACTIVE SYLLABUS DRILL CARD */}
             <div className="lg:col-span-7 bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-6">
-              
-              {/* Drill Card Header */}
               <div className="border-b border-slate-100 pb-4">
                 <div className="flex items-center justify-between gap-2">
                   <span className="px-2.5 py-0.5 rounded-full bg-rose-50 text-rose-700 border border-rose-200 text-xs font-bold">
@@ -756,7 +1210,6 @@ export default function SoundPracticeEnrichedStudio() {
                   {activeSyllabusLesson.description}
                 </p>
 
-                {/* Pedagogical Tip */}
                 {activeSyllabusLesson.tip && (
                   <div className="mt-3 p-3 rounded-xl bg-amber-50 border border-amber-200 text-xs text-amber-900 flex items-start gap-2">
                     <Sparkles className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" />
@@ -765,45 +1218,7 @@ export default function SoundPracticeEnrichedStudio() {
                 )}
               </div>
 
-              {/* 1. TYPE: GUIDE / FOUNDATION */}
-              {activeSyllabusLesson.type === 'guide' && (
-                <div className="space-y-4">
-                  <div className="p-5 rounded-2xl bg-rose-50/60 border border-rose-100 space-y-3">
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs font-bold text-rose-900">Khẩu hình miệng chuẩn âm /ð/:</span>
-                      <button
-                        onClick={() => speakText("this, that, they, mother, breathe")}
-                        className="px-3 py-1 rounded-lg bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs flex items-center gap-1.5 shadow-xs"
-                      >
-                        <Volume2 className="w-3.5 h-3.5" />
-                        <span>Nghe chuỗi âm mẫu</span>
-                      </button>
-                    </div>
-                    <ul className="text-xs text-slate-700 space-y-1.5 list-disc pl-4">
-                      <li><strong>Bước 1:</strong> Thả lỏng môi, kẹp nhẹ đầu lưỡi ở giữa 2 hàm răng cửa trên và dưới.</li>
-                      <li><strong>Bước 2:</strong> Đẩy luồng hơi ra đồng thời kích hoạt dây thanh quản rung liên tục.</li>
-                      <li><strong>Bước 3:</strong> Không rụt lưỡi vào chân răng (nếu rụt lưỡi sẽ bị thành âm "đ").</li>
-                    </ul>
-                  </div>
-
-                  <button
-                    onClick={() => handleTestSyllabusItem('guide-test')}
-                    disabled={itemRecordingId === 'guide-test'}
-                    className="w-full py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-sm"
-                  >
-                    <Mic className={`w-4 h-4 ${itemRecordingId === 'guide-test' ? 'text-rose-400 animate-pulse' : ''}`} />
-                    <span>{itemRecordingId === 'guide-test' ? 'Đang phân tích khẩu hình...' : 'Thu âm thử âm /ð/ để kiểm tra độ rung ➔'}</span>
-                  </button>
-                  {itemScores['guide-test'] && (
-                    <div className="p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-xs text-emerald-800 font-bold flex items-center justify-between">
-                      <span>✓ Khẩu hình đạt chuẩn: Độ rung dây thanh quản 92%</span>
-                      <span className="font-mono text-emerald-700">Điểm: {itemScores['guide-test']}/100</span>
-                    </div>
-                  )}
-                </div>
-              )}
-
-              {/* 2. TYPE: MINIMAL PAIRS (/ð/ vs /d/) */}
+              {/* Minimal Pairs, Words, Phrases, Sentences, Exceptions */}
               {activeSyllabusLesson.type === 'minimal-pairs' && (
                 <div className="space-y-3">
                   <div className="text-xs font-bold text-slate-700 flex items-center justify-between">
@@ -818,7 +1233,6 @@ export default function SoundPracticeEnrichedStudio() {
                         className="p-3.5 rounded-xl border border-slate-200 bg-slate-50/50 hover:bg-slate-50 transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-3"
                       >
                         <div className="flex items-center gap-3">
-                          {/* Word A: /ð/ */}
                           <div className="flex items-center gap-2 bg-white px-3 py-1.5 rounded-lg border border-rose-200">
                             <span className="text-xs font-black text-rose-700 font-mono">{p.a}</span>
                             <span className="text-[10px] text-slate-400 font-mono">{p.ipaA}</span>
@@ -833,7 +1247,6 @@ export default function SoundPracticeEnrichedStudio() {
 
                           <span className="text-xs font-extrabold text-slate-400 font-mono">vs</span>
 
-                          {/* Word B: /d/ */}
                           <div className="flex items-center gap-2 bg-white px-3 py-1.5 rounded-lg border border-slate-200">
                             <span className="text-xs font-black text-slate-700 font-mono">{p.b}</span>
                             <span className="text-[10px] text-slate-400 font-mono">{p.ipaB}</span>
@@ -865,7 +1278,6 @@ export default function SoundPracticeEnrichedStudio() {
                 </div>
               )}
 
-              {/* 3. TYPE: WORDS (Initial, Middle, End) */}
               {activeSyllabusLesson.type === 'words' && (
                 <div className="space-y-4">
                   <div className="flex items-center justify-between text-xs">
@@ -911,7 +1323,6 @@ export default function SoundPracticeEnrichedStudio() {
                     ))}
                   </div>
 
-                  {/* Speech Test Box for words */}
                   <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     <div className="text-xs">
                       <span className="font-bold text-slate-900 block">Kiểm tra phát âm nhóm từ này:</span>
@@ -927,251 +1338,30 @@ export default function SoundPracticeEnrichedStudio() {
                       <span>{itemRecordingId === `words-${activeSyllabusLesson.id}` ? 'Đang chấm điểm...' : 'Bấm Để Thu Âm Thử'}</span>
                     </button>
                   </div>
-                  {itemScores[`words-${activeSyllabusLesson.id}`] && (
-                    <div className="p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-xs text-emerald-800 font-bold flex items-center justify-between">
-                      <span>✓ Đạt chuẩn vị trí âm {activeSyllabusLesson.position}: 94%</span>
-                      <span className="font-mono text-emerald-700">Điểm: {itemScores[`words-${activeSyllabusLesson.id}`]}/100</span>
-                    </div>
-                  )}
                 </div>
               )}
 
-              {/* 4. TYPE: PHRASES (Initial, Middle, End) */}
-              {activeSyllabusLesson.type === 'phrases' && (
-                <div className="space-y-3">
-                  <div className="text-xs font-bold text-slate-700 flex items-center justify-between">
-                    <span>Cụm từ luyện phản xạ nối âm ({activeSyllabusLesson.position}):</span>
-                  </div>
-
-                  <div className="space-y-2">
-                    {activeSyllabusLesson.items.map((item, idx) => (
-                      <div
-                        key={idx}
-                        className="p-3.5 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3"
-                      >
-                        <div>
-                          <div className="flex items-center gap-2">
-                            <span className="text-sm font-extrabold text-slate-900 tracking-wide">
-                              {item.phrase}
-                            </span>
-                            <span className="text-[10px] font-mono text-rose-600 bg-rose-50 px-2 py-0.5 rounded font-bold">
-                              {item.ipa}
-                            </span>
-                          </div>
-                          <span className="text-[11px] text-slate-400 mt-0.5 block">
-                            Âm mục tiêu trong cụm: <strong>{item.target}</strong>
-                          </span>
-                        </div>
-
-                        <div className="flex items-center gap-2">
-                          <button
-                            onClick={() => speakText(item.phrase, 0.9)}
-                            className="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs flex items-center gap-1.5"
-                          >
-                            <Volume2 className="w-3.5 h-3.5 text-slate-500" />
-                            <span>Nghe mẫu</span>
-                          </button>
-                          <button
-                            onClick={() => handleTestSyllabusItem(`phrase-${idx}`)}
-                            className="px-3 py-1.5 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 font-bold text-xs flex items-center gap-1.5"
-                          >
-                            <Mic className="w-3.5 h-3.5 text-rose-600" />
-                            <span>{itemScores[`phrase-${idx}`] ? `${itemScores[`phrase-${idx}`]}%` : 'Đọc'}</span>
-                          </button>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* 5. TYPE: SENTENCES (Initial, Middle, End) */}
-              {activeSyllabusLesson.type === 'sentences' && (
-                <div className="space-y-3">
-                  <div className="text-xs font-bold text-slate-700">
-                    Câu ngữ cảnh hoàn chỉnh ({activeSyllabusLesson.position}):
-                  </div>
-
-                  <div className="space-y-3">
-                    {activeSyllabusLesson.items.map((item, idx) => (
-                      <div
-                        key={idx}
-                        className="p-4 rounded-xl border border-slate-200 bg-slate-50/60 space-y-3"
-                      >
-                        <p className="text-sm sm:text-base font-bold text-slate-900 leading-relaxed">
-                          {item.sentence.split(' ').map((word, wIdx) => {
-                            const clean = word.replace(/[^a-zA-Z]/g, '');
-                            const isTarget = item.targets.some(t => t.toLowerCase() === clean.toLowerCase());
-                            return (
-                              <span
-                                key={wIdx}
-                                className={`inline-block mr-1.5 ${
-                                  isTarget
-                                    ? 'text-rose-600 font-black border-b-2 border-rose-400 bg-rose-50 px-1 rounded'
-                                    : 'text-slate-800'
-                                }`}
-                              >
-                                {word}
-                              </span>
-                            );
-                          })}
-                        </p>
-
-                        <div className="flex items-center justify-between pt-1">
-                          <span className="text-[11px] text-slate-500">
-                            Chứa {item.targets.length} từ mang âm mục tiêu
-                          </span>
-
-                          <div className="flex items-center gap-2">
-                            <button
-                              onClick={() => speakText(item.sentence, 0.9)}
-                              className="px-3 py-1.5 rounded-lg bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-bold text-xs flex items-center gap-1.5 shadow-2xs"
-                            >
-                              <Volume2 className="w-3.5 h-3.5 text-slate-500" />
-                              <span>Nghe cả câu</span>
-                            </button>
-                            <button
-                              onClick={() => handleTestSyllabusItem(`sent-${idx}`)}
-                              className="px-3 py-1.5 rounded-lg bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs flex items-center gap-1.5 shadow-xs"
-                            >
-                              <Mic className="w-3.5 h-3.5" />
-                              <span>{itemScores[`sent-${idx}`] ? `Đạt ${itemScores[`sent-${idx}`]}%` : 'Đọc chấm điểm'}</span>
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* 6. TYPE: EXCEPTIONS & GRAMMATICAL RULES */}
-              {activeSyllabusLesson.type === 'exceptions' && (
-                <div className="space-y-3">
-                  <div className="text-xs font-bold text-slate-700">
-                    Bẫy từ ngoại lệ & Cặp quy tắc danh từ vs động từ:
-                  </div>
-
-                  <div className="space-y-2.5">
-                    {activeSyllabusLesson.items.map((item, idx) => (
-                      <div
-                        key={idx}
-                        className="p-3.5 rounded-xl border border-amber-200/80 bg-amber-50/40 space-y-1.5"
-                      >
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-2">
-                            <span className="text-sm font-black text-slate-900 font-mono">
-                              {item.word}
-                            </span>
-                            <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-100 text-amber-800 font-bold border border-amber-200">
-                              {item.ipa}
-                            </span>
-                          </div>
-
-                          <button
-                            onClick={() => speakText(item.word.split(' vs ')[0])}
-                            className="px-2.5 py-1 rounded bg-white border border-amber-300 text-amber-900 font-bold text-xs flex items-center gap-1 hover:bg-amber-100"
-                          >
-                            <Volume2 className="w-3 h-3 text-amber-700" />
-                            <span>Nghe</span>
-                          </button>
-                        </div>
-                        <p className="text-xs text-amber-900 font-medium">
-                          ⚠ {item.note}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* 7. TYPE: CROSS-WORDS & CROSS-SENTENCES (TH TO D) */}
-              {(activeSyllabusLesson.type === 'cross-words' || activeSyllabusLesson.type === 'cross-sentences') && (
+              {activeSyllabusLesson.type === 'guide' && (
                 <div className="space-y-4">
-                  <div className="p-3.5 rounded-xl bg-rose-50/70 border border-rose-200 text-xs text-rose-900 flex items-start gap-2">
-                    <Split className="w-4 h-4 text-rose-600 flex-shrink-0 mt-0.5" />
-                    <span>
-                      <strong>Mục tiêu bài tập:</strong> Não bộ người Việt hay tự động thay thế /ð/ bằng /d/. Luyện chuyển đổi đan xen giúp ngắt đứt phản xạ đồng hóa âm này.
-                    </span>
+                  <div className="p-5 rounded-2xl bg-rose-50/60 border border-rose-100 space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-bold text-rose-900">Khẩu hình miệng chuẩn âm /ð/:</span>
+                      <button
+                        onClick={() => speakText("this, that, they, mother, breathe")}
+                        className="px-3 py-1 rounded-lg bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs flex items-center gap-1.5 shadow-xs"
+                      >
+                        <Volume2 className="w-3.5 h-3.5" />
+                        <span>Nghe chuỗi âm mẫu</span>
+                      </button>
+                    </div>
+                    <ul className="text-xs text-slate-700 space-y-1.5 list-disc pl-4">
+                      <li><strong>Bước 1:</strong> Thả lỏng môi, kẹp nhẹ đầu lưỡi ở giữa 2 hàm răng cửa trên và dưới.</li>
+                      <li><strong>Bước 2:</strong> Đẩy luồng hơi ra đồng thời kích hoạt dây thanh quản rung liên tục.</li>
+                      <li><strong>Bước 3:</strong> Không rụt lưỡi vào chân răng (nếu rụt lưỡi sẽ bị thành âm "đ").</li>
+                    </ul>
                   </div>
-
-                  {activeSyllabusLesson.type === 'cross-words' && (
-                    <div className="space-y-2">
-                      {activeSyllabusLesson.items.map((item, idx) => (
-                        <div
-                          key={idx}
-                          className="p-3.5 rounded-xl border border-slate-200 bg-white flex flex-col sm:flex-row sm:items-center justify-between gap-3"
-                        >
-                          <div>
-                            <span className="text-sm font-black text-slate-900 font-mono block">
-                              {item.pair}
-                            </span>
-                            <span className="text-xs text-slate-500 font-mono">
-                              {item.ipa}
-                            </span>
-                            <span className="text-[11px] text-slate-400 block mt-0.5">
-                              {item.instruction}
-                            </span>
-                          </div>
-
-                          <button
-                            onClick={() => {
-                              const [w1, w2] = item.pair.split(' - ');
-                              speakText(w1, 0.9);
-                              setTimeout(() => speakText(w2, 0.9), 1100);
-                            }}
-                            className="px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs flex items-center gap-1.5 self-start sm:self-auto"
-                          >
-                            <Volume2 className="w-3.5 h-3.5" />
-                            <span>Nghe chuyển đổi ➔</span>
-                          </button>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-
-                  {activeSyllabusLesson.type === 'cross-sentences' && (
-                    <div className="space-y-3">
-                      {activeSyllabusLesson.items.map((item, idx) => (
-                        <div
-                          key={idx}
-                          className="p-4 rounded-xl border border-slate-200 bg-slate-50/70 space-y-3"
-                        >
-                          <p className="text-sm sm:text-base font-bold text-slate-900 leading-relaxed">
-                            {item.sentence}
-                          </p>
-                          <div className="flex flex-wrap items-center gap-2 text-xs">
-                            <span className="px-2 py-0.5 rounded bg-rose-100 text-rose-800 font-mono font-bold">
-                              Kẹp răng /ð/: {item.targetsTh.join(', ')}
-                            </span>
-                            <span className="px-2 py-0.5 rounded bg-cyan-100 text-cyan-800 font-mono font-bold">
-                              Bật chân răng /d/: {item.targetsD.join(', ')}
-                            </span>
-                          </div>
-
-                          <div className="flex items-center justify-end gap-2 pt-1 border-t border-slate-200">
-                            <button
-                              onClick={() => speakText(item.sentence, 0.85)}
-                              className="px-3 py-1.5 rounded-lg bg-white border border-slate-200 hover:bg-slate-100 text-slate-700 font-bold text-xs flex items-center gap-1.5"
-                            >
-                              <Volume2 className="w-3.5 h-3.5" />
-                              <span>Nghe mẫu</span>
-                            </button>
-                            <button
-                              onClick={() => handleTestSyllabusItem(`cross-sent-${idx}`)}
-                              className="px-3 py-1.5 rounded-lg bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs flex items-center gap-1.5"
-                            >
-                              <Mic className="w-3.5 h-3.5" />
-                              <span>{itemScores[`cross-sent-${idx}`] ? `Đạt ${itemScores[`cross-sent-${idx}`]}%` : 'Thử thách phát âm'}</span>
-                            </button>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
                 </div>
               )}
-
             </div>
           </div>
         </div>
@@ -1192,7 +1382,6 @@ export default function SoundPracticeEnrichedStudio() {
               </h4>
             </div>
 
-            {/* Audio Speed Controls */}
             <div className="flex items-center gap-2">
               <span className="text-xs text-slate-500 font-medium">Tốc độ đọc:</span>
               <button
@@ -1214,7 +1403,6 @@ export default function SoundPracticeEnrichedStudio() {
             </div>
           </div>
 
-          {/* Central Audio Trigger Box */}
           <div className="p-8 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col items-center justify-center text-center space-y-4">
             <button
               onClick={() => playNativeSound()}
@@ -1231,7 +1419,6 @@ export default function SoundPracticeEnrichedStudio() {
               </span>
             </div>
 
-            {/* Sentence with Gap */}
             <div className="text-lg sm:text-xl font-bold text-slate-900 tracking-wide pt-2">
               {currentSound.dictationSentence.split('[______]')[0]}
               <span className="inline-block border-b-2 border-rose-500 px-3 py-0.5 text-rose-700 font-mono bg-rose-50 rounded">
@@ -1241,7 +1428,6 @@ export default function SoundPracticeEnrichedStudio() {
             </div>
           </div>
 
-          {/* Input & Quick Choice Buttons */}
           <div className="space-y-4">
             <div className="flex flex-col sm:flex-row items-center gap-3">
               <input
@@ -1266,7 +1452,6 @@ export default function SoundPracticeEnrichedStudio() {
               </button>
             </div>
 
-            {/* Rapid-Choice Chips */}
             <div className="flex items-center gap-2 flex-wrap text-xs text-slate-500">
               <span className="font-medium">Hoặc bấm nhanh đáp án nghi vấn:</span>
               {currentSound.dictationOptions.map((opt) => (
@@ -1288,7 +1473,6 @@ export default function SoundPracticeEnrichedStudio() {
             </div>
           </div>
 
-          {/* Feedback Card upon checking */}
           {dictationChecked && (
             <div className={`p-4 rounded-2xl border text-xs space-y-2 animate-in fade-in duration-200 ${
               dictationIsCorrect
@@ -1311,25 +1495,9 @@ export default function SoundPracticeEnrichedStudio() {
                 </span>
               </div>
 
-              {/* L1 Interference Rationale */}
               <div className="pt-1 text-xs leading-relaxed text-slate-700">
                 <strong>Phân tích lỗi phát âm người Việt:</strong> {currentSound.errorExplanation}
               </div>
-
-              {!dictationIsCorrect && (
-                <div className="pt-2 flex items-center gap-3">
-                  <button
-                    onClick={() => {
-                      playNativeSound(0.75);
-                      setShowDictationHint(true);
-                    }}
-                    className="px-3 py-1.5 rounded-lg bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs transition-colors flex items-center gap-1.5 shadow-2xs"
-                  >
-                    <Repeat className="w-3.5 h-3.5" />
-                    <span>Nghe lại 0.75x & Xem mẹo khẩu hình</span>
-                  </button>
-                </div>
-              )}
             </div>
           )}
         </div>
@@ -1358,7 +1526,6 @@ export default function SoundPracticeEnrichedStudio() {
             </div>
           </div>
 
-          {/* Reading Display Box */}
           <div className="p-8 rounded-2xl bg-slate-50 border border-slate-200 text-center space-y-4">
             <span className="text-xs text-slate-500 block uppercase font-mono tracking-wider font-semibold">
               Văn Bản Đọc To (Tongue Twister & Contextual Drill)
@@ -1385,13 +1552,8 @@ export default function SoundPracticeEnrichedStudio() {
                 );
               })}
             </div>
-
-            <p className="text-xs text-slate-500 max-w-md mx-auto">
-              Hãy chú ý duy trì khẩu hình âm <strong>{currentSound.symbol}</strong> chuẩn xác trong suốt quá trình đọc cả câu dài.
-            </p>
           </div>
 
-          {/* Live Mic Action & Forced Alignment Controls */}
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-2xl bg-white border border-slate-200">
             <div className="flex items-center gap-3">
               <button
@@ -1414,55 +1576,7 @@ export default function SoundPracticeEnrichedStudio() {
                 <span>Nghe Giọng Đọc Mẫu</span>
               </button>
             </div>
-
-            {/* Target Hit Progress */}
-            <div className="flex items-center gap-4 text-xs">
-              <div className="text-right">
-                <span className="text-[11px] text-slate-400 block font-medium">Target Sound Hits</span>
-                <span className="font-bold text-slate-900 font-mono text-sm">
-                  {readAloudCompleted ? `${currentSound.readAloudTargets.length}/${currentSound.readAloudTargets.length} đạt` : `0/${currentSound.readAloudTargets.length} đạt`}
-                </span>
-              </div>
-              <div className="w-16 h-2 rounded-full bg-slate-100 overflow-hidden">
-                <div
-                  className="h-full bg-emerald-500 transition-all duration-500"
-                  style={{ width: readAloudCompleted ? '100%' : isReadingAloud ? '50%' : '0%' }}
-                />
-              </div>
-            </div>
           </div>
-
-          {/* Result Card */}
-          {readAloudCompleted && (
-            <div className="p-5 rounded-2xl bg-emerald-50 border border-emerald-200 text-xs space-y-3 animate-in fade-in duration-300">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-5 h-5 text-emerald-600" />
-                  <span className="font-extrabold text-sm text-emerald-900">
-                    Phân Tích Đoạn Văn Hoàn Tất • Điểm Phát Âm: {readAloudScore}%
-                  </span>
-                </div>
-                <span className="px-2.5 py-0.5 rounded-full bg-emerald-600 text-white font-mono font-bold text-[11px]">
-                  CEFR B2+ Fluency
-                </span>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
-                <div className="p-3 rounded-xl bg-white border border-emerald-200">
-                  <span className="text-[10px] text-slate-500 uppercase font-mono font-semibold block">Độ Chuẩn Âm Đích</span>
-                  <span className="text-base font-extrabold text-emerald-700 font-mono">92% GOP</span>
-                </div>
-                <div className="p-3 rounded-xl bg-white border border-emerald-200">
-                  <span className="text-[10px] text-slate-500 uppercase font-mono font-semibold block">Tốc Độ Đọc (WPM)</span>
-                  <span className="text-base font-extrabold text-cyan-700 font-mono">118 WPM</span>
-                </div>
-                <div className="p-3 rounded-xl bg-white border border-emerald-200">
-                  <span className="text-[10px] text-slate-500 uppercase font-mono font-semibold block">Liên Kết Từ (Chunking)</span>
-                  <span className="text-base font-extrabold text-indigo-700 font-mono">Tự nhiên</span>
-                </div>
-              </div>
-            </div>
-          )}
         </div>
       )}
 
@@ -1481,7 +1595,6 @@ export default function SoundPracticeEnrichedStudio() {
               </h4>
             </div>
 
-            {/* A/B Mirror Action */}
             <button
               onClick={handleToggleABMirror}
               className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 shadow-sm ${
@@ -1495,10 +1608,7 @@ export default function SoundPracticeEnrichedStudio() {
             </button>
           </div>
 
-          {/* Dual Waveform Stack Container */}
           <div className="space-y-4">
-            
-            {/* TRACK 1: NATIVE SPEAKER (OXFORD US) */}
             <div className={`p-4 rounded-2xl border transition-all ${
               mirrorTurn === 'native'
                 ? 'bg-cyan-50 border-cyan-400 ring-2 ring-cyan-200'
@@ -1508,23 +1618,15 @@ export default function SoundPracticeEnrichedStudio() {
                 <div className="flex items-center gap-2">
                   <span className="w-2.5 h-2.5 rounded-full bg-cyan-600" />
                   <span className="font-bold text-slate-900">Track 1: Giọng Người Bản Ngữ Oxford (Mẫu Chuẩn)</span>
-                  <span className="font-mono text-[10px] text-cyan-800 bg-cyan-100 px-2 py-0.5 rounded border border-cyan-200 font-bold">
-                    "{currentSound.word}" {currentSound.ipa}
-                  </span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-[11px] font-mono text-slate-500">Thời lượng: {currentSound.nativeDuration}</span>
-                  <button
-                    onClick={() => playNativeSound()}
-                    className="p-1.5 rounded-lg bg-white border border-slate-200 hover:bg-slate-100 text-cyan-700 shadow-2xs"
-                    title="Nghe riêng track bản ngữ"
-                  >
-                    <Volume2 className="w-3.5 h-3.5" />
-                  </button>
-                </div>
+                <button
+                  onClick={() => playNativeSound()}
+                  className="p-1.5 rounded-lg bg-white border border-slate-200 hover:bg-slate-100 text-cyan-700 shadow-2xs"
+                >
+                  <Volume2 className="w-3.5 h-3.5" />
+                </button>
               </div>
 
-              {/* Native Waveform Graphic */}
               <div className="h-16 w-full flex items-center justify-between gap-1 px-2 bg-white rounded-xl border border-slate-200 overflow-hidden">
                 {[8, 14, 22, 38, 55, 68, 75, 62, 48, 35, 52, 60, 45, 30, 20, 15, 10].map((h, i) => (
                   <div
@@ -1536,7 +1638,6 @@ export default function SoundPracticeEnrichedStudio() {
               </div>
             </div>
 
-            {/* TRACK 2: USER RECORDED SPOKEN ATTEMPT */}
             <div className={`p-4 rounded-2xl border transition-all ${
               mirrorTurn === 'user'
                 ? 'bg-rose-50 border-rose-400 ring-2 ring-rose-200'
@@ -1546,23 +1647,15 @@ export default function SoundPracticeEnrichedStudio() {
                 <div className="flex items-center gap-2">
                   <span className="w-2.5 h-2.5 rounded-full bg-rose-500" />
                   <span className="font-bold text-slate-900">Track 2: Giọng Thu Âm Của Bạn</span>
-                  <span className="font-mono text-[10px] text-rose-800 bg-rose-100 px-2 py-0.5 rounded border border-rose-200 font-bold">
-                    GOP: 68%
-                  </span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-[11px] font-mono text-rose-700 font-bold">Thời lượng: {currentSound.userDurationSim}</span>
-                  <button
-                    onClick={() => speakText(currentSound.word, 0.9)}
-                    className="p-1.5 rounded-lg bg-white border border-slate-200 hover:bg-slate-100 text-rose-600 shadow-2xs"
-                    title="Nghe riêng giọng của bạn"
-                  >
-                    <Volume2 className="w-3.5 h-3.5" />
-                  </button>
-                </div>
+                <button
+                  onClick={() => speakText(currentSound.word, 0.9)}
+                  className="p-1.5 rounded-lg bg-white border border-slate-200 hover:bg-slate-100 text-rose-600 shadow-2xs"
+                >
+                  <Volume2 className="w-3.5 h-3.5" />
+                </button>
               </div>
 
-              {/* User Spoken Waveform Graphic */}
               <div className="h-16 w-full flex items-center justify-between gap-1 px-2 bg-white rounded-xl border border-slate-200 overflow-hidden relative">
                 {[6, 10, 18, 45, 60, 52, 38, 22, 10, 5, 4, 3, 2, 2, 2, 2, 2].map((h, i) => (
                   <div
@@ -1575,30 +1668,8 @@ export default function SoundPracticeEnrichedStudio() {
                     style={{ height: `${h}%` }}
                   />
                 ))}
-                
-                {/* Visual Gap Callout Indicator */}
-                <div className="absolute right-4 top-2 bg-rose-100 border border-rose-300 px-2 py-0.5 rounded text-[10px] text-rose-800 font-mono font-bold">
-                  ← Hụt âm đuôi (Cần kéo dài)
-                </div>
               </div>
             </div>
-          </div>
-
-          {/* Actionable Feedback Comparison Callout */}
-          <div className="p-4 rounded-2xl bg-amber-50 border border-amber-200 text-xs text-amber-900 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-            <div className="flex items-center gap-2.5">
-              <AlertCircle className="w-5 h-5 text-amber-600 flex-shrink-0" />
-              <span>
-                <strong>Nhận xét từ sóng âm:</strong> {currentSound.diffTip}
-              </span>
-            </div>
-
-            <button
-              onClick={() => playNativeSound()}
-              className="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs whitespace-nowrap shadow-xs transition-all self-start sm:self-auto"
-            >
-              Thu Âm Lại Để Cân Bằng Sóng ➔
-            </button>
           </div>
         </div>
       )}
