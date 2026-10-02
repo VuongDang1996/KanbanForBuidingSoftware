@@ -1,0 +1,1013 @@
+// Unified Agile backlog for StoryMapper
+// Single Master Project: AI English Pronunciation Platform for Vietnamese Users
+
+export const MOSCOW_PRIORITIES = {
+  must: {
+    id: 'must',
+    label: 'Must-Have',
+    shortLabel: 'Must',
+    color: 'rose',
+    bg: 'bg-rose-500/10',
+    border: 'border-rose-500/30',
+    text: 'text-rose-400',
+    badge: 'bg-rose-500/15 text-rose-300 border-rose-500/30',
+    description: 'Critical for MVP. Non-negotiable core functionality.'
+  },
+  should: {
+    id: 'should',
+    label: 'Should-Have',
+    shortLabel: 'Should',
+    color: 'amber',
+    bg: 'bg-amber-500/10',
+    border: 'border-amber-500/30',
+    text: 'text-amber-400',
+    badge: 'bg-amber-500/15 text-amber-300 border-amber-500/30',
+    description: 'High impact features important for launch, but viable workarounds exist.'
+  },
+  could: {
+    id: 'could',
+    label: 'Could-Have',
+    shortLabel: 'Could',
+    color: 'blue',
+    bg: 'bg-blue-500/10',
+    border: 'border-blue-500/30',
+    text: 'text-blue-400',
+    badge: 'bg-blue-500/15 text-blue-300 border-blue-500/30',
+    description: 'Desirable improvements if time and resources permit.'
+  },
+  wont: {
+    id: 'wont',
+    label: "Won't-Have (Now)",
+    shortLabel: "Won't",
+    color: 'slate',
+    bg: 'bg-slate-500/10',
+    border: 'border-slate-500/30',
+    text: 'text-slate-400',
+    badge: 'bg-slate-500/15 text-slate-300 border-slate-500/30',
+    description: 'Out of scope for this release; scheduled for future iterations.'
+  }
+};
+
+export const STATUSES = {
+  backlog: {
+    id: 'backlog',
+    label: 'Backlog',
+    icon: 'Inbox',
+    color: 'slate',
+    bg: 'bg-slate-500/15 text-slate-300 border-slate-600/30',
+    dot: 'bg-slate-400'
+  },
+  todo: {
+    id: 'todo',
+    label: 'To Do',
+    icon: 'CircleDot',
+    color: 'blue',
+    bg: 'bg-sky-500/15 text-sky-300 border-sky-500/30',
+    dot: 'bg-sky-400'
+  },
+  'in-progress': {
+    id: 'in-progress',
+    label: 'In Progress',
+    icon: 'Clock',
+    color: 'amber',
+    bg: 'bg-amber-500/15 text-amber-300 border-amber-500/30',
+    dot: 'bg-amber-400 animate-pulse'
+  },
+  done: {
+    id: 'done',
+    label: 'Done',
+    icon: 'CheckCircle2',
+    color: 'emerald',
+    bg: 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30',
+    dot: 'bg-emerald-400'
+  }
+};
+
+export const T_SHIRT_SIZES = {
+  XS: { label: 'XS', points: 1, desc: 'Trivial (< 2 hrs)' },
+  S: { label: 'S', points: 2, desc: 'Small (half-day)' },
+  M: { label: 'M', points: 3, desc: 'Medium (1-2 days)' },
+  L: { label: 'L', points: 5, desc: 'Large (3-5 days)' },
+  XL: { label: 'XL', points: 8, desc: 'Epic chunk (1-2 sprints)' }
+};
+
+export const TASK_CATEGORIES = [
+  { id: 'Frontend', label: 'Frontend', color: 'bg-indigo-500/15 text-indigo-300 border-indigo-500/30' },
+  { id: 'Backend', label: 'Backend', color: 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30' },
+  { id: 'Database', label: 'Database', color: 'bg-amber-500/15 text-amber-300 border-amber-500/30' },
+  { id: 'DevOps', label: 'DevOps', color: 'bg-purple-500/15 text-purple-300 border-purple-500/30' },
+  { id: 'QA', label: 'QA', color: 'bg-rose-500/15 text-rose-300 border-rose-500/30' },
+  { id: 'Design', label: 'Design', color: 'bg-pink-500/15 text-pink-300 border-pink-500/30' },
+  { id: 'Content', label: 'Content', color: 'bg-cyan-500/15 text-cyan-300 border-cyan-500/30' }
+];
+
+export const EPIC_COLORS = [
+  { id: 'indigo', name: 'Indigo', border: 'border-indigo-500', headerBg: 'bg-indigo-950/60', text: 'text-indigo-400', badge: 'bg-indigo-500/20 text-indigo-300 border-indigo-500/30' },
+  { id: 'emerald', name: 'Emerald', border: 'border-emerald-500', headerBg: 'bg-emerald-950/60', text: 'text-emerald-400', badge: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30' },
+  { id: 'violet', name: 'Violet', border: 'border-violet-500', headerBg: 'bg-violet-950/60', text: 'text-violet-400', badge: 'bg-violet-500/20 text-violet-300 border-violet-500/30' },
+  { id: 'amber', name: 'Amber', border: 'border-amber-500', headerBg: 'bg-amber-950/60', text: 'text-amber-400', badge: 'bg-amber-500/20 text-amber-300 border-amber-500/30' },
+  { id: 'cyan', name: 'Cyan', border: 'border-cyan-500', headerBg: 'bg-cyan-950/60', text: 'text-cyan-400', badge: 'bg-cyan-500/20 text-cyan-300 border-cyan-500/30' },
+  { id: 'rose', name: 'Rose', border: 'border-rose-500', headerBg: 'bg-rose-950/60', text: 'text-rose-400', badge: 'bg-rose-500/20 text-rose-300 border-rose-500/30' }
+];
+
+export const VIETNAMESE_PRONUNCIATION_PROJECT = {
+  id: 'proj-viet-pronounce',
+  name: 'VietPhonics AI — English Pronunciation Platform for Vietnamese Users',
+  description: 'Single unified product backlog for building an AI-powered pronunciation & speaking website tailored specifically for Vietnamese ESL learners, IT engineers, and IELTS candidates.',
+  epics: [
+    {
+      id: 'epic-diagnostic',
+      title: 'Diagnostic Speech Assessment & L1 Profiling',
+      description: 'Vietnamese mother-tongue error calibration, 3-minute baseline diagnostic screener, and CEFR/IELTS score estimation.',
+      color: 'indigo',
+      order: 1
+    },
+    {
+      id: 'epic-ending-sounds',
+      title: 'Final Consonants & Core Phoneme Engine',
+      description: 'Ending sound inspector (/s, /z, /t, /d, /k, /ks/), forced phoneme alignment, and speech fluency monitoring.',
+      color: 'emerald',
+      order: 2
+    },
+    {
+      id: 'epic-prosody',
+      title: 'Rhythm, Syllable Stress & Intonation',
+      description: 'Anti-tone de-biasing, visual syllable stress weight gauges, schwa /ə/ reduction, and dual pitch curve overlays.',
+      color: 'violet',
+      order: 3
+    },
+    {
+      id: 'epic-articulation',
+      title: 'Minimal Pairs & Mouth Placement Guide',
+      description: 'Vietnamese-tailored minimal pair contrasts (/θ/-/t/, /iː/-/ɪ/), physical mouth instructions in Vietnamese, and 2D vocal tract diagrams.',
+      color: 'amber',
+      order: 4
+    },
+    {
+      id: 'epic-roleplay-ielts',
+      title: 'Conversational AI & IELTS Speaking',
+      description: 'Low-latency AI conversational voice practice, workplace situations (IT standup), and official IELTS Speaking Part 1 & 2 mock examiner.',
+      color: 'cyan',
+      order: 5
+    },
+    {
+      id: 'epic-retention',
+      title: 'Daily Habit, Spaced Repetition & Monetization',
+      description: 'Adaptive 10-minute daily practice path, SM-2 weak sound bank, streak shields, and Pro subscription paywall.',
+      color: 'rose',
+      order: 6
+    },
+    {
+      id: 'epic-gamified-3d',
+      title: '3D Voice-Controlled Gamification & Adventure Quests',
+      description: 'Web-based 3D world (Three.js/WebGL) where learners control avatar movement, leap over obstacles, cast spells, and battle bosses using accurate English pronunciation.',
+      color: 'amber',
+      order: 7
+    }
+  ],
+  stories: [
+    // 1. Diagnostic Assessment & L1 Profiling
+    {
+      id: 'VN-102',
+      epicId: 'epic-diagnostic',
+      title: 'Vietnamese L1 3-Minute Diagnostic Pronunciation Screener',
+      persona: 'New Vietnamese Learner Starting Their Journey',
+      action: 'read 5 calibrated diagnostic sentences designed specifically around Vietnamese mother-tongue phonetic traps',
+      value: 'I get an instant, empathetic diagnosis in Vietnamese explaining my Top 3 pronunciation habits and an estimated IELTS Pronunciation band',
+      priority: 'must',
+      status: 'todo',
+      size: 'L',
+      points: 8,
+      acceptanceCriteria: [
+        {
+          id: 'ac-vn-102-1',
+          given: '5 trigger sentences (e.g. "Six months ago, she baked fresh bread for breakfast on the street")',
+          when: 'The user finishes recording',
+          then: 'The engine computes error frequencies for: Dropped Ending Sounds, /θ/ vs /t/ substitutions, /ʃ/ vs /s/ confusion, and Flat Tone vs Stress.',
+          completed: false
+        },
+        {
+          id: 'ac-vn-102-2',
+          given: 'Assessment finishes',
+          when: 'Report generates',
+          then: 'UI presents an empathetic diagnostic summary in Vietnamese: "Điểm phát âm của bạn: 68% - Cần khắc phục: 1. Bật âm đuôi /s, ks/, 2. Đặt lưỡi cho âm /θ/, 3. Nhấn trọng âm thay vì đánh dấu sắc/huyền".',
+          completed: false
+        }
+      ],
+      technicalTasks: [
+        { id: 't-vn-4', title: 'Create calibrated 5-sentence diagnostic phoneme matrix covering all 44 English phonemes with high Vietnamese interference', category: 'Backend', completed: false },
+        { id: 't-vn-5', title: 'Build Vietnamese localized diagnostic scorecard with radar chart and recommended 7-day sprint', category: 'Frontend', completed: false }
+      ],
+      notes: 'Sentence 1: "Six months ago, she baked fresh bread for breakfast on the street." Sentence 2: "They think that the comfortable clothes are worth the price."'
+    },
+    {
+      id: 'ELSA-102',
+      epicId: 'epic-diagnostic',
+      title: 'Native Language (L1) Mother-Tongue Error Calibration',
+      persona: 'Vietnamese Speaker with Regional Accent (Northern vs Southern VN)',
+      action: 'select my regional accent background (e.g. Northern Vietnamese with /d/-/z/ merge, or Southern with /v/-/j/ merge)',
+      value: 'the acoustic model calibrates its phonetic error detector to my specific regional transfer habits',
+      priority: 'must',
+      status: 'done',
+      size: 'S',
+      points: 3,
+      acceptanceCriteria: [
+        {
+          id: 'ac-elsa-102-1',
+          given: 'Onboarding settings',
+          when: 'User selects Vietnamese native language',
+          then: 'Acoustic priors for missing final stops (/k/, /t/, /p/) and dropped fricatives (/s/, /z/) are given higher weighting in phoneme decoding.',
+          completed: true
+        }
+      ],
+      technicalTasks: [
+        { id: 't-elsa-4', title: 'Implement L1 confusion matrix weighting in GOP acoustic decoding pipeline', category: 'Backend', completed: true },
+        { id: 't-elsa-5', title: 'Create native language selector modal in onboarding questionnaire', category: 'Frontend', completed: true }
+      ],
+      notes: 'Crucial for avoiding false positives on slightly accented phonemes.'
+    },
+    {
+      id: 'ELSA-103',
+      epicId: 'epic-diagnostic',
+      title: 'Predicted IELTS & CEFR Speaking Band Estimator',
+      persona: 'IELTS / TOEIC Candidate in Vietnam',
+      action: 'view my estimated IELTS Speaking band (e.g. 6.5) and CEFR proficiency level (B1/B2/C1) based on my pronunciation accuracy',
+      value: 'I can benchmark my progress toward university graduation or immigration requirements',
+      priority: 'should',
+      status: 'todo',
+      size: 'M',
+      points: 5,
+      acceptanceCriteria: [
+        {
+          id: 'ac-elsa-103-1',
+          given: 'A completed diagnostic test',
+          when: 'The score is tabulated',
+          then: 'Maps overall percentage to CEFR (A1 through C2) and IELTS Speaking Band (4.0 to 8.5).',
+          completed: false
+        }
+      ],
+      technicalTasks: [
+        { id: 't-elsa-6', title: 'Implement statistical mapping function correlating phonetic error rate with IELTS band descriptors', category: 'Backend', completed: false },
+        { id: 't-elsa-7', title: 'Design CEFR level badge with percentile comparison against Vietnamese user average', category: 'Frontend', completed: false }
+      ],
+      notes: 'Vietnamese test-takers are heavily driven by target IELTS band numbers (6.5, 7.0).'
+    },
+
+    // 2. Final Consonants & Core Phoneme Engine
+    {
+      id: 'VN-101',
+      epicId: 'epic-ending-sounds',
+      title: 'Final Consonant Sound "Ending Sound" Inspector & Alert System',
+      persona: 'Vietnamese English Learner Dropping Final Consonants',
+      action: 'receive instant real-time visual and audio alerts whenever I drop ending consonants (/s/, /z/, /t/, /d/, /k/, /tʃ/, /ks/) in words like "five", "street", "breakfast", "like"',
+      value: 'I eliminate the #1 phonological mistake of Vietnamese speakers that prevents foreigners from understanding my speech',
+      priority: 'must',
+      status: 'todo',
+      size: 'M',
+      points: 5,
+      acceptanceCriteria: [
+        {
+          id: 'ac-vn-101-1',
+          given: 'A target word with a final plosive or fricative (e.g. "six" /sɪks/)',
+          when: 'The user drops the final consonant cluster (pronouncing /sɪ/)',
+          then: 'The missing ending letters "x" (/ks/) are highlighted in bright red with an alert: "Missing ending sound /ks/".',
+          completed: false
+        },
+        {
+          id: 'ac-vn-101-2',
+          given: 'The user accurately voices and releases the final consonant',
+          when: 'Evaluated by the acoustic model',
+          then: 'An emerald badge chimes "Perfect Ending Sound!" and awards 10 bonus accuracy points.',
+          completed: false
+        }
+      ],
+      technicalTasks: [
+        { id: 't-vn-1', title: 'Implement Forced Alignment threshold specifically on word-final phoneme boundaries (/s/, /z/, /t/, /d/, /k/, /tʃ/, /ks/)', category: 'Backend', completed: false },
+        { id: 't-vn-2', title: 'Build animated "Ending Sound Inspector" visual callout pill in Practice view', category: 'Frontend', completed: false },
+        { id: 't-vn-3', title: 'Curate dictionary of 300 high-frequency words where Vietnamese learners commonly drop endings', category: 'Database', completed: false }
+      ],
+      notes: 'In Vietnamese phonotactics, open syllables dominate. Explicitly training the release of final plosives is essential for intelligibility.'
+    },
+    {
+      id: 'ELSA-201',
+      epicId: 'epic-ending-sounds',
+      title: 'Real-Time Phoneme Error Heatmap with Forced Alignment',
+      persona: 'Learner Practicing Sentences Aloud',
+      action: 'see each letter in my sentence colored green (>80% accuracy), yellow (60-80%), or red (<60%) immediately after speaking',
+      value: 'I pinpoint the exact phonemes I mispronounced without guessing',
+      priority: 'must',
+      status: 'done',
+      size: 'L',
+      points: 8,
+      acceptanceCriteria: [
+        {
+          id: 'ac-elsa-201-1',
+          given: 'A spoken user recording',
+          when: 'The Forced Alignment engine aligns phonemes against the reference text',
+          then: 'Each character in the sentence renders with color-coded chip matching its Goodness of Pronunciation (GOP) score.',
+          completed: true
+        }
+      ],
+      technicalTasks: [
+        { id: 't-elsa-8', title: 'Build tokenized phoneme sentence renderer with interactive popover drawers', category: 'Frontend', completed: true },
+        { id: 't-elsa-9', title: 'Integrate forced-alignment phoneme acoustic model with Goodness of Pronunciation (GOP)', category: 'Backend', completed: true }
+      ],
+      notes: 'Store user attempts to track historical phoneme error rate.'
+    },
+    {
+      id: 'ELSA-204',
+      epicId: 'epic-ending-sounds',
+      title: 'Speech Fluency, Natural Pauses & Filler Word Monitor',
+      persona: 'Vietnamese Professional Speaking Staccato or Pausing Excessively',
+      action: 'receive feedback on my speaking speed (Words Per Minute), awkward mid-word pauses, and filler words ("um", "uh", "à")',
+      value: 'I can speak smoothly at conversational tempo (120-150 WPM) without staccato syllable pauses',
+      priority: 'should',
+      status: 'todo',
+      size: 'M',
+      points: 5,
+      acceptanceCriteria: [
+        {
+          id: 'ac-elsa-204-1',
+          given: 'A 30-second speech recording',
+          when: 'Analyzed by the fluency engine',
+          then: 'Calculates WPM speed gauge, counts filler word occurrences, and flags pauses exceeding 1.2 seconds.',
+          completed: false
+        }
+      ],
+      technicalTasks: [
+        { id: 't-elsa-14', title: 'Build silence detection thresholding and filler word regex classifier on ASR transcripts', category: 'Backend', completed: false },
+        { id: 't-elsa-15', title: 'Design fluency speedometer widget with WPM target zone (120-150 WPM)', category: 'Frontend', completed: false }
+      ],
+      notes: 'Vietnamese speakers often speak word-by-word with unnatural pauses.'
+    },
+    {
+      id: 'PRON-101',
+      epicId: 'epic-ending-sounds',
+      title: 'Web Audio API Low-Latency In-Browser Audio Streaming Engine',
+      persona: 'Web Learner on Chrome/Safari/Edge',
+      action: 'record speech in the browser with 16kHz PCM audio chunking streamed over WebSocket',
+      value: 'I get sub-second pronunciation scores on desktop and mobile web without installing a heavy mobile app',
+      priority: 'must',
+      status: 'done',
+      size: 'M',
+      points: 5,
+      acceptanceCriteria: [
+        {
+          id: 'ac-pron-1',
+          given: 'A user clicks the microphone button',
+          when: 'Microphone permissions are granted',
+          then: 'Audio is recorded at 16kHz mono PCM with active animated waveform within 50ms.',
+          completed: true
+        }
+      ],
+      technicalTasks: [
+        { id: 't-pron-1', title: 'Build React useAudioRecorder hook using AudioWorkletNode', category: 'Frontend', completed: true },
+        { id: 't-pron-2', title: 'Handle iOS Safari audio context resume policies and web microphone fallback', category: 'Frontend', completed: true }
+      ],
+      notes: 'Web-first architecture is your key differentiator over ELSA mobile app.'
+    },
+
+    // 3. Rhythm, Syllable Stress & Intonation
+    {
+      id: 'VN-103',
+      epicId: 'epic-prosody',
+      title: 'Syllable Stress vs. Tone Mark Visualizer & Schwa De-Toner',
+      persona: 'Vietnamese Speaker Applying Vietnamese Tones to English Words',
+      action: 'see visual syllable weight bars and duration curves that teach me to lengthen stressed syllables and reduce unstressed syllables to schwa (/ə/)',
+      value: 'I stop pronouncing English words with robotic, staccato tone marks (sắc, huyền, nặng) and sound naturally rhythmic',
+      priority: 'should',
+      status: 'in-progress',
+      size: 'M',
+      points: 5,
+      acceptanceCriteria: [
+        {
+          id: 'ac-vn-103-1',
+          given: 'A multi-syllabic word like "COM-for-ta-ble"',
+          when: 'The user pronounces it as 4 equal syllables with tone marks ("com-fơ-tờ-bồ")',
+          then: 'The visualizer flags equal duration and prompts: "Shorten and soften the unstressed syllables to /ə/".',
+          completed: true
+        },
+        {
+          id: 'ac-vn-103-2',
+          given: 'The learner holds the primary stressed syllable for >2x the duration of unstressed syllables',
+          when: 'Evaluated',
+          then: 'The rhythm indicator lights up green with "Natural Stress Rhythm".',
+          completed: false
+        }
+      ],
+      technicalTasks: [
+        { id: 't-vn-6', title: 'Build Syllable Weight Bar animation component displaying relative duration (ms) and dB energy', category: 'Frontend', completed: true },
+        { id: 't-vn-7', title: 'Calculate acoustic vowel reduction index comparing formant centralization of unstressed vowels against schwa /ə/ target', category: 'Backend', completed: false }
+      ],
+      notes: 'Vietnamese is syllable-timed; English is stress-timed. This visual contrast provides an immediate "aha!" moment for Vietnamese learners.'
+    },
+    {
+      id: 'ELSA-202',
+      epicId: 'epic-prosody',
+      title: 'Syllable Stress & Capitalized Word Emphasis Evaluator',
+      persona: 'Speaker Struggling with Word Cadence',
+      action: 'practice multi-syllabic words with visual stress capitalization (e.g. de-VE-lop-ment vs DE-ve-lop-ment)',
+      value: 'I avoid the robotic flat speech that makes Vietnamese speakers hard to understand',
+      priority: 'must',
+      status: 'in-progress',
+      size: 'M',
+      points: 5,
+      acceptanceCriteria: [
+        {
+          id: 'ac-elsa-202-1',
+          given: 'A target word with primary stress on syllable 2',
+          when: 'User stresses syllable 1 by holding it longer or louder',
+          then: 'The stressed syllable is highlighted in red with instruction "Stress the second syllable: de-VE-lop-ment".',
+          completed: true
+        }
+      ],
+      technicalTasks: [
+        { id: 't-elsa-10', title: 'Implement acoustic energy and vowel duration ratio calculation across syllable nuclei', category: 'Backend', completed: true },
+        { id: 't-elsa-11', title: 'Build visual syllable stress bar widget with relative loudness animations', category: 'Frontend', completed: false }
+      ],
+      notes: 'Stress errors are frequently more disorienting to native listeners than isolated vowel substitutions.'
+    },
+    {
+      id: 'ELSA-203',
+      epicId: 'epic-prosody',
+      title: 'Suprasegmental Pitch & Sentence Intonation Melody Canvas',
+      persona: 'Advanced Speaker Sounding Monotone',
+      action: 'view my voice pitch frequency overlaid on a native speaker pitch curve to practice rising and falling intonation',
+      value: 'my speech sounds natural, engaging, and expressive rather than flat and robotic',
+      priority: 'should',
+      status: 'in-progress',
+      size: 'L',
+      points: 8,
+      acceptanceCriteria: [
+        {
+          id: 'ac-elsa-203-1',
+          given: 'A question requiring rising intonation (e.g. "Are you coming tonight?")',
+          when: 'User speaks with falling intonation',
+          then: 'The pitch curve drops at the end and an intonation alert explains "Your pitch fell. Raise your tone at the end of yes/no questions."',
+          completed: false
+        }
+      ],
+      technicalTasks: [
+        { id: 't-elsa-12', title: 'Implement fundamental frequency (F0) contour extraction using CREPE / YIN algorithm', category: 'Backend', completed: false },
+        { id: 't-elsa-13', title: 'Build dual Canvas pitch curve component with Dynamic Time Warping alignment', category: 'Frontend', completed: true }
+      ],
+      notes: 'Normalize pitch contours relative to speaker median F0 to accommodate male and female voice ranges.'
+    },
+
+    // 4. Minimal Pairs & Mouth Placement Guide
+    {
+      id: 'VN-105',
+      epicId: 'epic-articulation',
+      title: 'Vietnamese Native-Tongue Mouth & Tongue Placement Coach',
+      persona: 'Beginner Struggling with Non-Vietnamese Sounds (/θ/, /ð/, /ʃ/, /dʒ/)',
+      action: 'read physical mouth placement instructions written in simple Vietnamese with an interactive 2D anatomical cross-section',
+      value: 'I clearly understand where to put my teeth and tongue without reading confusing linguistic jargon',
+      priority: 'must',
+      status: 'done',
+      size: 'S',
+      points: 3,
+      acceptanceCriteria: [
+        {
+          id: 'ac-vn-105-1',
+          given: 'A sound like /θ/ ("think")',
+          when: 'User opens the placement guide',
+          then: 'It displays clear Vietnamese guidance: "Cắn nhẹ đầu lưỡi giữa hai hàm răng, thổi luồng hơi nhẹ ra ngoài (không phát âm thành chữ Thờ tiếng Việt)".',
+          completed: true
+        },
+        {
+          id: 'ac-vn-105-2',
+          given: 'The 2D anatomical mouth diagram',
+          when: 'The user taps the sound',
+          then: 'An animated SVG shows the tongue contacting the upper teeth with airflow arrows.',
+          completed: true
+        }
+      ],
+      technicalTasks: [
+        { id: 't-vn-11', title: 'Write Vietnamese localization copy for all 44 English phoneme mouth-shape guides', category: 'Content', completed: true },
+        { id: 't-vn-12', title: 'Render interactive SVG cross-section mouth visualizer highlighting tongue tip, teeth, and airflow vector', category: 'Frontend', completed: true }
+      ],
+      notes: 'Eliminates intimidation for adult Vietnamese learners starting from scratch.'
+    },
+    {
+      id: 'ELSA-205',
+      epicId: 'epic-articulation',
+      title: 'Minimal Pair Auditory Discrimination Quizzes (/θ/-/t/, /iː/-/ɪ/)',
+      persona: 'Learner Unable to Hear Phonemic Contrasts',
+      action: 'play rapid-fire listening and speaking quizzes distinguishing easily confused pairs (e.g. "sheep" vs "ship", "think" vs "sink")',
+      value: 'I train my ear and vocal muscles to prevent misunderstanding words in conversation',
+      priority: 'must',
+      status: 'done',
+      size: 'S',
+      points: 3,
+      acceptanceCriteria: [
+        {
+          id: 'ac-elsa-205-1',
+          given: 'A minimal pair test between /θ/ and /s/',
+          when: 'System plays audio of "think"',
+          then: 'User chooses between "think" and "sink" within 3 seconds, building auditory discrimination.',
+          completed: true
+        }
+      ],
+      technicalTasks: [
+        { id: 't-elsa-16', title: 'Curate database of 150 Vietnamese-specific minimal pair audio samples', category: 'Content', completed: true },
+        { id: 't-elsa-17', title: 'Build fast 2-choice rapid tap quiz card in practice view', category: 'Frontend', completed: true }
+      ],
+      notes: 'Crucial for Vietnamese speakers who substitute /θ/ with /t/ or /s/.'
+    },
+    {
+      id: 'PRON-201',
+      epicId: 'epic-articulation',
+      title: 'Interactive 2D Anatomical Lip & Tongue Articulation Guide',
+      persona: 'Visual Learner Confused by Mouth Position',
+      action: 'view a high-contrast anatomical cross-section showing tongue position, teeth contact, and lip rounding for any sound',
+      value: 'I have a clear mental model of physical mouth geometry instead of guessing blindly',
+      priority: 'should',
+      status: 'in-progress',
+      size: 'M',
+      points: 5,
+      acceptanceCriteria: [
+        {
+          id: 'ac-pron-5',
+          given: 'A phoneme instruction drawer open for /r/ vs /l/',
+          when: 'User taps the sound',
+          then: 'SVG cross-section dynamically updates tongue tip height, velum closure, and vocal cord vibration status.',
+          completed: true
+        }
+      ],
+      technicalTasks: [
+        { id: 't-pron-6', title: 'Implement animated SVG mouth cross-section component with parametric tongue control points', category: 'Frontend', completed: true },
+        { id: 't-pron-7', title: 'Map 44 IPA symbols to anatomical parameters (jaw, tongue body, tongue tip, lips)', category: 'Frontend', completed: true }
+      ],
+      notes: 'Provides instant visual clarity on how to shape sounds.'
+    },
+
+    // 5. Conversational AI & IELTS Speaking
+    {
+      id: 'VN-104',
+      epicId: 'epic-roleplay-ielts',
+      title: 'IELTS Speaking Part 1 & 2 AI Mock Examiner for Vietnamese Candidates',
+      persona: 'Vietnamese Student or Working Professional Aiming for IELTS 7.0+',
+      action: 'answer common IELTS Speaking prompts (e.g. Hometown, Work, Technology, Culture) and receive an instant Pronunciation Band score (Band 5.0 to 8.5)',
+      value: 'I practice high-stakes exam conditions with actionable feedback mapped directly to official IELTS Pronunciation Band Descriptors',
+      priority: 'should',
+      status: 'in-progress',
+      size: 'L',
+      points: 8,
+      acceptanceCriteria: [
+        {
+          id: 'ac-vn-104-1',
+          given: 'An IELTS Part 2 cue card prompt',
+          when: 'The user speaks continuously for 1 to 2 minutes',
+          then: 'The AI examiner calculates: Band Score for Pronunciation, Chunking & Linking score, and flags accent interference that reduces intelligibility.',
+          completed: true
+        },
+        {
+          id: 'ac-vn-104-2',
+          given: 'The speech analysis finishes',
+          when: 'The scorecard renders',
+          then: 'It provides specific advice on how to move from Band 6.0 (some phonemic inaccuracies) to Band 7.0+ (sustained flexible intonation and syllable stress).',
+          completed: false
+        }
+      ],
+      technicalTasks: [
+        { id: 't-vn-8', title: 'Prompt engineer LLM evaluator with official British Council / IDP IELTS Pronunciation Band Descriptors', category: 'Backend', completed: true },
+        { id: 't-vn-9', title: 'Build 2-minute timed examination recorder UI with preparation timer and prompt card', category: 'Frontend', completed: true },
+        { id: 't-vn-10', title: 'Store mock exam historical transcripts and audio recordings for progress tracking', category: 'Database', completed: false }
+      ],
+      notes: 'Massive market appeal in Vietnam where hundreds of thousands of students take IELTS annually.'
+    },
+    {
+      id: 'ELSA-301',
+      epicId: 'epic-roleplay-ielts',
+      title: 'Dynamic Scenario AI Speaking Roleplay (IT Standup, Coffee Shop)',
+      persona: 'Vietnamese IT Engineer / Professional Speaking to Foreign Clients',
+      action: 'have unscripted spoken conversation with an AI partner simulating realistic workplace scenarios (Daily Scrum Standup, Demoing Software, Coffee Shop)',
+      value: 'I build spontaneous speaking confidence without fear of embarrassment in front of real people',
+      priority: 'must',
+      status: 'in-progress',
+      size: 'L',
+      points: 8,
+      acceptanceCriteria: [
+        {
+          id: 'ac-elsa-301-1',
+          given: 'An active AI roleplay scenario ("Daily Standup with US Project Manager")',
+          when: 'User speaks their status update',
+          then: 'System transcribes audio, evaluates pronunciation, and generates context-aware audio AI response within 1.2 seconds.',
+          completed: true
+        }
+      ],
+      technicalTasks: [
+        { id: 't-elsa-18', title: 'Integrate LLM conversation agent with streaming Text-To-Speech (TTS) pipeline', category: 'Backend', completed: true },
+        { id: 't-elsa-19', title: 'Build chat bubble voice interface with animated speaking waveform and mic controls', category: 'Frontend', completed: true }
+      ],
+      notes: 'Target Vietnamese IT outsourcing community (FPT, VNG, KMS, TMA).'
+    },
+    {
+      id: 'ELSA-302',
+      epicId: 'epic-roleplay-ielts',
+      title: 'Post-Roleplay Comprehensive Scorecard (Pronunciation + Grammar)',
+      persona: 'Roleplay Practicer Reviewing Performance',
+      action: 'view a summary scorecard after completing an AI roleplay session highlighting pronunciation errors, vocabulary enhancements, and grammar corrections',
+      value: 'I get holistic feedback on real communicative competence rather than just isolated phonemes',
+      priority: 'should',
+      status: 'todo',
+      size: 'M',
+      points: 5,
+      acceptanceCriteria: [
+        {
+          id: 'ac-elsa-302-1',
+          given: 'A completed roleplay session with 6 conversational turns',
+          when: 'Session ends',
+          then: 'Dashboard displays: Pronunciation Score (e.g. 78%), Grammar Correctness (85%), and 3 Better Ways to Say It.',
+          completed: false
+        }
+      ],
+      technicalTasks: [
+        { id: 't-elsa-21', title: 'Implement post-conversation grammar and lexical variety analysis pipeline via LLM', category: 'Backend', completed: false },
+        { id: 't-elsa-22', title: 'Build interactive scorecard dialog with audio replay for mispronounced words', category: 'Frontend', completed: false }
+      ],
+      notes: 'Provides complete educational loop after conversation.'
+    },
+
+    // 6. Retention, Daily Path & Monetization
+    {
+      id: 'USER-101',
+      epicId: 'epic-retention',
+      title: 'Learner Authentication, Pronunciation Mastery Dashboard & Practice Recording History',
+      persona: 'Vietnamese Learner Tracking Their Speaking Journey',
+      action: 'log in with my account, view my 4-pillar pronunciation mastery scores (% Ending Sounds, Minimal Pairs, Stress, Connected Speech), and review my complete history of recorded speech attempts',
+      value: 'I have full visibility into my phonetic improvement over time and can listen back to native reference audio for every past mistake',
+      priority: 'must',
+      status: 'done',
+      size: 'L',
+      points: 8,
+      acceptanceCriteria: [
+        {
+          id: 'ac-user-101-1',
+          given: 'A logged-in learner opening the "Tiến Độ & Lịch Sử" tab',
+          when: 'The dashboard loads',
+          then: 'Displays overall GOP pronunciation score (e.g. 76% - IELTS 7.0), radar/progress bars for 4 Vietnamese phonetic pillars, and streak shields.',
+          completed: true
+        },
+        {
+          id: 'ac-user-101-2',
+          given: 'A user reviewing past practice attempts',
+          when: 'Viewing recording history items',
+          then: 'Each record shows target phrase, IPA, GOP score, Vietnamese error tags, and provides a 1-click button to listen to native reference pronunciation.',
+          completed: true
+        }
+      ],
+      technicalTasks: [
+        { id: 't-user-1', title: 'Build UserProfileProgressView component with 4-pillar phoneme mastery bars and historical recording logs', category: 'Frontend', completed: true },
+        { id: 't-user-2', title: 'Implement AuthModal supporting Demo accounts, custom learner profile registration, and L1 regional accent calibration', category: 'Frontend', completed: true },
+        { id: 't-user-3', title: 'Integrate Web Speech Synthesis API for instant native audio reference playback of historical recordings', category: 'Frontend', completed: true }
+      ],
+      notes: 'Essential for user retention; allows learners to see tangible proof of their accent reduction.'
+    },
+    {
+      id: 'ELSA-401',
+      epicId: 'epic-retention',
+      title: '10-Minute Daily Personalized Practice Path (Adaptive Curriculum)',
+      persona: 'Busy Office Worker / Student with 15 Minutes Daily',
+      action: 'open the app each day and have a personalized 3-step practice path automatically ready for me targeting my weakest phonemes',
+      value: 'I never wonder what to practice next and can build continuous improvement in just 10 minutes a day',
+      priority: 'must',
+      status: 'todo',
+      size: 'M',
+      points: 5,
+      acceptanceCriteria: [
+        {
+          id: 'ac-elsa-401-1',
+          given: 'A user opens the platform for the day',
+          when: 'Home path loads',
+          then: 'Curates 3 micro-modules: 1) Sound Warmup (weak phonemes), 2) Sentence Practice, 3) Quick Roleplay.',
+          completed: false
+        }
+      ],
+      technicalTasks: [
+        { id: 't-elsa-24', title: 'Build adaptive lesson recommendation algorithm querying recent user error logs', category: 'Backend', completed: false },
+        { id: 't-elsa-25', title: 'Create Daily Path progress card on dashboard with step indicators', category: 'Frontend', completed: false }
+      ],
+      notes: 'Keeps cognitive friction low for daily active users.'
+    },
+    {
+      id: 'ELSA-402',
+      epicId: 'epic-retention',
+      title: 'Automated Error Bank with Spaced Repetition (SM-2 Algorithm)',
+      persona: 'Diligently Improving Learner',
+      action: 'have every word I mispronounce (<60%) automatically saved into my personal Error Bank for scheduled review at 1, 3, 7, and 14 days',
+      value: 'I systematically eliminate my recurring mistakes through scientifically proven spaced retrieval practice',
+      priority: 'should',
+      status: 'backlog',
+      size: 'M',
+      points: 5,
+      acceptanceCriteria: [
+        {
+          id: 'ac-elsa-402-1',
+          given: 'User scores <60% on "comfortable"',
+          when: 'Lesson finishes',
+          then: 'Word is added to user error_bank with next review due date calculated via SuperMemo SM-2 interval.',
+          completed: false
+        }
+      ],
+      technicalTasks: [
+        { id: 't-elsa-26', title: 'Implement SM-2 spaced repetition calculation service in backend', category: 'Backend', completed: false },
+        { id: 't-elsa-27', title: 'Build "My Sound Bank" review deck UI with audio comparison and mastery status', category: 'Frontend', completed: false }
+      ],
+      notes: 'High retention driver; gives users a tangible sense of clearing their debt of mistakes.'
+    },
+    {
+      id: 'ELSA-601',
+      epicId: 'epic-retention',
+      title: 'Daily Practice Streak Counter & Streak Freeze Shields',
+      persona: 'Habit Builder',
+      action: 'see my active speaking streak on the home screen and use a "Streak Freeze" if I miss a day due to work/travel',
+      value: 'I build a daily English speaking habit without losing motivation after a single missed day',
+      priority: 'should',
+      status: 'done',
+      size: 'S',
+      points: 2,
+      acceptanceCriteria: [
+        {
+          id: 'ac-elsa-601-1',
+          given: 'User completes at least 1 speaking lesson today',
+          when: 'Streak updates',
+          then: 'Streak counter increments by 1 with flame particle animation.',
+          completed: true
+        }
+      ],
+      technicalTasks: [
+        { id: 't-elsa-35', title: 'Implement timezone-aware daily streak calculation service in backend', category: 'Backend', completed: true },
+        { id: 't-elsa-36', title: 'Build celebratory streak milestone unlock modal with confetti burst', category: 'Frontend', completed: true }
+      ],
+      notes: 'Vietnamese users respond very strongly to gamified streaks.'
+    },
+    {
+      id: 'ELSA-602',
+      epicId: 'epic-retention',
+      title: 'Freemium 5-Lesson Daily Limit & Pro Subscription Paywall',
+      persona: 'Free Tier User Deciding to Upgrade',
+      action: 'hit a friendly paywall after completing 5 free lessons today offering an upgrade to Pro for unlimited AI Roleplays',
+      value: 'the company monetizes engaged users while allowing free users to build initial habit',
+      priority: 'must',
+      status: 'todo',
+      size: 'M',
+      points: 5,
+      acceptanceCriteria: [
+        {
+          id: 'ac-elsa-602-1',
+          given: 'A free tier user attempts a 6th lesson today',
+          when: 'Lesson starts',
+          then: 'A paywall modal opens showcasing Pro benefits (Unlimited AI Roleplay, Detailed Phoneme Breakdown, IELTS Examiner).',
+          completed: false
+        }
+      ],
+      technicalTasks: [
+        { id: 't-elsa-37', title: 'Implement daily lesson usage quota tracking in database with midnight reset', category: 'Backend', completed: false },
+        { id: 't-elsa-38', title: 'Design high-converting Pro paywall dialog with MoMo / VNPay / Stripe checkout options', category: 'Frontend', completed: false }
+      ],
+      notes: 'Support domestic Vietnamese payment methods (MoMo, VNPay, domestic bank QR) for 4x higher checkout conversion.'
+    },
+    {
+      id: 'USER-101',
+      epicId: 'epic-retention',
+      title: 'Learner Authentication, Pronunciation Mastery Dashboard & Practice Recording History',
+      persona: 'Vietnamese Learner Tracking Their Speaking Journey',
+      action: 'log in with my account, view my 4-pillar pronunciation mastery scores (% Ending Sounds, Minimal Pairs, Stress, Connected Speech), and review my complete history of recorded speech attempts',
+      value: 'I have full visibility into my phonetic improvement over time and can listen back to native reference audio for every past mistake',
+      priority: 'must',
+      status: 'done',
+      size: 'L',
+      points: 8,
+      acceptanceCriteria: [
+        {
+          id: 'ac-user-101-1',
+          given: 'A logged-in learner opening the "Tiến Độ & Lịch Sử" tab',
+          when: 'The dashboard loads',
+          then: 'Displays overall GOP pronunciation score (e.g. 76% - IELTS 7.0), radar/progress bars for 4 Vietnamese phonetic pillars, and streak shields.',
+          completed: true
+        },
+        {
+          id: 'ac-user-101-2',
+          given: 'A user reviewing past practice attempts',
+          when: 'Viewing recording history items',
+          then: 'Each record shows target phrase, IPA, GOP score, Vietnamese error tags, and provides a 1-click button to listen to native reference pronunciation.',
+          completed: true
+        }
+      ],
+      technicalTasks: [
+        { id: 't-user-1', title: 'Build UserProfileProgressView component with 4-pillar phoneme mastery bars and historical recording logs', category: 'Frontend', completed: true },
+        { id: 't-user-2', title: 'Implement AuthModal supporting Demo accounts, custom learner profile registration, and L1 regional accent calibration', category: 'Frontend', completed: true },
+        { id: 't-user-3', title: 'Integrate Web Speech Synthesis API for instant native audio reference playback of historical recordings', category: 'Frontend', completed: true }
+      ],
+      notes: 'Essential for user retention; allows learners to see tangible proof of their accent reduction.'
+    },
+    {
+      id: 'USER-102',
+      epicId: 'epic-diagnostic',
+      title: 'Theo Dõi Tiến Độ Chi Tiết Từng Âm IPA & Lịch Sử Cải Thiện Âm Vị (Granular Phoneme Mastery Ledger)',
+      persona: 'Người Học Tiếng Anh Cần Kiểm Soát Tiến Độ Từng Âm',
+      action: 'xem bảng thống kê chi tiết tỷ lệ chính xác, số lần luyện tập, và biểu đồ tiến bộ theo thời gian của từng âm trong 44 âm IPA (/θ/, /iː/, /ʃ/, /s/, /t/, /d/...)',
+      value: 'tôi biết chính xác âm nào mình đã thuần thục để duy trì, và âm nào còn yếu để tập trung cải thiện mà không phải đoán mò',
+      priority: 'must',
+      status: 'done',
+      size: 'M',
+      points: 5,
+      acceptanceCriteria: [
+        {
+          id: 'ac-user-102-1',
+          given: 'Học viên mở bảng thống kê tiến độ âm vị (Phoneme Mastery Grid)',
+          when: 'Màn hình tải',
+          then: 'Hiển thị ma trận 44 âm IPA được phân loại theo 3 màu: Đã làm chủ (>80% - Xanh), Đang cải thiện (60-80% - Vàng), và Cần khắc phục gấp (<60% - Đỏ).',
+          completed: true
+        },
+        {
+          id: 'ac-user-102-2',
+          given: 'Học viên chọn vào một âm bất kỳ (ví dụ /θ/)',
+          when: 'Xem chi tiết âm',
+          then: 'Hiển thị: Tỷ lệ chính xác trung bình, số lượt đã luyện tập, biểu đồ tăng/giảm điểm qua các ngày, danh sách từ vựng đã ghi âm chứa âm đó, và nút 1-click để luyện tập riêng âm này.',
+          completed: true
+        }
+      ],
+      technicalTasks: [
+        { id: 't-user-102-1', title: 'Thiết kế component ma trận 44 âm IPA kèm tooltip chi tiết và bộ lọc nguyên âm/phụ âm', category: 'Frontend', completed: true },
+        { id: 't-user-102-2', title: 'Xây dựng schema lưu trữ lịch sử Goodness of Pronunciation (GOP) theo từng phoneme_id trong SQLite backend', category: 'Backend', completed: true },
+        { id: 't-user-102-3', title: 'Tích hợp nút tắt chuyển nhanh sang Khẩu hình 2D hoặc Game 3D theo đúng âm vị đang xem', category: 'Frontend', completed: true }
+      ],
+      notes: 'Tính năng thiết yếu giúp người học thấy rõ sự tiến bộ cụ thể của từng âm vị theo ngày thay vì chỉ có điểm số chung chung.'
+    },
+    {
+      id: 'GAME-101',
+      epicId: 'epic-gamified-3d',
+      title: 'Multi-Tier Level Progression & 4-World Map Engine',
+      persona: 'Vietnamese Learner Playing Pronunciation RPG',
+      action: 'progress through 4 distinct phonetic worlds (World 1: Âm Đuôi, World 2: Cặp Âm, World 3: Trọng Âm, World 4: Nối Âm & Trùm Rồng) with 12 playable stages and 3-star ratings',
+      value: 'I have a clear, structured roadmap that progressively challenges my pronunciation from basic final consonants to fluent connected speech',
+      priority: 'must',
+      status: 'in-progress',
+      size: 'L',
+      points: 8,
+      acceptanceCriteria: [
+        {
+          id: 'ac-game-101-1',
+          given: 'A player selecting a World (1: Final Consonants, 2: Minimal Pairs, 3: Syllable Stress, 4: Connected Speech)',
+          when: 'The world loads',
+          then: 'The UI displays stage nodes with unlock status, star ratings (⭐⭐⭐), target phonemes, and XP rewards.',
+          completed: true
+        },
+        {
+          id: 'ac-game-101-2',
+          given: 'Completing a stage with GOP score >= 90%',
+          when: 'Stage victory triggers',
+          then: '3 stars are awarded, the next stage unlocks, and player XP/streak updates with fanfare animation.',
+          completed: true
+        }
+      ],
+      technicalTasks: [
+        { id: 't-game-1', title: 'Implement GameWorlds and Stages data schema with 12 calibrated pedagogical levels', category: 'Frontend', completed: true },
+        { id: 't-game-2', title: 'Build interactive World & Stage Selector ribbon with 3-star rating indicators', category: 'Frontend', completed: true },
+        { id: 't-game-3', title: 'Persist stage completion and stars in local storage & SQLite player profile', category: 'Backend', completed: false }
+      ],
+      notes: 'Structured progression turns fragmented pronunciation drills into an addictive, rewarding adventure.'
+    },
+    {
+      id: 'GAME-102',
+      epicId: 'epic-gamified-3d',
+      title: 'Dual Voice Controller: Real-Time Web Speech Microphone & Fallback Simulation',
+      persona: 'Player Wanting Hands-Free Voice Control',
+      action: 'speak directly into my laptop or phone microphone using Web Speech API, with one-click simulation buttons available for noisy environments',
+      value: 'I can practice authentic vocal production and get instant in-game spellcast reactions without friction',
+      priority: 'must',
+      status: 'done',
+      size: 'M',
+      points: 5,
+      acceptanceCriteria: [
+        {
+          id: 'ac-game-102-1',
+          given: 'A player enabling real microphone mode',
+          when: 'Speaking the target word clearly (e.g. "SIX" or "THINK")',
+          then: 'The browser Web Speech engine captures phonemes in real-time, validates the word, and unleashes the spell beam within 300ms.',
+          completed: true
+        },
+        {
+          id: 'ac-game-102-2',
+          given: 'A user testing without a microphone or in a quiet study room',
+          when: 'Clicking the "Hô Thần Chú Chuẩn" or "Thử Lỗi Người Việt" buttons',
+          then: 'The game triggers the exact same combat animation, audio feedback, and educational acoustic diagnostic tip.',
+          completed: true
+        }
+      ],
+      technicalTasks: [
+        { id: 't-game-4', title: 'Integrate Web Speech API (window.SpeechRecognition) with auto-start and speech result parser', category: 'Frontend', completed: true },
+        { id: 't-game-5', title: 'Implement fallback simulation triggers with Vietnamese phonetic error explanations', category: 'Frontend', completed: true }
+      ],
+      notes: 'Ensures 100% usability whether in a private bedroom with microphone or in a quiet library with simulation mode.'
+    },
+    {
+      id: 'GAME-103',
+      epicId: 'epic-gamified-3d',
+      title: 'Auditory Discrimination Boss Arenas & Turn-Based Minimal Pair Counter-Spells',
+      persona: 'Player Facing Regional Dungeon Bosses',
+      action: 'face epic area bosses (Stone Golem, Twin Phantoms, Chronos Titan, Dragon of Accents) and cast the precise phonetic counter-spell within a 3-second timer',
+      value: 'I build lightning-fast auditory discrimination reflexes under game pressure, conquering my mother-tongue instincts',
+      priority: 'should',
+      status: 'in-progress',
+      size: 'L',
+      points: 8,
+      acceptanceCriteria: [
+        {
+          id: 'ac-game-103-1',
+          given: 'A boss stage encounter (e.g. Twin Phantoms requiring /θ/ vs /t/ contrast)',
+          when: 'Player accurately voices the counter-spell within 3 seconds',
+          then: 'Deals 150-250 DMG to the boss health bar with screen shake, particle sparks, and combo increment.',
+          completed: true
+        },
+        {
+          id: 'ac-game-103-2',
+          given: 'Player confuses the sound (e.g. saying /tɪŋk/ instead of /θɪŋk/)',
+          when: 'Boss barrier deflects attack',
+          then: 'Player takes 15 HP damage, combo resets, and an anatomical mouth guide tip appears explaining tongue placement.',
+          completed: true
+        }
+      ],
+      technicalTasks: [
+        { id: 't-game-6', title: 'Build boss encounter state machine with boss HP bars, enrage timers, and damage calculations', category: 'Frontend', completed: true },
+        { id: 't-game-7', title: 'Create Vietnamese-specific phonetic feedback generator for minimal pair confusions', category: 'Backend', completed: true }
+      ],
+      notes: 'Boss encounters provide exhilarating milestone tests at the conclusion of each curriculum world.'
+    },
+    {
+      id: 'GAME-104',
+      epicId: 'epic-gamified-3d',
+      title: 'Zero-Latency Web Audio API Sound Synthesizer & 3D Isometric Combat Canvas',
+      persona: 'Web Player on Any Device',
+      action: 'experience crisp sound effects (laser beams, shattering crystals, hurt thuds, victory fanfares) and smooth 60 FPS combat animations with zero external sound file downloads',
+      value: 'The game loads instantaneously (<1s) and plays without audio lag even on spotty 3G/4G mobile connections',
+      priority: 'must',
+      status: 'done',
+      size: 'M',
+      points: 5,
+      acceptanceCriteria: [
+        {
+          id: 'ac-game-104-1',
+          given: 'Any combat action (successful shatter or damage taken)',
+          when: 'Action occurs',
+          then: 'Synthesized Web Audio frequencies generate immediately without network requests.',
+          completed: true
+        },
+        {
+          id: 'ac-game-104-2',
+          given: 'Low-power mobile laptop or phone',
+          when: 'Rendering isometric perspective track',
+          then: 'Maintains buttery 60 FPS with CSS perspective grid and hardware-accelerated transforms.',
+          completed: true
+        }
+      ],
+      technicalTasks: [
+        { id: 't-game-8', title: 'Implement SoundFX class with OscillatorNode and GainNode synthesis (Laser, Shatter, Hurt, Victory)', category: 'Frontend', completed: true },
+        { id: 't-game-9', title: 'Render responsive isometric combat arena with glowing spellcast beam and destructible obstacle states', category: 'Frontend', completed: true }
+      ],
+      notes: 'Pure synthesizer architecture eliminates 15MB+ of audio asset downloads.'
+    },
+    {
+      id: 'GAME-105',
+      epicId: 'epic-gamified-3d',
+      title: 'RPG Equipment Inventory, Perk System & University Leaderboard Ranks',
+      persona: 'Competitive Vietnamese College Student / IT Engineer',
+      action: 'equip magical phonetic gear (Wand of Ending Sounds, Boots of Stress Rhythm) and climb university rankings (ĐHQG, Bách Khoa, NEU)',
+      value: 'I stay motivated to practice daily through progression prestige and pride in representing my university',
+      priority: 'could',
+      status: 'in-progress',
+      size: 'S',
+      points: 3,
+      acceptanceCriteria: [
+        {
+          id: 'ac-game-105-1',
+          given: 'Player viewing their avatar profile',
+          when: 'Opening the Inventory modal',
+          then: 'Equipped gear with phonetic combat perks and locked legendary gear are displayed clearly.',
+          completed: true
+        },
+        {
+          id: 'ac-game-105-2',
+          given: 'Reaching higher levels (Level 5+)',
+          when: 'XP threshold is crossed',
+          then: 'Level Up modal triggers, unlocking new equipment slots and titles.',
+          completed: false
+        }
+      ],
+      technicalTasks: [
+        { id: 't-game-10', title: 'Build RPG Inventory & Equipment modal with equipment perks and unlock requirements', category: 'Frontend', completed: true },
+        { id: 't-game-11', title: 'Create university leaderboard ranking schema in SQLite backend', category: 'Backend', completed: false }
+      ],
+      notes: 'Strong social and competitive motivator for university students and young tech professionals.'
+    }
+  ]
+};
+
+// Aliases for backwards-compatibility
+export const INITIAL_PROJECT = VIETNAMESE_PRONUNCIATION_PROJECT;
+export const ELSA_PROJECT = VIETNAMESE_PRONUNCIATION_PROJECT;
+export const PRONUNCIATION_PROJECT = VIETNAMESE_PRONUNCIATION_PROJECT;
+export const VIETNAMESE_ACCENT_EPIC = VIETNAMESE_PRONUNCIATION_PROJECT.epics[0];
+export const VIETNAMESE_ACCENT_STORIES = VIETNAMESE_PRONUNCIATION_PROJECT.stories.filter(s => s.id.startsWith('VN-'));
