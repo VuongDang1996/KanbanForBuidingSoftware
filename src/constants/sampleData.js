@@ -640,6 +640,138 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
       ],
       notes: 'Visual & Auditory Biofeedback cực kỳ hiệu quả giúp người học tự điều chỉnh cơ miệng mà không cần giáo viên kè kè bên cạnh.'
     },
+    {
+      id: 'PRON-205',
+      epicId: 'epic-articulation',
+      title: '3-Tier Positional Phoneme Ladder: Initial, Medial & Final Word Drills (Luyện Âm Phân Vị: Đầu - Giữa - Cuối Từ)',
+      persona: 'Học Viên Hay Bị Vấp Âm Khi Vị Trí Âm Thay Đổi Trong Từ',
+      action: 'luyện tập phát âm từ đơn theo 3 vị trí ngữ âm học có cấu trúc phân tầng: Initial Words (âm ở đầu từ: this, that), Medial Words (âm ở giữa từ: mother, weather) và Final Words (âm ở cuối từ: breathe, soothe)',
+      value: 'tôi nắm vững phản xạ cơ miệng ở mọi vị trí phân bố âm (phonotactic distribution), đặc biệt khắc phục triệt để thói quen nuốt âm đuôi và líu lưỡi ở âm giữa từ của người Việt',
+      priority: 'must',
+      status: 'in-progress',
+      size: 'M',
+      points: 5,
+      acceptanceCriteria: [
+        {
+          id: 'ac-pron-205-1',
+          given: 'Một âm mục tiêu (ví dụ âm hữu thanh /ð/)',
+          when: 'Học viên chọn chế độ luyện phân vị âm',
+          then: 'Hệ thống hiển thị danh sách từ chia theo 3 nhóm rõ ràng: Initial Words (This, That, They), Middle Words (Mother, Weather, Brother), End Words (Breathe, Bathe, Soothe).',
+          completed: true
+        },
+        {
+          id: 'ac-pron-205-2',
+          given: 'Học viên phát âm từ thuộc nhóm Final Words (như "breathe")',
+          when: 'Acoustic model phân tích tín hiệu âm thanh',
+          then: 'Hệ thống kiểm tra xem âm rung /ð/ ở cuối từ có được duy trì âm lượng và độ dài hay bị nuốt/chuyển thành âm câm, hiển thị thông báo "Bật rõ âm đuôi /ð/".',
+          completed: true
+        }
+      ],
+      technicalTasks: [
+        { id: 't-pron-205-1', title: 'Xây dựng cấu trúc dữ liệu PositionalPhonemeBank phân loại từ theo Initial / Medial / Final cho 44 âm IPA', category: 'Database', completed: true },
+        { id: 't-pron-205-2', title: 'Thiết kế UI PositionalWordCards với tab chuyển đổi vị trí và audio mẫu Oxford', category: 'Frontend', completed: true }
+      ],
+      notes: 'Khác biệt vị trí phân bố âm đóng vai trò sống còn trong ngữ âm trị liệu. Người Việt thường chỉ phát âm đúng khi âm đứng ở đầu từ, nhưng gặp âm ở giữa hay cuối từ là nuốt hoặc sai lệch.'
+    },
+    {
+      id: 'PRON-206',
+      epicId: 'epic-articulation',
+      title: 'Connected Speech Positional Progression: Phrases & Full Sentences (Nâng Cấp Độ Ngữ Đoạn: Cụm Từ Đến Câu Hoàn Chỉnh Theo Vị Trí)',
+      persona: 'Học Viên Đã Đọc Được Từ Đơn Nhưng Vỡ Khẩu Hình Khi Nói Cụm Từ Và Cả Câu',
+      action: 'luyện tập theo nấc thang lũy tiến ngữ đoạn: từ cấp độ Phrases (cụm từ: "this and that", "my mother said", "breathe deeply") nâng dần lên cấp độ Sentences (câu hoàn chỉnh: "This is the best that they could do") chia theo từng vị trí Initial/Medial/End',
+      value: 'tôi duy trì được khẩu hình chuẩn xác trong chuỗi lời nói tự nhiên (connected speech), liên kết từ mượt mà mà không bị rơi rụng âm vị mục tiêu',
+      priority: 'must',
+      status: 'in-progress',
+      size: 'M',
+      points: 5,
+      acceptanceCriteria: [
+        {
+          id: 'ac-pron-206-1',
+          given: 'Học viên chọn luyện cấp độ Phrases hoặc Sentences theo vị trí âm',
+          when: 'Học viên đọc cụm từ hoặc câu hoàn chỉnh',
+          then: 'Hệ thống nhận diện bằng Forced Alignment, highlight các từ mang âm mục tiêu và chấm điểm mức độ liên kết âm (linking & phrasing).',
+          completed: true
+        },
+        {
+          id: 'ac-pron-206-2',
+          given: 'Một bài luyện Initial/Medial/End Sentences',
+          when: 'Học viên hoàn thành câu',
+          then: 'Hệ thống chấm điểm độ trôi chảy (Fluency score) kèm phân tích tốc độ nói (WPM) và vị trí âm đích đạt chuẩn.',
+          completed: true
+        }
+      ],
+      technicalTasks: [
+        { id: 't-pron-206-1', title: 'Biên soạn 100+ cụm từ (Phrases) và câu (Sentences) phân tầng theo Initial / Medial / Final cho các âm trọng điểm', category: 'Content', completed: true },
+        { id: 't-pron-206-2', title: 'Tích hợp thanh tiến trình nấc thang độ khó (Words -> Phrases -> Sentences) trong giao diện bài tập', category: 'Frontend', completed: true }
+      ],
+      notes: 'Thực tế sư phạm cho thấy chuyển đổi từ Word sang Phrase rồi sang Sentence là lộ trình chuẩn quốc tế giúp học viên không bị quá tải nhận thức (cognitive overload).'
+    },
+    {
+      id: 'PRON-207',
+      epicId: 'epic-articulation',
+      title: 'Phonetic Exception Words & Grammatical Voicing Alternation Rules (Bộ Từ Ngoại Lệ & Quy Tắc Biến Đổi Âm Vị Danh Từ - Động Từ)',
+      persona: 'Học Viên Bị Bẫy Bởi Chính Tả Tiếng Anh Không Đi Liền Với Phiên Âm',
+      action: 'học và luyện tập chuyên sâu các từ ngoại lệ (Exception Words: ví dụ chữ TH câm trong "asthma", "thyme", "Thomas") và quy tắc chuyển đổi âm vô thanh/hữu thanh giữa danh từ và động từ (Noun /θ/ vs Verb /ð/: "breath" vs "breathe", "bath" vs "bathe")',
+      value: 'tôi hiểu rõ bản chất quy tắc ngữ âm và từ loại, không bị mặt chữ đánh lừa và tự tin dùng đúng từ loại trong cả văn viết lẫn văn nói',
+      priority: 'should',
+      status: 'in-progress',
+      size: 'S',
+      points: 3,
+      acceptanceCriteria: [
+        {
+          id: 'ac-pron-207-1',
+          given: 'Danh sách các từ ngoại lệ chính tả tiếng Anh',
+          when: 'Học viên mở chuyên đề "TH Exception Words"',
+          then: 'Hệ thống gắn nhãn cảnh báo đặc biệt (Special Exception Badge), giải thích nguyên nhân lịch sử ngữ âm (từ mượn tiếng Hy Lạp, Pháp) kèm audio chuẩn.',
+          completed: true
+        },
+        {
+          id: 'ac-pron-207-2',
+          given: 'Cặp từ biến đổi từ loại Noun vs Verb (như "breath" /θ/ vs "breathe" /ð/)',
+          when: 'Học viên thực hành so sánh',
+          then: 'Hiển thị giải thích quy tắc: danh từ tận cùng bằng âm vô thanh /θ/ (không rung dây thanh), động từ tận cùng bằng âm hữu thanh /ð/ (rung dây thanh + nguyên âm kéo dài).',
+          completed: true
+        }
+      ],
+      technicalTasks: [
+        { id: 't-pron-207-1', title: 'Xây dựng bộ dữ liệu Exception & Grammatical Voicing Pairs cho các âm vị tiếng Anh', category: 'Content', completed: true },
+        { id: 't-pron-207-2', title: 'Thiết kế card bài tập Exception với thẻ so sánh tương tác Noun vs Verb', category: 'Frontend', completed: true }
+      ],
+      notes: 'Giúp học viên nâng tầm phát âm từ mức cơ học lên mức học thuật bản ngữ (Grammar-Phonology interface).'
+    },
+    {
+      id: 'PRON-208',
+      epicId: 'epic-articulation',
+      title: 'L1 Confusion-Trap Cross-Transition Drills: Target Sound vs. Intrusion Sound (Bài Tập Chuyển Đổi Đối Kháng Âm Đích & Âm Bẫy L1 ở Cấp Từ & Câu)',
+      persona: 'Người Học Dễ Bị Lẫn Lộn Hoặc Đồng Hóa Âm Khi Âm Đích Đứng Gần Âm Thay Thế Tiếng Việt',
+      action: 'luyện tập các bài tập chuyển đổi đối kháng chuyên sâu (e.g. Voiced TH vs D Words & Sentences: "they" vs "day", "there" vs "dare"; câu: "They dare to go there today")',
+      value: 'bộ não và dây thần kinh vận động miệng của tôi hình thành phản xạ phân biệt rõ ràng giữa vị trí kẹp răng (/ð/) và vị trí chân răng (/d/), xóa bỏ vĩnh viễn thói quen thay thế âm tiếng Việt vào tiếng Anh',
+      priority: 'must',
+      status: 'in-progress',
+      size: 'L',
+      points: 8,
+      acceptanceCriteria: [
+        {
+          id: 'ac-pron-208-1',
+          given: 'Một bài tập Minimal Pairs đối kháng (như Voiced TH vs D)',
+          when: 'Học viên thực hiện bài tập',
+          then: 'Hiển thị các cặp từ đối xứng (they/day, there/dare, though/dough, breathe/breed) với âm thanh so sánh tức thì và mô tả vị trí đặt lưỡi khác nhau.',
+          completed: true
+        },
+        {
+          id: 'ac-pron-208-2',
+          given: 'Bài tập câu chuyển đổi liên tục (Voiced TH to D Sentences: e.g. "They dare to go there today")',
+          when: 'Học viên đọc câu',
+          then: 'Hệ thống dùng ASR và Forced Alignment tách riêng điểm số của từng âm đích (/ð/) và âm bẫy (/d/), cảnh báo nếu học viên đồng hóa âm /ð/ thành âm /d/.',
+          completed: true
+        }
+      ],
+      technicalTasks: [
+        { id: 't-pron-208-1', title: 'Thu thập và xây dựng ma trận Minimal Pairs & Cross-Transition Sentences cho các cặp âm dễ lẫn của người Việt (/ð/ vs /d/, /θ/ vs /t/, /ʃ/ vs /s/, /iː/ vs /ɪ/)', category: 'Content', completed: true },
+        { id: 't-pron-208-2', title: 'Xây dựng UI CrossTransitionDrillStudio với đồ thị so sánh vị trí phát âm (Interdental vs Alveolar)', category: 'Frontend', completed: true }
+      ],
+      notes: 'Đặc trị bẫy ngữ âm kinh điển nhất của người Việt: phát âm "they" thành "đây", "this" thành "đít". Luyện chuyển đổi đan xen giúp làm chủ cơ miệng ở tốc độ cao.'
+    },
 
     // 5. Conversational AI & IELTS Speaking
     {
