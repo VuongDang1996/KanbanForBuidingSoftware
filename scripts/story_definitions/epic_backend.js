@@ -12,103 +12,109 @@ export const backendStories = [
     points: 13,
     acceptance_criteria: JSON.stringify([
       {
-        id: 'ac-arch-101-schema-design',
+        id: 'ac-arch-101-ddl-structure',
         given: 'Hệ thống cần lưu trữ thông tin tài khoản, gói thuê bao và chi tiết từng âm vị được chấm điểm',
         when: 'Triển khai migration khởi tạo cơ sở dữ liệu',
-        then: 'Lược đồ hoàn chỉnh gồm 8 bảng quan hệ có khóa ngoại ON DELETE CASCADE hợp lý, kiểu dữ liệu tối ưu (UUIDv7 cho ID phân tán, JSONB cho metadata âm học, TIMESTAMPTZ cho thời gian theo chuẩn UTC).',
+        then: 'Lược đồ hoàn chỉnh gồm 8 bảng quan hệ có khóa ngoại ON DELETE CASCADE hợp lý, sử dụng kiểu dữ liệu tối ưu (UUIDv7 cho ID phân tán, JSONB cho metadata âm học, TIMESTAMPTZ cho thời gian theo chuẩn UTC).',
         completed: true
       },
       {
-        id: 'ac-arch-101-frontend-design',
-        given: 'Giao diện bảng điều khiển quản trị viên Admin Database Metrics View',
-        when: 'Quản trị viên theo dõi trạng thái cơ sở dữ liệu',
-        then: 'Hiển thị sơ đồ quan hệ thực thể (ERD) tương tác, số lượng kết nối đang mở (Active Connections / Pool Size), dung lượng bảng và tỷ lệ Cache Hit Ratio luôn hiển thị >99% bằng phông chữ JetBrains Mono trên nền tối Slate-900.',
+        id: 'ac-arch-101-compound-indexes',
+        given: 'Bảng điểm số phoneme_scores đạt quy mô hơn 10 triệu bản ghi',
+        when: 'Thực hiện truy vấn lịch sử học tập của học viên',
+        then: 'Các chỉ mục tổng hợp (Compound Indexes) trên (user_id, phoneme_symbol) và (user_id, created_at DESC) đảm bảo thời gian quét dữ liệu (Index Scan) hoàn tất dưới 15ms.',
         completed: true
       },
       {
-        id: 'ac-arch-101-backend-design',
-        given: '5,000 người dùng tích cực cùng ghi điểm phát âm và đọc lộ trình học',
-        when: 'Hệ thống đối mặt với lưu lượng 1,500 truy vấn ghi/giây và 5,000 truy vấn đọc/giây',
-        then: 'Cấu hình PgBouncer connection pooling với Transaction Mode (pool size 50 kết nối vật lý), phân vùng bảng phoneme_scores theo tháng (Range Partitioning by created_at), đảm bảo CPU PostgreSQL dưới 45%.',
+        id: 'ac-arch-101-pgbouncer-pooling',
+        given: '5,000 phiên truy cập đồng thời từ các máy khách Web và Mobile',
+        when: 'Lưu lượng truy cập gửi đến máy chủ cơ sở dữ liệu',
+        then: 'Cấu hình PgBouncer connection pooling trong Transaction Mode duy trì tối đa 50 kết nối vật lý đến PostgreSQL mà không làm tràn bộ nhớ RAM (CPU duy trì <40%).',
         completed: true
       },
       {
-        id: 'ac-arch-101-l1-precision',
-        given: 'Bảng từ điển âm vị phoneme_dictionary',
-        when: 'Truy vấn bảng đối chiếu âm lỗi đặc trưng của người Việt',
-        then: 'Bảng lưu trữ trường l1_vietnamese_difficulty_tier (1 đến 5) và dialect_risk_tag (Bac, Trung, Nam) giúp hệ thống lọc nhanh các bài luyện phù hợp theo từng giọng địa phương.',
-        completed: true
-      },
-      {
-        id: 'ac-arch-101-a11y-fallback',
-        given: 'Đảm bảo khả năng phục hồi dữ liệu khi có thảm họa (Disaster Recovery)',
-        when: 'Có sự cố sập node database chính',
-        then: 'Hệ thống tự động kích hoạt cơ chế tự phục hồi (Automatic Failover) sang bản sao Streaming Replication Standby trong vòng dưới 30 giây với RPO = 0 (không mất bất kỳ giao dịch nào).',
-        completed: true
+        id: 'ac-arch-101-automated-partitioning',
+        given: 'Dữ liệu âm vị phát sinh liên tục mỗi ngày',
+        when: 'Chuyển sang tháng mới',
+        then: 'Extension pg_partman tự động tạo partition mới cho bảng phoneme_scores theo từng tháng (Range Partitioning by created_at) mà không cần can thiệp thủ công.',
+        completed: false
       }
     ]),
     technical_tasks: JSON.stringify([
       { id: 't-arch-101-be-migration', title: 'Viết file migration DDL tạo toàn bộ 8 bảng PostgreSQL kèm trigger tự động cập nhật trường updated_at', category: 'Backend', completed: true },
-      { id: 't-arch-101-be-partition', title: 'Triển khai phân vùng tự động (Auto Partitioning) cho bảng phoneme_scores theo từng tháng với pg_partman', category: 'Backend', completed: true },
+      { id: 't-arch-101-be-partition', title: 'Triển khai phân vùng tự động cho bảng phoneme_scores theo từng tháng với pg_partman', category: 'Backend', completed: false },
       { id: 't-arch-101-be-pgbouncer', title: 'Cấu hình PgBouncer kết hợp Prisma/Kysely connection pool tối ưu cho 5,000 concurrent sessions', category: 'DevOps/Scale', completed: true },
-      { id: 't-arch-101-be-index', title: 'Tạo compound index trên (user_id, phoneme_symbol) và (user_id, created_at DESC) để tăng tốc độ truy vấn lịch sử', category: 'Backend', completed: true },
       { id: 't-arch-101-qa', title: 'Chạy công cụ pgbench mô phỏng 5,000 client đồng thời kiểm tra TPS đạt tối thiểu 2,500 transaction/sec', category: 'QA', completed: true }
     ]),
-    notes: `### 🎨 FRONTEND DESIGN SPECIFICATION
-- **Component File**: \`vietphonics-app/src/views/admin/AdminDatabaseMetrics.jsx\`
-- **Stitch Design Tokens**:
-  - Metric Card: \`bg-slate-900 border border-slate-800 rounded-2xl p-4 font-mono text-xs\`
-  - Active Connection Indicator: \`text-emerald-400 font-bold text-lg\`.
+    notes: `### 🗄️ PURE BACKEND & DATABASE SPECIFICATION
+- **Phân loại**: Pure Backend Data Architecture (0% UI)
+- **Engine**: PostgreSQL 16 + PgBouncer Connection Pooler
 
----
+#### 📐 Complete PostgreSQL 3NF DDL
+\`\`\`sql
+-- 1. Users Table
+CREATE TABLE users (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  email VARCHAR(255) UNIQUE NOT NULL,
+  full_name VARCHAR(150),
+  dialect_preference VARCHAR(20) DEFAULT 'northern',
+  tier VARCHAR(20) DEFAULT 'free',
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
 
-### 🗄️ BACKEND DESIGN SPECIFICATION
-- **PostgreSQL 3NF DDL Specification**:
-  \`\`\`sql
-  -- Users
-  CREATE TABLE users (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    email VARCHAR(255) UNIQUE NOT NULL,
-    full_name VARCHAR(150),
-    dialect_preference VARCHAR(20) DEFAULT 'northern',
-    tier VARCHAR(20) DEFAULT 'free',
-    created_at TIMESTAMPTZ DEFAULT NOW(),
-    updated_at TIMESTAMPTZ DEFAULT NOW()
-  );
+-- 2. Subscriptions Table
+CREATE TABLE subscriptions (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  plan_code VARCHAR(50) NOT NULL,
+  status VARCHAR(30) NOT NULL CHECK (status IN ('active', 'grace_period', 'expired')),
+  current_period_start TIMESTAMPTZ NOT NULL,
+  current_period_end TIMESTAMPTZ NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+CREATE INDEX idx_subscriptions_user_status ON subscriptions(user_id, status);
 
-  -- Subscriptions
-  CREATE TABLE subscriptions (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-    plan_code VARCHAR(50) NOT NULL,
-    status VARCHAR(30) NOT NULL CHECK (status IN ('active', 'grace_period', 'expired')),
-    current_period_start TIMESTAMPTZ NOT NULL,
-    current_period_end TIMESTAMPTZ NOT NULL,
-    created_at TIMESTAMPTZ DEFAULT NOW()
-  );
+-- 3. Range-Partitioned Phoneme Scores Table
+CREATE TABLE phoneme_scores (
+  id BIGSERIAL,
+  user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  phoneme_symbol VARCHAR(10) NOT NULL,
+  score NUMERIC(5, 2) NOT NULL,
+  duration_ms INT NOT NULL,
+  audio_r2_url TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  PRIMARY KEY (id, created_at)
+) PARTITION BY RANGE (created_at);
 
-  -- Partitioned Phoneme Scores
-  CREATE TABLE phoneme_scores (
-    id BIGSERIAL,
-    user_id UUID NOT NULL,
-    phoneme_symbol VARCHAR(10) NOT NULL,
-    score NUMERIC(5, 2) NOT NULL,
-    duration_ms INT NOT NULL,
-    audio_r2_url TEXT,
-    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    PRIMARY KEY (id, created_at)
-  ) PARTITION BY RANGE (created_at);
+-- Partitions by Month
+CREATE TABLE phoneme_scores_2026_10 PARTITION OF phoneme_scores
+  FOR VALUES FROM ('2026-10-01 00:00:00+00') TO ('2026-11-01 00:00:00+00');
+CREATE TABLE phoneme_scores_2026_11 PARTITION OF phoneme_scores
+  FOR VALUES FROM ('2026-11-01 00:00:00+00') TO ('2026-12-01 00:00:00+00');
 
-  CREATE TABLE phoneme_scores_2026_10 PARTITION OF phoneme_scores
-    FOR VALUES FROM ('2026-10-01 00:00:00+00') TO ('2026-11-01 00:00:00+00');
-  \`\`\`
-- **High Concurrency (5,000 Users)**:
-  - PgBouncer: \`pool_mode = transaction\`, \`max_client_conn = 5000\`, \`default_pool_size = 50\`.`
+CREATE INDEX idx_phoneme_scores_user_sym ON phoneme_scores(user_id, phoneme_symbol);
+CREATE INDEX idx_phoneme_scores_user_time ON phoneme_scores(user_id, created_at DESC);
+\`\`\`
+
+#### ⚙️ PgBouncer Concurrency Config
+\`\`\`ini
+[databases]
+vietphonics_db = host=127.0.0.1 port=5432 dbname=vietphonics_prod
+
+[pgbouncer]
+pool_mode = transaction
+listen_port = 6432
+max_client_conn = 5000
+default_pool_size = 50
+reserve_pool_size = 10
+query_timeout = 30
+\`\`\``
   },
   {
     id: 'ARCH-102',
     epic_id: 'epic-backend-infrastructure',
-    title: 'Asynchronous Audio Ingestion & GPU Worker Queue Pipeline (FastAPI + Redis + FFmpeg): Đường Ống Nạp Âm Thanh Bất Đồng Bộ & Hàng Đợi Worker GPU',
+    title: 'Asynchronous Audio Ingestion & GPU Worker Queue Pipeline (BullMQ + Redis + FFmpeg): Đường Ống Nạp Âm Thanh Bất Đồng Bộ & Hàng Đợi Worker GPU',
     persona: 'Kỹ sư Machine Learning và hạ tầng AI phụ trách xử lý hàng ngàn file ghi âm tiếng Anh của học viên mà không làm tắc nghẽn máy chủ',
     action: 'nhận luồng file âm thanh từ máy khách, đẩy vào hàng đợi BullMQ/Celery và phân bổ cho các worker GPU chạy Whisper/Kaldi trích xuất đặc trưng ngữ âm',
     value: 'ngăn chặn tình trạng treo máy chủ khi có lượng lớn người dùng cùng nộp bài ghi âm, đảm bảo thời gian xử lý và trả kết quả chấm điểm luôn dưới 650ms',
@@ -118,581 +124,544 @@ export const backendStories = [
     points: 13,
     acceptance_criteria: JSON.stringify([
       {
-        id: 'ac-arch-102-ingestion-flow',
-        given: 'Học viên nộp đoạn ghi âm giọng nói định dạng WebM/Opus hoặc WAV',
-        when: 'API Ingestion Endpoint tiếp nhận file',
-        then: 'Hệ thống kiểm tra tính hợp lệ trong 15ms, sinh job_id duy nhất, đẩy tác vụ vào hàng đợi Redis Queue và trả về mã HTTP 202 Accepted kèm URL kiểm tra kết quả ngay lập tức.',
+        id: 'ac-arch-102-fast-accept',
+        given: 'Học viên nộp đoạn ghi âm giọng nói WebM/Opus hoặc WAV',
+        when: 'API Ingestion POST /api/v1/audio/ingest tiếp nhận file',
+        then: 'Kiểm tra magic bytes trong dưới 15ms, sinh jobId duy nhất, đẩy tác vụ vào Redis BullMQ và trả về mã HTTP 202 Accepted kèm URL tra cứu kết quả.',
         completed: true
       },
       {
-        id: 'ac-arch-102-frontend-design',
-        given: 'Giao diện hàng đợi AI Queue Telemetry Dashboard',
-        when: 'Kỹ sư hạ tầng giám sát hệ thống',
-        then: 'Hiển thị đồ thị thời gian thực về số lượng tác vụ đang chờ (Queue Depth), thời gian chờ trung bình (Wait Time), tỷ lệ GPU VRAM sử dụng và thông lượng bài chấm/phút theo giao diện Dark Mode phong cách Grafana chuyên nghiệp.',
+        id: 'ac-arch-102-ffmpeg-normalization',
+        given: 'Audio thô từ các trình duyệt khác nhau có tần số lấy mẫu hỗn hợp (44.1kHz, 48kHz, Opus, WebM)',
+        when: 'Worker FFmpeg tiếp nhận xử lý',
+        then: 'Chuyển đổi tức thời sang chuẩn PCM 16kHz 16-bit mono và cắt lọc khoảng lặng đầu cuối (-50dB silence trimming) trước khi nạp vào GPU.',
         completed: true
       },
       {
-        id: 'ac-arch-102-backend-design',
-        given: '5,000 học viên cùng bấm gửi bài chấm phát âm trong giờ làm bài tập trên lớp',
-        when: 'Hàng đợi nạp dồn dập 200 file âm thanh/giây',
-        then: 'Cơ chế Auto-scaling (KEDA / Kubernetes HPA) tự động mở rộng từ 2 lên tối đa 16 GPU workers, duy trì P95 thời gian chờ trong hàng đợi < 400ms và không có bản ghi nào bị rơi rớt (0% dropped jobs).',
-        completed: true
+        id: 'ac-arch-102-gpu-autoscaling',
+        given: 'Đợt cao điểm với lưu lượng 200 file âm thanh/giây',
+        when: 'Độ sâu hàng đợi (Queue Depth) vượt quá 100 tác vụ',
+        then: 'Cơ chế KEDA tự động mở rộng cụm GPU worker từ 2 lên tối đa 16 nodes, duy trì P95 thời gian chờ < 400ms.',
+        completed: false
       },
       {
-        id: 'ac-arch-102-l1-precision',
-        given: 'Worker âm thanh chạy tiền xử lý FFmpeg',
-        when: 'Chuẩn hóa định dạng âm thanh đầu vào',
-        then: 'Tự động chuyển đổi mẫu về chuẩn PCM Mono 16kHz 16-bit và cắt lọc khoảng lặng đầu cuối (Silence Trimming -50dB) nhằm tối ưu độ chính xác nhận diện âm tắc vô thanh /p, t, k/ của học viên Việt.',
-        completed: true
-      },
-      {
-        id: 'ac-arch-102-a11y-fallback',
-        given: 'Sự cố kết nối mạng của worker AI',
-        when: 'Một worker gặp lỗi phân tích hoặc timeout 5 giây',
-        then: 'Job tự động được trả về hàng đợi thử lại (Dead Letter Queue với cơ chế Exponential Backoff 3 lần), client nhận thông báo lỗi chi tiết thay vì bị treo vô hạn.',
-        completed: true
+        id: 'ac-arch-102-dead-letter-queue',
+        given: 'Một file âm thanh bị lỗi hỏng định dạng dữ liệu',
+        when: 'Worker gặp lỗi giải mã 3 lần liên tiếp với backoff exponential',
+        then: 'Tự động chuyển job sang Dead Letter Queue (DLQ), bắn cảnh báo lỗi về hệ thống giám sát và trả thông báo lỗi thân thiện cho client.',
+        completed: false
       }
     ]),
     technical_tasks: JSON.stringify([
-      { id: 't-arch-102-be-fastapi', title: 'Xây dựng API Ingestion hiệu năng cao bằng FastAPI với streaming upload và xác thực chữ ký audio header', category: 'Backend', completed: true },
-      { id: 't-arch-102-be-queue', title: 'Thiết lập cụm Redis BullMQ cluster phân tán với phân luồng ưu tiên (VIP Pro > Standard Free)', category: 'Backend', completed: true },
-      { id: 't-arch-102-be-ffmpeg', title: 'Tích hợp FFmpeg C-binding xử lý chuẩn hóa audio PCM 16kHz mono trong bộ nhớ RAM (In-Memory Buffer)', category: 'Audio/DSP', completed: true },
-      { id: 't-arch-102-be-keda', title: 'Viết cấu hình Kubernetes ScaledObject (KEDA) tự động tăng giảm GPU worker pods dựa trên Redis queue length', category: 'DevOps/Scale', completed: true },
-      { id: 't-arch-102-qa', title: 'Chạy kịch bản kiểm thử tải Locust mô phỏng 5,000 user gửi đồng thời 10,000 file âm thanh trong 5 phút', category: 'QA', completed: true }
+      { id: 't-arch-102-be-ingest', title: 'Xây dựng API Ingestion POST /api/v1/audio/ingest tiếp nhận multipart/form-data', category: 'Backend', completed: true },
+      { id: 't-arch-102-be-worker', title: 'Viết BullMQ worker thực thi lệnh FFmpeg chuẩn hóa PCM 16kHz mono', category: 'Backend', completed: true },
+      { id: 't-arch-102-be-keda', title: 'Thiết lập KEDA ScaledObject trên Kubernetes tự động mở rộng pods theo Redis queue length', category: 'DevOps/Scale', completed: false },
+      { id: 't-arch-102-qa', title: 'Chạy stress-test 10,000 job liên tục đảm bảo không rò rỉ bộ nhớ (memory leak)', category: 'QA', completed: false }
     ]),
-    notes: `### 🎨 FRONTEND DESIGN SPECIFICATION
-- **Component File**: \`vietphonics-app/src/components/telemetry/QueueStatusIndicator.jsx\`
-- **Stitch Design Tokens**:
-  - Processing Spinner: \`w-5 h-5 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin\`
-  - Queue Wait Badge: \`font-mono text-[11px] text-slate-400 bg-slate-800 px-2 py-0.5 rounded\`.
+    notes: `### 🗄️ PURE BACKEND & PIPELINE SPECIFICATION
+- **Phân loại**: Pure Backend & GPU Queue Worker Pipeline (0% UI)
+- **Components**: BullMQ + Redis Stream + FFmpeg + Triton GPU Workers
 
----
+#### ⚙️ BullMQ Job Architecture
+\`\`\`javascript
+import { Queue, Worker } from 'bullmq';
 
-### 🗄️ BACKEND DESIGN SPECIFICATION
-- **REST API Endpoint**:
-  \`\`\`http
-  POST /api/v1/audio/ingest-async
-  Authorization: Bearer <JWT>
-  Content-Type: multipart/form-data
-
-  Form Data:
-  - audioFile: [binary webm/opus]
-  - targetText: "I thought about that"
-  - priorityTier: "pro"
-
-  Response 202 Accepted:
-  {
-    "jobId": "job_99182ab3",
-    "status": "queued",
-    "estimatedWaitMs": 320,
-    "pollUrl": "/api/v1/audio/job-status/job_99182ab3"
+export const audioQueue = new Queue('audio-transcription-queue', {
+  connection: redisConnection,
+  defaultJobOptions: {
+    attempts: 3,
+    backoff: { type: 'exponential', delay: 1000 },
+    removeOnComplete: 1000,
+    removeOnFail: 5000
   }
-  \`\`\`
-- **High Concurrency (5,000 Users)**:
-  - BullMQ Queue \`queue:audio_ingest\` phân tải thành 2 luồng: \`pro_stream\` (concurrency 64), \`free_stream\` (concurrency 16).`
+});
+\`\`\`
+
+#### 🎵 FFmpeg Normalization Pipeline
+\`\`\`bash
+ffmpeg -y -i input.webm -ac 1 -ar 16000 -c:a pcm_s16le \
+  -af "silenceremove=start_periods=1:start_duration=0.1:start_threshold=-50dB:detection=peak,areverse,silenceremove=start_periods=1:start_duration=0.1:start_threshold=-50dB:detection=peak,areverse" \
+  output_normalized.wav
+\`\`\``
   },
   {
     id: 'ARCH-103',
     epic_id: 'epic-backend-infrastructure',
-    title: 'Multi-Gateway Subscription Billing & Webhook Reconciler (Cổng Thanh Toán Tự Động VNPay, MoMo & Stripe): Bộ Đối Soát Giao Dịch & Thanh Toán Đa Cổng',
-    persona: 'Trưởng bộ phận tài chính và kỹ sư backend thanh toán cần đảm bảo dòng tiền từ học viên được ghi nhận chuẩn xác 100%',
-    action: 'tích hợp cổng thanh toán nội địa (MoMo, VNPay) cho người dùng Việt Nam và thẻ quốc tế (Stripe) cho người dùng kiều bào, tự động đối soát giao dịch qua Webhook',
-    value: 'tạo sự thuận tiện tối đa cho học viên khi chi trả bằng phương thức quen thuộc nhất, loại bỏ hoàn toàn sai sót đối soát thủ công và giảm tỷ lệ giao dịch thất bại xuống dưới 1%',
+    title: 'Multi-Gateway Subscription Billing & Webhook Reconciliation: Xử Lý Webhook Thanh Toán Thuê Bao Bất Đồng Bộ & Chống Trùng Lặp',
+    persona: 'Kỹ sư phụ trách cổng thanh toán đảm bảo tài khoản người dùng được nâng cấp Pro ngay lập tức khi tiền về tài khoản ngân hàng',
+    action: 'tiếp nhận tín hiệu Webhook từ Napas/VietQR/MoMo, xác thực chữ ký số HMAC-SHA256, xử lý nâng cấp thuê bao với cơ chế Idempotency chống cộng trùng ngày',
+    value: 'đảm bảo 100% không bao giờ xảy ra lỗi nâng cấp trùng lặp tài khoản hoặc thất thoát doanh thu, tự động kích hoạt gói Pro trong dưới 1 giây sau khi chuyển khoản',
     priority: 'must',
-    status: 'in-progress',
+    status: 'todo',
     size: 'L',
     points: 8,
     acceptance_criteria: JSON.stringify([
       {
-        id: 'ac-arch-103-payment-flow',
-        given: 'Học viên chọn mua gói Pro 1 tháng (30,000đ)',
-        when: 'Chọn phương thức MoMo, VNPay hoặc Thẻ Quốc Tế',
-        then: 'Hệ thống sinh URL thanh toán an toàn có mã hóa chữ ký số HMAC-SHA256, điều hướng mượt mà hoặc hiển thị QR thanh toán ngay trên màn hình.',
-        completed: true
+        id: 'ac-arch-103-hmac-verification',
+        given: 'Tín hiệu Webhook từ cổng thanh toán VietQR Napas gửi tới',
+        when: 'Endpoint POST /api/v1/billing/webhook/vietqr tiếp nhận',
+        then: 'Xác thực chữ ký HMAC-SHA256 trong tiêu đề X-Signature với Secret Key; nếu chữ ký không khớp trả về ngay HTTP 401 Unauthorized.',
+        completed: false
       },
       {
-        id: 'ac-arch-103-frontend-design',
-        given: 'Giao diện chọn cổng thanh toán PaymentGatewaySelector',
-        when: 'Học viên xem các lựa chọn',
-        then: 'Logo VNPay, MoMo và Stripe hiển thị sắc nét với tỷ lệ vàng, thẻ phương thức có viền sáng khi được chọn, hiển thị rõ ràng số tiền "30.000 đ" định dạng chuẩn Việt Nam, bảo mật SSL 256-bit được chứng nhận bằng huy hiệu khóa xanh an tâm.',
-        completed: true
+        id: 'ac-arch-103-idempotency-key',
+        given: 'Ngân hàng gửi lại Webhook nhiều lần do chập chờn mạng (Retry Webhooks)',
+        when: 'Mã giao dịch transaction_id đã được xử lý trước đó',
+        then: 'Hệ thống dùng Redis SETNX khóa idempotency key trong 86,400s; nhận diện trùng lặp và trả về ngay HTTP 200 OK mà không cộng trùng ngày hạn Pro.',
+        completed: false
       },
       {
-        id: 'ac-arch-103-backend-design',
-        given: 'Hàng ngàn giao dịch mua gói phát sinh trong các đợt khuyến mãi Back-To-School',
-        when: 'Các cổng thanh toán gửi hàng loạt webhook thông báo giao dịch thành công',
-        then: 'Hệ thống đối soát sử dụng cơ chế Idempotency Key (khóa giao dịch chống trùng lặp), ghi nhận giao dịch thành công và nâng cấp tài khoản chỉ trong 120ms mà không bao giờ bị cộng thừa ngày sử dụng.',
-        completed: true
+        id: 'ac-arch-103-redlock-transaction',
+        given: 'Giao dịch hợp lệ cần kích hoạt gói Pro',
+        when: 'Hệ thống cập nhật bảng subscriptions',
+        then: 'Thực thi giao dịch PostgreSQL trong khối Isolation Level READ COMMITTED kết hợp Redlock phân tán, đảm bảo tính toàn vẹn trạng thái thuê bao.',
+        completed: false
       },
       {
-        id: 'ac-arch-103-l1-precision',
-        given: 'Giao dịch qua các ngân hàng nội địa Việt Nam',
-        when: 'Tạo mã đơn hàng thanh toán',
-        then: 'Nội dung chuyển khoản được sinh ngắn gọn dạng "VP [UserID]" giúp đối soát tự động chính xác tuyệt đối ngay cả khi học viên gõ thiếu dấu tiếng Việt.',
-        completed: true
-      },
-      {
-        id: 'ac-arch-103-a11y-fallback',
-        given: 'Xử lý lỗi khi cổng thanh toán bảo trì',
-        when: 'Một cổng thanh toán gặp sự cố gián đoạn kết nối',
-        then: 'Hệ thống tự động hiển thị gợi ý thông minh chuyển sang cổng thanh toán thay thế khả dụng mà không làm học viên phải điền lại thông tin từ đầu.',
-        completed: true
+        id: 'ac-arch-103-cron-reconciliation',
+        given: 'Các giao dịch treo chưa nhận được webhook do nghẽn mạng phía ngân hàng',
+        when: 'Cron job đối soát chạy định kỳ 15 phút một lần',
+        then: 'Tự động gọi API ngân hàng đối soát danh sách giao dịch Napas và tự động bù gạch nợ cho người dùng.',
+        completed: false
       }
     ]),
     technical_tasks: JSON.stringify([
-      { id: 't-arch-103-be-gateways', title: 'Tích hợp SDK MoMo API v2, VNPay Payment Sandbox/Production và Stripe Elements', category: 'Backend', completed: true },
-      { id: 't-arch-103-be-webhook', title: 'Xây dựng Webhook Reconciler Engine kiểm tra chữ ký số HMAC-SHA256 bảo vệ chống giả mạo giao dịch', category: 'Backend', completed: true },
-      { id: 't-arch-103-be-idempotent', title: 'Thiết kế bảng payment_transactions với Unique Constraint trên transaction_reference bảo vệ tính Idempotent', category: 'Backend', completed: true },
-      { id: 't-arch-103-be-scale', title: 'Tối ưu hóa khả năng chịu tải của Webhook Receiver đáp ứng 500 webhooks/giây không gây nghẽn kết nối DB', category: 'DevOps/Scale', completed: true },
-      { id: 't-arch-103-qa', title: 'Viết test suite mô phỏng các kịch bản: thanh toán thành công, người dùng hủy, timeout, và webhook gửi lặp 3 lần', category: 'QA', completed: true }
+      { id: 't-arch-103-be-hmac', title: 'Xây dựng middleware kiểm tra chữ ký số HMAC-SHA256 cho Webhook endpoint', category: 'Backend', completed: false },
+      { id: 't-arch-103-be-idempotency', title: 'Triển khai cơ chế Idempotent Transaction với Redis SETNX và PostgreSQL transaction', category: 'Backend', completed: false },
+      { id: 't-arch-103-be-reconcile', title: 'Thiết lập cron job đối soát thanh toán tự động chạy mỗi 15 phút', category: 'Backend', completed: false },
+      { id: 't-arch-103-qa', title: 'Kiểm thử kịch bản bắn 50 request webhook trùng lặp đồng thời kiểm tra tài khoản chỉ được cộng hạn 1 lần duy nhất', category: 'QA', completed: false }
     ]),
-    notes: `### 🎨 FRONTEND DESIGN SPECIFICATION
-- **Component File**: \`vietphonics-app/src/components/subscription/PaymentGatewaySelector.jsx\`
-- **Stitch Design Tokens**:
-  - Gateway Card Selected: \`border-2 border-rose-500 bg-rose-500/10 shadow-[0_0_20px_rgba(244,63,94,0.3)] rounded-2xl p-4 cursor-pointer\`
-  - Amount Display: \`font-['Plus_Jakarta_Sans'] font-extrabold text-2xl text-white\`.
+    notes: `### 🗄️ PURE BACKEND & BILLING SPECIFICATION
+- **Phân loại**: Pure Backend Payment Webhook Engine (0% UI)
+- **Security**: HMAC-SHA256 Signature Verification + Redis Distributed Locking
 
----
-
-### 🗄️ BACKEND DESIGN SPECIFICATION
-- **Webhook Reconciliation Engine**:
-  \`\`\`javascript
-  // Webhook Receiver Handler
-  export async function handleWebhook(req, res) {
-    const signature = req.headers['x-signature'];
-    const isValid = verifyHmacSha256(req.rawBody, process.env.WEBHOOK_SECRET, signature);
-    if (!isValid) return res.status(401).json({ error: 'Invalid signature' });
-
-    const { transactionRef, amount, userId, orderId } = req.body;
-    // Check idempotency in Redis
-    const lockKey = \`lock:tx:\${transactionRef}\`;
-    const acquired = await redis.set(lockKey, '1', 'NX', 'EX', 60);
-    if (!acquired) return res.status(200).json({ status: 'already_processed' });
-
-    await upgradeUserToPro(userId, 30); // 30 days
-    return res.status(200).json({ success: true });
+#### ⚙️ Idempotent Webhook Handler
+\`\`\`javascript
+export async function handlePaymentWebhook(req, res) {
+  const signature = req.headers['x-signature'];
+  const rawBody = req.rawBody;
+  
+  if (!verifyHmacSha256(rawBody, signature, process.env.VIETQR_WEBHOOK_SECRET)) {
+    return res.status(401).json({ error: 'Invalid HMAC signature' });
   }
-  \`\`\``
+
+  const { transactionId, orderCode, amount } = req.body;
+  const lockKey = \`idempotency:webhook:\${transactionId}\`;
+  
+  // Set NX with 24h TTL
+  const isNew = await redis.set(lockKey, '1', 'NX', 'EX', 86400);
+  if (!isNew) {
+    return res.status(200).json({ status: 'already_processed' });
+  }
+
+  await activateSubscriptionTransaction(orderCode, amount);
+  return res.status(200).json({ status: 'activated_success' });
+}
+\`\`\``
   },
   {
     id: 'ARCH-104',
     epic_id: 'epic-backend-infrastructure',
-    title: 'Tiered Quota Limiter & Entitlement Enforcement Middleware (Hạn Mức Sử Dụng Gói Free vs Pro 5,000 Users): Lớp Middleware Kiểm Soát Hạn Mức Phân Tầng',
-    persona: 'Đội ngũ kỹ thuật vận hành cần bảo vệ hệ thống khỏi các hành vi lạm dụng cào dữ liệu (scraping) hoặc tấn công DDoS',
-    action: 'triển khai lớp middleware kiểm tra quyền hạn (Entitlement) và giới hạn tần suất gọi API (Rate Limiting) theo thuật toán Token Bucket / Sliding Window',
-    value: 'bảo vệ tính khả dụng 99.99% của ứng dụng cho toàn bộ 5,000 người dùng, đồng thời đảm bảo người dùng trả phí Pro luôn được ưu tiên tài nguyên điện toán cao nhất',
+    title: 'Tiered Quota Limiter & Entitlement Enforcement Middleware (Redis Sliding Window): Kiểm Soát Định Ngạch Theo Hạng Tài Khoản & Giới Hạn Tần Suất',
+    persona: 'Kỹ sư bảo mật và kiến trúc sư hạ tầng phụ trách bảo vệ hệ thống khỏi nạn spam và lạm dụng API chấm điểm AI',
+    action: 'triển khai middleware kiểm tra quyền hạn (Entitlement) và bộ giới hạn tần suất cửa sổ trượt (Sliding Window Rate Limiter) dựa trên Redis',
+    value: 'chặn đứng các cuộc tấn công DDoS và hành vi lạm dụng token AI, đảm bảo người dùng trả phí Pro luôn được ưu tiên tài nguyên phục vụ cao nhất',
     priority: 'must',
     status: 'in-progress',
     size: 'M',
     points: 5,
     acceptance_criteria: JSON.stringify([
       {
-        id: 'ac-arch-104-quota-enforce',
-        given: 'Học viên gói Free thực hiện bài luyện phát âm thứ 6 trong ngày',
-        when: 'Request chạm vào API Gateway',
-        then: 'Middleware chặn request trong vòng dưới 2ms, trả về mã lỗi HTTP 429 Too Many Requests kèm JSON Payload chứa chi tiết hạn mức và thời gian làm mới (resets_at: 00:00:00 GMT+7).',
+        id: 'ac-arch-104-free-tier-enforcement',
+        given: 'Học viên sở hữu tài khoản Free',
+        when: 'Thực hiện bài học thứ 6 trong ngày',
+        then: 'Middleware chặn lại, trả về mã HTTP 429 Too Many Requests kèm JSON chuẩn RFC-7807 giải thích định ngạch 5 bài/ngày đã hết.',
         completed: true
       },
       {
-        id: 'ac-arch-104-frontend-design',
-        given: 'Giao diện ứng dụng nhận mã lỗi 429 từ máy chủ',
-        when: 'Xử lý phản hồi tại máy khách',
-        then: 'Tự động mở cửa sổ thông báo nâng cấp ProPaywallModal với hiệu ứng trượt nhẹ nhàng, không gây crash ứng dụng hay màn hình trắng.',
+        id: 'ac-arch-104-redis-sliding-window',
+        given: 'Người dùng gửi liên tiếp các yêu cầu thu âm trong khoảng thời gian ngắn',
+        when: 'Tần suất vượt quá 10 request / 60 giây',
+        then: 'Thuật toán Sliding Window sử dụng Redis ZSET tự động chặn các request spam và trả về header Retry-After.',
         completed: true
       },
       {
-        id: 'ac-arch-104-backend-design',
-        given: '5,000 người dùng liên tục gửi request kiểm tra từ điển và nộp bài',
-        when: 'Middleware phân giải quyền hạn',
-        then: 'Sử dụng Redis Cluster kết hợp Lua script chạy nguyên tử (Atomic Lua Script) để kiểm tra hạn mức trong bộ nhớ RAM, thời gian thực thi trung bình < 1.5ms, chịu tải 10,000 RPS.',
-        completed: true
+        id: 'ac-arch-104-pro-tier-bypass',
+        given: 'Học viên có gói thuê bao Pro đang hoạt động',
+        when: 'Thực hiện 50 bài học phát âm trong ngày',
+        then: 'Middleware xác nhận quyền hạn Pro và cho phép truy cập không giới hạn với độ trễ kiểm tra dưới 2ms.',
+        completed: false
       },
       {
-        id: 'ac-arch-104-l1-precision',
-        given: 'Học viên Pro muốn sử dụng các tính năng nâng cao (AI Khẩu Hình 3D, Golden Speaker)',
-        when: 'Middleware kiểm tra cờ tính năng entitlements',
-        then: 'Mở quyền truy cập không giới hạn, đồng thời cấp độ ưu tiên của tác vụ trong hàng đợi xử lý âm thanh được gán nhãn HIGH_PRIORITY.',
-        completed: true
-      },
-      {
-        id: 'ac-arch-104-a11y-fallback',
-        given: 'Học viên kiểm tra số lượt học còn lại trong ngày',
-        when: 'Xem thanh trạng thái tài khoản',
-        then: 'Hiển thị huy hiệu rõ ràng: "Gói Miễn Phí: Còn 3/5 bài hôm nay", hỗ trợ tooltip giải thích khi rê chuột hoặc chạm vào.',
-        completed: true
+        id: 'ac-arch-104-midnight-reset',
+        given: 'Định ngạch 5 bài học của tài khoản Free',
+        when: 'Đồng hồ hệ thống điểm 00:00 UTC',
+        then: 'Khóa Redis tự động hết hạn (TTL Expire) mà không cần chạy lệnh xóa database, nạp lại 5 lượt học miễn phí mới cho ngày tiếp theo.',
+        completed: false
       }
     ]),
     technical_tasks: JSON.stringify([
-      { id: 't-arch-104-be-lua', title: 'Viết Lua script cho Redis triển khai thuật toán Sliding Window Counter kiểm soát hạn mức phân tầng', category: 'Backend', completed: true },
-      { id: 't-arch-104-be-mw', title: 'Xây dựng Fastify/Express Middleware entitlementGuard kiểm tra token JWT và quyền hạn gói Pro', category: 'Backend', completed: true },
-      { id: 't-arch-104-be-headers', title: 'Bổ sung đầy đủ các header tiêu chuẩn RFC (X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset) vào mọi response', category: 'Backend', completed: true },
-      { id: 't-arch-104-be-scale', title: 'Thiết lập Redis sentinel / replication đảm bảo module Rate Limiter luôn có tính sẵn sàng cao (High Availability)', category: 'DevOps/Scale', completed: true },
-      { id: 't-arch-104-qa', title: 'Viết kiểm thử tự động bắn dồn dập 50 request trong 1 giây để kiểm tra tính chính xác của Lua script', category: 'QA', completed: true }
+      { id: 't-arch-104-be-lua', title: 'Viết kịch bản Lua Script thực thi nguyên tử thuật toán Sliding Window Rate Limiter trên Redis', category: 'Backend', completed: true },
+      { id: 't-arch-104-be-mw', title: 'Xây dựng Express middleware checkQuotaAndEntitlements gắn vào toàn bộ route chấm điểm AI', category: 'Backend', completed: true },
+      { id: 't-arch-104-qa', title: 'Viết bài kiểm thử tự động bắn 20 request đồng thời kiểm tra độ chính xác của bộ đếm định ngạch', category: 'QA', completed: false }
     ]),
-    notes: `### 🎨 FRONTEND DESIGN SPECIFICATION
-- **Component File**: \`vietphonics-app/src/components/subscription/QuotaUsageBadge.jsx\`
-- **Stitch Design Tokens**:
-  - Quota Pill: \`font-mono text-xs px-2.5 py-1 rounded-full border border-slate-700 bg-slate-900 text-slate-300\`.
+    notes: `### 🗄️ PURE BACKEND & SECURITY SPECIFICATION
+- **Phân loại**: Pure Backend Middleware & Rate Limiter (0% UI)
+- **Algorithm**: Redis Sorted Set Sliding Window + Lua Script
 
----
+#### ⚙️ Redis Sliding Window Lua Script
+\`\`\`lua
+local key = KEYS[1]
+local now = tonumber(ARGV[1])
+local window = tonumber(ARGV[2])
+local limit = tonumber(ARGV[3])
 
-### 🗄️ BACKEND DESIGN SPECIFICATION
-- **HTTP Headers (RFC 6585)**:
-  - \`X-RateLimit-Limit\`: 5 (Free) / 1000 (Pro)
-  - \`X-RateLimit-Remaining\`: 0
-  - \`X-RateLimit-Reset\`: 1730000000 (Timestamp).`
+-- Remove timestamps outside the sliding window
+redis.call('ZREMRANGEBYSCORE', key, 0, now - window)
+
+local current_count = redis.call('ZCARD', key)
+if current_count < limit then
+  redis.call('ZADD', key, now, now)
+  redis.call('EXPIRE', key, window)
+  return 1
+else
+  return 0
+end
+\`\`\``
   },
   {
     id: 'ARCH-105',
     epic_id: 'epic-backend-infrastructure',
-    title: 'Cloud Object Storage & Ephemeral Audio Retention Lifecycle (Lưu Trữ Âm Thanh Cloudflare R2 Presigned URLs): Quản Lý Lưu Trữ Đám Mây & Vòng Đời Tệp Tạm',
-    persona: 'Kỹ sư hạ tầng đám mây và chuyên gia bảo mật dữ liệu chịu trách nhiệm tối ưu chi phí lưu trữ và tuân thủ quy định bảo mật riêng tư',
-    action: 'lưu trữ file âm thanh người dùng trên Cloudflare R2 thông qua cơ chế Presigned URLs trực tiếp từ trình duyệt, tự động xóa file tạm sau 24 giờ cho tài khoản Free',
-    value: 'tiết kiệm 100% chi phí truyền tải dữ liệu (Zero Egress Fees), giảm tải băng thông máy chủ chính và ngăn ngừa nguy cơ phình to dung lượng ổ đĩa khi phục vụ 5,000 người dùng hàng ngày',
-    priority: 'should',
+    title: 'Cloud Object Storage & Ephemeral Audio Retention Lifecycle (Cloudflare R2): Lưu Trữ File Âm Thanh Trên Đám Mây & Vòng Đời Tự Động Xóa Dữ Liệu Tạm',
+    persona: 'Kỹ sư DevOps chịu trách nhiệm tối ưu chi phí lưu trữ đám mây và bảo vệ quyền riêng tư dữ liệu giọng nói của học viên',
+    action: 'cấu hình lưu trữ đám mây Cloudflare R2 tương thích S3, cấp Presigned Upload URLs để máy khách tải file trực tiếp, và thiết lập vòng đời tự động xóa file rác',
+    value: 'giảm 100% chi phí băng thông tải ra (Zero Egress Fees), tiết kiệm 80% chi phí lưu trữ đĩa cứng và tuân thủ tiêu chuẩn bảo vệ quyền riêng tư người dùng',
+    priority: 'must',
     status: 'in-progress',
     size: 'M',
     points: 5,
     acceptance_criteria: JSON.stringify([
       {
-        id: 'ac-arch-105-presigned-flow',
-        given: 'Ứng dụng máy khách chuẩn bị tải lên bản ghi âm phát âm',
-        when: 'Yêu cầu URL tải lên từ máy chủ',
-        then: 'Hệ thống sinh Presigned PUT URL có thời hạn hiệu lực 5 phút; trình duyệt tải trực tiếp file âm thanh lên Cloudflare R2 mà không đi qua máy chủ API backend.',
+        id: 'ac-arch-105-presigned-url',
+        given: 'Máy khách chuẩn bị ghi âm giọng nói',
+        when: 'Gọi API GET /api/v1/storage/upload-ticket',
+        then: 'Hệ thống sinh S3 Presigned URL có thời hạn 5 phút với định danh ngẫu nhiên UUIDv7 trong vòng dưới 20ms.',
         completed: true
       },
       {
-        id: 'ac-arch-105-frontend-design',
-        given: 'Giao diện người dùng trong lúc tải file ghi âm',
-        when: 'File đang được tải lên',
-        then: 'Hiển thị thanh tiến trình tải lên mượt mà (0% -> 100%) viền Sky-500, không làm đơ giao diện người dùng và tự động chuyển sang trạng thái "Đang phân tích âm thanh" khi tải xong.',
+        id: 'ac-arch-105-direct-client-upload',
+        given: 'Máy khách nhận được Presigned URL',
+        when: 'Học viên ghi âm xong và tải file Opus lên Cloudflare R2',
+        then: 'Luồng dữ liệu nhị phân truyền thẳng từ trình duyệt lên R2 mà không đi qua máy chủ backend, tiết kiệm 100% băng thông máy chủ.',
         completed: true
       },
       {
-        id: 'ac-arch-105-backend-design',
-        given: '5,000 người dùng tải lên trung bình 20 file ghi âm/ngày (tổng 100,000 file âm thanh/ngày tương đương 15GB dữ liệu mới)',
-        when: 'Xử lý luồng tải lên và vòng đời tệp',
-        then: 'Máy chủ backend hoàn toàn không tốn băng thông truyền file âm thanh; Cloudflare R2 Lifecycle Policy tự động dọn dẹp các tệp tạm sau 24 giờ đối với gói Free, đảm bảo chi phí lưu trữ luôn dưới 5$ mỗi tháng.',
+        id: 'ac-arch-105-ephemeral-auto-purge',
+        given: 'Hàng triệu file ghi âm luyện tập ngắn tích lũy trên R2',
+        when: 'File đạt tuổi thọ quá 7 ngày đối với gói Free (hoặc 90 ngày đối với gói Pro)',
+        then: 'Quy tắc R2 Bucket Lifecycle Rules tự động thanh trừng các file quá hạn mà không tốn tài nguyên CPU máy chủ.',
         completed: true
       },
       {
-        id: 'ac-arch-105-l1-precision',
-        given: 'Học viên Pro muốn lưu trữ các bản ghi âm kỷ niệm để theo dõi tiến trình 6 tháng',
-        when: 'Hệ thống xử lý lưu trữ cho người dùng Pro',
-        then: 'File được chuyển vào thư mục lưu trữ lâu dài archive/{user_id}/ với chính sách bảo quản vĩnh viễn và mã hóa AES-256 ở trạng thái nghỉ (At-Rest Encryption).',
-        completed: true
-      },
-      {
-        id: 'ac-arch-105-a11y-fallback',
-        given: 'Học viên yêu cầu xóa toàn bộ dữ liệu ghi âm cá nhân theo chuẩn quyền riêng tư',
-        when: 'Bấm nút "Xóa lịch sử giọng nói của tôi" trong phần Cài đặt',
-        then: 'Hệ thống gọi API xóa toàn bộ bucket prefix của người dùng trong 3 giây và gửi thông báo xác nhận minh bạch.',
-        completed: true
+        id: 'ac-arch-105-cors-security',
+        given: 'Yêu cầu tải file từ một tên miền lạ không thuộc hệ thống',
+        when: 'Gửi request lên R2 bucket',
+        then: 'Chính sách CORS chặn đứng và từ chối truy cập, chỉ cho phép nguồn gốc xuất phát từ *.vietphonics.com.',
+        completed: false
       }
     ]),
     technical_tasks: JSON.stringify([
-      { id: 't-arch-105-be-r2', title: 'Tích hợp AWS S3 SDK tương thích với Cloudflare R2 và viết hàm generatePresignedPutUrl', category: 'Backend', completed: true },
-      { id: 't-arch-105-be-lifecycle', title: 'Cấu hình R2 Bucket Lifecycle Rules tự động xóa tiền tố uploads/temp/ sau 24 giờ', category: 'DevOps/Scale', completed: true },
-      { id: 't-arch-105-fe-upload', title: 'Xây dựng component DirectAudioUploader trên frontend hỗ trợ XMLHttpRequest progress và resume khi mất mạng', category: 'Frontend', completed: true },
-      { id: 't-arch-105-be-cors', title: 'Thiết lập CORS an toàn trên Cloudflare R2 chỉ cho phép nguồn gốc xuất xứ domain của ứng dụng', category: 'DevOps/Scale', completed: true },
-      { id: 't-arch-105-qa', title: 'Kiểm thử tải lên 100 file âm thanh song song và xác minh tính hợp lệ của chữ ký URL', category: 'QA', completed: true }
+      { id: 't-arch-105-be-s3', title: 'Tích hợp AWS SDK v3 S3Client kết nối với Cloudflare R2 endpoint', category: 'Backend', completed: true },
+      { id: 't-arch-105-be-presign', title: 'Xây dựng API GET /api/v1/storage/upload-ticket sinh presigned PUT URL', category: 'Backend', completed: true },
+      { id: 't-arch-105-be-lifecycle', title: 'Cấu hình XML Lifecycle Rules trên bucket R2 cho chính sách xóa 7 ngày và 90 ngày', category: 'DevOps/Scale', completed: true },
+      { id: 't-arch-105-qa', title: 'Kiểm thử tải lên file trực tiếp từ trình duyệt Safari iOS và Chrome Android', category: 'QA', completed: false }
     ]),
-    notes: `### 🎨 FRONTEND DESIGN SPECIFICATION
-- **Component File**: \`vietphonics-app/src/utils/audioUploader.js\`
-- **Direct Upload Flow**:
-  1. \`GET /api/v1/audio/presigned-url?filename=record.opus\` -> Trả URL có ký số AWS SigV4
-  2. \`PUT https://r2.vietphonics.com/temp/usr99/record.opus\` trực tiếp qua fetch binary payload
-  3. Gửi metadata \`{ r2Key: "temp/usr99/record.opus" }\` về backend để chấm điểm.
+    notes: `### 🗄️ PURE BACKEND & CLOUD DEVOPS SPECIFICATION
+- **Phân loại**: Pure Backend Cloud Storage & S3 Lifecycle (0% UI)
+- **Provider**: Cloudflare R2 (S3 Compatible - Zero Egress Fees)
 
----
+#### ⚙️ S3 Presigned URL Generator
+\`\`\`javascript
+import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 
-### 🗄️ BACKEND DESIGN SPECIFICATION
-- **Cloudflare R2 Lifecycle Policy**:
-  \`\`\`json
-  {
-    "Rules": [
-      {
-        "ID": "DeleteTempAudioAfter24Hours",
-        "Filter": { "Prefix": "audio-temp/" },
-        "Status": "Enabled",
-        "Expiration": { "Days": 1 }
-      }
-    ]
+const r2 = new S3Client({
+  region: 'auto',
+  endpoint: \`https://\${process.env.CF_ACCOUNT_ID}.r2.cloudflarestorage.com\`,
+  credentials: {
+    accessKeyId: process.env.R2_ACCESS_KEY_ID,
+    secretAccessKey: process.env.R2_SECRET_ACCESS_KEY
   }
-  \`\`\``
+});
+
+export async function createAudioUploadTicket(userId, extension = 'opus') {
+  const key = \`audio/\${userId}/\${crypto.randomUUID()}.\${extension}\`;
+  const command = new PutObjectCommand({
+    Bucket: 'vietphonics-audio-prod',
+    Key: key,
+    ContentType: 'audio/opus'
+  });
+  const presignedUrl = await getSignedUrl(r2, command, { expiresIn: 300 });
+  return { key, presignedUrl };
+}
+\`\`\``
   },
   {
     id: 'PAY-101',
     epic_id: 'epic-backend-infrastructure',
-    title: 'Dynamic VietQR Auto-Reconciliation Engine: Thuê Bao 30K Phí Giao Dịch 0% (SePay / OpenBanking Webhook): Động Cơ Đối Soát Tự Động VietQR 0% Phí',
-    persona: 'Người sáng lập và đội ngũ tài chính muốn cung cấp gói học phí cực kỳ bình dân (30,000đ/tháng) mà không bị các cổng thanh toán khấu trừ 2-3% phí dịch vụ',
-    action: 'sinh mã VietQR động theo chuẩn Napas 24/7 có sẵn số tiền và nội dung chuyển khoản mã hóa, tự động nhận diện giao dịch ngân hàng thành công qua SePay/OpenBanking Webhook',
-    value: 'đạt tỷ lệ phí giao dịch 0% (tiết kiệm hàng chục triệu đồng mỗi tháng), kích hoạt tài khoản Pro tự động cho học viên chỉ sau 3-5 giây kể từ khi bấm chuyển tiền',
+    title: 'Dynamic VietQR Auto-Reconciliation Engine: Thuê Bao VietQR Napas Tự Động Gạch Nợ',
+    persona: 'Học viên Việt Nam muốn nâng cấp tài khoản Pro qua ứng dụng ngân hàng di động mà không cần thẻ tín dụng quốc tế Visa/Mastercard',
+    action: 'quét mã VietQR động được tạo riêng cho đơn hàng và chuyển tiền qua ứng dụng ngân hàng (BIDV, Vietcombank, Techcombank, MB, Momo)',
+    value: 'kích hoạt gói Pro tự động tức thì trong vòng 2 giây sau khi chuyển khoản, loại bỏ hoàn toàn việc phải chụp ảnh biên lai gửi admin xác nhận thủ công',
     priority: 'must',
-    status: 'in-progress',
+    status: 'done',
     size: 'L',
     points: 8,
+    uiMockupUrl: '/src/ui-reference/ng_n_h_ng_t_l_i_n_ng_c_p_pro_light_mode/code.html',
     acceptance_criteria: JSON.stringify([
       {
-        id: 'ac-pay-101-vietqr-gen',
-        given: 'Học viên chọn gói Pro 30,000đ/tháng',
-        when: 'Hệ thống khởi tạo mã VietQR thanh toán',
-        then: 'Hệ thống sinh mã QR chuẩn Napas 24/7 chứa sẵn số tài khoản ngân hàng thụ hưởng, đúng số tiền 30,000 VNĐ và nội dung chuyển khoản độc nhất (e.g., "VP 883921").',
+        id: 'ac-pay-101-emvco-qr-generation',
+        given: 'Học viên chọn gói Pro 1 Tháng hoặc Pro 1 Năm',
+        when: 'Hộp thoại thanh toán hiển thị',
+        then: 'Hệ thống sinh mã VietQR chuẩn EMVCo chứa sẵn số tài khoản, mã ngân hàng (BIN), số tiền chính xác và cú pháp chuyển khoản duy nhất "VP {userId} {planCode}".',
         completed: true
       },
       {
-        id: 'ac-pay-101-frontend-design',
-        given: 'Giao diện màn hình thanh toán VietQR Checkout View',
-        when: 'Hiển thị mã QR cho học viên',
-        then: 'Ảnh mã VietQR kích thước 240x240px sắc nét có logo ngân hàng chính thống ở tâm, khung quét bo góc hiện đại có tia quét radar chuyển động nhẹ, nút bấm một chạm "Sao chép số tài khoản" và "Sao chép số tiền" có thông báo Toast Toastification xác nhận tiện lợi.',
+        id: 'ac-pay-101-realtime-polling-activation',
+        given: 'Học viên đang mở màn hình chờ thanh toán',
+        when: 'Giao dịch ngân hàng thành công',
+        then: 'Màn hình tự động chuyển sang trạng thái "Đã Kích Hoạt Gói Pro!" kèm hiệu ứng pháo hoa chúc mừng trong dưới 2 giây mà không cần bấm nút F5.',
         completed: true
       },
       {
-        id: 'ac-pay-101-backend-design',
-        given: 'Hàng trăm học viên cùng quét mã QR và chuyển khoản trong giờ vàng khuyến mại',
-        when: 'Webhook ngân hàng (SePay / Casso / OpenBanking) gửi thông báo biến động số dư',
-        then: 'Hệ thống đối soát phân tích cú pháp nội dung chuyển tiền bằng biểu thức chính quy (Regex Pattern Matching), tìm đúng user_id và nâng cấp tài khoản trong vòng dưới 80ms, xử lý được 200 webhook/giây.',
+        id: 'ac-pay-101-one-click-copy',
+        given: 'Học viên chuyển khoản thủ công không quét mã QR',
+        when: 'Bấm nút sao chép bên cạnh Số Tài Khoản hoặc Cú Pháp Chuyển Khoản',
+        then: 'Dữ liệu được sao chép vào bộ nhớ đệm Clipboard kèm thông báo Toast "Đã sao chép thành công!".',
         completed: true
       },
       {
-        id: 'ac-pay-101-l1-precision',
-        given: 'Học viên chuyển tiền từ các ứng dụng ngân hàng phổ biến tại Việt Nam (Vietcombank, Techcombank, MB Bank, VPBank)',
-        when: 'Khách hàng quét mã QR bằng tính năng QR Pay trong app ngân hàng',
-        then: 'Toàn bộ số tiền và nội dung tự động điền sẵn 100%, học viên chỉ cần bấm xác thực vân tay/FaceID mà không phải gõ bất kỳ con số nào.',
-        completed: true
-      },
-      {
-        id: 'ac-pay-101-a11y-fallback',
-        given: 'Học viên chuyển khoản sai cú pháp nội dung (e.g. quên gõ tiền tố VP)',
-        when: 'Hệ thống nhận biến động số dư không khớp',
-        then: 'Giao dịch được ghi nhận vào bảng unmatched_transactions và gửi cảnh báo ngay về kênh Telegram Admin kèm số điện thoại học viên để bộ phận CSKH hỗ trợ kích hoạt thủ công trong 5 phút.',
+        id: 'ac-pay-101-qr-timeout-countdown',
+        given: 'Mã QR thanh toán có thời hạn hiệu lực',
+        when: 'Đồng hồ đếm ngược 15:00 phút chạy hết giờ',
+        then: 'Mã QR mờ đi kèm thông báo "Mã thanh toán đã hết hạn" và nút "Tạo mã QR mới".',
         completed: true
       }
     ]),
     technical_tasks: JSON.stringify([
-      { id: 't-pay-101-be-vietqr', title: 'Tích hợp thư viện tạo mã VietQR theo đặc tả chuẩn EMVCo và ngân hàng nhà nước Napas 247', category: 'Backend', completed: true },
-      { id: 't-pay-101-be-sepay', title: 'Xây dựng Webhook Endpoint tiếp nhận biến động số dư từ SePay/OpenBanking kèm xác thực API Key bảo mật', category: 'Backend', completed: true },
-      { id: 't-pay-101-be-regex', title: 'Viết bộ phân tích cú pháp Regex trích xuất UserID và số tiền giao dịch chống trường hợp học viên gõ thừa khoảng trắng', category: 'Backend', completed: true },
-      { id: 't-pay-101-be-scale', title: 'Thiết kế cơ chế khóa phân tán Redis Lock ngăn ngừa tình trạng kích hoạt trùng lặp khi webhook gửi lại', category: 'DevOps/Scale', completed: true },
-      { id: 't-pay-101-qa', title: 'Kiểm thử hộp đen mô phỏng toàn bộ chu trình: Sinh QR -> Quét thanh toán giả lập -> Webhook -> Tài khoản chuyển thành Pro', category: 'QA', completed: true }
+      { id: 't-pay-101-fe-modal', title: 'Xây dựng component VietQrCheckoutModal.jsx với mã QR động và đồng hồ đếm ngược 15 phút', category: 'Frontend', completed: true },
+      { id: 't-pay-101-fe-poll', title: 'Thiết lập polling trạng thái thanh toán hoặc lắng nghe WebSocket sự kiện payment_received', category: 'Frontend', completed: true },
+      { id: 't-pay-101-be-emvco', title: 'Viết module sinh chuỗi ký tự VietQR EMVCo CRC16 chuẩn Napas 24/7', category: 'Backend', completed: true },
+      { id: 't-pay-101-qa', title: 'Kiểm thử thanh toán thực tế với 3 app ngân hàng phổ biến (Vietcombank, MB Bank, Techcombank)', category: 'QA', completed: true }
     ]),
-    notes: `### 🎨 FRONTEND DESIGN SPECIFICATION
-- **Component File**: \`vietphonics-app/src/components/subscription/VietQrCheckout.jsx\`
-- **Stitch Design Tokens**:
-  - QR Box: \`w-64 h-64 bg-white p-3 rounded-3xl shadow-[0_0_35px_rgba(255,255,255,0.15)] flex items-center justify-center relative overflow-hidden\`
-  - Scan Laser: \`h-0.5 bg-rose-500 absolute w-full shadow-[0_0_8px_#f43f5e] animate-pulse\`
-  - Copy Pill: \`bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded-xl font-mono text-xs flex items-center gap-1.5 cursor-pointer\`.
+    notes: `### 🎯 FULLSTACK FEATURE SPECIFICATION
+- **Phân loại**: Full-stack VietQR Napas Payment Integration
+- **UI Mockup**: \`vietphonics-app/src/ui-reference/ng_n_h_ng_t_l_i_n_ng_c_p_pro_light_mode/code.html\`
+- **Frontend Component**: \`vietphonics-app/src/components/payment/VietQrCheckoutModal.jsx\`
 
----
-
-### 🗄️ BACKEND DESIGN SPECIFICATION
-- **Webhook Endpoint Contract**:
-  \`\`\`http
-  POST /api/v1/billing/sepay-webhook
-  Authorization: ApiKey <SEPAY_SECRET_TOKEN>
-  Content-Type: application/json
-
-  Request Body:
-  {
-    "id": 981245,
-    "gateway": "Vietcombank",
-    "transactionDate": "2026-10-03 15:45:00",
-    "accountNumber": "9938210029",
-    "transferType": "in",
-    "transferAmount": 30000,
-    "content": "VP 883921 THANH TOAN PRO",
-    "referenceCode": "MBVCB.981245"
-  }
-
-  Response 200 OK:
-  {
-    "success": true,
-    "userId": "usr_883921",
-    "status": "pro_activated_30_days"
-  }
-  \`\`\``
+#### 🎨 VietQR Modal Layout
+\`\`\`
++-------------------------------------------------------------+
+| NÂNG CẤP PRO: GÓI 1 NĂM (TIẾT KIỆM 40%)                     |
+| Số tiền: 599.000 VNĐ                 [ ⏱️ Hết hạn: 14:32 ]  |
++-------------------------------------------------------------+
+|             [ MÃ VIETQR ĐỘNG CHUẨN NAPAS ]                 |
+|             (Mở app ngân hàng bất kỳ để quét)              |
++-------------------------------------------------------------+
+| Ngân hàng: MB Bank (Quân Đội)        [ Sao chép ]           |
+| Số tài khoản: 0988 123 456           [ Sao chép ]           |
+| Nội dung: VP 88291 PRO1Y             [ Sao chép ]           |
++-------------------------------------------------------------+
+| [🔴 Đang chờ ngân hàng xác nhận giao dịch tự động...]       |
++-------------------------------------------------------------+
+\`\`\``
   },
   {
     id: 'PAY-102',
     epic_id: 'epic-backend-infrastructure',
-    title: 'Frictionless 1-Scan Checkout Modal & Real-Time Activation Polling (Thanh Toán 1 Quẹt & Tự Động Mở Khóa): Cửa Sổ Thanh Toán 1 Chạm & Tự Động Kích Hoạt Thời Gian Thực',
-    persona: 'Người dùng vừa quét mã QR ngân hàng xong và đang háo hức chờ ứng dụng tự động mở khóa tính năng mà không muốn phải bấm F5 tải lại trang',
-    action: 'quan sát màn hình thanh toán tự động chuyển sang trạng thái "Thành công rực rỡ" ngay khi tiền vừa trừ khỏi tài khoản ngân hàng, kèm hiệu ứng pháo hoa chúc mừng',
-    value: 'tạo cảm xúc thăng hoa (Aha Moment) và ấn tượng công nghệ hiện đại, xóa bỏ hoàn toàn cảm giác lo lắng "liệu tiền đã vào hệ thống chưa?"',
+    title: 'Frictionless 1-Scan Checkout Modal & Real-Time Activation: Giao Diện Quét Mã Thanh Toán Không Ma Sát',
+    persona: 'Người dùng muốn trải nghiệm mua hàng nhanh chóng, không muốn điền form thông tin thanh toán rườm rà',
+    action: 'mở modal thanh toán 1 chạm, quét mã và nhận tài khoản Pro ngay lập tức',
+    value: 'tối đa hóa tỷ lệ chuyển đổi đơn hàng (Checkout Conversion Rate), mang lại trải nghiệm mua sắm hiện đại bậc nhất',
     priority: 'must',
-    status: 'in-progress',
+    status: 'done',
     size: 'M',
     points: 5,
+    uiMockupUrl: '/src/ui-reference/ng_n_h_ng_t_l_i_n_ng_c_p_pro_light_mode/code.html',
     acceptance_criteria: JSON.stringify([
       {
-        id: 'ac-pay-102-auto-polling',
-        given: 'Học viên đang mở cửa sổ thanh toán VietQR Checkout Modal',
-        when: 'Học viên hoàn tất chuyển khoản trên ứng dụng ngân hàng',
-        then: 'Cơ chế Server-Sent Events (SSE) hoặc Polling thông minh (2 giây/lần) phát hiện trạng thái PAID, modal tự động đóng và chuyển hướng sang màn hình chào mừng thành viên Pro với hiệu ứng Confetti rực rỡ.',
+        id: 'ac-pay-102-responsive-modal',
+        given: 'Học viên bấm nâng cấp tài khoản Pro',
+        when: 'Hộp thoại mở ra',
+        then: 'Modal thanh toán hiển thị sắc nét, căn giữa hoàn hảo trên cả desktop và mobile, nền mờ backdrop-blur-md sang trọng.',
         completed: true
       },
       {
-        id: 'ac-pay-102-frontend-design',
-        given: 'Giao diện cửa sổ thanh toán Checkout Modal',
-        when: 'Đang chờ học viên quét mã',
-        then: 'Hiển thị vòng quay đếm ngược thời gian giữ chỗ thanh toán (15:00 phút), thông báo trạng thái "Đang chờ thanh toán..." có chấm xanh nhấp nháy, kèm huy hiệu hoàn tiền 100% nếu không hài lòng trong 7 ngày.',
+        id: 'ac-pay-102-mobile-deeplink',
+        given: 'Học viên truy cập bằng điện thoại di động',
+        when: 'Không thể dùng điện thoại này quét mã QR trên chính màn hình của nó',
+        then: 'Hiển thị nút "Mở Ứng Dụng Ngân Hàng (App Intent Deep Link)" cho phép mở trực tiếp app ngân hàng để chuyển tiền tự động.',
         completed: true
       },
       {
-        id: 'ac-pay-102-backend-design',
-        given: 'Hàng trăm học viên cùng mở modal thanh toán cùng lúc',
-        when: 'Các máy khách duy trì kết nối kiểm tra trạng thái thanh toán',
-        then: 'Sử dụng Server-Sent Events (SSE) nhẹ nhàng hoặc Redis key polling có ETag; máy chủ tiêu tốn dưới 2MB RAM cho 500 kết nối lắng nghe đồng thời, không gây quá tải CPU.',
+        id: 'ac-pay-102-success-animation',
+        given: 'Giao dịch được ghi nhận',
+        when: 'Modal chuyển trạng thái',
+        then: 'Hiển thị hoạt ảnh dấu tick xanh Emerald nảy lên kèm chữ "Kích hoạt Pro thành công!", tự động đóng modal sau 3 giây.',
         completed: true
       },
       {
-        id: 'ac-pay-102-l1-precision',
-        given: 'Học viên mở ứng dụng trên điện thoại di động (Mobile Web)',
-        when: 'Bấm nút "Mở App Ngân Hàng"',
-        then: 'Hệ thống hỗ trợ Deep Link tự động mở ứng dụng ngân hàng cài sẵn trên máy (Vietcombank, MB Bank, v.v.) giúp quy trình thanh toán gói gọn trong 2 thao tác chạm.',
-        completed: true
-      },
-      {
-        id: 'ac-pay-102-a11y-fallback',
-        given: 'Người dùng bấm nút hủy thanh toán hoặc đóng cửa sổ',
-        when: 'Bấm nút "X" hoặc phím Escape',
-        then: 'Hệ thống hỏi nhẹ nhàng "Bạn có chắc muốn dừng đăng ký gói Pro chỉ 1.000đ/ngày?" với 2 nút lựa chọn rõ ràng, đảm bảo khả năng tiếp cận và điều hướng thuận tiện.',
+        id: 'ac-pay-102-support-hotline-button',
+        given: 'Học viên cần hỗ trợ về giao dịch',
+        when: 'Xem chân trang modal',
+        then: 'Nút "Hỗ trợ Zalo 24/7" mở ngay kênh hỗ trợ viên với mã đơn hàng được sao chép sẵn.',
         completed: true
       }
     ]),
     technical_tasks: JSON.stringify([
-      { id: 't-pay-102-be-sse', title: 'Xây dựng kênh Server-Sent Events (SSE) /api/subscriptions/listen-status/:orderId phát thông báo kích hoạt', category: 'Backend', completed: true },
-      { id: 't-pay-102-fe-confetti', title: 'Tích hợp thư viện canvas-confetti tạo hoạt ảnh pháo hoa chúc mừng khi nâng cấp Pro thành công', category: 'Frontend', completed: true },
-      { id: 't-pay-102-fe-deeplink', title: 'Triển khai danh sách App Scheme Deep Link cho top 10 ngân hàng phổ biến nhất tại Việt Nam', category: 'Frontend', completed: true },
-      { id: 't-pay-102-be-scale', title: 'Tối ưu hóa EventSource connection pool trên Nginx reverse proxy tránh lỗi nghẽn file descriptor', category: 'DevOps/Scale', completed: true },
-      { id: 't-pay-102-qa', title: 'Kiểm thử trải nghiệm trên thiết bị di động iOS Safari và Android Chrome đảm bảo chuyển app và quay lại mượt mà', category: 'QA', completed: true }
+      { id: 't-pay-102-fe-deeplink', title: 'Tích hợp liên kết Deep Link mở các app ngân hàng Việt Nam trên mobile', category: 'Frontend', completed: true },
+      { id: 't-pay-102-fe-animation', title: 'Thiết kế hiệu ứng thành công Success Confetti Animation', category: 'Frontend', completed: true },
+      { id: 't-pay-102-fe-copy', title: 'Tích hợp Clipboard API với thông báo phản hồi trực quan', category: 'Frontend', completed: true },
+      { id: 't-pay-102-qa', title: 'Kiểm tra độ tương thích trên các trình duyệt in-app browser như Zalo, Facebook Messenger', category: 'QA', completed: true }
     ]),
-    notes: `### 🎨 FRONTEND DESIGN SPECIFICATION
-- **Component File**: \`vietphonics-app/src/components/subscription/CheckoutModal.jsx\`
-- **Stitch Design Tokens**:
-  - Modal: \`bg-slate-900 border border-slate-800 rounded-3xl p-8 max-w-md w-full shadow-2xl space-y-6\`
-  - Confetti Burst: \`canvas-confetti\` 120 particles, colors: \`['#f43f5e', '#0ea5e9', '#10b981', '#f59e0b']\`.`
+    notes: `### 🎨 PURE FRONTEND DESIGN SPECIFICATION
+- **Phân loại**: Pure Frontend Checkout Modal & Mobile Deeplinks
+- **UI Mockup**: \`vietphonics-app/src/ui-reference/ng_n_h_ng_t_l_i_n_ng_c_p_pro_light_mode/code.html\`
+- **Frontend Component**: \`vietphonics-app/src/components/payment/VietQrCheckoutModal.jsx\`
+
+#### 🎨 Checkout Modal Tokens
+- **Modal Frame**: \`bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-2xl max-w-md w-full mx-auto\`.
+- **QR Box**: \`bg-white p-4 rounded-2xl shadow-inner flex items-center justify-center\`.
+- **Deeplink Button**: \`w-full py-3 rounded-xl bg-sky-500 hover:bg-sky-400 text-white font-bold text-sm flex items-center justify-center gap-2\`.`
   },
   {
     id: 'PAY-103',
     epic_id: 'epic-backend-infrastructure',
-    title: 'Multi-Cycle Pricing & Retention Strategy (Chiến Lược Gói Tháng 30k vs Gói Năm 299k Giảm Tỷ Lệ Rời Bỏ): Chiến Lược Giá Đa Chu Kỳ & Giữ Chân Khách Hàng',
-    persona: 'Người dùng đang cân nhắc mức chi tiêu hợp lý cho việc học phát âm tiếng Anh lâu dài',
-    action: 'lựa chọn giữa gói linh hoạt Tháng (30,000đ/tháng) và gói tiết kiệm Năm (299,000đ/năm - tặng thêm 3 tháng), xem rõ số tiền tiết kiệm được và các đặc quyền đi kèm',
-    value: 'tối ưu hóa giá trị vòng đời khách hàng (Customer Lifetime Value LTV), nâng tỷ lệ chọn gói năm lên trên 45% giúp dòng tiền doanh nghiệp dồi dào và ổn định',
+    title: 'Multi-Cycle Pricing & Retention Strategy (Chiến Lược Giá Đa Chu Kỳ: Tháng, Quý, Năm)',
+    persona: 'Người học có nhu cầu tài chính và cam kết học tập khác nhau (học thử 1 tháng hoặc cam kết ôn thi 1 năm)',
+    action: 'chọn chu kỳ thanh toán linh hoạt (1 Tháng, 3 Tháng, 1 Năm) trên bảng giá và thấy rõ mức tiền tiết kiệm',
+    value: 'minh bạch về chi phí, tối ưu hóa giá trị đầu tư cho người học (chỉ 3.000đ/ngày đối với gói năm)',
     priority: 'should',
-    status: 'in-progress',
+    status: 'done',
     size: 'M',
     points: 5,
+    uiMockupUrl: '/src/ui-reference/ng_n_h_ng_t_l_i_n_ng_c_p_pro_light_mode/code.html',
     acceptance_criteria: JSON.stringify([
       {
-        id: 'ac-pay-103-pricing-toggle',
+        id: 'ac-pay-103-cycle-toggle',
         given: 'Học viên xem bảng giá dịch vụ',
-        when: 'Bấm chuyển đổi toggle giữa "Thanh toán theo Tháng" và "Thanh toán theo Năm"',
-        then: 'Giá gói năm hiển thị huy hiệu tiết kiệm "Tiết kiệm 35%" màu xanh ngọc rực rỡ, tính ra chỉ tương đương 24,000đ/tháng, tự động cập nhật số tiền thanh toán.',
+        when: 'Gạt thanh chuyển đổi "Thanh toán theo năm (Tiết kiệm 40%)"',
+        then: 'Giá hiển thị của tất cả các gói tự động cập nhật lại mức giá tương ứng kèm số tiền tiết kiệm được bôi đậm nổi bật.',
         completed: true
       },
       {
-        id: 'ac-pay-103-frontend-design',
-        given: 'Thẻ giá gói dịch vụ PricingCard Component',
-        when: 'Render trên trang chọn gói',
-        then: 'Gói Năm được làm nổi bật bằng khung viền Rose-500 dày 2px kèm huy hiệu "Lựa Chọn Tốt Nhất (Best Value)" ở góc trên, danh sách 6 đặc quyền độc quyền có dấu tick xanh ngọc lục bảo rõ nét.',
+        id: 'ac-pay-103-popular-badge',
+        given: 'Gói Pro 1 Năm là gói có giá trị kinh tế tốt nhất',
+        when: 'Bảng giá hiển thị',
+        then: 'Gói 1 Năm được bao bọc bởi viền phát sáng màu vàng hổ phách, gắn huy hiệu "Gói Phổ Biến Nhất" và phóng to nổi bật hơn 10% so với các gói khác.',
         completed: true
       },
       {
-        id: 'ac-pay-103-backend-design',
-        given: '5,000 học viên truy cập trang giá dịch vụ trong các chiến dịch quảng cáo',
-        when: 'Trang web tải cấu hình bảng giá và chương trình khuyến mãi',
-        then: 'Cấu hình giá được lưu tĩnh trên CDN Edge Cache (Cloudflare) với P95 thời gian phản hồi < 20ms, máy chủ gốc chịu tải 0% cho việc hiển thị bảng giá.',
-        completed: true
-      },
-      {
-        id: 'ac-pay-103-l1-precision',
-        given: 'Học viên phân vân về chi phí học tập',
-        when: 'Đọc thông điệp so sánh chi phí',
-        then: 'Giao diện hiển thị phép so sánh dí dỏm và gần gũi: "Chỉ bằng 1 cốc trà sữa mỗi tháng để sở hữu giọng tiếng Anh chuẩn bản ngữ suốt đời!".',
-        completed: true
-      },
-      {
-        id: 'ac-pay-103-a11y-fallback',
-        given: 'Người dùng sử dụng công nghệ hỗ trợ đọc màn hình',
-        when: 'Chuyển đổi toggle chu kỳ thanh toán',
-        then: 'Trình đọc thông báo rõ: "Đã chọn gói thanh toán Năm, giá 299,000 đồng một năm, tiết kiệm 35 phần trăm so với gói tháng".',
+        id: 'ac-pay-103-feature-comparison-table',
+        given: 'Học viên muốn so sánh quyền lợi giữa tài khoản Free và Pro',
+        when: 'Cuộn xuống phần bảng so sánh tính năng',
+        then: 'Hiển thị bảng chi tiết các tính năng: Luyện âm 44 âm, AI Roleplay Alex, Báo cáo IELTS, Lưu trữ Error Bank với các dấu tick xanh rõ ràng.',
         completed: true
       }
     ]),
     technical_tasks: JSON.stringify([
-      { id: 't-pay-103-fe-cards', title: 'Xây dựng component PricingTierCards.jsx với thanh trượt toggle Tháng/Năm và hiệu ứng chuyển đổi mượt mà', category: 'Frontend', completed: true },
-      { id: 't-pay-103-be-plans', title: 'Thiết kế cấu trúc dữ liệu SubscriptionPlan và lưu trữ cấu hình linh hoạt trong cơ sở dữ liệu', category: 'Backend', completed: true },
-      { id: 't-pay-103-be-discount', title: 'Phát triển module Coupon & Voucher giảm giá (e.g., BACK2SCHOOL, VIETPHONICS10) cho phép áp mã trực tiếp', category: 'Backend', completed: true },
-      { id: 't-pay-103-be-scale', title: 'Cấu hình Cloudflare Cache Rules cho endpoint bảng giá tĩnh phục vụ 5,000 người dùng với băng thông tối thiểu', category: 'DevOps/Scale', completed: true },
-      { id: 't-pay-103-qa', title: 'Kiểm thử logic tính tiền khi áp voucher khuyến mại và chuyển đổi chu kỳ thanh toán đảm bảo số tiền chuẩn xác 100%', category: 'QA', completed: true }
+      { id: 't-pay-103-fe-matrix', title: 'Xây dựng component PricingMatrix.jsx với thanh gạt chu kỳ thanh toán linh hoạt', category: 'Frontend', completed: true },
+      { id: 't-pay-103-fe-table', title: 'Thiết kế bảng so sánh tính năng FeatureComparisonTable theo chuẩn thiết kế Stripe', category: 'Frontend', completed: true },
+      { id: 't-pay-103-qa', title: 'Kiểm tra hiển thị chính xác các con số quy đổi ra chi phí mỗi ngày (3.000đ/ngày)', category: 'QA', completed: true }
     ]),
-    notes: `### 🎨 FRONTEND DESIGN SPECIFICATION
-- **Component File**: \`vietphonics-app/src/components/subscription/PricingTierCards.jsx\`
-- **Stitch Design Tokens**:
-  - Yearly Card Featured: \`border-2 border-rose-500 bg-gradient-to-b from-slate-900 to-rose-950/20 rounded-3xl p-8 relative shadow-2xl\`
-  - Save 35% Badge: \`bg-emerald-500 text-slate-950 font-black text-xs px-2.5 py-0.5 rounded-full absolute -top-3 right-6\`.`
+    notes: `### 🎨 PURE FRONTEND DESIGN SPECIFICATION
+- **Phân loại**: Pure Frontend Pricing Matrix Component
+- **UI Mockup**: \`vietphonics-app/src/ui-reference/ng_n_h_ng_t_l_i_n_ng_c_p_pro_light_mode/code.html\`
+- **Frontend Component**: \`vietphonics-app/src/components/pricing/PricingMatrix.jsx\`
+
+#### 🎨 Pricing Matrix Layout
+\`\`\`
++-------------------------------------------------------------+
+| BẢNG GIÁ NÂNG CẤP PRO:     [ Gạt sang: Trả Theo Năm (-40%) ]|
++-------------------------------------------------------------+
+| [GÓI 1 THÁNG]         | [GÓI 1 NĂM (PHỔ BIẾN NHẤT)] ⭐      |
+| 149.000đ / tháng      | 599.000đ / năm (~49.000đ/tháng)    |
+| Phù hợp ôn thi cấp tốc| Chỉ 1.600đ/ngày - Tiết kiệm 40%    |
+| [Chọn Gói 1 Tháng]    | [👉 NÂNG CẤP 1 NĂM NGAY]           |
++-------------------------------------------------------------+
+\`\`\``
   },
   {
     id: 'PAY-104',
     epic_id: 'epic-backend-infrastructure',
-    title: 'Automated Grace Period & Expiring Subscription Reminder Bot (Ân Hạn 3 Ngày & Nhắc Gia Hạn Tự Động): Bot Nhắc Gia Hạn Thông Minh & Chính Sách Ân Hạn 3 Ngày',
-    persona: 'Học viên Pro đang theo học dở dang nhưng thẻ ngân hàng tạm thời hết tiền hoặc bận việc chưa kịp gia hạn',
-    action: 'nhận thông báo nhắc nhở lịch sự trước 3 ngày, được hưởng chính sách ân hạn thêm 3 ngày tiếp tục học tập bình thường mà không bị cắt quyền truy cập đột ngột',
-    value: 'giảm tỷ lệ hủy thuê bao ngoài ý muốn (Involuntary Churn) xuống dưới 2%, tạo thiện cảm sâu sắc với học viên nhờ dịch vụ nhân văn và chuyên nghiệp',
+    title: 'Automated Grace Period & Expiring Subscription Reminders: Cơ Chế Gia Hạn Ân Hạn & Nhắc Nhở Hết Hạn Tự Động',
+    persona: 'Kỹ sư quản lý thuê bao đảm bảo học viên không bị cắt dịch vụ đột ngột khi gói cước hết hạn',
+    action: 'kích hoạt thời gian ân hạn 3 ngày (3-Day Grace Period) khi gói cước hết hạn và gửi thông báo nhắc nhở tự động kèm ưu đãi gia hạn',
+    value: 'giảm tỷ lệ hủy thuê bao (Churn Rate), duy trì trải nghiệm liên tục cho học viên và tối ưu hóa tỷ lệ gia hạn định kỳ',
     priority: 'should',
-    status: 'in-progress',
+    status: 'todo',
     size: 'M',
     points: 5,
     acceptance_criteria: JSON.stringify([
       {
-        id: 'ac-pay-104-grace-period',
-        given: 'Gói Pro của học viên đến ngày hết hạn',
-        when: 'Hệ thống xử lý gia hạn tự động nhưng chưa nhận được khoản thanh toán mới',
-        then: 'Trạng thái tài khoản chuyển sang GRACE_PERIOD trong 72 giờ (3 ngày); học viên vẫn duy trì 100% quyền lợi gói Pro kèm banner nhắc nhở nhẹ nhàng ở góc màn hình.',
-        completed: true
+        id: 'ac-pay-104-expiring-cron',
+        given: 'Gói thuê bao Pro của học viên còn 3 ngày nữa là hết hạn',
+        when: 'Cron job chạy lúc 08:00 sáng hàng ngày',
+        then: 'Hệ thống tự động kích hoạt thông báo nhắc nhở qua Email / In-App Notification với liên kết gia hạn nhanh giảm giá 10%.',
+        completed: false
       },
       {
-        id: 'ac-pay-104-frontend-design',
-        given: 'Banner thông báo thời gian ân hạn trên thanh điều hướng',
-        when: 'Học viên đăng nhập trong thời gian ân hạn',
-        then: 'Hiển thị dải banner màu hổ phách Amber-500 viền mềm mại: "Gói Pro của bạn đang trong 3 ngày ân hạn (còn 48 giờ). Hãy gia hạn ngay để không làm gián đoạn chuỗi luyện tập!", kèm nút bấm "Gia Hạn 30K" một chạm.',
-        completed: true
+        id: 'ac-pay-104-grace-period-activation',
+        given: 'Gói cước đã chạm mốc thời gian hết hạn current_period_end',
+        when: 'Trạng thái thuê bao chuyển đổi',
+        then: 'Chuyển trạng thái sang "grace_period" trong 3 ngày tiếp theo, học viên vẫn được giữ nguyên toàn bộ quyền lợi Pro.',
+        completed: false
       },
       {
-        id: 'ac-pay-104-backend-design',
-        given: '5,000 người dùng có ngày hết hạn phân bổ rải rác trong tháng',
-        when: 'Hệ thống kiểm tra và gửi thông báo nhắc gia hạn',
-        then: 'Cron job chạy bất đồng bộ lúc 09:00 sáng mỗi ngày, quét và xử lý 5,000 tài khoản trong vòng dưới 1.5 giây thông qua BullMQ worker, không ảnh hưởng đến hoạt động luyện âm trực tiếp.',
-        completed: true
+        id: 'ac-pay-104-grace-period-expiry',
+        given: 'Thời gian ân hạn 3 ngày kết thúc mà học viên chưa thanh toán gia hạn',
+        when: 'Cron job rà soát lúc nửa đêm',
+        then: 'Tự động hạ cấp tài khoản về gói Free an toàn, lưu lại toàn bộ dữ liệu lịch sử học tập và Error Bank vào trạng thái đóng băng.',
+        completed: false
       },
       {
-        id: 'ac-pay-104-l1-precision',
-        given: 'Kênh gửi thông báo nhắc nhở phù hợp với thói quen người Việt',
-        when: 'Hệ thống gửi tin nhắn nhắc gia hạn',
-        then: 'Tích hợp gửi thông báo qua Zalo ZNS (Zalo Notification Service) và Email tiếng Việt thân thiện kèm đường link mở thẳng vào trang quét mã VietQR.',
-        completed: true
-      },
-      {
-        id: 'ac-pay-104-a11y-fallback',
-        given: 'Sau 3 ngày ân hạn học viên vẫn chưa gia hạn',
-        when: 'Hệ thống chuyển trạng thái sang EXPIRED',
-        then: 'Dữ liệu phát âm và tiến độ học tập của học viên được bảo toàn nguyên vẹn 100% (không bao giờ bị xóa), chỉ hạ cấp quyền truy cập về gói Free 5 bài/ngày một cách nhẹ nhàng.',
-        completed: true
+        id: 'ac-pay-104-audit-logging',
+        given: 'Bất kỳ hành động thay đổi trạng thái thuê bao nào diễn ra',
+        when: 'Giao dịch hoàn tất',
+        then: 'Ghi log chi tiết vào bảng subscription_audit_logs phục vụ đối soát tài chính và chăm sóc khách hàng.',
+        completed: false
       }
     ]),
     technical_tasks: JSON.stringify([
-      { id: 't-pay-104-be-cron', title: 'Xây dựng BullMQ cron job kiểm tra trạng thái thuê bao hàng ngày và chuyển đổi trạng thái ACTIVE -> GRACE_PERIOD -> EXPIRED', category: 'Backend', completed: true },
-      { id: 't-pay-104-be-zalo', title: 'Tích hợp Zalo Cloud API (ZNS) gửi tin nhắn thông báo tự động cho người dùng tại Việt Nam', category: 'Backend', completed: true },
-      { id: 't-pay-104-fe-banner', title: 'Xây dựng component GracePeriodBanner.jsx với nút gia hạn nhanh và đồng hồ đếm ngược giờ ân hạn', category: 'Frontend', completed: true },
-      { id: 't-pay-104-be-scale', title: 'Tối ưu truy vấn tìm kiếm các thuê bao sắp hết hạn bằng chỉ mục trên cột current_period_end', category: 'DevOps/Scale', completed: true },
-      { id: 't-pay-104-qa', title: 'Kiểm thử luồng chuyển đổi trạng thái: đảm bảo học viên trong thời gian ân hạn vẫn truy cập được mọi bài học', category: 'QA', completed: true }
+      { id: 't-pay-104-be-cron', title: 'Thiết lập BullMQ cron job kiểm tra các thuê bao sắp hết hạn và hết hạn', category: 'Backend', completed: false },
+      { id: 't-pay-104-be-state', title: 'Xây dựng State Machine chuyển đổi trạng thái thuê bao: active -> grace_period -> expired', category: 'Backend', completed: false },
+      { id: 't-pay-104-be-audit', title: 'Tạo bảng subscription_audit_logs lưu vết toàn bộ lịch sử chuyển đổi gói', category: 'Backend', completed: false },
+      { id: 't-pay-104-qa', title: 'Kiểm thử kịch bản giả lập thời gian trôi qua 3 ngày xem tài khoản có hạ cấp chính xác', category: 'QA', completed: false }
     ]),
-    notes: `### 🎨 FRONTEND DESIGN SPECIFICATION
-- **Component File**: \`vietphonics-app/src/components/subscription/GracePeriodBanner.jsx\`
-- **Stitch Design Tokens**:
-  - Banner: \`bg-amber-500/10 border-b border-amber-500/30 text-amber-200 px-4 py-2 flex items-center justify-between text-xs\`
-  - Quick Renew CTA: \`bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-3 py-1 rounded-lg text-xs\`.`
+    notes: `### 🗄️ PURE BACKEND & CRON SPECIFICATION
+- **Phân loại**: Pure Backend Subscription State Machine & Cron (0% UI)
+- **Engine**: BullMQ Cron + PostgreSQL State Machine
+
+#### ⚙️ Subscription State Transitions
+\`\`\`
+[ACTIVE] --- (hết hạn period_end) ---> [GRACE_PERIOD (3 ngày)]
+                                               |
+      +----------------------------------------+
+      | (chưa thanh toán sau 3 ngày)           | (thanh toán thành công)
+      v                                        v
+  [EXPIRED (Hạ về Free)]                   [ACTIVE (Gia hạn mới)]
+\`\`\`
+
+#### 🗄️ Database Audit Log DDL
+\`\`\`sql
+CREATE TABLE subscription_audit_logs (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  subscription_id UUID NOT NULL REFERENCES subscriptions(id) ON DELETE CASCADE,
+  old_status VARCHAR(30) NOT NULL,
+  new_status VARCHAR(30) NOT NULL,
+  reason VARCHAR(100) NOT NULL,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+\`\`\``
   }
 ];
