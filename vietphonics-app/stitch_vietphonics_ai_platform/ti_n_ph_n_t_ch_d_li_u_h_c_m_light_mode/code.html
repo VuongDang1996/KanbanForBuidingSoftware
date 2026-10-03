@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+
+<html lang="vi"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_standard" name="shell-type"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+          "on-background": "#131b2e",
+          "on-error": "#ffffff",
+          "secondary-container": "#e0f2fe",
+          "on-secondary-container": "#00476e",
+          "secondary": "#0284c7",
+          "on-tertiary-fixed": "#0f0069",
+          "on-surface-variant": "#475569",
+          "on-secondary-fixed-variant": "#004b73",
+          "background": "#f8fafc",
+          "surface-container-highest": "#e2e8f0",
+          "error-container": "#fee2e2",
+          "on-tertiary-container": "#fffaff",
+          "surface": "#ffffff",
+          "primary-container": "#e11d48",
+          "surface-container-low": "#f8fafc",
+          "on-secondary-fixed": "#001d31",
+          "inverse-surface": "#1e293b",
+          "tertiary": "#4f46e5",
+          "primary": "#e11d48",
+          "tertiary-fixed": "#e0e7ff",
+          "on-tertiary": "#ffffff",
+          "on-surface": "#0f172a",
+          "secondary-fixed-dim": "#bae6fd",
+          "surface-bright": "#ffffff",
+          "on-error-container": "#991b1b",
+          "surface-container-high": "#edf2f7",
+          "tertiary-fixed-dim": "#c7d2fe",
+          "on-secondary": "#ffffff",
+          "secondary-fixed": "#e0f2fe",
+          "surface-variant": "#f1f5f9",
+          "on-primary-fixed": "#40000c",
+          "primary-fixed": "#ffe4e6",
+          "error": "#dc2626",
+          "inverse-on-surface": "#f8fafc",
+          "on-primary-container": "#ffffff",
+          "surface-container-lowest": "#ffffff",
+          "surface-dim": "#f1f5f9",
+          "inverse-primary": "#fda4af",
+          "surface-container": "#ffffff",
+          "on-tertiary-fixed-variant": "#3730a3",
+          "primary-fixed-dim": "#fecdd3",
+          "on-primary-fixed-variant": "#9f1239",
+          "outline-variant": "#e2e8f0",
+          "on-primary": "#ffffff",
+          "surface-tint": "#e11d48",
+          "tertiary-container": "#6366f1",
+          "outline": "#cbd5e1"
+        },
+        "borderRadius": {
+          "DEFAULT": "0.375rem",
+          "lg": "0.5rem",
+          "xl": "0.75rem",
+          "full": "9999px"
+        },
+        "spacing": {
+          "gutter": "1.5rem",
+          "margin-mobile": "1rem",
+          "space-lg": "1.5rem",
+          "gutter-mobile": "1rem",
+          "space-md": "1rem",
+          "margin": "2rem",
+          "space-xl": "2.5rem",
+          "space-xs": "0.25rem",
+          "space-sm": "0.5rem"
+        },
+        "fontFamily": {
+          "label-sm": ["Plus Jakarta Sans"],
+          "headline-lg": ["Plus Jakarta Sans"],
+          "headline-sm": ["Plus Jakarta Sans"],
+          "display-hero-mobile": ["Plus Jakarta Sans"],
+          "headline-md": ["Plus Jakarta Sans"],
+          "ipa-body": ["JetBrains Mono"],
+          "body-sm": ["Plus Jakarta Sans"],
+          "headline-lg-mobile": ["Plus Jakarta Sans"],
+          "body-lg": ["Plus Jakarta Sans"],
+          "label-md": ["Plus Jakarta Sans"],
+          "body-md": ["Plus Jakarta Sans"],
+          "display-hero": ["Plus Jakarta Sans"],
+          "telemetry-data": ["JetBrains Mono"],
+          "ipa-display": ["JetBrains Mono"],
+          "ipa-inline": ["JetBrains Mono"],
+          "label-mono": ["JetBrains Mono"]
+        },
+        "fontSize": {
+          "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+          "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+          "headline-sm": ["20px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+          "display-hero-mobile": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+          "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.015em", "fontWeight": "700" }],
+          "ipa-body": ["16px", { "lineHeight": "24px", "letterSpacing": "0.02em", "fontWeight": "500" }],
+          "body-sm": ["13px", { "lineHeight": "20px", "fontWeight": "400" }],
+          "headline-lg-mobile": ["26px", { "lineHeight": "34px", "letterSpacing": "-0.015em", "fontWeight": "700" }],
+          "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+          "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+          "body-md": ["15px", { "lineHeight": "24px", "fontWeight": "400" }],
+          "display-hero": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.03em", "fontWeight": "800" }],
+          "telemetry-data": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+          "ipa-display": ["24px", { "lineHeight": "32px", "letterSpacing": "0.04em", "fontWeight": "600" }],
+          "ipa-inline": ["15px", { "lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "500" }],
+          "label-mono": ["11px", { "lineHeight": "16px", "letterSpacing": "0.06em", "fontWeight": "600" }]
+        }
+      },
+    },
+  }
+</script></head><body class="bg-[#f8fafc] font-body-md text-on-surface antialiased min-h-screen flex flex-col selection:bg-primary-container selection:text-white"><header class="fixed top-0 w-full z-50 bg-white/90 backdrop-blur-xl border-b border-slate-200/80 shadow-[0_2px_12px_rgba(15,23,42,0.04)]"><div class="h-20 w-full px-6 lg:px-12 mx-auto flex items-center justify-between gap-space-md"><div class="flex items-center gap-space-md shrink-0"><a class="flex items-center gap-space-sm group" data-path="tong-quan" href="#"><img alt="VietPhonics AI Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1UCQaKDtsj3J38N8G16hiFB1rFtzk8Or_FZ2uCp6sBdv6rGHrj8NSXG_cF3z_wX3NVm5tzBKR3BfL1UYYCEjdmjBf1o7Zec-8fmkcsZbVLT0RuylN6wzaZ4yGB1uattyruV3b2BLCL6Sox757lOOZgrmVAgtSdqp_Tir0lVMVjhP_IVLT32sfbaEFQmiJ8sW1D-n7TFKsOlbfeDERhznPohzjQc5vRhpeI5en-N76Sk_hxqZLRTSzcHFYs"/><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-primary font-extrabold tracking-tight">VietPhonics<span class="text-secondary">.AI</span></span><span class="font-label-mono text-label-mono text-slate-500 uppercase tracking-widest text-[10px]">Acoustic L1 Lab</span></div></a><div class="relative group shrink-0 hidden lg:block"><button class="flex items-center gap-space-xs bg-slate-100 hover:bg-slate-200/80 border border-slate-200 px-space-sm py-1.5 rounded-full transition-colors" type="button"><span class="font-label-mono text-label-mono text-slate-700 flex items-center gap-1.5 font-semibold"><span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>🇻🇳 Giọng Miền Bắc: /d/-/z/ calibrated</span><span class="material-symbols-outlined text-sm text-slate-400 group-hover:rotate-180 transition-transform duration-300">arrow_drop_down</span></button><div class="absolute left-0 mt-2 w-72 bg-white rounded-xl shadow-[0_12px_32px_rgba(15,23,42,0.12)] border border-slate-200/90 p-space-xs hidden group-hover:flex flex-col gap-1 z-50"><div class="px-space-sm py-1 font-label-mono text-[10px] text-slate-400 uppercase tracking-wider">L1 Dialect Adaptation</div><button class="flex items-center justify-between px-space-sm py-2 rounded-lg bg-sky-50 text-left font-body-sm text-secondary font-semibold"><span class="flex items-center gap-2"><span>🇻🇳</span> Miền Bắc (/d/ ➔ /z/, /t/ ending)</span><span class="material-symbols-outlined text-sm text-secondary">check</span></button><button class="flex items-center justify-between px-space-sm py-2 rounded-lg hover:bg-slate-100 text-left font-body-sm text-slate-600 transition-colors"><span class="flex items-center gap-2"><span>🇻🇳</span> Miền Trung (/e/-/ɛ/ tonal pitch)</span></button><button class="flex items-center justify-between px-space-sm py-2 rounded-lg hover:bg-slate-100 text-left font-body-sm text-slate-600 transition-colors"><span class="flex items-center gap-2"><span>🇻🇳</span> Miền Nam (/v/ ➔ /j/, dropped -k/-t)</span></button></div></div></div><nav class="hidden xl:flex items-center gap-1.5 bg-slate-100/90 border border-slate-200/80 p-1 rounded-full shrink-0"><a class="font-body-sm text-body-sm px-3.5 py-1.5 rounded-full text-slate-600 hover:text-slate-900 hover:bg-white/60 transition-all font-medium" data-path="tong-quan" href="#">Tổng Quan</a><a class="font-body-sm text-body-sm px-3.5 py-1.5 rounded-full text-slate-600 hover:text-slate-900 hover:bg-white/60 transition-all font-medium" data-path="phong-luyen-phat-am" href="#">Phòng Luyện Phát Âm</a><a class="font-body-sm text-body-sm px-3.5 py-1.5 rounded-full text-slate-600 hover:text-slate-900 hover:bg-white/60 transition-all font-medium" data-path="khau-hinh-2d" href="#">Khẩu Hình 2D</a><a class="font-body-sm text-body-sm px-3.5 py-1.5 rounded-full text-slate-600 hover:text-slate-900 hover:bg-white/60 transition-all font-medium" data-path="ai-hoi-thoai" href="#">AI Hội Thoại</a><a class="font-body-sm text-body-sm px-3.5 py-1.5 rounded-full text-slate-600 hover:text-slate-900 hover:bg-white/60 transition-all font-medium" data-path="game-3d-rpg" href="#">Game 3D RPG</a><a class="font-body-sm text-body-sm px-3.5 py-1.5 rounded-full text-slate-600 hover:text-slate-900 hover:bg-white/60 transition-all font-medium" data-path="ngan-hang-tu-loi" href="#">Ngân Hàng Từ Lỗi</a></nav><div class="flex items-center gap-space-sm shrink-0"><div class="hidden md:flex items-center gap-space-xs"><div class="flex items-center gap-1 px-3 py-1 bg-rose-50 border border-rose-200/80 rounded-full font-label-mono text-label-mono text-primary font-bold"><span class="text-xs">🔥</span><span>14 Ngày</span></div><div class="flex items-center gap-1 px-3 py-1 bg-sky-50 border border-sky-200/80 rounded-full font-label-mono text-label-mono text-secondary font-bold"><span class="text-xs">🛡️</span><span>2 Khiên</span></div><div class="hidden 2xl:flex items-center gap-1 px-3 py-1 bg-indigo-50 border border-indigo-200/80 rounded-full font-label-mono text-label-mono text-tertiary font-bold"><span class="text-xs">⭐</span><span>Lv.8 Master of Ending Sounds</span></div></div><div class="relative flex items-center justify-center p-0.5 rounded-full bg-gradient-to-tr from-primary to-secondary shadow-md cursor-pointer group"><img alt="Profile" class="w-8 h-8 rounded-full object-cover ring-2 ring-white" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAHtiGkMW_bAiVzUucj4w1pSTyoUmgY825vfdXITJv58g5VF-Z_u6RjPzdnhlZFADwCrMLXHraynwzk8Stxdwaw3LNoL-JczEGc9hADocs8sqV6iq4vQvD0Tj7MVgl5X1O792UHUG3m9s72dhJEbsafsRfJbpJYqAQJMKs2BZQvA0Rw0cC6LWuB41m9iU-abrgZHPfwmc64qayjq2GpPH5BgTYB7Uk1_d0jQCjjPNtwFKYn5mqLJaQz"/><span class="absolute -bottom-1 -right-1 px-1 py-0.2 rounded-full bg-primary text-white font-label-mono text-[9px] font-bold tracking-tighter uppercase ring-1 ring-white">PRO</span></div></div></div></header><main class="w-full pt-20 bg-gradient-to-b from-[#f8fafc] via-[#f1f5f9]/50 to-[#f8fafc] flex-1"><div class="flex flex-col w-full">
+<div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+<!-- Breadcrumb & Analytical Header Status -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-surface rounded-xl p-5 shadow-sm">
+<div class="flex items-center gap-4">
+<div class="relative">
+<img alt="User Avatar" class="w-14 h-14 rounded-full object-cover shadow-sm ring-2 ring-primary-container/20" src="https://lh3.googleusercontent.com/aida/AEtjO1VcybhVzfsD_cdPQa_e-Wn99nBtYzcy-MuWDakgqzhloLjwgHpBHEIE_1DR3dyIBeXHw2GTmS_yU2_yzNes0W78kH7AZ4l7EotBoJi6hq3r-3SdXKj9avGVjGYfMXedVEStLATyQxM17TNGwyfJKHBD7oARm-hRHbhQWFP1zKKiqhZVmBh7g2nPq1p1xNloY8sMPVjEH7KsgPyv7kpj_7nlw64-6N9L2UtVMbqSSHRXNN2mb8LzjO6l8pQ"/>
+<span class="absolute bottom-0 right-0 w-4 h-4 rounded-full bg-secondary ring-2 ring-surface flex items-center justify-center">
+<span class="w-1.5 h-1.5 rounded-full bg-on-secondary"></span>
+</span>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<h1 class="font-headline-sm text-headline-sm text-on-surface">Tiến Độ &amp; Phân Tích Âm Học</h1>
+<span class="px-2 py-0.5 rounded bg-secondary-container/30 text-secondary font-label-mono text-label-mono uppercase tracking-wider">L1 Calibrated</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-2 mt-0.5">
+<span>Học viên: <strong class="text-on-surface">Nguyễn Tuấn Kiệt</strong></span>
+<span>•</span>
+<span class="font-label-mono text-label-mono text-secondary">Dialect Model: Miền Bắc (/d/ ➔ /z/)</span>
+</p>
+</div>
+</div>
+<div class="flex items-center flex-wrap gap-2.5">
+<button class="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-label-md text-label-md transition-all shadow-sm" id="exportPdfBtn">
+<span class="material-symbols-outlined text-lg text-secondary">picture_as_pdf</span>
+<span>Xuất Báo Cáo PDF</span>
+</button>
+<button class="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-primary-container hover:bg-primary text-on-primary font-label-md text-label-md transition-all shadow-sm" id="shareMetricBtn">
+<span class="material-symbols-outlined text-lg">share</span>
+<span>Chia Sẻ Thành Tích</span>
+</button>
+</div>
+</div>
+<!-- MODULE 1: Top Performance & Benchmark Summary Card -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+<!-- Radial GOP Gauge & Benchmarks -->
+<div class="lg:col-span-7 bg-surface rounded-xl p-6 lg:p-8 shadow-sm flex flex-col justify-between relative overflow-hidden">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="p-2 rounded-lg bg-primary-fixed text-primary">
+<span class="material-symbols-outlined text-xl">insights</span>
+</span>
+<div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Chỉ Số Chuẩn Hóa GOP Tổng Thể</h2>
+<p class="font-label-mono text-label-mono text-on-surface-variant">Goodness of Pronunciation • Acoustic Neural Scored</p>
+</div>
+</div>
+<span class="font-label-mono text-label-mono px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 font-bold">
+            +8.4% Tháng Này
+          </span>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-12 gap-6 items-center my-6">
+<!-- Circular Gauge SVG -->
+<div class="sm:col-span-5 flex flex-col items-center justify-center">
+<div class="relative w-44 h-44 flex items-center justify-center">
+<svg class="w-full h-full transform -rotate-90" viewbox="0 0 160 160">
+<!-- Track -->
+<circle cx="80" cy="80" fill="none" r="66" stroke="#f1f5f9" stroke-width="14"></circle>
+<!-- Progress Arc (76%) -> circumference ~ 414.7, 76% = 315.2 filled, dashoffset = 99.5 -->
+<circle class="transition-all duration-1000 ease-out" cx="80" cy="80" fill="none" id="gopArc" r="66" stroke="url(#gopGradient)" stroke-dasharray="414.7" stroke-dashoffset="99.5" stroke-linecap="round" stroke-width="14"></circle>
+<defs>
+<lineargradient id="gopGradient" x1="0%" x2="100%" y1="0%" y2="100%">
+<stop offset="0%" stop-color="#0284c7"></stop>
+<stop offset="70%" stop-color="#e11d48"></stop>
+<stop offset="100%" stop-color="#059669"></stop>
+</lineargradient>
+</defs>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center text-center">
+<span class="font-display-hero text-display-hero font-extrabold text-on-surface leading-none">76<span class="text-headline-md text-primary">%</span></span>
+<span class="font-label-mono text-[11px] text-on-surface-variant font-semibold mt-1 uppercase tracking-wider">Overall GOP</span>
+</div>
+</div>
+<span class="font-label-mono text-label-mono text-slate-500 mt-2">Mẫu phân tích: 44.1kHz Formants</span>
+</div>
+<!-- Benchmarks -->
+<div class="sm:col-span-7 flex flex-col gap-3">
+<div class="bg-surface-container-low rounded-lg p-3.5 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="text-2xl">🎯</span>
+<div>
+<div class="font-label-md text-label-md text-on-surface font-bold">IELTS Speaking Tương Đương</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">Pronunciation &amp; Fluency Band</div>
+</div>
+</div>
+<span class="font-headline-sm text-headline-sm text-secondary font-bold">Band 7.0</span>
+</div>
+<div class="bg-surface-container-low rounded-lg p-3.5 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="text-2xl">📘</span>
+<div>
+<div class="font-label-md text-label-md text-on-surface font-bold">Chuẩn Châu Âu CEFR</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">Acoustic Clarity Index</div>
+</div>
+</div>
+<span class="font-headline-sm text-headline-sm text-tertiary font-bold">B2 High</span>
+</div>
+<div class="bg-surface-container-low rounded-lg p-3.5 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="text-2xl">🗣️</span>
+<div>
+<div class="font-label-md text-label-md text-on-surface font-bold">Mức Phản Xạ Âm Tiết</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">Khử dấu thanh L1 Việt</div>
+</div>
+</div>
+<span class="font-label-md text-label-md font-bold px-3 py-1 rounded bg-emerald-50 text-emerald-700">Tự Nhiên</span>
+</div>
+</div>
+</div>
+<div class="pt-3 flex items-center justify-between text-on-surface-variant font-label-mono text-label-mono">
+<span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-emerald-500"></span> Khử tạp âm &amp; Doppler OK</span>
+<span>Target IELTS 8.0: còn 9% GOP</span>
+</div>
+</div>
+<!-- Habit & Consistency Metrics Panel -->
+<div class="lg:col-span-5 bg-surface rounded-xl p-6 lg:p-8 shadow-sm flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-4">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Kỷ Luật &amp; Lượng Nói</h3>
+<span class="font-label-mono text-label-mono px-2 py-0.5 rounded bg-rose-50 text-primary font-bold">STREAK LIVE</span>
+</div>
+<div class="grid grid-cols-2 gap-3.5">
+<!-- Streak Block -->
+<div class="bg-surface-container-low rounded-xl p-4 flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="text-2xl">🔥</span>
+<span class="font-label-mono text-[10px] uppercase font-bold text-slate-400">Streak</span>
+</div>
+<div class="mt-3">
+<div class="font-headline-md text-headline-md text-on-surface font-bold">14 Ngày</div>
+<div class="font-label-mono text-label-mono text-on-surface-variant mt-0.5">Kỷ lục: 21 ngày</div>
+</div>
+</div>
+<!-- Shields Block -->
+<div class="bg-surface-container-low rounded-xl p-4 flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="text-2xl">🛡️</span>
+<span class="font-label-mono text-[10px] uppercase font-bold text-slate-400">Bảo Vệ</span>
+</div>
+<div class="mt-3">
+<div class="font-headline-md text-headline-md text-secondary font-bold">2 Khiên</div>
+<div class="font-label-mono text-label-mono text-on-surface-variant mt-0.5">Còn hạn trong 48h</div>
+</div>
+</div>
+<!-- Spoken Sentences -->
+<div class="bg-surface-container-low rounded-xl p-4 flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="text-2xl">🎙️</span>
+<span class="font-label-mono text-[10px] uppercase font-bold text-slate-400">Số Câu</span>
+</div>
+<div class="mt-3">
+<div class="font-headline-md text-headline-md text-on-surface font-bold">528 Câu</div>
+<div class="font-label-mono text-label-mono text-on-surface-variant mt-0.5">+46 câu hôm nay</div>
+</div>
+</div>
+<!-- Practice Time -->
+<div class="bg-surface-container-low rounded-xl p-4 flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="text-2xl">⏱️</span>
+<span class="font-label-mono text-[10px] uppercase font-bold text-slate-400">Thời Lượng</span>
+</div>
+<div class="mt-3">
+<div class="font-headline-md text-headline-md text-on-surface font-bold">6g 45p</div>
+<div class="font-label-mono text-label-mono text-on-surface-variant mt-0.5">Trung bình 28p/ngày</div>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-5 p-3.5 rounded-lg bg-secondary-container/20 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-xl">bolt</span>
+<span class="font-body-sm text-body-sm text-on-surface font-medium">Mục tiêu tuần này: 120 phút</span>
+</div>
+<span class="font-label-mono text-label-mono font-bold text-secondary">Đạt 130/120p (108%)</span>
+</div>
+</div>
+</div>
+<!-- MODULE 2: The 4-Pillar Vietnamese Phonetic Radar & Detailed Cards -->
+<div class="space-y-4">
+<div class="flex items-center justify-between">
+<div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">4 Trụ Cột Âm Học Dành Cho Người Việt</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Hệ thống phân tích ma trận bù trừ âm vần đặc trưng theo L1 Vietnamese</p>
+</div>
+<span class="hidden md:inline font-label-mono text-label-mono text-on-surface-variant">Dựa trên mô hình formant F1/F2 &amp; F0 Coda</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+<!-- Pillar 1 -->
+<div class="bg-surface rounded-xl p-5 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+<div>
+<div class="flex items-start justify-between">
+<span class="p-2.5 rounded-lg bg-emerald-50 text-emerald-600 font-bold">
+<span class="material-symbols-outlined text-xl">done_all</span>
+</span>
+<span class="font-label-mono text-[11px] font-bold px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 uppercase">
+                Làm Chủ
+              </span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-bold mt-4">Âm Đuôi &amp; Cụm Phụ Âm</h3>
+<p class="font-label-mono text-label-mono text-slate-500">Ending Consonant Codas</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-2.5">
+              Rất Tốt. Đã hoàn toàn khắc phục tật nuốt âm đuôi /s/, /t/, /d/. Cụm /kts/ và /pst/ đạt chuẩn.
+            </p>
+</div>
+<div class="mt-5">
+<div class="flex items-center justify-between mb-1.5 font-label-mono text-label-mono">
+<span class="text-slate-600">Độ chuẩn xác</span>
+<span class="font-bold text-emerald-600">82%</span>
+</div>
+<div class="w-full h-2 rounded-full bg-surface-container">
+<div class="h-full rounded-full bg-emerald-600" style="width: 82%"></div>
+</div>
+</div>
+</div>
+<!-- Pillar 2 -->
+<div class="bg-surface rounded-xl p-5 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+<div>
+<div class="flex items-start justify-between">
+<span class="p-2.5 rounded-lg bg-amber-50 text-amber-600 font-bold">
+<span class="material-symbols-outlined text-xl">compare_arrows</span>
+</span>
+<span class="font-label-mono text-[11px] font-bold px-2 py-0.5 rounded bg-amber-100 text-amber-800 uppercase">
+                Cải Thiện
+              </span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-bold mt-4">Cặp Âm Dễ Nhầm</h3>
+<p class="font-label-mono text-label-mono text-slate-500">Minimal Pairs /θ/-/t/, /iː/-/ɪ/</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-2.5">
+              Khá. Cần luyện thêm âm kẹp lưỡi /θ/ trong "think" để không bị nhầm sang /t/ hoặc /s/.
+            </p>
+</div>
+<div class="mt-5">
+<div class="flex items-center justify-between mb-1.5 font-label-mono text-label-mono">
+<span class="text-slate-600">Độ chuẩn xác</span>
+<span class="font-bold text-amber-600">71%</span>
+</div>
+<div class="w-full h-2 rounded-full bg-surface-container">
+<div class="h-full rounded-full bg-amber-500" style="width: 71%"></div>
+</div>
+</div>
+</div>
+<!-- Pillar 3 -->
+<div class="bg-surface rounded-xl p-5 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+<div>
+<div class="flex items-start justify-between">
+<span class="p-2.5 rounded-lg bg-secondary-container/40 text-secondary font-bold">
+<span class="material-symbols-outlined text-xl">graphic_eq</span>
+</span>
+<span class="font-label-mono text-[11px] font-bold px-2 py-0.5 rounded bg-sky-100 text-secondary uppercase">
+                Đang Luyện
+              </span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-bold mt-4">Trọng Âm &amp; Khử Dấu</h3>
+<p class="font-label-mono text-label-mono text-slate-500">Syllable Stress &amp; De-Toning</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-2.5">
+              Đang Cải Thiện. Đã biết nhấn âm chính, cần lướt mềm hơn ở âm nguyên âm yếu schwa /ə/.
+            </p>
+</div>
+<div class="mt-5">
+<div class="flex items-center justify-between mb-1.5 font-label-mono text-label-mono">
+<span class="text-slate-600">Độ chuẩn xác</span>
+<span class="font-bold text-secondary">68%</span>
+</div>
+<div class="w-full h-2 rounded-full bg-surface-container">
+<div class="h-full rounded-full bg-secondary" style="width: 68%"></div>
+</div>
+</div>
+</div>
+<!-- Pillar 4 -->
+<div class="bg-surface rounded-xl p-5 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+<div>
+<div class="flex items-start justify-between">
+<span class="p-2.5 rounded-lg bg-rose-50 text-primary font-bold">
+<span class="material-symbols-outlined text-xl">warning</span>
+</span>
+<span class="font-label-mono text-[11px] font-bold px-2 py-0.5 rounded bg-rose-100 text-primary uppercase">
+                Ưu Tiên Cao
+              </span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-bold mt-4">Nối Âm &amp; Lưu Loát</h3>
+<p class="font-label-mono text-label-mono text-slate-500">Connected Speech &amp; Fluency</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-2.5">
+              Cần Luyện Tập. Tốc độ nói còn bị giật cục từng từ. Cần liên kết âm phụ âm sang nguyên âm kế tiếp.
+            </p>
+</div>
+<div class="mt-5">
+<div class="flex items-center justify-between mb-1.5 font-label-mono text-label-mono">
+<span class="text-slate-600">Độ chuẩn xác</span>
+<span class="font-bold text-primary">59%</span>
+</div>
+<div class="w-full h-2 rounded-full bg-surface-container">
+<div class="h-full rounded-full bg-primary" style="width: 59%"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- MODULE 3: Weekly Speaking Volume & Accuracy Trend (7-Day Mixed Chart Card) -->
+<div class="bg-surface rounded-xl p-6 lg:p-8 shadow-sm space-y-6">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+<div>
+<div class="flex items-center gap-2">
+<span class="p-2 rounded-lg bg-secondary-container/30 text-secondary">
+<span class="material-symbols-outlined text-xl">analytics</span>
+</span>
+<h2 class="font-headline-sm text-headline-sm text-on-surface font-bold">Xu Hướng Thời Lượng &amp; Độ Chính Xác (7 Ngày)</h2>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Biểu đồ kết hợp thời lượng luyện tập (cột màu) và đường độ chuẩn GOP (cyan line)</p>
+</div>
+<div class="flex items-center gap-4 font-label-mono text-label-mono">
+<div class="flex items-center gap-2">
+<span class="w-3.5 h-3.5 rounded bg-surface-container-high"></span>
+<span class="text-slate-600">Thời lượng (Phút)</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-3.5 h-1 rounded bg-secondary"></span>
+<span class="text-slate-600">GOP Chính xác (%)</span>
+</div>
+</div>
+</div>
+<!-- Integrated Mixed Chart Container -->
+<div class="w-full overflow-x-auto">
+<div class="min-w-[620px] relative h-64 flex flex-col justify-end pt-6 pb-2">
+<!-- Horizontal Guideline Rules -->
+<div class="absolute inset-0 flex flex-col justify-between pointer-events-none pb-8 pt-4">
+<div class="w-full border-b border-slate-100 flex justify-end"><span class="font-label-mono text-[10px] text-slate-300">80% / 30m</span></div>
+<div class="w-full border-b border-slate-100 flex justify-end"><span class="font-label-mono text-[10px] text-slate-300">70% / 20m</span></div>
+<div class="w-full border-b border-slate-100 flex justify-end"><span class="font-label-mono text-[10px] text-slate-300">60% / 10m</span></div>
+<div class="w-full border-b border-slate-100 flex justify-end"><span class="font-label-mono text-[10px] text-slate-300">0% / 0m</span></div>
+</div>
+<!-- SVG Overlaid Line for Accuracy Trend -->
+<!-- Coordinates calculated relative to viewBox 0 0 700 200:
+               Days at x: T2(50), T3(150), T4(250), T5(350), T6(450), T7(550), CN(650)
+               GOP scores:
+               T2: 68% -> y=120
+               T3: 69% -> y=115
+               T4: 72% -> y=98
+               T5: 71% -> y=104
+               T6: 74% -> y=86
+               T7: 75% -> y=80
+               CN: 76% -> y=74
+          -->
+<svg class="absolute inset-0 w-full h-48 pointer-events-none z-10" preserveaspectratio="none" viewbox="0 0 700 200">
+<defs>
+<lineargradient id="cyanLineGrad" x1="0%" x2="100%" y1="0%" y2="0%">
+<stop offset="0%" stop-color="#0284c7"></stop>
+<stop offset="100%" stop-color="#38bdf8"></stop>
+</lineargradient>
+</defs>
+<path d="M 50 120 C 100 118, 110 115, 150 115 C 200 115, 210 98, 250 98 C 300 98, 310 104, 350 104 C 400 104, 410 86, 450 86 C 500 86, 510 80, 550 80 C 600 80, 610 74, 650 74" fill="none" stroke="url(#cyanLineGrad)" stroke-linecap="round" stroke-width="4"></path>
+<!-- Nodes with pulsing styling -->
+<circle cx="50" cy="120" fill="#ffffff" r="5" stroke="#0284c7" stroke-width="3"></circle>
+<circle cx="150" cy="115" fill="#ffffff" r="5" stroke="#0284c7" stroke-width="3"></circle>
+<circle cx="250" cy="98" fill="#ffffff" r="5" stroke="#0284c7" stroke-width="3"></circle>
+<circle cx="350" cy="104" fill="#ffffff" r="5" stroke="#0284c7" stroke-width="3"></circle>
+<circle cx="450" cy="86" fill="#ffffff" r="5" stroke="#0284c7" stroke-width="3"></circle>
+<circle cx="550" cy="80" fill="#ffffff" r="5" stroke="#0284c7" stroke-width="3"></circle>
+<circle cx="650" cy="74" fill="#0284c7" r="6" stroke="#ffffff" stroke-width="2"></circle>
+</svg>
+<!-- 7 Columns with duration bars -->
+<div class="grid grid-cols-7 gap-2 sm:gap-6 h-48 items-end relative z-0 px-2 sm:px-6">
+<!-- Day 1: T2 (12m, 68%) -->
+<div class="flex flex-col items-center group cursor-pointer h-full justify-end" data-day="T2" data-gop="68%" data-min="12">
+<div class="opacity-0 group-hover:opacity-100 transition-opacity absolute -top-4 font-label-mono text-[10px] bg-on-surface text-surface px-2 py-0.5 rounded shadow pointer-events-none">12m • 68% GOP</div>
+<div class="w-10 sm:w-14 bg-surface-container hover:bg-secondary-fixed transition-colors rounded-t-lg" style="height: 40%;"></div>
+<span class="mt-2 font-label-mono text-label-mono text-slate-500 font-semibold">T2</span>
+</div>
+<!-- Day 2: T3 (15m, 69%) -->
+<div class="flex flex-col items-center group cursor-pointer h-full justify-end" data-day="T3" data-gop="69%" data-min="15">
+<div class="opacity-0 group-hover:opacity-100 transition-opacity absolute -top-4 font-label-mono text-[10px] bg-on-surface text-surface px-2 py-0.5 rounded shadow pointer-events-none">15m • 69% GOP</div>
+<div class="w-10 sm:w-14 bg-surface-container hover:bg-secondary-fixed transition-colors rounded-t-lg" style="height: 50%;"></div>
+<span class="mt-2 font-label-mono text-label-mono text-slate-500 font-semibold">T3</span>
+</div>
+<!-- Day 3: T4 (20m, 72%) -->
+<div class="flex flex-col items-center group cursor-pointer h-full justify-end" data-day="T4" data-gop="72%" data-min="20">
+<div class="opacity-0 group-hover:opacity-100 transition-opacity absolute -top-4 font-label-mono text-[10px] bg-on-surface text-surface px-2 py-0.5 rounded shadow pointer-events-none">20m • 72% GOP</div>
+<div class="w-10 sm:w-14 bg-surface-container hover:bg-secondary-fixed transition-colors rounded-t-lg" style="height: 66%;"></div>
+<span class="mt-2 font-label-mono text-label-mono text-slate-500 font-semibold">T4</span>
+</div>
+<!-- Day 4: T5 (10m, 71%) -->
+<div class="flex flex-col items-center group cursor-pointer h-full justify-end" data-day="T5" data-gop="71%" data-min="10">
+<div class="opacity-0 group-hover:opacity-100 transition-opacity absolute -top-4 font-label-mono text-[10px] bg-on-surface text-surface px-2 py-0.5 rounded shadow pointer-events-none">10m • 71% GOP</div>
+<div class="w-10 sm:w-14 bg-surface-container hover:bg-secondary-fixed transition-colors rounded-t-lg" style="height: 33%;"></div>
+<span class="mt-2 font-label-mono text-label-mono text-slate-500 font-semibold">T5</span>
+</div>
+<!-- Day 5: T6 (25m, 74%) -->
+<div class="flex flex-col items-center group cursor-pointer h-full justify-end" data-day="T6" data-gop="74%" data-min="25">
+<div class="opacity-0 group-hover:opacity-100 transition-opacity absolute -top-4 font-label-mono text-[10px] bg-on-surface text-surface px-2 py-0.5 rounded shadow pointer-events-none">25m • 74% GOP</div>
+<div class="w-10 sm:w-14 bg-surface-container hover:bg-secondary-fixed transition-colors rounded-t-lg" style="height: 83%;"></div>
+<span class="mt-2 font-label-mono text-label-mono text-slate-500 font-semibold">T6</span>
+</div>
+<!-- Day 6: T7 (30m, 75%) -->
+<div class="flex flex-col items-center group cursor-pointer h-full justify-end" data-day="T7" data-gop="75%" data-min="30">
+<div class="opacity-0 group-hover:opacity-100 transition-opacity absolute -top-4 font-label-mono text-[10px] bg-on-surface text-surface px-2 py-0.5 rounded shadow pointer-events-none">30m • 75% GOP</div>
+<div class="w-10 sm:w-14 bg-surface-container-high hover:bg-secondary-fixed transition-colors rounded-t-lg" style="height: 100%;"></div>
+<span class="mt-2 font-label-mono text-label-mono text-slate-500 font-semibold">T7</span>
+</div>
+<!-- Day 7: CN (18m, 76% - Today) -->
+<div class="flex flex-col items-center group cursor-pointer h-full justify-end" data-day="CN" data-gop="76%" data-min="18">
+<div class="opacity-0 group-hover:opacity-100 transition-opacity absolute -top-4 font-label-mono text-[10px] bg-primary text-on-primary px-2 py-0.5 rounded shadow pointer-events-none">18m • 76% GOP (Hôm nay)</div>
+<div class="w-10 sm:w-14 bg-primary-fixed hover:bg-primary-fixed-dim transition-colors rounded-t-lg" style="height: 60%;"></div>
+<span class="mt-2 font-label-mono text-label-mono text-primary font-bold">CN (Nay)</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Chart Summary Callout -->
+<div class="p-4 rounded-xl bg-slate-50 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+<div class="flex items-center gap-2.5">
+<span class="text-xl">🎉</span>
+<span class="font-body-md text-body-md text-on-surface">
+            Bạn đã duy trì luyện tập <strong>7/7 ngày</strong> trong tuần qua! Tăng <strong>+8%</strong> độ chính xác so với tuần trước.
+          </span>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-label-mono text-label-mono text-slate-500">Khối lượng: 130 phút</span>
+<span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-label-mono text-[11px] font-bold">Hoàn Hảo</span>
+</div>
+</div>
+</div>
+<!-- MODULE 4 & MODULE 5: IPA 44 Heatmap Matrix & Urgent Focus Cards -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+<!-- MODULE 4: IPA 44-Phoneme Heatmap Matrix (8 cols) -->
+<div class="lg:col-span-8 bg-surface rounded-xl p-6 lg:p-8 shadow-sm space-y-6">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+<div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface font-bold">Bản Đồ Làm Chủ 44 Âm Quốc Tế IPA</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Nhấp vào từng âm để nghe mẫu đối chiếu khẩu hình &amp; formant L1</p>
+</div>
+<!-- Legend -->
+<div class="flex items-center gap-2 font-label-mono text-[11px]">
+<span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded bg-emerald-500"></span> &gt;80%</span>
+<span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded bg-amber-500"></span> 60-80%</span>
+<span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded bg-rose-500"></span> &lt;60%</span>
+</div>
+</div>
+<!-- Matrix Sections -->
+<div class="space-y-5">
+<!-- 1. Vowels (12) -->
+<div>
+<div class="flex items-center justify-between mb-2">
+<span class="font-label-mono text-label-mono uppercase text-slate-500 font-semibold tracking-wider">Nguyên Âm Đơn (Monophthongs - 12)</span>
+<span class="font-label-mono text-[11px] text-slate-400">Trung bình: 78%</span>
+</div>
+<div class="grid grid-cols-6 sm:grid-cols-12 gap-2" id="vowelGrid">
+<!-- /iː/ Green -->
+<button class="ipa-chip bg-emerald-50 text-emerald-800 hover:bg-emerald-100 p-2 rounded-lg text-center transition-all group flex flex-col items-center" data-example="see, feel" data-score="86%" data-sound="/iː/" data-state="mastered">
+<span class="font-ipa-display text-ipa-display leading-tight group-hover:scale-110 transition-transform">iː</span>
+<span class="font-label-mono text-[10px] text-emerald-700">86%</span>
+</button>
+<!-- /ɪ/ Green -->
+<button class="ipa-chip bg-emerald-50 text-emerald-800 hover:bg-emerald-100 p-2 rounded-lg text-center transition-all group flex flex-col items-center" data-example="sit, hit" data-score="81%" data-sound="/ɪ/" data-state="mastered">
+<span class="font-ipa-display text-ipa-display leading-tight group-hover:scale-110 transition-transform">ɪ</span>
+<span class="font-label-mono text-[10px] text-emerald-700">81%</span>
+</button>
+<!-- /e/ Amber -->
+<button class="ipa-chip bg-amber-50 text-amber-800 hover:bg-amber-100 p-2 rounded-lg text-center transition-all group flex flex-col items-center" data-example="bed, pen" data-score="75%" data-sound="/e/" data-state="progress">
+<span class="font-ipa-display text-ipa-display leading-tight group-hover:scale-110 transition-transform">e</span>
+<span class="font-label-mono text-[10px] text-amber-700">75%</span>
+</button>
+<!-- /æ/ Amber/Red boundary -->
+<button class="ipa-chip bg-amber-50 text-amber-800 hover:bg-amber-100 p-2 rounded-lg text-center transition-all group flex flex-col items-center" data-example="cat, man" data-score="61%" data-sound="/æ/" data-state="progress">
+<span class="font-ipa-display text-ipa-display leading-tight group-hover:scale-110 transition-transform">æ</span>
+<span class="font-label-mono text-[10px] text-amber-700">61%</span>
+</button>
+<!-- /ʌ/ Green -->
+<button class="ipa-chip bg-emerald-50 text-emerald-800 hover:bg-emerald-100 p-2 rounded-lg text-center transition-all group flex flex-col items-center" data-example="cup, bus" data-score="84%" data-sound="/ʌ/" data-state="mastered">
+<span class="font-ipa-display text-ipa-display leading-tight group-hover:scale-110 transition-transform">ʌ</span>
+<span class="font-label-mono text-[10px] text-emerald-700">84%</span>
+</button>
+<!-- /ɑː/ Green -->
+<button class="ipa-chip bg-emerald-50 text-emerald-800 hover:bg-emerald-100 p-2 rounded-lg text-center transition-all group flex flex-col items-center" data-example="car, star" data-score="88%" data-sound="/ɑː/" data-state="mastered">
+<span class="font-ipa-display text-ipa-display leading-tight group-hover:scale-110 transition-transform">ɑː</span>
+<span class="font-label-mono text-[10px] text-emerald-700">88%</span>
+</button>
+<!-- /ɒ/ Amber -->
+<button class="ipa-chip bg-amber-50 text-amber-800 hover:bg-amber-100 p-2 rounded-lg text-center transition-all group flex flex-col items-center" data-example="hot, stop" data-score="72%" data-sound="/ɒ/" data-state="progress">
+<span class="font-ipa-display text-ipa-display leading-tight group-hover:scale-110 transition-transform">ɒ</span>
+<span class="font-label-mono text-[10px] text-amber-700">72%</span>
+</button>
+<!-- /ɔː/ Green -->
+<button class="ipa-chip bg-emerald-50 text-emerald-800 hover:bg-emerald-100 p-2 rounded-lg text-center transition-all group flex flex-col items-center" data-example="door, four" data-score="83%" data-sound="/ɔː/" data-state="mastered">
+<span class="font-ipa-display text-ipa-display leading-tight group-hover:scale-110 transition-transform">ɔː</span>
+<span class="font-label-mono text-[10px] text-emerald-700">83%</span>
+</button>
+<!-- /ʊ/ Amber -->
+<button class="ipa-chip bg-amber-50 text-amber-800 hover:bg-amber-100 p-2 rounded-lg text-center transition-all group flex flex-col items-center" data-example="put, book" data-score="77%" data-sound="/ʊ/" data-state="progress">
+<span class="font-ipa-display text-ipa-display leading-tight group-hover:scale-110 transition-transform">ʊ</span>
+<span class="font-label-mono text-[10px] text-amber-700">77%</span>
+</button>
+<!-- /uː/ Green -->
+<button class="ipa-chip bg-emerald-50 text-emerald-800 hover:bg-emerald-100 p-2 rounded-lg text-center transition-all group flex flex-col items-center" data-example="blue, food" data-score="85%" data-sound="/uː/" data-state="mastered">
+<span class="font-ipa-display text-ipa-display leading-tight group-hover:scale-110 transition-transform">uː</span>
+<span class="font-label-mono text-[10px] text-emerald-700">85%</span>
+</button>
+<!-- /ɜː/ Amber -->
+<button class="ipa-chip bg-amber-50 text-amber-800 hover:bg-amber-100 p-2 rounded-lg text-center transition-all group flex flex-col items-center" data-example="bird, work" data-score="69%" data-sound="/ɜː/" data-state="progress">
+<span class="font-ipa-display text-ipa-display leading-tight group-hover:scale-110 transition-transform">ɜː</span>
+<span class="font-label-mono text-[10px] text-amber-700">69%</span>
+</button>
+<!-- /ə/ Amber -->
+<button class="ipa-chip bg-amber-50 text-amber-800 hover:bg-amber-100 p-2 rounded-lg text-center transition-all group flex flex-col items-center" data-example="about, paper" data-score="68%" data-sound="/ə/" data-state="progress">
+<span class="font-ipa-display text-ipa-display leading-tight group-hover:scale-110 transition-transform">ə</span>
+<span class="font-label-mono text-[10px] text-amber-700">68%</span>
+</button>
+</div>
+</div>
+<!-- 2. Diphthongs (8) -->
+<div>
+<div class="flex items-center justify-between mb-2">
+<span class="font-label-mono text-label-mono uppercase text-slate-500 font-semibold tracking-wider">Nguyên Âm Đôi (Diphthongs - 8)</span>
+<span class="font-label-mono text-[11px] text-slate-400">Trung bình: 79%</span>
+</div>
+<div class="grid grid-cols-4 sm:grid-cols-8 gap-2">
+<button class="ipa-chip bg-emerald-50 text-emerald-800 hover:bg-emerald-100 p-2 rounded-lg text-center transition-all group flex flex-col items-center" data-example="wait, say" data-score="89%" data-sound="/eɪ/" data-state="mastered">
+<span class="font-ipa-display text-ipa-display leading-tight group-hover:scale-110 transition-transform">eɪ</span>
+<span class="font-label-mono text-[10px] text-emerald-700">89%</span>
+</button>
+<button class="ipa-chip bg-emerald-50 text-emerald-800 hover:bg-emerald-100 p-2 rounded-lg text-center transition-all group flex flex-col items-center" data-example="my, time" data-score="91%" data-sound="/aɪ/" data-state="mastered">
+<span class="font-ipa-display text-ipa-display leading-tight group-hover:scale-110 transition-transform">aɪ</span>
+<span class="font-label-mono text-[10px] text-emerald-700">91%</span>
+</button>
+<button class="ipa-chip bg-emerald-50 text-emerald-800 hover:bg-emerald-100 p-2 rounded-lg text-center transition-all group flex flex-col items-center" data-example="boy, join" data-score="85%" data-sound="/ɔɪ/" data-state="mastered">
+<span class="font-ipa-display text-ipa-display leading-tight group-hover:scale-110 transition-transform">ɔɪ</span>
+<span class="font-label-mono text-[10px] text-emerald-700">85%</span>
+</button>
+<button class="ipa-chip bg-emerald-50 text-emerald-800 hover:bg-emerald-100 p-2 rounded-lg text-center transition-all group flex flex-col items-center" data-example="cow, now" data-score="82%" data-sound="/aʊ/" data-state="mastered">
+<span class="font-ipa-display text-ipa-display leading-tight group-hover:scale-110 transition-transform">aʊ</span>
+<span class="font-label-mono text-[10px] text-emerald-700">82%</span>
+</button>
+<button class="ipa-chip bg-amber-50 text-amber-800 hover:bg-amber-100 p-2 rounded-lg text-center transition-all group flex flex-col items-center" data-example="go, home" data-score="70%" data-sound="/əʊ/" data-state="progress">
+<span class="font-ipa-display text-ipa-display leading-tight group-hover:scale-110 transition-transform">əʊ</span>
+<span class="font-label-mono text-[10px] text-amber-700">70%</span>
+</button>
+<button class="ipa-chip bg-amber-50 text-amber-800 hover:bg-amber-100 p-2 rounded-lg text-center transition-all group flex flex-col items-center" data-example="near, here" data-score="74%" data-sound="/ɪə/" data-state="progress">
+<span class="font-ipa-display text-ipa-display leading-tight group-hover:scale-110 transition-transform">ɪə</span>
+<span class="font-label-mono text-[10px] text-amber-700">74%</span>
+</button>
+<button class="ipa-chip bg-amber-50 text-amber-800 hover:bg-amber-100 p-2 rounded-lg text-center transition-all group flex flex-col items-center" data-example="hair, there" data-score="67%" data-sound="/eə/" data-state="progress">
+<span class="font-ipa-display text-ipa-display leading-tight group-hover:scale-110 transition-transform">eə</span>
+<span class="font-label-mono text-[10px] text-amber-700">67%</span>
+</button>
+<button class="ipa-chip bg-emerald-50 text-emerald-800 hover:bg-emerald-100 p-2 rounded-lg text-center transition-all group flex flex-col items-center" data-example="pure, tour" data-score="80%" data-sound="/ʊə/" data-state="mastered">
+<span class="font-ipa-display text-ipa-display leading-tight group-hover:scale-110 transition-transform">ʊə</span>
+<span class="font-label-mono text-[10px] text-emerald-700">80%</span>
+</button>
+</div>
+</div>
+<!-- 3. Consonants (24) -->
+<div>
+<div class="flex items-center justify-between mb-2">
+<span class="font-label-mono text-label-mono uppercase text-slate-500 font-semibold tracking-wider">Phụ Âm (Consonants - 24)</span>
+<span class="font-label-mono text-[11px] text-slate-400">Yếu: /θ/, /ks/, /ʃ/</span>
+</div>
+<div class="grid grid-cols-6 sm:grid-cols-12 gap-2">
+<button class="ipa-chip bg-emerald-50 text-emerald-800 hover:bg-emerald-100 p-2 rounded-lg text-center transition-all group flex flex-col items-center" data-example="pen, copy" data-score="88%" data-sound="/p/" data-state="mastered">
+<span class="font-ipa-display text-ipa-display leading-tight group-hover:scale-110 transition-transform">p</span>
+<span class="font-label-mono text-[10px] text-emerald-700">88%</span>
+</button>
+<button class="ipa-chip bg-emerald-50 text-emerald-800 hover:bg-emerald-100 p-2 rounded-lg text-center transition-all group flex flex-col items-center" data-example="ball, big" data-score="84%" data-sound="/b/" data-state="mastered">
+<span class="font-ipa-display text-ipa-display leading-tight group-hover:scale-110 transition-transform">b</span>
+<span class="font-label-mono text-[10px] text-emerald-700">84%</span>
+</button>
+<button class="ipa-chip bg-emerald-50 text-emerald-800 hover:bg-emerald-100 p-2 rounded-lg text-center transition-all group flex flex-col items-center" data-example="tea, two" data-score="83%" data-sound="/t/" data-state="mastered">
+<span class="font-ipa-display text-ipa-display leading-tight group-hover:scale-110 transition-transform">t</span>
+<span class="font-label-mono text-[10px] text-emerald-700">83%</span>
+</button>
+<button class="ipa-chip bg-emerald-50 text-emerald-800 hover:bg-emerald-100 p-2 rounded-lg text-center transition-all group flex flex-col items-center" data-example="did, day" data-score="81%" data-sound="/d/" data-state="mastered">
+<span class="font-ipa-display text-ipa-display leading-tight group-hover:scale-110 transition-transform">d</span>
+<span class="font-label-mono text-[10px] text-emerald-700">81%</span>
+</button>
+<button class="ipa-chip bg-emerald-50 text-emerald-800 hover:bg-emerald-100 p-2 rounded-lg text-center transition-all group flex flex-col items-center" data-example="cat, key" data-score="86%" data-sound="/k/" data-state="mastered">
+<span class="font-ipa-display text-ipa-display leading-tight group-hover:scale-110 transition-transform">k</span>
+<span class="font-label-mono text-[10px] text-emerald-700">86%</span>
+</button>
+<button class="ipa-chip bg-emerald-50 text-emerald-800 hover:bg-emerald-100 p-2 rounded-lg text-center transition-all group flex flex-col items-center" data-example="get, bag" data-score="82%" data-sound="/g/" data-state="mastered">
+<span class="font-ipa-display text-ipa-display leading-tight group-hover:scale-110 transition-transform">g</span>
+<span class="font-label-mono text-[10px] text-emerald-700">82%</span>
+</button>
+<button class="ipa-chip bg-emerald-50 text-emerald-800 hover:bg-emerald-100 p-2 rounded-lg text-center transition-all group flex flex-col items-center" data-example="fall, fine" data-score="85%" data-sound="/f/" data-state="mastered">
+<span class="font-ipa-display text-ipa-display leading-tight group-hover:scale-110 transition-transform">f</span>
+<span class="font-label-mono text-[10px] text-emerald-700">85%</span>
+</button>
+<button class="ipa-chip bg-emerald-50 text-emerald-800 hover:bg-emerald-100 p-2 rounded-lg text-center transition-all group flex flex-col items-center" data-example="van, voice" data-score="80%" data-sound="/v/" data-state="mastered">
+<span class="font-ipa-display text-ipa-display leading-tight group-hover:scale-110 transition-transform">v</span>
+<span class="font-label-mono text-[10px] text-emerald-700">80%</span>
+</button>
+<!-- /θ/ RED WEAK -->
+<button class="ipa-chip bg-rose-50 text-rose-800 hover:bg-rose-100 p-2 rounded-lg text-center transition-all group flex flex-col items-center ring-2 ring-rose-400" data-example="think, breath" data-score="54%" data-sound="/θ/" data-state="weak">
+<span class="font-ipa-display text-ipa-display leading-tight group-hover:scale-110 transition-transform">θ</span>
+<span class="font-label-mono text-[10px] text-rose-700 font-bold">54%</span>
+</button>
+<!-- /ð/ Amber -->
+<button class="ipa-chip bg-amber-50 text-amber-800 hover:bg-amber-100 p-2 rounded-lg text-center transition-all group flex flex-col items-center" data-example="this, mother" data-score="64%" data-sound="/ð/" data-state="progress">
+<span class="font-ipa-display text-ipa-display leading-tight group-hover:scale-110 transition-transform">ð</span>
+<span class="font-label-mono text-[10px] text-amber-700">64%</span>
+</button>
+<button class="ipa-chip bg-emerald-50 text-emerald-800 hover:bg-emerald-100 p-2 rounded-lg text-center transition-all group flex flex-col items-center" data-example="see, city" data-score="86%" data-sound="/s/" data-state="mastered">
+<span class="font-ipa-display text-ipa-display leading-tight group-hover:scale-110 transition-transform">s</span>
+<span class="font-label-mono text-[10px] text-emerald-700">86%</span>
+</button>
+<button class="ipa-chip bg-emerald-50 text-emerald-800 hover:bg-emerald-100 p-2 rounded-lg text-center transition-all group flex flex-col items-center" data-example="zoo, lazy" data-score="81%" data-sound="/z/" data-state="mastered">
+<span class="font-ipa-display text-ipa-display leading-tight group-hover:scale-110 transition-transform">z</span>
+<span class="font-label-mono text-[10px] text-emerald-700">81%</span>
+</button>
+<!-- Row 2 Consonants -->
+<button class="ipa-chip bg-amber-50 text-amber-800 hover:bg-amber-100 p-2 rounded-lg text-center transition-all group flex flex-col items-center" data-example="she, wash" data-score="66%" data-sound="/ʃ/" data-state="progress">
+<span class="font-ipa-display text-ipa-display leading-tight group-hover:scale-110 transition-transform">ʃ</span>
+<span class="font-label-mono text-[10px] text-amber-700">66%</span>
+</button>
+<button class="ipa-chip bg-amber-50 text-amber-800 hover:bg-amber-100 p-2 rounded-lg text-center transition-all group flex flex-col items-center" data-example="vision, beige" data-score="62%" data-sound="/ʒ/" data-state="progress">
+<span class="font-ipa-display text-ipa-display leading-tight group-hover:scale-110 transition-transform">ʒ</span>
+<span class="font-label-mono text-[10px] text-amber-700">62%</span>
+</button>
+<button class="ipa-chip bg-emerald-50 text-emerald-800 hover:bg-emerald-100 p-2 rounded-lg text-center transition-all group flex flex-col items-center" data-example="hat, home" data-score="90%" data-sound="/h/" data-state="mastered">
+<span class="font-ipa-display text-ipa-display leading-tight group-hover:scale-110 transition-transform">h</span>
+<span class="font-label-mono text-[10px] text-emerald-700">90%</span>
+</button>
+<button class="ipa-chip bg-amber-50 text-amber-800 hover:bg-amber-100 p-2 rounded-lg text-center transition-all group flex flex-col items-center" data-example="chair, match" data-score="72%" data-sound="/tʃ/" data-state="progress">
+<span class="font-ipa-display text-ipa-display leading-tight group-hover:scale-110 transition-transform">tʃ</span>
+<span class="font-label-mono text-[10px] text-amber-700">72%</span>
+</button>
+<button class="ipa-chip bg-amber-50 text-amber-800 hover:bg-amber-100 p-2 rounded-lg text-center transition-all group flex flex-col items-center" data-example="juice, page" data-score="65%" data-sound="/dʒ/" data-state="progress">
+<span class="font-ipa-display text-ipa-display leading-tight group-hover:scale-110 transition-transform">dʒ</span>
+<span class="font-label-mono text-[10px] text-amber-700">65%</span>
+</button>
+<button class="ipa-chip bg-emerald-50 text-emerald-800 hover:bg-emerald-100 p-2 rounded-lg text-center transition-all group flex flex-col items-center" data-example="man, summer" data-score="94%" data-sound="/m/" data-state="mastered">
+<span class="font-ipa-display text-ipa-display leading-tight group-hover:scale-110 transition-transform">m</span>
+<span class="font-label-mono text-[10px] text-emerald-700">94%</span>
+</button>
+<button class="ipa-chip bg-emerald-50 text-emerald-800 hover:bg-emerald-100 p-2 rounded-lg text-center transition-all group flex flex-col items-center" data-example="no, nice" data-score="93%" data-sound="/n/" data-state="mastered">
+<span class="font-ipa-display text-ipa-display leading-tight group-hover:scale-110 transition-transform">n</span>
+<span class="font-label-mono text-[10px] text-emerald-700">93%</span>
+</button>
+<button class="ipa-chip bg-emerald-50 text-emerald-800 hover:bg-emerald-100 p-2 rounded-lg text-center transition-all group flex flex-col items-center" data-example="sing, song" data-score="87%" data-sound="/ŋ/" data-state="mastered">
+<span class="font-ipa-display text-ipa-display leading-tight group-hover:scale-110 transition-transform">ŋ</span>
+<span class="font-label-mono text-[10px] text-emerald-700">87%</span>
+</button>
+<button class="ipa-chip bg-emerald-50 text-emerald-800 hover:bg-emerald-100 p-2 rounded-lg text-center transition-all group flex flex-col items-center" data-example="leg, feel" data-score="81%" data-sound="/l/" data-state="mastered">
+<span class="font-ipa-display text-ipa-display leading-tight group-hover:scale-110 transition-transform">l</span>
+<span class="font-label-mono text-[10px] text-emerald-700">81%</span>
+</button>
+<button class="ipa-chip bg-emerald-50 text-emerald-800 hover:bg-emerald-100 p-2 rounded-lg text-center transition-all group flex flex-col items-center" data-example="red, arrive" data-score="78%" data-sound="/r/" data-state="progress">
+<span class="font-ipa-display text-ipa-display leading-tight group-hover:scale-110 transition-transform">r</span>
+<span class="font-label-mono text-[10px] text-emerald-700">78%</span>
+</button>
+<button class="ipa-chip bg-emerald-50 text-emerald-800 hover:bg-emerald-100 p-2 rounded-lg text-center transition-all group flex flex-col items-center" data-example="wet, win" data-score="89%" data-sound="/w/" data-state="mastered">
+<span class="font-ipa-display text-ipa-display leading-tight group-hover:scale-110 transition-transform">w</span>
+<span class="font-label-mono text-[10px] text-emerald-700">89%</span>
+</button>
+<button class="ipa-chip bg-emerald-50 text-emerald-800 hover:bg-emerald-100 p-2 rounded-lg text-center transition-all group flex flex-col items-center" data-example="yes, yellow" data-score="90%" data-sound="/j/" data-state="mastered">
+<span class="font-ipa-display text-ipa-display leading-tight group-hover:scale-110 transition-transform">j</span>
+<span class="font-label-mono text-[10px] text-emerald-700">90%</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Dynamic Phoneme Preview Bar (Active on Chip Click) -->
+<div class="bg-surface-container-low rounded-xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4 transition-all" id="phonemeDetailCard">
+<div class="flex items-center gap-4">
+<span class="w-12 h-12 rounded-xl bg-rose-50 text-primary flex items-center justify-center font-ipa-display text-ipa-display" id="detailBadge">/θ/</span>
+<div>
+<div class="flex items-center gap-2">
+<h4 class="font-headline-sm text-headline-sm text-on-surface" id="detailTitle">Âm /θ/ (Voiceless Dental Fricative)</h4>
+<span class="font-label-mono text-label-mono px-2 py-0.5 rounded bg-rose-100 text-primary font-bold" id="detailScore">54% - Yếu</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant" id="detailDesc">Lỗi phổ biến: Đầu lưỡi rụt lại quá sớm tạo thành âm tắc /t/ hoặc trượt ra /s/.</p>
+</div>
+</div>
+<button class="shrink-0 flex items-center gap-1.5 px-4 py-2 rounded-lg bg-primary text-on-primary font-label-md text-label-md hover:bg-primary-container transition-all" id="drillPhonemeBtn">
+<span>Luyện Âm Này</span>
+<span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- MODULE 5: Urgent Focus Card: Top 3 Weak Sounds (4 cols) -->
+<div class="lg:col-span-4 bg-surface rounded-xl p-6 lg:p-8 shadow-sm flex flex-col justify-between space-y-6">
+<div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="p-2 rounded-lg bg-rose-50 text-primary">
+<span class="material-symbols-outlined text-xl">priority_high</span>
+</span>
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-bold">Cần Khắc Phục Ngay</h3>
+<p class="font-label-mono text-label-mono text-primary font-semibold">Top 3 Âm Kéo Tụt Điểm GOP</p>
+</div>
+</div>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-3">
+            Hệ thống nhận diện 3 âm tiết có tỉ lệ sai lệch phổ âm thanh F1/F2 trên 35% so với người bản xứ:
+          </p>
+<div class="space-y-3.5 mt-5">
+<!-- Sound 1: /θ/ -->
+<div class="p-3.5 rounded-xl bg-rose-50/60 hover:bg-rose-50 transition-colors flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-surface text-primary flex items-center justify-center font-ipa-display text-headline-sm font-bold shadow-xs">
+                  θ
+                </div>
+<div>
+<div class="font-label-md text-label-md text-on-surface font-bold">Âm /θ/ (Think, Path)</div>
+<div class="font-label-mono text-[11px] text-rose-700">Chính xác: <strong>54%</strong> • Lỗi /t/ thế chỗ</div>
+</div>
+</div>
+<button class="px-3 py-1.5 rounded-lg bg-primary-container hover:bg-primary text-on-primary font-label-mono text-[11px] font-bold transition-all shadow-xs flex items-center gap-1">
+<span>Luyện</span>
+<span class="material-symbols-outlined text-xs">arrow_forward</span>
+</button>
+</div>
+<!-- Sound 2: /ks/ -->
+<div class="p-3.5 rounded-xl bg-rose-50/60 hover:bg-rose-50 transition-colors flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-surface text-primary flex items-center justify-center font-ipa-display text-headline-sm font-bold shadow-xs">
+                  ks
+                </div>
+<div>
+<div class="font-label-md text-label-md text-on-surface font-bold">Cụm /ks/ (Six, Box)</div>
+<div class="font-label-mono text-[11px] text-rose-700">Chính xác: <strong>58%</strong> • Hay nuốt /k/</div>
+</div>
+</div>
+<button class="px-3 py-1.5 rounded-lg bg-primary-container hover:bg-primary text-on-primary font-label-mono text-[11px] font-bold transition-all shadow-xs flex items-center gap-1">
+<span>Luyện</span>
+<span class="material-symbols-outlined text-xs">arrow_forward</span>
+</button>
+</div>
+<!-- Sound 3: /æ/ -->
+<div class="p-3.5 rounded-xl bg-amber-50/70 hover:bg-amber-50 transition-colors flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-surface text-amber-700 flex items-center justify-center font-ipa-display text-headline-sm font-bold shadow-xs">
+                  æ
+                </div>
+<div>
+<div class="font-label-md text-label-md text-on-surface font-bold">Âm /æ/ (Cat, Man)</div>
+<div class="font-label-mono text-[11px] text-amber-800">Chính xác: <strong>61%</strong> • Nhầm /e/ Việt</div>
+</div>
+</div>
+<button class="px-3 py-1.5 rounded-lg bg-amber-600 hover:bg-amber-700 text-on-primary font-label-mono text-[11px] font-bold transition-all shadow-xs flex items-center gap-1">
+<span>Luyện</span>
+<span class="material-symbols-outlined text-xs">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Quick Acoustic Tip Box -->
+<div class="p-4 rounded-xl bg-surface-container-low flex items-start gap-3">
+<span class="text-secondary text-xl font-bold">💡</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+<strong>Mẹo khẩu hình:</strong> Để phát âm chuẩn /θ/, hãy đặt đầu lưỡi nhẹ giữa hai hàm răng, thổi nhẹ luồng hơi ra mà không làm rung thanh quản (voiceless).
+          </p>
+</div>
+</div>
+</div>
+<!-- MODULE 6: Gamification Badges & Achievements Ribbon -->
+<div class="bg-surface rounded-xl p-6 lg:p-8 shadow-sm space-y-6">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+<div>
+<div class="flex items-center gap-2">
+<span class="p-2 rounded-lg bg-primary-fixed text-primary">
+<span class="material-symbols-outlined text-xl">military_tech</span>
+</span>
+<h2 class="font-headline-sm text-headline-sm text-on-surface font-bold">Huy Chương &amp; Thành Tựu Chinh Phục</h2>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Mở khóa huy hiệu âm học để nhận thêm khiên bảo vệ streak và điểm kinh nghiệm RPG</p>
+</div>
+<span class="font-label-mono text-label-mono px-3 py-1 rounded bg-surface-container-high text-on-surface font-bold">
+          3 / 5 Đã Mở Khóa
+        </span>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+<!-- Badge 1: Unlocked -->
+<div class="bg-surface-container-low hover:bg-surface-container transition-all rounded-xl p-4 flex flex-col items-center text-center group cursor-pointer">
+<div class="w-16 h-16 rounded-full bg-emerald-100 flex items-center justify-center text-3xl shadow-sm mb-3 group-hover:scale-110 transition-transform">
+            🏅
+          </div>
+<h4 class="font-label-md text-label-md text-on-surface font-bold">Kẻ Diệt Lỗi Âm Đuôi</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Vượt qua 100 câu có âm đuôi /s, t, d/</p>
+<span class="mt-3 px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 font-label-mono text-[10px] font-bold">ĐÃ ĐẠT</span>
+</div>
+<!-- Badge 2: Unlocked -->
+<div class="bg-surface-container-low hover:bg-surface-container transition-all rounded-xl p-4 flex flex-col items-center text-center group cursor-pointer">
+<div class="w-16 h-16 rounded-full bg-secondary-fixed flex items-center justify-center text-3xl shadow-sm mb-3 group-hover:scale-110 transition-transform">
+            ⚔️
+          </div>
+<h4 class="font-label-md text-label-md text-on-surface font-bold">Khắc Tinh Của Golem</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Hạ boss Golem thế giới 1 trong Game RPG</p>
+<span class="mt-3 px-2 py-0.5 rounded bg-sky-100 text-secondary font-label-mono text-[10px] font-bold">ĐÃ ĐẠT</span>
+</div>
+<!-- Badge 3: Unlocked -->
+<div class="bg-surface-container-low hover:bg-surface-container transition-all rounded-xl p-4 flex flex-col items-center text-center group cursor-pointer">
+<div class="w-16 h-16 rounded-full bg-rose-100 flex items-center justify-center text-3xl shadow-sm mb-3 group-hover:scale-110 transition-transform">
+            🔥
+          </div>
+<h4 class="font-label-md text-label-md text-on-surface font-bold">Chiến Binh 14 Ngày</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Duy trì chuỗi streak không gián đoạn</p>
+<span class="mt-3 px-2 py-0.5 rounded bg-rose-50 text-primary font-label-mono text-[10px] font-bold">ĐÃ ĐẠT</span>
+</div>
+<!-- Badge 4: Locked -->
+<div class="bg-slate-50 opacity-70 hover:opacity-100 transition-all rounded-xl p-4 flex flex-col items-center text-center group cursor-pointer">
+<div class="w-16 h-16 rounded-full bg-slate-200 flex items-center justify-center text-2xl text-slate-400 shadow-sm mb-3">
+            🔒
+          </div>
+<h4 class="font-label-md text-label-md text-slate-700 font-bold">Huy Chương IELTS 8.0</h4>
+<p class="font-body-sm text-body-sm text-slate-500 mt-1">Cần đạt 85% GOP toàn diện</p>
+<div class="w-full h-1.5 rounded-full bg-slate-200 mt-3">
+<div class="h-full rounded-full bg-slate-400" style="width: 89%;"></div>
+</div>
+<span class="mt-2 text-slate-500 font-label-mono text-[10px]">76% / 85%</span>
+</div>
+<!-- Badge 5: Locked -->
+<div class="bg-slate-50 opacity-70 hover:opacity-100 transition-all rounded-xl p-4 flex flex-col items-center text-center group cursor-pointer">
+<div class="w-16 h-16 rounded-full bg-slate-200 flex items-center justify-center text-2xl text-slate-400 shadow-sm mb-3">
+            🔒
+          </div>
+<h4 class="font-label-md text-label-md text-slate-700 font-bold">Bậc Thầy Ngữ Điệu F0</h4>
+<p class="font-body-sm text-body-sm text-slate-500 mt-1">Hoàn thành 50 bài Suprasegmental</p>
+<div class="w-full h-1.5 rounded-full bg-slate-200 mt-3">
+<div class="h-full rounded-full bg-slate-400" style="width: 48%;"></div>
+</div>
+<span class="mt-2 text-slate-500 font-label-mono text-[10px]">24 / 50 bài</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script>
+  // Interactive IPA Heatmap Preview
+  document.querySelectorAll('.ipa-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      const sound = chip.getAttribute('data-sound');
+      const score = chip.getAttribute('data-score');
+      const example = chip.getAttribute('data-example');
+      const state = chip.getAttribute('data-state');
+
+      const badge = document.getElementById('detailBadge');
+      const title = document.getElementById('detailTitle');
+      const scoreEl = document.getElementById('detailScore');
+      const desc = document.getElementById('detailDesc');
+
+      badge.textContent = sound;
+      title.textContent = `Âm ` + sound + ` (Ví dụ: "` + example + `")`;
+      scoreEl.textContent = score + (state === 'mastered' ? ' - Làm Chủ' : state === 'progress' ? ' - Khá' : ' - Yếu');
+
+      if (state === 'mastered') {
+        badge.className = 'w-12 h-12 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center font-ipa-display text-ipa-display';
+        scoreEl.className = 'font-label-mono text-label-mono px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold';
+        desc.textContent = 'Phổ formant F1/F2 khớp chuẩn với người bản xứ trên 80%. Giữ vững phong độ!';
+      } else if (state === 'progress') {
+        badge.className = 'w-12 h-12 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center font-ipa-display text-ipa-display';
+        scoreEl.className = 'font-label-mono text-label-mono px-2 py-0.5 rounded bg-amber-100 text-amber-800 font-bold';
+        desc.textContent = 'Độ ổn định tương đối tốt, thỉnh thoảng còn bị ảnh hưởng bởi thanh điệu tiếng Việt.';
+      } else {
+        badge.className = 'w-12 h-12 rounded-xl bg-rose-50 text-primary flex items-center justify-center font-ipa-display text-ipa-display';
+        scoreEl.className = 'font-label-mono text-label-mono px-2 py-0.5 rounded bg-rose-100 text-primary font-bold';
+        desc.textContent = 'Lỗi phổ biến: Âm kẹp lưỡi bị rụt lại thành âm tắc /t/ hoặc trượt ra /s/. Cần ưu tiên khắc phục.';
+      }
+    });
+  });
+
+  // Export PDF & Share Metric Feedback Micro-interactions
+  document.getElementById('exportPdfBtn')?.addEventListener('click', function() {
+    const orig = this.innerHTML;
+    this.innerHTML = '<span class="material-symbols-outlined text-lg animate-spin">sync</span><span>Đang Tạo Báo Cáo...</span>';
+    setTimeout(() => {
+      this.innerHTML = '<span class="material-symbols-outlined text-lg text-emerald-600">check_circle</span><span>Đã Tải Báo Cáo!</span>';
+      setTimeout(() => { this.innerHTML = orig; }, 2000);
+    }, 1200);
+  });
+
+  document.getElementById('shareMetricBtn')?.addEventListener('click', function() {
+    const orig = this.innerHTML;
+    this.innerHTML = '<span class="material-symbols-outlined text-lg animate-bounce">thumb_up</span><span>Đã Sao Chép Link!</span>';
+    setTimeout(() => { this.innerHTML = orig; }, 1800);
+  });
+</script></main><footer class="w-full bg-[#f1f5f9] border-t border-slate-200/80 py-space-md shadow-[0_-1px_6px_rgba(15,23,42,0.02)]"><div class="w-full px-6 lg:px-12 mx-auto flex flex-col md:flex-row items-center justify-between gap-space-sm font-label-mono text-label-mono text-slate-500"><div class="flex items-center gap-space-md"><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-secondary animate-ping"></span><span class="text-slate-800 font-semibold">Acoustic Neural Engine: 44.1kHz Formant Tracking v4.2</span></div><span class="hidden md:inline text-slate-300">|</span><span class="hidden md:inline font-medium">Spectrogram Latency: 12ms</span></div><div class="flex items-center gap-space-md"><span class="font-medium">L1 Bias Calibration: Vietnamese IPA Matrix</span><span class="font-semibold text-slate-700">© 2025 VietPhonics AI Laboratory</span></div></div></footer></body></html>

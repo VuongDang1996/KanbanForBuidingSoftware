@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+
+<html lang="vi"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_tab" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "on-secondary-fixed-variant": "#004b73", "surface-variant": "#dae2fd", "secondary-fixed": "#cce5ff", "tertiary-container": "#645dfa", "secondary": "#006398", "surface-container-highest": "#dae2fd", "background": "#faf8ff", "on-secondary": "#ffffff", "inverse-primary": "#ffb3b6", "on-tertiary-fixed": "#0f0069", "surface-dim": "#d2d9f4", "outline": "#906f70", "surface-tint": "#be0037", "inverse-on-surface": "#eef0ff", "on-surface": "#131b2e", "primary-container": "#e11d48", "on-background": "#131b2e", "outline-variant": "#e5bdbe", "tertiary-fixed-dim": "#c3c0ff", "on-primary-container": "#fffaf9", "on-error-container": "#93000a", "tertiary": "#4a40e0", "on-secondary-container": "#00476e", "on-tertiary": "#ffffff", "on-tertiary-container": "#fffaff", "secondary-fixed-dim": "#93ccff", "error-container": "#ffdad6", "on-primary-fixed": "#40000c", "on-secondary-fixed": "#001d31", "surface-container-lowest": "#ffffff", "error": "#ba1a1a", "on-error": "#ffffff", "inverse-surface": "#283044", "on-primary": "#ffffff", "primary": "#b80035", "on-tertiary-fixed-variant": "#3323cc", "surface-container-low": "#f2f3ff", "tertiary-fixed": "#e2dfff", "on-surface-variant": "#5c3f40", "surface-container": "#eaedff", "on-primary-fixed-variant": "#920028", "surface-bright": "#faf8ff", "primary-fixed": "#ffdada", "primary-fixed-dim": "#ffb3b6", "surface": "#faf8ff", "secondary-container": "#5bb8fe", "surface-container-high": "#e2e7ff" }, borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, spacing: { "gutter": "1.5rem", "space-xl": "2.5rem", "space-xs": "0.25rem", "gutter-mobile": "1rem", "space-sm": "0.5rem", "margin-mobile": "1rem", "margin": "2rem", "space-lg": "1.5rem", "space-md": "1rem" }, fontFamily: { "telemetry-data": ["JetBrains Mono"], "label-md": ["Plus Jakarta Sans"], "headline-sm": ["Plus Jakarta Sans"], "display-hero-mobile": ["Plus Jakarta Sans"], "headline-lg": ["Plus Jakarta Sans"], "display-hero": ["Plus Jakarta Sans"], "headline-lg-mobile": ["Plus Jakarta Sans"], "body-sm": ["Plus Jakarta Sans"], "headline-md": ["Plus Jakarta Sans"], "body-md": ["Plus Jakarta Sans"], "body-lg": ["Plus Jakarta Sans"], "ipa-body": ["JetBrains Mono"], "ipa-display": ["JetBrains Mono"], "label-sm": ["Plus Jakarta Sans"] }, fontSize: { "telemetry-data": ["12px", { lineHeight: "16px", letterSpacing: "0.05em", fontWeight: "600" }], "label-md": ["14px", { lineHeight: "20px", letterSpacing: "0.01em", fontWeight: "600" }], "headline-sm": ["20px", { lineHeight: "28px", letterSpacing: "-0.01em", fontWeight: "600" }], "display-hero-mobile": ["32px", { lineHeight: "40px", letterSpacing: "-0.02em", fontWeight: "800" }], "headline-lg": ["32px", { lineHeight: "40px", letterSpacing: "-0.02em", fontWeight: "700" }], "display-hero": ["48px", { lineHeight: "56px", letterSpacing: "-0.03em", fontWeight: "800" }], "headline-lg-mobile": ["26px", { lineHeight: "34px", letterSpacing: "-0.015em", fontWeight: "700" }], "body-sm": ["13px", { lineHeight: "20px", fontWeight: "400" }], "headline-md": ["24px", { lineHeight: "32px", letterSpacing: "-0.015em", fontWeight: "700" }], "body-md": ["15px", { lineHeight: "24px", fontWeight: "400" }], "body-lg": ["18px", { lineHeight: "28px", fontWeight: "400" }], "ipa-body": ["16px", { lineHeight: "24px", letterSpacing: "0.02em", fontWeight: "500" }], "ipa-display": ["24px", { lineHeight: "32px", letterSpacing: "0.04em", fontWeight: "600" }], "label-sm": ["12px", { lineHeight: "16px", letterSpacing: "0.02em", fontWeight: "600" }] } } } };</script><style>@layer base{html,body{width:100vw;margin:0;padding:0;}body{overscroll-behavior:none;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface font-body-md text-on-surface flex flex-col min-h-screen antialiased selection:bg-primary/10 selection:text-primary"><header class="fixed top-0 inset-x-0 z-50 bg-surface-container-lowest/85 backdrop-blur-xl shadow-[0_2px_12px_rgba(19,27,46,0.03)] pt-safe"><div class="h-28 flex flex-col justify-between px-margin-mobile"><div class="flex items-center justify-between h-16"><div class="flex items-center gap-space-sm"><img alt="Brand logo. - Primary color: #f43f5e
+- Font: plusJakartaSans
+- Mode: dark
+- Roundness: rounded-md
+" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1Vg6grJ_-nxYwa4eJbdvms8dgMdPp9oLXB43wtiyaoOtaYW3LipO7AR20ZfsPrKCfUrAvri7QmcSBrkqYDBS4FJxjwg-pjm2udgWCe2_4zKwwSktGNhv0HJVDtQJjGackY9xp6tPReWghiLIQoT7ZR4Es5-cCPX1mM7Y4Ytv6XhtcyTd0eHR31MGbXUp3bfRKs4O8EmSD2Op-zxpJAjmFppeank3S8JqYvfoINg5v8oQPOmG3OYNojg1Eg"/><div class="flex flex-col"><div class="flex items-center gap-space-xs"><span class="font-headline-sm text-headline-sm text-on-surface tracking-tight leading-none">VietPhonics</span><span class="font-telemetry-data text-primary text-label-sm font-bold">.AI</span></div><span class="font-telemetry-data text-telemetry-data text-secondary uppercase tracking-wider text-[10px] leading-tight">Acoustic L1 Lab</span></div></div><div class="flex items-center gap-space-xs"><div class="flex items-center gap-1 bg-surface-container px-2 py-1 rounded-full text-on-surface"><span class="text-[13px] leading-none">🔥</span><span class="font-telemetry-data text-telemetry-data font-bold">14</span></div><div class="flex items-center gap-1 bg-surface-container px-2 py-1 rounded-full text-on-surface"><span class="text-[13px] leading-none">🛡️</span><span class="font-telemetry-data text-telemetry-data font-bold">2</span></div><button class="min-h-[44px] min-w-[44px] flex items-center justify-center p-0.5 rounded-full hover:opacity-90 active:scale-95 transition-all"><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida/AEtjO1WqZGL-9UEnbVBJ8e5K9gmnMFdOY8AC40BXslh2XUAXuZ91RlvoewSkxqVe0LCVtOESOSUtHLbyl31YZnEQrzjeONmb3wPmdzUVpmlxyE0Ckd8F82jsovjSe4JthX72-l7XsFvlewgmhVm8NtdN6Y7txBTUvui2dBnWFex0iDCyMU92p1y8lzF_70947_rQWb7KWxWmFFZrGAFRYyyxSxqJktGFiU5H3vaJ51EVTOAbZSvAemJduQ9-CBw"/></button></div></div><div class="flex items-center justify-between h-12 py-1"><button class="flex items-center gap-space-xs bg-surface-container-low hover:bg-surface-container px-space-sm py-1 rounded-lg transition-colors w-full justify-between active:scale-[0.99]"><div class="flex items-center gap-space-xs truncate"><span class="text-sm leading-none">🇻🇳</span><span class="font-label-sm text-label-sm text-on-surface font-semibold truncate">Giọng Miền Bắc:</span><span class="font-ipa-body text-telemetry-data text-secondary truncate">/d/-/z/ calibrated</span></div><span class="material-symbols-outlined text-on-surface-variant text-[18px]">expand_more</span></button></div></div></header><main class="flex flex-col relative w-full pt-28 pb-24 min-h-screen bg-surface px-margin-mobile"><div class="flex flex-col w-full pb-6 space-y-space-md">
+<!-- Micro Diagnostic Telemetry Bar -->
+<div class="flex items-center justify-between bg-surface-container px-space-md py-2 rounded-xl shadow-sm">
+<div class="flex items-center space-x-1.5 min-w-0">
+<span class="inline-block w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+<span class="font-telemetry-data text-telemetry-data text-secondary truncate">Engine v4.2 Ready</span>
+</div>
+<div class="flex items-center space-x-1 flex-shrink-0">
+<span class="material-symbols-outlined text-[14px] text-tertiary">tune</span>
+<span class="font-label-sm text-label-sm text-tertiary font-semibold">L1 Filter Active</span>
+</div>
+</div>
+<!-- Hero Score & Acoustic Calibration Card -->
+<div class="relative bg-surface-container-lowest p-space-md rounded-2xl shadow-md overflow-hidden">
+<!-- Subtle Ambient Radiance -->
+<div class="absolute -right-10 -top-10 w-40 h-40 bg-primary-container/10 rounded-full blur-2xl pointer-events-none"></div>
+<div class="flex items-center justify-between gap-space-md">
+<!-- Left Metric Gauge -->
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Acoustic GOP Score</span>
+<div class="flex items-baseline space-x-1 mt-0.5">
+<span class="font-display-hero-mobile text-display-hero-mobile text-on-surface">76</span>
+<span class="font-headline-sm text-headline-sm text-primary-container font-extrabold">%</span>
+</div>
+<div class="flex items-center space-x-1 text-on-surface-variant mt-1">
+<span class="material-symbols-outlined text-[16px] text-secondary">trending_up</span>
+<span class="font-telemetry-data text-telemetry-data text-secondary">+4.2% tuần này</span>
+</div>
+</div>
+<!-- Compact Radial Progress Ring SVG -->
+<div class="relative w-20 h-20 flex-shrink-0 flex items-center justify-center">
+<svg class="w-full h-full -rotate-90" viewbox="0 0 72 72">
+<circle class="text-surface-container" cx="36" cy="36" fill="none" r="30" stroke="currentColor" stroke-width="6"></circle>
+<circle class="text-primary-container" cx="36" cy="36" fill="none" r="30" stroke="currentColor" stroke-dasharray="188.4" stroke-dashoffset="45.2" stroke-linecap="round" stroke-width="6"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="material-symbols-outlined text-primary-container text-[22px]" style="font-variation-settings: 'FILL' 1;">mic</span>
+</div>
+</div>
+</div>
+<!-- International Calibration Badges -->
+<div class="flex flex-wrap gap-1.5 mt-space-md pt-space-sm bg-surface-container-low p-2 rounded-xl">
+<span class="inline-flex items-center px-2 py-0.5 rounded-lg bg-surface-container-lowest text-on-surface font-telemetry-data text-telemetry-data shadow-sm">
+        🎯 IELTS 7.0
+      </span>
+<span class="inline-flex items-center px-2 py-0.5 rounded-lg bg-surface-container-lowest text-secondary font-telemetry-data text-telemetry-data shadow-sm">
+        CEFR B2+
+      </span>
+<span class="inline-flex items-center px-2 py-0.5 rounded-lg bg-primary-container/10 text-primary-container font-telemetry-data text-telemetry-data">
+        Khử tạp âm L1
+      </span>
+</div>
+<!-- Streak & Shields Pill Bar -->
+<div class="flex items-center justify-between mt-3 px-1">
+<div class="flex items-center space-x-1.5">
+<span class="text-base leading-none">🔥</span>
+<span class="font-label-sm text-label-sm text-on-surface">14 Ngày liên tiếp</span>
+<span class="font-telemetry-data text-[10px] text-on-surface-variant font-medium">(Kỷ lục 21)</span>
+</div>
+<div class="flex items-center space-x-1 text-on-surface-variant">
+<span class="text-base leading-none">🛡️</span>
+<span class="font-telemetry-data text-telemetry-data font-semibold">2 Khiên</span>
+</div>
+</div>
+</div>
+<!-- 4 Trụ Cột Ngữ Âm L1 Việt Nam -->
+<div class="space-y-2">
+<div class="flex items-center justify-between px-1">
+<h2 class="font-headline-sm text-[17px] leading-snug text-on-surface font-bold tracking-tight">4 Trụ Cột Ngữ Âm L1</h2>
+<button class="font-label-sm text-label-sm text-primary flex items-center min-h-[32px] hover:underline" onclick="toggleMetricDetails()">
+<span>Chi tiết</span>
+<span class="material-symbols-outlined text-[16px] ml-0.5">chevron_right</span>
+</button>
+</div>
+<div class="grid grid-cols-2 gap-2.5">
+<!-- Pillar 1: Âm Đuôi -->
+<div class="bg-surface-container-lowest p-3 rounded-xl shadow-sm flex flex-col justify-between space-y-2">
+<div class="flex items-start justify-between">
+<div class="flex flex-col">
+<span class="font-label-sm text-[12px] leading-tight text-on-surface font-bold">Âm Đuôi &amp; Cụm</span>
+<span class="font-ipa-body text-[11px] text-secondary mt-0.5">/ks/, /st/, /t/</span>
+</div>
+<span class="w-2 h-2 rounded-full bg-emerald-500 flex-shrink-0"></span>
+</div>
+<div class="space-y-1">
+<div class="flex items-center justify-between">
+<span class="font-telemetry-data text-telemetry-data text-emerald-600 font-bold">82%</span>
+<span class="font-label-sm text-[10px] text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded">Làm chủ</span>
+</div>
+<div class="w-full h-1.5 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-emerald-500 rounded-full" style="width: 82%"></div>
+</div>
+</div>
+</div>
+<!-- Pillar 2: Cặp Âm Dễ Nhầm -->
+<div class="bg-surface-container-lowest p-3 rounded-xl shadow-sm flex flex-col justify-between space-y-2">
+<div class="flex items-start justify-between">
+<div class="flex flex-col">
+<span class="font-label-sm text-[12px] leading-tight text-on-surface font-bold">Cặp Âm Nhầm</span>
+<span class="font-ipa-body text-[11px] text-secondary mt-0.5">/θ/-/t/, /i:/-/ɪ/</span>
+</div>
+<span class="w-2 h-2 rounded-full bg-amber-500 flex-shrink-0"></span>
+</div>
+<div class="space-y-1">
+<div class="flex items-center justify-between">
+<span class="font-telemetry-data text-telemetry-data text-amber-600 font-bold">71%</span>
+<span class="font-label-sm text-[10px] text-amber-700 bg-amber-50 px-1.5 py-0.5 rounded">Cần luyện</span>
+</div>
+<div class="w-full h-1.5 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-amber-500 rounded-full" style="width: 71%"></div>
+</div>
+</div>
+</div>
+<!-- Pillar 3: Trọng Âm & Nhịp Điệu -->
+<div class="bg-surface-container-lowest p-3 rounded-xl shadow-sm flex flex-col justify-between space-y-2">
+<div class="flex items-start justify-between">
+<div class="flex flex-col">
+<span class="font-label-sm text-[12px] leading-tight text-on-surface font-bold">Trọng Âm &amp; Nhịp</span>
+<span class="font-ipa-body text-[11px] text-secondary mt-0.5">Stress &amp; Cadence</span>
+</div>
+<span class="w-2 h-2 rounded-full bg-sky-500 flex-shrink-0"></span>
+</div>
+<div class="space-y-1">
+<div class="flex items-center justify-between">
+<span class="font-telemetry-data text-telemetry-data text-secondary font-bold">68%</span>
+<span class="font-label-sm text-[10px] text-secondary-fixed-variant bg-secondary-fixed/50 px-1.5 py-0.5 rounded">Tiến bộ</span>
+</div>
+<div class="w-full h-1.5 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-secondary-container rounded-full" style="width: 68%"></div>
+</div>
+</div>
+</div>
+<!-- Pillar 4: Nối Âm & Lướt Âm -->
+<div class="bg-surface-container-lowest p-3 rounded-xl shadow-sm flex flex-col justify-between space-y-2">
+<div class="flex items-start justify-between">
+<div class="flex flex-col">
+<span class="font-label-sm text-[12px] leading-tight text-on-surface font-bold">Nối &amp; Lướt Âm</span>
+<span class="font-ipa-body text-[11px] text-secondary mt-0.5">Connected Speech</span>
+</div>
+<span class="w-2 h-2 rounded-full bg-primary-container flex-shrink-0"></span>
+</div>
+<div class="space-y-1">
+<div class="flex items-center justify-between">
+<span class="font-telemetry-data text-telemetry-data text-primary-container font-bold">59%</span>
+<span class="font-label-sm text-[10px] text-primary-container bg-error-container/40 px-1.5 py-0.5 rounded">Ưu tiên cao</span>
+</div>
+<div class="w-full h-1.5 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-primary-container rounded-full" style="width: 59%"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Lộ Trình 10 Phút Tối Ưu Hôm Nay (Vertical Step Flow) -->
+<div class="space-y-2.5 pt-1">
+<div class="flex items-center justify-between px-1">
+<div class="flex items-center space-x-1.5">
+<span class="flex h-5 w-5 items-center justify-center rounded-full bg-primary-container text-on-primary-container text-[11px] font-bold">⚡</span>
+<h2 class="font-headline-sm text-[17px] leading-snug text-on-surface font-bold tracking-tight">Lộ Trình 10 Phút Hôm Nay</h2>
+</div>
+<span class="font-telemetry-data text-telemetry-data text-on-surface-variant font-medium">1/3 Hoàn thành</span>
+</div>
+<!-- Timeline Wrapper -->
+<div class="space-y-2.5">
+<!-- Step 1: Completed -->
+<div class="bg-surface-container-lowest p-3.5 rounded-2xl shadow-sm opacity-85 transition-all">
+<div class="flex items-start gap-3">
+<div class="w-7 h-7 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center flex-shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[18px]">check</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface font-semibold truncate">Khởi động âm yếu /θ/</span>
+<span class="font-telemetry-data text-telemetry-data text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded font-bold">92% GOP</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">think, thank, tooth, birthday</p>
+<div class="flex items-center space-x-2 mt-1.5">
+<span class="font-telemetry-data text-[11px] text-on-surface-variant">⏱ 2 phút</span>
+<span class="text-[10px] text-emerald-600 font-semibold">• Đã ghi điểm chuẩn</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Step 2: Active Spotlight Card (Highlight Rose Aura) -->
+<div class="relative bg-surface-container-lowest p-4 rounded-2xl shadow-lg shadow-primary-container/10 overflow-hidden" style="box-shadow: 0 8px 24px -4px rgba(225, 29, 72, 0.15);">
+<!-- Active Corner Ribbon Indicator -->
+<div class="absolute top-0 right-0 bg-primary-container text-on-primary px-2.5 py-0.5 rounded-bl-xl font-label-sm text-[10px] tracking-wider uppercase font-bold">
+          Đang Luyện
+        </div>
+<div class="flex items-start gap-3">
+<div class="w-8 h-8 rounded-full bg-primary-container/15 text-primary-container flex items-center justify-center flex-shrink-0 mt-0.5 animate-pulse">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</div>
+<div class="flex-1 min-w-0 pr-10">
+<div class="flex items-center space-x-1.5">
+<span class="font-label-md text-label-md text-on-surface font-bold">Trọng tâm: Rụng âm đuôi &amp; /ks/</span>
+</div>
+<div class="flex items-center space-x-2 mt-1">
+<span class="font-telemetry-data text-telemetry-data text-primary-container font-semibold">⏱ 5 phút</span>
+<span class="font-telemetry-data text-telemetry-data text-secondary font-medium">• L1 Transfer High Impact</span>
+</div>
+</div>
+</div>
+<!-- Target Sentence Waveform Box -->
+<div class="mt-3 p-3 bg-surface-container-low rounded-xl space-y-2">
+<span class="font-label-sm text-[11px] uppercase tracking-wide text-on-surface-variant font-semibold">Câu mẫu chuẩn hóa L1:</span>
+<p class="font-body-md text-body-md text-on-surface leading-snug font-medium">
+            "Six <span class="bg-primary-container/15 text-primary-container px-1 rounded font-bold">months</span> ago, she <span class="bg-primary-container/15 text-primary-container px-1 rounded font-bold">baked</span> fresh bread on the street."
+          </p>
+<!-- Micro Visualizer Line for Pitch/Wave -->
+<div class="flex items-center space-x-1 pt-1 h-6">
+<div class="w-1 bg-primary-container h-2 rounded-full animate-bounce"></div>
+<div class="w-1 bg-primary-container h-4 rounded-full"></div>
+<div class="w-1 bg-secondary h-5 rounded-full animate-pulse"></div>
+<div class="w-1 bg-secondary h-3 rounded-full"></div>
+<div class="w-1 bg-primary-container h-4 rounded-full"></div>
+<div class="w-1 bg-secondary h-2 rounded-full"></div>
+<div class="w-1 bg-primary-container h-5 rounded-full"></div>
+<div class="w-1 bg-primary-container h-3 rounded-full"></div>
+<div class="flex-1 h-0.5 bg-surface-variant rounded-full mx-1"></div>
+<span class="font-ipa-body text-[11px] text-secondary font-semibold">/beɪkt/</span>
+</div>
+</div>
+<!-- Main Action Button -->
+<button class="w-full mt-3 min-h-[46px] bg-primary-container hover:bg-primary active:scale-[0.98] text-on-primary font-label-md text-label-md font-bold rounded-xl shadow-md shadow-primary-container/25 flex items-center justify-center space-x-2 transition-all" id="start-step-btn" onclick="handleStartStep(this)">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">mic</span>
+<span>NHẤP ĐỂ BẮT ĐẦU NGAY</span>
+</button>
+</div>
+<!-- Step 3: Locked -->
+<div class="bg-surface-container-lowest p-3.5 rounded-2xl shadow-sm opacity-60">
+<div class="flex items-start gap-3">
+<div class="w-7 h-7 rounded-full bg-surface-container text-on-surface-variant flex items-center justify-center flex-shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[18px]">lock</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface font-semibold truncate">Thực chiến AI Tech Lead Standup</span>
+<span class="font-telemetry-data text-telemetry-data text-on-surface-variant">Mở sau B2</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Mô phỏng hội thoại phản xạ 1:1 với AI bot</p>
+<div class="flex items-center space-x-2 mt-1">
+<span class="font-telemetry-data text-[11px] text-on-surface-variant">⏱ 3 phút</span>
+<span class="font-telemetry-data text-[11px] text-tertiary">Roleplay Engine</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Biomechanical Snapshot Card (2D Articulatory Preview) -->
+<div class="bg-surface-container-lowest p-space-md rounded-2xl shadow-sm space-y-3">
+<div class="flex items-center justify-between">
+<div class="flex items-center space-x-1.5">
+<span class="material-symbols-outlined text-secondary text-[20px]">graphic_eq</span>
+<h3 class="font-headline-sm text-[16px] text-on-surface font-bold">Khẩu Hình Học 2D (Biomechanical)</h3>
+</div>
+<button class="font-label-sm text-label-sm text-secondary hover:text-on-secondary-fixed-variant flex items-center font-bold" onclick="alert('Đang mở Studio Khẩu Hình 2D...')">
+<span>Mở Studio 2D</span>
+<span class="material-symbols-outlined text-[16px] ml-0.5">open_in_new</span>
+</button>
+</div>
+<div class="flex items-center gap-space-md bg-surface-container-low p-3 rounded-xl">
+<!-- High Quality Descriptive Phonetics Image Placeholder -->
+<div class="relative w-24 h-24 flex-shrink-0 rounded-lg overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="Clear medical 2D cross-section illustration of human vocal tract and sagittal speech organ anatomy. Tongue tip positioned delicately between the upper and lower front teeth illustrating voiceless dental fricative theta sound. Subtle clean blue and coral anatomical annotations, clinical laboratory white aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBJStjbdnqoP68ZcbidipGEDtlIwChB77RPshupvYzV3eGtoHOmKw1t2sXeP4uoNRck351g0s3fd5ZvVpVL9_f6BrMxOrYGrl6PemF-p3pJhe3uFg6MkGZsbJJwJeZWG-4DXuzYuSi26FtxN93ZQqX2vbzprvEUBIh7ZHcKQdckMbM1kRGJ-OF8TMj3MRHw9MRrYMqItiW_Z0rH9aWIiezh-eA4q21Wa40mTbgpggTklJHCXWilT70P"/>
+<div class="absolute bottom-0 inset-x-0 bg-inverse-surface/75 text-inverse-on-surface text-center font-ipa-body text-[10px] py-0.5">
+          Âm /θ/
+        </div>
+</div>
+<div class="flex-1 min-w-0 space-y-1">
+<div class="flex items-center space-x-1">
+<span class="font-label-sm text-label-sm text-on-surface font-bold">Đầu lưỡi kẹp giữa 2 răng</span>
+<span class="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+</div>
+<p class="font-body-sm text-[12px] leading-relaxed text-on-surface-variant line-clamp-2">
+          Đẩy luồng hơi nhẹ qua khe hẹp mà không rung thanh quản. Tránh phát âm thành /t/ (lỗi cố hữu giọng Việt).
+        </p>
+<div class="pt-1 flex items-center space-x-2">
+<span class="font-telemetry-data text-[10px] text-secondary bg-secondary-fixed/50 px-1.5 py-0.5 rounded font-semibold">Góc 15° tiếp xúc</span>
+<span class="font-telemetry-data text-[10px] text-on-surface-variant font-medium">Áp suất F0: Chuẩn</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Persistent Bottom Action Area (Sticky feel above app nav) -->
+<div class="pt-1">
+<button class="w-full min-h-[50px] bg-primary-container hover:bg-primary active:scale-[0.98] text-on-primary font-label-md text-label-md font-bold rounded-2xl shadow-lg shadow-primary-container/30 flex items-center justify-center space-x-2 transition-transform" onclick="triggerFastSession()">
+<span>Bắt Đầu Luyện Tập 10 Phút Ngay</span>
+<span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</button>
+<p class="text-center font-telemetry-data text-[11px] text-on-surface-variant mt-2">
+      Đã tối ưu cho cấu âm thanh quản người Việt • Không mất tiến độ
+    </p>
+</div>
+</div>
+<script>
+  function handleStartStep(btn) {
+    btn.classList.add('scale-95');
+    btn.innerHTML = '<span class="material-symbols-outlined animate-spin text-[20px]">progress_activity</span><span>ĐANG KẾT NỐI MIC AI...</span>';
+    setTimeout(() => {
+      btn.classList.remove('scale-95');
+      btn.innerHTML = '<span class="material-symbols-outlined text-[20px]">mic</span><span>ĐANG THU ÂM (NÓI NGAY)...</span>';
+      btn.classList.replace('bg-primary-container', 'bg-tertiary');
+    }, 700);
+  }
+
+  function toggleMetricDetails() {
+    alert('Báo cáo phân tích âm học L1 chuyên sâu đang được tải...');
+  }
+
+  function triggerFastSession() {
+    const activeBtn = document.getElementById('start-step-btn');
+    if (activeBtn) {
+      activeBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      activeBtn.classList.add('ring-4', 'ring-primary-container/30');
+      setTimeout(() => activeBtn.classList.remove('ring-4', 'ring-primary-container/30'), 1500);
+    }
+  }
+</script></main><nav class="fixed bottom-0 inset-x-0 z-50 pb-safe bg-surface-container-lowest/90 backdrop-blur-xl shadow-[0_-2px_12px_rgba(19,27,46,0.04)]" data-active-classes="text-primary-container font-semibold [&amp;_span.material-symbols-outlined]:scale-110 [&amp;_span.material-symbols-outlined]:font-bold"><div class="flex justify-around items-center h-16 px-1"><a aria-current="page" class="flex flex-col items-center justify-center gap-1 min-w-[44px] min-h-[44px] py-1 px-2 transition-all text-primary-container font-semibold [&amp;_span.material-symbols-outlined]:scale-110 [&amp;_span.material-symbols-outlined]:font-bold" data-path="tong-quan" href="#"><span class="material-symbols-outlined text-[22px] transition-transform">dashboard</span><span class="font-label-sm text-[11px] leading-tight text-center">Tổng Quan</span></a><a class="flex flex-col items-center justify-center gap-1 min-w-[44px] min-h-[44px] py-1 px-2 text-on-surface-variant transition-all hover:text-on-surface" data-path="phong-luyen" href="#"><span class="material-symbols-outlined text-[22px] transition-transform">graphic_eq</span><span class="font-label-sm text-[11px] leading-tight text-center">Phòng Luyện</span></a><a class="flex flex-col items-center justify-center gap-1 min-w-[44px] min-h-[44px] py-1 px-2 text-on-surface-variant transition-all hover:text-on-surface" data-path="khau-hinh" href="#"><span class="material-symbols-outlined text-[22px] transition-transform">record_voice_over</span><span class="font-label-sm text-[11px] leading-tight text-center">Khẩu Hình</span></a><a class="flex flex-col items-center justify-center gap-1 min-w-[44px] min-h-[44px] py-1 px-2 text-on-surface-variant transition-all hover:text-on-surface" data-path="ai-roleplay" href="#"><span class="material-symbols-outlined text-[22px] transition-transform">forum</span><span class="font-label-sm text-[11px] leading-tight text-center">AI Roleplay</span></a><a class="flex flex-col items-center justify-center gap-1 min-w-[44px] min-h-[44px] py-1 px-2 text-on-surface-variant transition-all hover:text-on-surface" data-path="game-rpg" href="#"><span class="material-symbols-outlined text-[22px] transition-transform">sports_esports</span><span class="font-label-sm text-[11px] leading-tight text-center">Game RPG</span></a></div></nav></body></html>

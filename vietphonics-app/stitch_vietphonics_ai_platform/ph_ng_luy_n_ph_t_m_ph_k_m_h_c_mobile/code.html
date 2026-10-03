@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+
+<html lang="vi"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_tab" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "on-secondary-fixed-variant": "#004b73", "surface-variant": "#dae2fd", "secondary-fixed": "#cce5ff", "tertiary-container": "#645dfa", "secondary": "#006398", "surface-container-highest": "#dae2fd", "background": "#faf8ff", "on-secondary": "#ffffff", "inverse-primary": "#ffb3b6", "on-tertiary-fixed": "#0f0069", "surface-dim": "#d2d9f4", "outline": "#906f70", "surface-tint": "#be0037", "inverse-on-surface": "#eef0ff", "on-surface": "#131b2e", "primary-container": "#e11d48", "on-background": "#131b2e", "outline-variant": "#e5bdbe", "tertiary-fixed-dim": "#c3c0ff", "on-primary-container": "#fffaf9", "on-error-container": "#93000a", "tertiary": "#4a40e0", "on-secondary-container": "#00476e", "on-tertiary": "#ffffff", "on-tertiary-container": "#fffaff", "secondary-fixed-dim": "#93ccff", "error-container": "#ffdad6", "on-primary-fixed": "#40000c", "on-secondary-fixed": "#001d31", "surface-container-lowest": "#ffffff", "error": "#ba1a1a", "on-error": "#ffffff", "inverse-surface": "#283044", "on-primary": "#ffffff", "primary": "#b80035", "on-tertiary-fixed-variant": "#3323cc", "surface-container-low": "#f2f3ff", "tertiary-fixed": "#e2dfff", "on-surface-variant": "#5c3f40", "surface-container": "#eaedff", "on-primary-fixed-variant": "#920028", "surface-bright": "#faf8ff", "primary-fixed": "#ffdada", "primary-fixed-dim": "#ffb3b6", "surface": "#faf8ff", "secondary-container": "#5bb8fe", "surface-container-high": "#e2e7ff" }, borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, spacing: { "gutter": "1.5rem", "space-xl": "2.5rem", "space-xs": "0.25rem", "gutter-mobile": "1rem", "space-sm": "0.5rem", "margin-mobile": "1rem", "margin": "2rem", "space-lg": "1.5rem", "space-md": "1rem" }, fontFamily: { "telemetry-data": ["JetBrains Mono"], "label-md": ["Plus Jakarta Sans"], "headline-sm": ["Plus Jakarta Sans"], "display-hero-mobile": ["Plus Jakarta Sans"], "headline-lg": ["Plus Jakarta Sans"], "display-hero": ["Plus Jakarta Sans"], "headline-lg-mobile": ["Plus Jakarta Sans"], "body-sm": ["Plus Jakarta Sans"], "headline-md": ["Plus Jakarta Sans"], "body-md": ["Plus Jakarta Sans"], "body-lg": ["Plus Jakarta Sans"], "ipa-body": ["JetBrains Mono"], "ipa-display": ["JetBrains Mono"], "label-sm": ["Plus Jakarta Sans"] }, fontSize: { "telemetry-data": ["12px", { lineHeight: "16px", letterSpacing: "0.05em", fontWeight: "600" }], "label-md": ["14px", { lineHeight: "20px", letterSpacing: "0.01em", fontWeight: "600" }], "headline-sm": ["20px", { lineHeight: "28px", letterSpacing: "-0.01em", fontWeight: "600" }], "display-hero-mobile": ["32px", { lineHeight: "40px", letterSpacing: "-0.02em", fontWeight: "800" }], "headline-lg": ["32px", { lineHeight: "40px", letterSpacing: "-0.02em", fontWeight: "700" }], "display-hero": ["48px", { lineHeight: "56px", letterSpacing: "-0.03em", fontWeight: "800" }], "headline-lg-mobile": ["26px", { lineHeight: "34px", letterSpacing: "-0.015em", fontWeight: "700" }], "body-sm": ["13px", { lineHeight: "20px", fontWeight: "400" }], "headline-md": ["24px", { lineHeight: "32px", letterSpacing: "-0.015em", fontWeight: "700" }], "body-md": ["15px", { lineHeight: "24px", fontWeight: "400" }], "body-lg": ["18px", { lineHeight: "28px", fontWeight: "400" }], "ipa-body": ["16px", { lineHeight: "24px", letterSpacing: "0.02em", fontWeight: "500" }], "ipa-display": ["24px", { lineHeight: "32px", letterSpacing: "0.04em", fontWeight: "600" }], "label-sm": ["12px", { lineHeight: "16px", letterSpacing: "0.02em", fontWeight: "600" }] } } } };</script><style>@layer base{html,body{width:100vw;margin:0;padding:0;}body{overscroll-behavior:none;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface font-body-md text-on-surface flex flex-col min-h-screen antialiased selection:bg-primary/10 selection:text-primary"><header class="fixed top-0 inset-x-0 z-50 bg-surface-container-lowest/85 backdrop-blur-xl shadow-[0_2px_12px_rgba(19,27,46,0.03)] pt-safe"><div class="h-28 flex flex-col justify-between px-margin-mobile"><div class="flex items-center justify-between h-16"><div class="flex items-center gap-space-sm"><img alt="Brand logo. - Primary color: #f43f5e
+- Font: plusJakartaSans
+- Mode: dark
+- Roundness: rounded-md
+" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1Vg6grJ_-nxYwa4eJbdvms8dgMdPp9oLXB43wtiyaoOtaYW3LipO7AR20ZfsPrKCfUrAvri7QmcSBrkqYDBS4FJxjwg-pjm2udgWCe2_4zKwwSktGNhv0HJVDtQJjGackY9xp6tPReWghiLIQoT7ZR4Es5-cCPX1mM7Y4Ytv6XhtcyTd0eHR31MGbXUp3bfRKs4O8EmSD2Op-zxpJAjmFppeank3S8JqYvfoINg5v8oQPOmG3OYNojg1Eg"/><div class="flex flex-col"><div class="flex items-center gap-space-xs"><span class="font-headline-sm text-headline-sm text-on-surface tracking-tight leading-none">VietPhonics</span><span class="font-telemetry-data text-primary text-label-sm font-bold">.AI</span></div><span class="font-telemetry-data text-telemetry-data text-secondary uppercase tracking-wider text-[10px] leading-tight">Acoustic L1 Lab</span></div></div><div class="flex items-center gap-space-xs"><div class="flex items-center gap-1 bg-surface-container px-2 py-1 rounded-full text-on-surface"><span class="text-[13px] leading-none">🔥</span><span class="font-telemetry-data text-telemetry-data font-bold">14</span></div><div class="flex items-center gap-1 bg-surface-container px-2 py-1 rounded-full text-on-surface"><span class="text-[13px] leading-none">🛡️</span><span class="font-telemetry-data text-telemetry-data font-bold">2</span></div><button class="min-h-[44px] min-w-[44px] flex items-center justify-center p-0.5 rounded-full hover:opacity-90 active:scale-95 transition-all"><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida/AEtjO1WqZGL-9UEnbVBJ8e5K9gmnMFdOY8AC40BXslh2XUAXuZ91RlvoewSkxqVe0LCVtOESOSUtHLbyl31YZnEQrzjeONmb3wPmdzUVpmlxyE0Ckd8F82jsovjSe4JthX72-l7XsFvlewgmhVm8NtdN6Y7txBTUvui2dBnWFex0iDCyMU92p1y8lzF_70947_rQWb7KWxWmFFZrGAFRYyyxSxqJktGFiU5H3vaJ51EVTOAbZSvAemJduQ9-CBw"/></button></div></div><div class="flex items-center justify-between h-12 py-1"><button class="flex items-center gap-space-xs bg-surface-container-low hover:bg-surface-container px-space-sm py-1 rounded-lg transition-colors w-full justify-between active:scale-[0.99]"><div class="flex items-center gap-space-xs truncate"><span class="text-sm leading-none">🇻🇳</span><span class="font-label-sm text-label-sm text-on-surface font-semibold truncate">Giọng Miền Bắc:</span><span class="font-ipa-body text-telemetry-data text-secondary truncate">/d/-/z/ calibrated</span></div><span class="material-symbols-outlined text-on-surface-variant text-[18px]">expand_more</span></button></div></div></header><main class="flex flex-col relative w-full pt-28 pb-24 min-h-screen bg-surface px-margin-mobile"><div class="flex flex-col w-full pb-28">
+<!-- Top Session Diagnostic Pill Bar -->
+<div class="flex flex-col gap-space-xs mb-space-md">
+<div class="flex items-center justify-between gap-space-sm bg-surface-container-high px-space-md py-2 rounded-xl shadow-sm">
+<div class="flex items-center gap-space-xs min-w-0">
+<span class="flex h-2 w-2 rounded-full bg-primary animate-pulse flex-shrink-0"></span>
+<p class="font-telemetry-data text-telemetry-data text-on-surface-variant truncate">
+          GOP v5.1 • 16kHz Calibrated
+        </p>
+</div>
+<div class="flex items-center gap-1 bg-surface-container-lowest px-2 py-0.5 rounded-lg flex-shrink-0 shadow-sm">
+<span class="font-telemetry-data text-telemetry-data text-on-surface-variant">SCORE:</span>
+<span class="font-telemetry-data text-telemetry-data text-primary font-bold">78.4%</span>
+</div>
+</div>
+</div>
+<!-- Practice Target Card with Acoustic Tokens -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm mb-space-md flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-secondary text-[18px]">spellcheck</span>
+<span class="font-label-sm text-label-sm text-secondary uppercase tracking-wider">Câu Thử Thách Âm Vị</span>
+</div>
+<span class="font-telemetry-data text-telemetry-data text-on-surface-variant bg-surface-container-low px-2 py-0.5 rounded">L1 Vietnamese Focus</span>
+</div>
+<!-- Sentence Display with Breakdown Highlight -->
+<div class="bg-surface-container-low p-space-md rounded-lg flex flex-wrap gap-2 items-center">
+<!-- Token: Six -->
+<button class="group flex flex-col items-center bg-error-container/40 hover:bg-error-container px-2 py-1 rounded transition-colors text-left" onclick="highlightToken('six')">
+<span class="font-headline-sm text-headline-sm text-on-error-container font-bold leading-tight">Six</span>
+<span class="font-ipa-body text-telemetry-data text-error font-medium">/sɪ<span class="underline decoration-wavy">ks</span>/</span>
+<span class="font-telemetry-data text-[10px] text-error font-bold tracking-tighter">42% GOP</span>
+</button>
+<!-- Token: months -->
+<button class="group flex flex-col items-center bg-secondary-fixed/50 hover:bg-secondary-fixed px-2 py-1 rounded transition-colors text-left" onclick="highlightToken('months')">
+<span class="font-headline-sm text-headline-sm text-on-secondary-fixed-variant font-bold leading-tight">months</span>
+<span class="font-ipa-body text-telemetry-data text-secondary font-medium">/mʌ<span class="underline decoration-dotted">nθs</span>/</span>
+<span class="font-telemetry-data text-[10px] text-secondary font-bold tracking-tighter">68% GOP</span>
+</button>
+<!-- Token: ago -->
+<div class="flex flex-col items-center px-1.5 py-1">
+<span class="font-headline-sm text-headline-sm text-on-surface leading-tight">ago,</span>
+<span class="font-ipa-body text-telemetry-data text-on-surface-variant font-normal">/əˈɡoʊ/</span>
+<span class="font-telemetry-data text-[10px] text-on-surface-variant">91%</span>
+</div>
+<!-- Token: she -->
+<div class="flex flex-col items-center px-1.5 py-1">
+<span class="font-headline-sm text-headline-sm text-on-surface leading-tight">she</span>
+<span class="font-ipa-body text-telemetry-data text-on-surface-variant font-normal">/ʃiː/</span>
+<span class="font-telemetry-data text-[10px] text-on-surface-variant">94%</span>
+</div>
+<!-- Token: baked -->
+<button class="group flex flex-col items-center bg-error-container/40 hover:bg-error-container px-2 py-1 rounded transition-colors text-left" onclick="highlightToken('baked')">
+<span class="font-headline-sm text-headline-sm text-on-error-container font-bold leading-tight">baked</span>
+<span class="font-ipa-body text-telemetry-data text-error font-medium">/beɪk<span class="underline decoration-wavy">t</span>/</span>
+<span class="font-telemetry-data text-[10px] text-error font-bold tracking-tighter">39% GOP</span>
+</button>
+<!-- Token: fresh -->
+<button class="group flex flex-col items-center bg-surface-container px-2 py-1 rounded transition-colors text-left" onclick="highlightToken('fresh')">
+<span class="font-headline-sm text-headline-sm text-on-surface font-bold leading-tight">fresh</span>
+<span class="font-ipa-body text-telemetry-data text-secondary font-medium">/freʃ/</span>
+<span class="font-telemetry-data text-[10px] text-secondary font-bold tracking-tighter">96% GOP</span>
+</button>
+<!-- Token: bread -->
+<div class="flex flex-col items-center px-1.5 py-1">
+<span class="font-headline-sm text-headline-sm text-on-surface leading-tight">bread</span>
+<span class="font-ipa-body text-telemetry-data text-on-surface-variant font-normal">/bred/</span>
+<span class="font-telemetry-data text-[10px] text-on-surface-variant">89%</span>
+</div>
+<!-- Token: for breakfast on the street -->
+<div class="flex flex-col items-center px-1.5 py-1">
+<span class="font-headline-sm text-headline-sm text-on-surface leading-tight">for</span>
+<span class="font-ipa-body text-telemetry-data text-on-surface-variant font-normal">/fər/</span>
+<span class="font-telemetry-data text-[10px] text-on-surface-variant">95%</span>
+</div>
+<div class="flex flex-col items-center px-1.5 py-1 bg-surface-variant/40 rounded">
+<span class="font-headline-sm text-headline-sm text-on-surface leading-tight">breakfast</span>
+<span class="font-ipa-body text-telemetry-data text-on-surface-variant font-normal">/ˈbrekfəst/</span>
+<span class="font-telemetry-data text-[10px] text-error">Khựng 1.2s</span>
+</div>
+<div class="flex flex-col items-center px-1.5 py-1">
+<span class="font-headline-sm text-headline-sm text-on-surface leading-tight">on the street.</span>
+<span class="font-ipa-body text-telemetry-data text-on-surface-variant font-normal">/ɒn ðə striːt/</span>
+<span class="font-telemetry-data text-[10px] text-on-surface-variant">88%</span>
+</div>
+</div>
+</div>
+<!-- L1 Cross-Linguistic Phonetic Feedback (Horizontal Carousel) -->
+<div class="flex flex-col gap-space-xs mb-space-md">
+<div class="flex items-center justify-between">
+<h3 class="font-headline-sm text-headline-sm text-on-surface flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-[20px]">psychology</span>
+        Chẩn Đoán Lỗi L1 (Tiếng Việt)
+      </h3>
+<span class="font-label-sm text-label-sm text-on-surface-variant">2 vị trí cần nắn</span>
+</div>
+<!-- Swipeable Cards Track -->
+<div class="flex gap-space-md overflow-x-auto pb-2 pt-1 -mx-margin-mobile px-margin-mobile no-scrollbar snap-x snap-mandatory">
+<!-- Card 1: /ks/ coda -->
+<div class="snap-center flex-shrink-0 w-[290px] bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-space-xs">
+<span class="bg-error-container text-on-error-container font-telemetry-data text-telemetry-data px-2 py-0.5 rounded font-bold">
+              Âm Đuôi Bị Triệt Tiêu
+            </span>
+<span class="font-ipa-display text-ipa-display text-primary leading-none">/ks/</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-on-surface mb-1">Coda trong từ "Six"</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+            Người học Việt hay đọc thành <strong class="text-on-surface font-semibold">/si/</strong>. Hãy khép vòm mềm chặn âm /k/ rồi kéo luồng khí qua kẽ răng tạo âm /s/.
+          </p>
+</div>
+<div class="mt-space-md pt-2 bg-surface-container-low p-2 rounded-lg flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-[20px]">lightbulb</span>
+<p class="font-label-sm text-label-sm text-on-secondary-container">Mẹo: Tách nhịp tập 'Síc-x' trước khi nối liền.</p>
+</div>
+</div>
+<!-- Card 2: /t/ coda -->
+<div class="snap-center flex-shrink-0 w-[290px] bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-space-xs">
+<span class="bg-error-container text-on-error-container font-telemetry-data text-telemetry-data px-2 py-0.5 rounded font-bold">
+              Rụng Đuôi /t/ &amp; Việt Hóa
+            </span>
+<span class="font-ipa-display text-ipa-display text-primary leading-none">/t/</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-on-surface mb-1">Coda trong từ "baked"</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+            Tránh đọc thành <strong class="text-on-surface font-semibold">'bây-kơ'</strong>. Âm đuôi /-ed/ sau /k/ hóa thành âm vô thanh /t/. Chặn hơi đầu lưỡi chân răng trên rồi bật nhẹ.
+          </p>
+</div>
+<div class="mt-space-md pt-2 bg-surface-container-low p-2 rounded-lg flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-[20px]">graphic_eq</span>
+<p class="font-label-sm text-label-sm text-on-secondary-container">Acoustic: Formant F2 drop đột ngột do thiếu nén hơi.</p>
+</div>
+</div>
+<!-- Card 3: Neutral Vowel Flow -->
+<div class="snap-center flex-shrink-0 w-[290px] bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-space-xs">
+<span class="bg-secondary-fixed text-on-secondary-fixed-variant font-telemetry-data text-telemetry-data px-2 py-0.5 rounded font-bold">
+              Cụm Phụ Âm Phức Tạp
+            </span>
+<span class="font-ipa-display text-ipa-display text-secondary leading-none">/nθs/</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-on-surface mb-1">Phụ âm lướt "months"</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+            Lưỡi rút quá nhanh khiến âm thè thổi /θ/ biến mất, chỉ còn lại /mʌns/. Giữ lưỡi nhẹ giữa hai hàm răng trước khi luồn âm s.
+          </p>
+</div>
+<div class="mt-space-md pt-2 bg-surface-container-low p-2 rounded-lg flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">tips_and_updates</span>
+<p class="font-label-sm text-label-sm text-on-surface">Đạt 68% GOP: Chỉ cần làm mượt vị trí tiếp xúc lưỡi.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Suprasegmental Pitch & Intonation Monitor -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm mb-space-md flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[20px]">show_chart</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Phổ Cao Độ &amp; Ngữ Điệu (F0)</h3>
+</div>
+<div class="flex items-center gap-3">
+<div class="flex items-center gap-1">
+<span class="w-3 h-1 bg-secondary rounded-full"></span>
+<span class="font-telemetry-data text-[10px] text-on-surface-variant">Bản ngữ</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="w-3 h-0.5 bg-primary border-t border-dashed border-primary"></span>
+<span class="font-telemetry-data text-[10px] text-primary font-bold">Bạn đọc</span>
+</div>
+</div>
+</div>
+<!-- Pitch Canvas Render (SVG Vector) -->
+<div class="relative w-full h-36 bg-surface-container-low rounded-lg p-2 flex flex-col justify-between overflow-hidden">
+<!-- Pitch frequency grid guide lines -->
+<div class="absolute inset-0 flex flex-col justify-between p-2 pointer-events-none opacity-40">
+<div class="flex justify-between items-center text-[9px] font-telemetry-data text-on-surface-variant">
+<span>250Hz (High)</span>
+<span class="w-full ml-2 border-b border-surface-container-highest"></span>
+</div>
+<div class="flex justify-between items-center text-[9px] font-telemetry-data text-on-surface-variant">
+<span>175Hz (Mid)</span>
+<span class="w-full ml-2 border-b border-surface-container-highest"></span>
+</div>
+<div class="flex justify-between items-center text-[9px] font-telemetry-data text-on-surface-variant">
+<span>100Hz (Low)</span>
+<span class="w-full ml-2 border-b border-surface-container-highest"></span>
+</div>
+</div>
+<!-- Pitch Curves SVG -->
+<svg class="w-full h-full relative z-10" preserveaspectratio="none" viewbox="0 0 350 110">
+<!-- Native target curve (Blue smooth flow) -->
+<path d="M 10,75 C 40,30 80,45 130,50 C 180,55 220,35 270,40 C 310,45 330,80 345,85" fill="none" stroke="#006398" stroke-linecap="round" stroke-width="3"></path>
+<!-- Learner pitch curve with steep crash at 'baked' and sudden low tonal drop (Red dashed) -->
+<path d="M 10,78 C 40,35 80,48 130,52 C 170,58 200,95 240,102 C 270,70 310,50 345,105" fill="none" stroke="#b80035" stroke-dasharray="4 3" stroke-linecap="round" stroke-width="2.5"></path>
+<!-- Highlight marker of L1 Tone Drop Error -->
+<circle class="animate-ping origin-center" cx="240" cy="102" fill="#e11d48" opacity="0.75" r="5"></circle>
+<circle cx="240" cy="102" fill="#b80035" r="4"></circle>
+</svg>
+<!-- Phonetic Time Alignment Labels -->
+<div class="relative z-10 flex justify-between px-1 text-[10px] font-telemetry-data text-on-surface-variant">
+<span>Six</span>
+<span>months</span>
+<span>ago</span>
+<span class="text-error font-bold">baked ⚠️</span>
+<span>fresh...</span>
+</div>
+</div>
+<!-- Acoustic Diagnostic Insight -->
+<div class="bg-error-container/30 rounded-lg p-2.5 flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-[18px] flex-shrink-0 mt-0.5">warning</span>
+<p class="font-body-sm text-body-sm text-on-surface">
+<strong class="text-primary font-bold">Cảnh báo Ngữ Điệu:</strong> Bạn hạ thanh quản quá gắt ở cuối từ <span class="font-semibold text-primary">"baked"</span> tạo cảm giác như mang <span class="underline font-semibold">thanh Nặng (.)</span> trong tiếng Việt. Hãy giữ độ căng của luồng hơi phẳng hơn.
+      </p>
+</div>
+</div>
+<!-- Mobile Acoustic Telemetry Dual Metrics -->
+<div class="grid grid-cols-2 gap-space-sm mb-space-md">
+<!-- Metric 1: Fluency Tempo -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Tốc Độ Đọc</span>
+<span class="material-symbols-outlined text-secondary text-[20px]">speed</span>
+</div>
+<div class="my-space-xs">
+<div class="flex items-baseline gap-1">
+<span class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface font-extrabold leading-none">138</span>
+<span class="font-telemetry-data text-telemetry-data text-on-surface-variant">WPM</span>
+</div>
+<div class="w-full bg-surface-container-high h-1.5 rounded-full mt-2 overflow-hidden">
+<div class="bg-secondary h-full rounded-full w-[78%]"></div>
+</div>
+</div>
+<span class="font-telemetry-data text-[11px] text-secondary font-semibold">Tempo tối ưu (130-150)</span>
+</div>
+<!-- Metric 2: Pause Monitor -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Điểm Ngắt Quãng</span>
+<span class="material-symbols-outlined text-error text-[20px]">timer_pause</span>
+</div>
+<div class="my-space-xs">
+<div class="flex items-baseline gap-1">
+<span class="font-headline-lg-mobile text-headline-lg-mobile text-error font-extrabold leading-none">1.2</span>
+<span class="font-telemetry-data text-telemetry-data text-on-surface-variant">giây</span>
+</div>
+<div class="w-full bg-surface-container-high h-1.5 rounded-full mt-2 overflow-hidden">
+<div class="bg-error h-full rounded-full w-[65%]"></div>
+</div>
+</div>
+<span class="font-telemetry-data text-[11px] text-error font-semibold">Khựng tại "breakfast"</span>
+</div>
+</div>
+<!-- Interactive Acoustic Actions -->
+<div class="grid grid-cols-3 gap-2 mb-space-md">
+<button class="bg-surface-container-lowest hover:bg-surface-container-high text-secondary flex flex-col items-center justify-center p-2.5 rounded-xl shadow-sm transition-all active:scale-95">
+<span class="material-symbols-outlined text-[22px] mb-1">volume_up</span>
+<span class="font-label-sm text-[11px] font-semibold text-center leading-tight">Mẫu Chuẩn</span>
+</button>
+<button class="bg-surface-container-lowest hover:bg-surface-container-high text-on-surface flex flex-col items-center justify-center p-2.5 rounded-xl shadow-sm transition-all active:scale-95">
+<span class="material-symbols-outlined text-[22px] mb-1 text-primary">replay</span>
+<span class="font-label-sm text-[11px] font-semibold text-center leading-tight">Nghe Lại Mình</span>
+</button>
+<button class="bg-surface-container-lowest hover:bg-surface-container-high text-on-surface flex flex-col items-center justify-center p-2.5 rounded-xl shadow-sm transition-all active:scale-95">
+<span class="material-symbols-outlined text-[22px] mb-1 text-tertiary">analytics</span>
+<span class="font-label-sm text-[11px] font-semibold text-center leading-tight">Phổ Ký Chi Tiết</span>
+</button>
+</div>
+<!-- Sticky Mobile Live Recording Console Dock -->
+<div class="fixed bottom-16 inset-x-0 z-40 bg-surface-container-lowest/95 backdrop-blur-xl px-margin-mobile py-2.5 shadow-[0_-4px_20px_rgba(19,27,46,0.06)] flex flex-col items-center">
+<!-- Live Waveform Monitor Strip -->
+<div class="w-full max-w-sm flex items-center justify-center gap-1 h-6 mb-1.5 px-4 overflow-hidden">
+<span class="w-1 bg-primary/40 rounded-full h-2 animate-[pulse_0.8s_ease-in-out_infinite]"></span>
+<span class="w-1 bg-primary/70 rounded-full h-4 animate-[pulse_0.6s_ease-in-out_infinite_0.1s]"></span>
+<span class="w-1 bg-primary rounded-full h-6 animate-[pulse_0.5s_ease-in-out_infinite_0.2s]"></span>
+<span class="w-1 bg-primary/90 rounded-full h-3 animate-[pulse_0.7s_ease-in-out_infinite_0.3s]"></span>
+<span class="w-1 bg-primary rounded-full h-5 animate-[pulse_0.4s_ease-in-out_infinite_0.15s]"></span>
+<span class="w-1 bg-primary/60 rounded-full h-2 animate-[pulse_0.9s_ease-in-out_infinite_0.25s]"></span>
+<span class="w-1 bg-primary rounded-full h-6 animate-[pulse_0.5s_ease-in-out_infinite_0.05s]"></span>
+<span class="w-1 bg-primary/80 rounded-full h-4 animate-[pulse_0.65s_ease-in-out_infinite_0.18s]"></span>
+<span class="w-1 bg-primary/40 rounded-full h-2 animate-[pulse_0.85s_ease-in-out_infinite_0.12s]"></span>
+</div>
+<!-- Floating Record Action Core -->
+<div class="flex items-center justify-between w-full max-w-xs">
+<button class="flex items-center justify-center w-9 h-9 rounded-full bg-surface-container text-on-surface-variant hover:text-on-surface active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-[20px]">tune</span>
+</button>
+<!-- Center Dynamic Recording Trigger -->
+<button class="relative flex items-center gap-2 bg-primary-container text-on-primary-container px-6 py-2.5 rounded-full shadow-[0_0_24px_-4px_rgba(225,29,72,0.4)] active:scale-95 transition-all" id="recordBtn" onclick="toggleRecording()">
+<div class="relative flex items-center justify-center">
+<span class="w-3 h-3 rounded-full bg-on-primary-container animate-ping absolute"></span>
+<span class="material-symbols-outlined text-[22px] relative z-10" style="font-variation-settings: 'FILL' 1;">mic</span>
+</div>
+<span class="font-label-md text-label-md tracking-wide font-bold">ĐANG GHI ÂM</span>
+</button>
+<button class="flex items-center justify-center w-9 h-9 rounded-full bg-surface-container text-on-surface-variant hover:text-on-surface active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-[20px]">flag</span>
+</button>
+</div>
+</div>
+</div>
+<script>
+  function highlightToken(token) {
+    console.log("Phoneme token selected:", token);
+  }
+
+  function toggleRecording() {
+    const btn = document.getElementById('recordBtn');
+    if (btn) {
+      btn.classList.toggle('opacity-90');
+      btn.classList.toggle('scale-95');
+    }
+  }
+</script></main><nav class="fixed bottom-0 inset-x-0 z-50 pb-safe bg-surface-container-lowest/90 backdrop-blur-xl shadow-[0_-2px_12px_rgba(19,27,46,0.04)]" data-active-classes="text-primary-container font-semibold [&amp;_span.material-symbols-outlined]:scale-110 [&amp;_span.material-symbols-outlined]:font-bold"><div class="flex justify-around items-center h-16 px-1"><a class="flex flex-col items-center justify-center gap-1 min-w-[44px] min-h-[44px] py-1 px-2 text-on-surface-variant transition-all hover:text-on-surface" data-path="tong-quan" href="#"><span class="material-symbols-outlined text-[22px] transition-transform">dashboard</span><span class="font-label-sm text-[11px] leading-tight text-center">Tổng Quan</span></a><a aria-current="page" class="flex flex-col items-center justify-center gap-1 min-w-[44px] min-h-[44px] py-1 px-2 transition-all text-primary-container font-semibold [&amp;_span.material-symbols-outlined]:scale-110 [&amp;_span.material-symbols-outlined]:font-bold" data-path="phong-luyen" href="#"><span class="material-symbols-outlined text-[22px] transition-transform">graphic_eq</span><span class="font-label-sm text-[11px] leading-tight text-center">Phòng Luyện</span></a><a class="flex flex-col items-center justify-center gap-1 min-w-[44px] min-h-[44px] py-1 px-2 text-on-surface-variant transition-all hover:text-on-surface" data-path="khau-hinh" href="#"><span class="material-symbols-outlined text-[22px] transition-transform">record_voice_over</span><span class="font-label-sm text-[11px] leading-tight text-center">Khẩu Hình</span></a><a class="flex flex-col items-center justify-center gap-1 min-w-[44px] min-h-[44px] py-1 px-2 text-on-surface-variant transition-all hover:text-on-surface" data-path="ai-roleplay" href="#"><span class="material-symbols-outlined text-[22px] transition-transform">forum</span><span class="font-label-sm text-[11px] leading-tight text-center">AI Roleplay</span></a><a class="flex flex-col items-center justify-center gap-1 min-w-[44px] min-h-[44px] py-1 px-2 text-on-surface-variant transition-all hover:text-on-surface" data-path="game-rpg" href="#"><span class="material-symbols-outlined text-[22px] transition-transform">sports_esports</span><span class="font-label-sm text-[11px] leading-tight text-center">Game RPG</span></a></div></nav></body></html>

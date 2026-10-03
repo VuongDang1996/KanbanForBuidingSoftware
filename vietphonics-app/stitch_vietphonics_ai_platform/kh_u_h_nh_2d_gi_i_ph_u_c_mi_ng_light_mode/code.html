@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+
+<html class="light" lang="vi"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_standard" name="shell-type"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500;600;700&amp;family=Plus+Jakarta+Sans:wght@500;600;700;800&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+          "on-background": "#131b2e",
+          "on-error": "#ffffff",
+          "secondary-container": "#5bb8fe",
+          "on-secondary-container": "#00476e",
+          "secondary": "#006398",
+          "on-tertiary-fixed": "#0f0069",
+          "on-surface-variant": "#5c3f40",
+          "on-secondary-fixed-variant": "#004b73",
+          "background": "#faf8ff",
+          "surface-container-highest": "#dae2fd",
+          "error-container": "#ffdad6",
+          "on-tertiary-container": "#fffaff",
+          "surface": "#faf8ff",
+          "primary-container": "#e11d48",
+          "surface-container-low": "#f2f3ff",
+          "on-secondary-fixed": "#001d31",
+          "inverse-surface": "#283044",
+          "tertiary": "#4a40e0",
+          "primary": "#b80035",
+          "tertiary-fixed": "#e2dfff",
+          "on-tertiary": "#ffffff",
+          "on-surface": "#131b2e",
+          "secondary-fixed-dim": "#93ccff",
+          "surface-bright": "#faf8ff",
+          "on-error-container": "#93000a",
+          "surface-container-high": "#e2e7ff",
+          "tertiary-fixed-dim": "#c3c0ff",
+          "on-secondary": "#ffffff",
+          "secondary-fixed": "#cce5ff",
+          "surface-variant": "#dae2fd",
+          "on-primary-fixed": "#40000c",
+          "primary-fixed": "#ffdada",
+          "error": "#ba1a1a",
+          "inverse-on-surface": "#eef0ff",
+          "on-primary-container": "#fffaf9",
+          "surface-container-lowest": "#ffffff",
+          "surface-dim": "#d2d9f4",
+          "inverse-primary": "#ffb3b6",
+          "surface-container": "#eaedff",
+          "on-tertiary-fixed-variant": "#3323cc",
+          "primary-fixed-dim": "#ffb3b6",
+          "on-primary-fixed-variant": "#920028",
+          "outline-variant": "#e5bdbe",
+          "on-primary": "#ffffff",
+          "surface-tint": "#be0037",
+          "tertiary-container": "#645dfa",
+          "outline": "#906f70"
+        },
+        "borderRadius": {
+          "DEFAULT": "0.25rem",
+          "lg": "0.5rem",
+          "xl": "0.75rem",
+          "full": "9999px"
+        },
+        "spacing": {
+          "gutter": "1.5rem",
+          "margin-mobile": "1rem",
+          "space-lg": "1.5rem",
+          "gutter-mobile": "1rem",
+          "space-md": "1rem",
+          "margin": "2rem",
+          "space-xl": "2.5rem",
+          "space-xs": "0.25rem",
+          "space-sm": "0.5rem",
+          "gutter-desktop": "2rem",
+          "margin-desktop": "3rem"
+        },
+        "fontFamily": {
+          "label-sm": ["Plus Jakarta Sans"],
+          "headline-lg": ["Plus Jakarta Sans"],
+          "headline-sm": ["Plus Jakarta Sans"],
+          "display-hero-mobile": ["Plus Jakarta Sans"],
+          "headline-md": ["Plus Jakarta Sans"],
+          "ipa-body": ["JetBrains Mono"],
+          "ipa-inline": ["JetBrains Mono"],
+          "label-mono": ["JetBrains Mono"],
+          "body-sm": ["Plus Jakarta Sans"],
+          "headline-lg-mobile": ["Plus Jakarta Sans"],
+          "body-lg": ["Plus Jakarta Sans"],
+          "label-md": ["Plus Jakarta Sans"],
+          "body-md": ["Plus Jakarta Sans"],
+          "display-hero": ["Plus Jakarta Sans"],
+          "telemetry-data": ["JetBrains Mono"],
+          "ipa-display": ["JetBrains Mono"]
+        },
+        "fontSize": {
+          "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+          "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+          "headline-sm": ["20px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+          "display-hero-mobile": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+          "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.015em", "fontWeight": "700" }],
+          "ipa-body": ["16px", { "lineHeight": "24px", "letterSpacing": "0.02em", "fontWeight": "500" }],
+          "ipa-inline": ["15px", { "lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "500" }],
+          "body-sm": ["13px", { "lineHeight": "20px", "fontWeight": "400" }],
+          "headline-lg-mobile": ["26px", { "lineHeight": "34px", "letterSpacing": "-0.015em", "fontWeight": "700" }],
+          "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+          "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+          "body-md": ["15px", { "lineHeight": "24px", "fontWeight": "400" }],
+          "display-hero": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.03em", "fontWeight": "800" }],
+          "telemetry-data": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+          "label-mono": ["11px", { "lineHeight": "16px", "letterSpacing": "0.08em", "fontWeight": "600" }],
+          "ipa-display": ["24px", { "lineHeight": "32px", "letterSpacing": "0.04em", "fontWeight": "600" }]
+        }
+      }
+    }
+  }
+</script></head><body class="bg-[#f8fafc] font-body-md text-slate-800 antialiased min-h-screen flex flex-col selection:bg-rose-100 selection:text-rose-900"><header class="fixed top-0 w-full z-50 bg-white/90 backdrop-blur-xl border-b border-slate-200 shadow-sm"><div class="h-20 w-full px-gutter-desktop mx-auto flex items-center justify-between gap-space-md"><div class="flex items-center gap-space-md shrink-0"><a class="flex items-center gap-space-sm group" data-path="tong-quan" href="#"><img alt="VietPhonics AI Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1UCQaKDtsj3J38N8G16hiFB1rFtzk8Or_FZ2uCp6sBdv6rGHrj8NSXG_cF3z_wX3NVm5tzBKR3BfL1UYYCEjdmjBf1o7Zec-8fmkcsZbVLT0RuylN6wzaZ4yGB1uattyruV3b2BLCL6Sox757lOOZgrmVAgtSdqp_Tir0lVMVjhP_IVLT32sfbaEFQmiJ8sW1D-n7TFKsOlbfeDERhznPohzjQc5vRhpeI5en-N76Sk_hxqZLRTSzcHFYs"/><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-rose-600 font-bold tracking-tight">VietPhonics<span class="text-sky-600">.AI</span></span><span class="font-label-mono text-label-mono text-slate-500 uppercase tracking-widest">Acoustic L1 Lab</span></div></a><div class="relative group shrink-0 hidden lg:block"><button class="flex items-center gap-space-xs bg-slate-100 hover:bg-slate-200 border border-slate-200 px-space-sm py-1.5 rounded-full transition-colors" type="button"><span class="font-label-mono text-label-mono text-sky-700 flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-sky-500 animate-pulse"></span>🇻🇳 Giọng Miền Bắc: /d/-/z/ calibrated</span><span class="material-symbols-outlined text-sm text-slate-500 group-hover:rotate-180 transition-transform duration-300">arrow_drop_down</span></button><div class="absolute left-0 mt-2 w-72 bg-white rounded-xl shadow-xl border border-slate-200 p-space-xs hidden group-hover:flex flex-col gap-1 z-50"><div class="px-space-sm py-1 font-label-mono text-label-mono text-slate-400 uppercase">L1 Dialect Adaptation</div><button class="flex items-center justify-between px-space-sm py-2 rounded-lg bg-sky-50 text-left font-body-sm text-body-sm text-sky-700 font-medium"><span class="flex items-center gap-2"><span>🇻🇳</span> Miền Bắc (/d/ ➔ /z/, /t/ ending)</span><span class="material-symbols-outlined text-sm text-sky-600">check</span></button><button class="flex items-center justify-between px-space-sm py-2 rounded-lg hover:bg-slate-50 hover:text-slate-900 text-left font-body-sm text-body-sm text-slate-600 transition-colors"><span class="flex items-center gap-2"><span>🇻🇳</span> Miền Trung (/e/-/ɛ/ tonal pitch)</span></button><button class="flex items-center justify-between px-space-sm py-2 rounded-lg hover:bg-slate-50 hover:text-slate-900 text-left font-body-sm text-body-sm text-slate-600 transition-colors"><span class="flex items-center gap-2"><span>🇻🇳</span> Miền Nam (/v/ ➔ /j/, dropped -k/-t)</span></button></div></div></div><nav class="hidden xl:flex items-center gap-1.5 bg-slate-100/80 border border-slate-200/80 p-1 rounded-full shrink-0"><a class="font-body-sm text-body-sm px-3.5 py-1.5 rounded-full text-slate-600 hover:text-slate-900 hover:bg-white transition-all font-medium" data-path="tong-quan" href="#">Tổng Quan</a><a class="font-body-sm text-body-sm px-3.5 py-1.5 rounded-full text-slate-600 hover:text-slate-900 hover:bg-white transition-all font-medium" data-path="phong-luyen-phat-am" href="#">Phòng Luyện Phát Âm</a><a aria-current="page" class="font-body-sm px-3.5 py-1.5 rounded-full transition-all bg-white text-rose-600 font-semibold shadow-sm border border-slate-200/60" data-path="khau-hinh-2d" href="#">Khẩu Hình 2D</a><a class="font-body-sm text-body-sm px-3.5 py-1.5 rounded-full text-slate-600 hover:text-slate-900 hover:bg-white transition-all font-medium" data-path="ai-hoi-thoai" href="#">AI Hội Thoại</a><a class="font-body-sm text-body-sm px-3.5 py-1.5 rounded-full text-slate-600 hover:text-slate-900 hover:bg-white transition-all font-medium" data-path="game-3d-rpg" href="#">Game 3D RPG</a><a class="font-body-sm text-body-sm px-3.5 py-1.5 rounded-full text-slate-600 hover:text-slate-900 hover:bg-white transition-all font-medium" data-path="ngan-hang-tu-loi" href="#">Ngân Hàng Từ Lỗi</a></nav><div class="flex items-center gap-space-sm shrink-0"><div class="hidden md:flex items-center gap-space-xs"><div class="flex items-center gap-1 px-2.5 py-1 bg-rose-50 border border-rose-200/70 rounded-full font-label-mono text-label-mono text-rose-700 font-semibold"><span class="text-xs">🔥</span><span>14 Ngày</span></div><div class="flex items-center gap-1 px-2.5 py-1 bg-sky-50 border border-sky-200/70 rounded-full font-label-mono text-label-mono text-sky-700 font-semibold"><span class="text-xs">🛡️</span><span>2 Khiên</span></div><div class="hidden 2xl:flex items-center gap-1 px-2.5 py-1 bg-indigo-50 border border-indigo-200/70 rounded-full font-label-mono text-label-mono text-indigo-700 font-semibold"><span class="text-xs">⭐</span><span>Lv.8 Master of Ending Sounds</span></div></div><div class="relative flex items-center justify-center p-0.5 rounded-full bg-gradient-to-tr from-rose-500 to-sky-500 shadow-sm cursor-pointer group"><img alt="Profile" class="w-8 h-8 rounded-full object-cover border border-white" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAHtiGkMW_bAiVzUucj4w1pSTyoUmgY825vfdXITJv58g5VF-Z_u6RjPzdnhlZFADwCrMLXHraynwzk8Stxdwaw3LNoL-JczEGc9hADocs8sqV6iq4vQvD0Tj7MVgl5X1O792UHUG3m9s72dhJEbsafsRfJbpJYqAQJMKs2BZQvA0Rw0cC6LWuB41m9iU-abrgZHPfwmc64qayjq2GpPH5BgTYB7Uk1_d0jQCjjPNtwFKYn5mqLJaQz"/><span class="absolute -bottom-1 -right-1 px-1 py-0.2 rounded-full bg-rose-600 text-white font-label-mono text-[9px] font-bold tracking-tighter uppercase ring-1 ring-white">PRO</span></div></div></div></header><main class="w-full pt-20 bg-[#f8fafc] flex-1"><div class="flex flex-col w-full">
+<!-- Top Context Header Bar (Sub-level diagnostic bar) -->
+<div class="w-full bg-white border-b border-slate-200/80 px-margin-desktop py-space-sm shadow-sm">
+<div class="max-w-[1440px] mx-auto flex flex-wrap items-center justify-between gap-space-md">
+<div class="flex items-center gap-space-md">
+<div class="flex items-center gap-space-xs px-space-sm py-1 bg-sky-50 border border-sky-200/70 rounded-full">
+<span class="w-2 h-2 rounded-full bg-sky-500 animate-pulse"></span>
+<span class="font-label-mono text-label-mono text-sky-800 uppercase font-semibold">2D Biomechanical Studio</span>
+</div>
+<div class="hidden sm:flex items-center gap-space-xs text-slate-500 font-label-mono text-label-mono">
+<span>Phoneme Target:</span>
+<span class="text-rose-600 font-ipa-inline text-ipa-inline font-bold">/θ/</span>
+<span class="text-slate-300">·</span>
+<span>Interdental Voiceless Fricative</span>
+</div>
+</div>
+<!-- Quick Phoneme Switcher Bar -->
+<div class="flex items-center gap-1.5 overflow-x-auto py-1">
+<button class="phoneme-pill active-pill px-3 py-1 rounded-full bg-rose-600 text-white font-ipa-inline text-ipa-inline text-xs font-semibold shadow-sm transition-all" type="button">
+          /θ/ think
+        </button>
+<button class="phoneme-pill px-3 py-1 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 font-ipa-inline text-ipa-inline text-xs transition-all" type="button">
+          /ð/ this
+        </button>
+<button class="phoneme-pill px-3 py-1 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 font-ipa-inline text-ipa-inline text-xs transition-all" type="button">
+          /ʃ/ she
+        </button>
+<button class="phoneme-pill px-3 py-1 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 font-ipa-inline text-ipa-inline text-xs transition-all" type="button">
+          /ʒ/ measure
+        </button>
+<button class="phoneme-pill px-3 py-1 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 font-ipa-inline text-ipa-inline text-xs transition-all" type="button">
+          /tʃ/ chair
+        </button>
+<button class="phoneme-pill px-3 py-1 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 font-ipa-inline text-ipa-inline text-xs transition-all" type="button">
+          /dʒ/ job
+        </button>
+</div>
+</div>
+</div>
+<!-- Main 12-Column Split-View Studio Canvas -->
+<div class="w-full px-gutter md:px-gutter-desktop py-space-lg">
+<div class="max-w-[1440px] mx-auto grid grid-cols-1 xl:grid-cols-12 gap-gutter-desktop items-start">
+<!-- LEFT PANE: 8 COLS - Sagittal Cross-Section Vocal Tract Graphic -->
+<div class="xl:col-span-8 flex flex-col gap-space-lg min-w-0">
+<!-- Primary Acoustic Stage Box -->
+<div class="relative bg-white border border-slate-200/90 rounded-2xl p-space-md md:p-space-lg shadow-sm overflow-hidden flex flex-col">
+<!-- Subtle Ambient Light Gradient Backdrop -->
+<div class="absolute -top-32 -left-32 w-96 h-96 bg-sky-100/60 rounded-full blur-3xl pointer-events-none"></div>
+<div class="absolute top-1/2 right-0 w-80 h-80 bg-rose-100/50 rounded-full blur-3xl pointer-events-none"></div>
+<!-- Stage Subhead & Metadata -->
+<div class="flex flex-wrap items-center justify-between gap-space-sm mb-space-md z-10">
+<div class="flex items-center gap-space-sm">
+<span class="p-2 bg-rose-50 text-rose-600 border border-rose-200/60 rounded-xl flex items-center justify-center">
+<span class="material-symbols-outlined text-lg">medical_services</span>
+</span>
+<div>
+<h2 class="font-headline-sm text-headline-sm text-slate-900 tracking-tight font-bold">Thiết Diện Cắt Dọc Miệng &amp; Vòm Họng</h2>
+<p class="font-label-mono text-label-mono text-slate-500 uppercase tracking-wider">Sagittal Plane · Articulatory Target Matrix</p>
+</div>
+</div>
+<!-- Voicing Comparator Toggle -->
+<div class="flex items-center gap-2 bg-slate-100/80 border border-slate-200 px-3 py-1.5 rounded-full">
+<span class="font-body-sm text-body-sm text-slate-600 font-medium">Thanh quản:</span>
+<button class="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white text-slate-700 hover:text-slate-900 border border-slate-200 font-label-mono text-label-mono shadow-xs transition-all" id="voicingToggle" type="button">
+<span class="w-2 h-2 rounded-full bg-slate-400" id="larynxIndicator"></span>
+<span id="larynxLabel">Không Rung (Voiceless /θ/)</span>
+</button>
+</div>
+</div>
+<!-- Sagittal Anatomical SVG Canvas (Laboratory-grade container) -->
+<div class="relative w-full h-[400px] md:h-[480px] bg-[#f8fafc] border border-slate-200/80 rounded-xl flex items-center justify-center overflow-hidden">
+<!-- Delicate Precision Grid Lines -->
+<svg class="absolute inset-0 w-full h-full opacity-40 pointer-events-none" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<pattern height="40" id="grid-pattern" patternunits="userSpaceOnUse" width="40">
+<path class="text-slate-300" d="M 40 0 L 0 0 0 40" fill="none" stroke="currentColor" stroke-width="0.75"></path>
+</pattern>
+</defs>
+<rect fill="url(#grid-pattern)" height="100%" width="100%"></rect>
+</svg>
+<!-- Vector Cross-Section Anatomy -->
+<svg class="w-full h-full max-h-[460px] object-contain transition-all duration-300 select-none z-10" id="vocalTractSvg" viewbox="0 0 760 500">
+<defs>
+<!-- Warm Vivid Tongue Muscle Gradient -->
+<lineargradient id="tongueGrad" x1="0%" x2="100%" y1="0%" y2="100%">
+<stop offset="0%" stop-color="#fb7185"></stop>
+<stop offset="50%" stop-color="#f43f5e"></stop>
+<stop offset="100%" stop-color="#be123c"></stop>
+</lineargradient>
+<!-- Sharp Airflow Gradient -->
+<lineargradient id="airGrad" x1="0%" x2="100%" y1="100%" y2="0%">
+<stop offset="0%" stop-color="#38bdf8" stop-opacity="0.15"></stop>
+<stop offset="70%" stop-color="#0284c7" stop-opacity="0.85"></stop>
+<stop offset="100%" stop-color="#0369a1" stop-opacity="1"></stop>
+</lineargradient>
+<!-- Vibrant Glow Filter -->
+<filter height="150%" id="cyanGlow" width="150%" x="-25%" y="-25%">
+<fegaussianblur result="blur" stddeviation="3.5"></fegaussianblur>
+<fecomposite in="SourceGraphic" in2="blur" operator="over"></fecomposite>
+</filter>
+</defs>
+<!-- Head & Facial Silhouette (Light modern anatomical silhouette) -->
+<path d="M 120 40 C 260 10, 480 20, 560 90 C 620 140, 640 220, 640 250 C 630 258, 600 262, 590 262 C 585 275, 580 286, 580 292 C 588 296, 615 304, 618 316 C 620 336, 570 380, 530 400 C 470 430, 400 450, 360 480 L 140 480 L 140 380 C 130 310, 110 180, 120 40 Z" fill="#e2e8f0" opacity="0.45" stroke="#cbd5e1" stroke-width="1.5"></path>
+<!-- Nasal Cavity & Sinuses -->
+<path d="M 330 110 C 370 70, 450 70, 520 120 C 530 130, 550 160, 550 180 C 530 190, 490 190, 450 170 C 400 150, 360 140, 330 110 Z" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1.5"></path>
+<text class="fill-slate-400 font-label-mono text-[10px] tracking-widest font-semibold" x="430" y="115">KHOANG MŨI (NASAL)</text>
+<!-- Hard Palate (Vòm Cứng) & Ridges -->
+<path d="M 360 170 C 400 170, 460 185, 490 215 C 500 225, 515 240, 522 255" fill="none" stroke="#475569" stroke-linecap="round" stroke-width="5"></path>
+<!-- Palate Texture ridges -->
+<path d="M 450 195 L 452 188 M 465 204 L 468 197 M 480 215 L 484 208" stroke="#64748b" stroke-linecap="round" stroke-width="2"></path>
+<text class="fill-slate-600 font-label-mono text-[10px] font-bold" x="390" y="165">VÒM CỨNG (HARD PALATE)</text>
+<!-- Soft Palate & Velum/Uvula -->
+<path d="M 360 170 C 330 170, 305 185, 295 210 C 290 225, 290 245, 295 255 C 298 260, 305 260, 308 250 C 315 230, 325 215, 355 205" fill="#cbd5e1" stroke="#64748b" stroke-width="2"></path>
+<text class="fill-slate-500 font-label-mono text-[10px] font-semibold" x="220" y="210">LƯỠI GÀ (VELUM)</text>
+<!-- Pharynx Posterior Wall (Thành Họng Sau) -->
+<path d="M 290 260 C 285 290, 280 340, 275 440" fill="none" stroke="#64748b" stroke-linecap="round" stroke-width="6"></path>
+<text class="fill-slate-500 font-label-mono text-[10px] font-semibold" x="195" y="340">THÀNH HỌNG</text>
+<!-- Upper Lip & Upper Incisor (Răng Cửa Trên) -->
+<path d="M 590 262 C 570 264, 555 266, 545 270" fill="none" stroke="#94a3b8" stroke-width="4"></path>
+<!-- Upper Incisor -->
+<path d="M 545 268 L 536 292 L 526 291 L 532 268 Z" fill="#ffffff" stroke="#475569" stroke-width="1.8"></path>
+<text class="fill-slate-800 font-label-mono text-[10px] font-bold" x="548" y="260">Răng Cửa Trên</text>
+<!-- Lower Lip & Lower Incisor (Răng Cửa Dưới) -->
+<path d="M 580 320 C 560 320, 546 318, 540 312" fill="none" stroke="#94a3b8" stroke-width="4"></path>
+<!-- Lower Incisor -->
+<path d="M 536 332 L 530 306 L 521 308 L 525 334 Z" fill="#ffffff" stroke="#475569" stroke-width="1.8"></path>
+<text class="fill-slate-800 font-label-mono text-[10px] font-bold" x="546" y="345">Răng Cửa Dưới</text>
+<!-- Dynamic Tongue Body & Blade (Warm Vivid Coral/Rose Gradient) -->
+<g class="transition-all duration-300" id="tongueGroup">
+<path d="M 330 400 C 340 350, 360 305, 400 290 C 445 272, 485 290, 515 298 C 532 301, 550 300, 552 297 C 550 303, 532 315, 505 325 C 450 345, 410 370, 390 420 Z" fill="url(#tongueGrad)" id="tonguePath" stroke="#e11d48" stroke-width="1.5"></path>
+<!-- Internal Muscle Fiber Striations -->
+<path d="M 380 340 Q 420 315 470 315" fill="none" stroke="rgba(255,255,255,0.45)" stroke-dasharray="3 3" stroke-width="1.5"></path>
+<path d="M 395 365 Q 430 340 480 330" fill="none" stroke="rgba(255,255,255,0.4)" stroke-dasharray="4 4" stroke-width="1.5"></path>
+<path d="M 410 390 Q 445 365 490 345" fill="none" stroke="rgba(255,255,255,0.35)" stroke-dasharray="4 4" stroke-width="1.5"></path>
+<text class="fill-white font-label-mono text-[10px] font-bold tracking-wider" x="420" y="325">CƠ THÂN LƯỠI</text>
+</g>
+<!-- Active Constriction Point: Interdental Target Marker (Glow & Pulse) -->
+<g id="constrictionNode" transform="translate(545, 298)">
+<circle cx="0" cy="0" fill="none" opacity="0.6" r="16" stroke="#0284c7" stroke-width="1.5">
+<animate attributename="r" dur="2s" repeatcount="indefinite" values="6;22;26"></animate>
+<animate attributename="opacity" dur="2s" repeatcount="indefinite" values="0.9;0.3;0"></animate>
+</circle>
+<circle cx="0" cy="0" fill="#0284c7" filter="url(#cyanGlow)" r="5"></circle>
+<line stroke="#0284c7" stroke-dasharray="2 2" stroke-width="1.5" x1="0" x2="35" y1="0" y2="-45"></line>
+<circle cx="35" cy="-45" fill="#0284c7" r="2.5"></circle>
+</g>
+<g transform="translate(585, 245)">
+<rect fill="#ffffff" height="24" opacity="0.95" rx="6" stroke="#bae6fd" stroke-width="1" width="135" x="-5" y="-12"></rect>
+<text class="fill-sky-800 font-label-mono text-[10px] font-bold" x="0" y="4">Khe Hở Răng: 2.5mm</text>
+</g>
+<!-- Dynamic Airflow Stream (Sharp vibrant cyan air flow) -->
+<g id="airflowStream" opacity="0.95">
+<!-- Air channel from trachea -->
+<path d="M 315 440 C 315 380, 335 310, 380 270 C 430 225, 480 265, 518 285 L 565 292" fill="none" stroke="url(#airGrad)" stroke-dasharray="8 6" stroke-linecap="round" stroke-width="4">
+<animate attributename="stroke-dashoffset" dur="1.2s" repeatcount="indefinite" values="40;0"></animate>
+</path>
+<path d="M 325 435 C 330 370, 355 315, 395 285 C 440 250, 485 275, 522 290 L 580 295" fill="none" opacity="0.8" stroke="#0284c7" stroke-dasharray="4 4" stroke-width="2">
+<animate attributename="stroke-dashoffset" dur="1s" repeatcount="indefinite" values="30;0"></animate>
+</path>
+<!-- Whistling turbulent particles exiting past the lips -->
+<path d="M 565 294 Q 610 292 635 285" fill="none" stroke="#0284c7" stroke-dasharray="6 4" stroke-linecap="round" stroke-width="2.5">
+<animate attributename="stroke-dashoffset" dur="0.8s" repeatcount="indefinite" values="20;0"></animate>
+</path>
+<path d="M 565 297 Q 605 304 630 315" fill="none" stroke="#38bdf8" stroke-dasharray="5 5" stroke-linecap="round" stroke-width="1.8">
+<animate attributename="stroke-dashoffset" dur="0.9s" repeatcount="indefinite" values="25;0"></animate>
+</path>
+</g>
+<!-- Vocal Cord Vibration Node (Larynx) -->
+<g id="larynxNode" transform="translate(295, 430)">
+<circle cx="0" cy="0" fill="#ffffff" id="larynxCircle" r="14" stroke="#94a3b8" stroke-width="2"></circle>
+<path d="M -6 -5 Q 0 -2 6 -5" fill="none" id="larynxVibe1" stroke="#64748b" stroke-width="2"></path>
+<path d="M -6 5 Q 0 2 6 5" fill="none" id="larynxVibe2" stroke="#64748b" stroke-width="2"></path>
+<text class="fill-slate-600 font-label-mono text-[10px] font-bold" x="22" y="4">THANH QUẢN (GLOTTIS)</text>
+</g>
+</svg>
+<!-- Bottom Floating Acoustic Metric Badge Inside Stage -->
+<div class="absolute bottom-3 left-4 right-4 flex items-center justify-between pointer-events-none z-20">
+<div class="flex items-center gap-2 bg-white/95 backdrop-blur-md px-3.5 py-1.5 rounded-lg border border-slate-200/90 shadow-xs pointer-events-auto">
+<span class="material-symbols-outlined text-sm text-sky-600">tune</span>
+<span class="font-label-mono text-label-mono text-slate-500">Acoustic Friction:</span>
+<span class="font-label-mono text-label-mono text-sky-700 font-bold">Continuous / Friction Index 88%</span>
+</div>
+<div class="hidden sm:flex items-center gap-2 bg-white/95 backdrop-blur-md px-3.5 py-1.5 rounded-lg border border-slate-200/90 shadow-xs pointer-events-auto">
+<span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span>
+<span class="font-label-mono text-label-mono text-slate-700 font-semibold">Target Contact: Răng Trên + Răng Dưới</span>
+</div>
+</div>
+</div>
+<!-- Real-Time Manual Articulation Calibration Sliders -->
+<div class="mt-space-md grid grid-cols-1 md:grid-cols-3 gap-space-md bg-slate-50/80 border border-slate-200/80 p-space-md rounded-xl">
+<!-- Slider 1 -->
+<div class="flex flex-col gap-1.5">
+<div class="flex items-center justify-between">
+<label class="font-label-mono text-label-mono text-slate-700 font-semibold" for="tongueElev">Độ Nâng Thân Lưỡi</label>
+<span class="font-label-mono text-label-mono text-rose-600 font-bold" id="elevVal">35%</span>
+</div>
+<input class="w-full h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-rose-600" id="tongueElev" max="90" min="10" type="range" value="35"/>
+<div class="flex justify-between font-label-mono text-[9px] text-slate-500">
+<span>0% Đáy miệng</span>
+<span class="text-rose-600 font-semibold">Chuẩn: 30-40%</span>
+<span>100% Chạm vòm</span>
+</div>
+</div>
+<!-- Slider 2 -->
+<div class="flex flex-col gap-1.5">
+<div class="flex items-center justify-between">
+<label class="font-label-mono text-label-mono text-slate-700 font-semibold" for="jawDrop">Độ Mở Quai Hàm (Jaw)</label>
+<span class="font-label-mono text-label-mono text-sky-700 font-bold" id="jawVal">25%</span>
+</div>
+<input class="w-full h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-sky-600" id="jawDrop" max="80" min="5" type="range" value="25"/>
+<div class="flex justify-between font-label-mono text-[9px] text-slate-500">
+<span>Khép hờ (Slit)</span>
+<span class="text-sky-700 font-semibold">Chuẩn: 20-30%</span>
+<span>Mở rộng</span>
+</div>
+</div>
+<!-- Slider 3 -->
+<div class="flex flex-col gap-1.5">
+<div class="flex items-center justify-between">
+<label class="font-label-mono text-label-mono text-slate-700 font-semibold" for="airPressure">Lực Đẩy Luồng Hơi</label>
+<span class="font-label-mono text-label-mono text-sky-700 font-bold" id="airVal">65%</span>
+</div>
+<input class="w-full h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-sky-600" id="airPressure" max="100" min="10" type="range" value="65"/>
+<div class="flex justify-between font-label-mono text-[9px] text-slate-500">
+<span>Yếu (Ngắt quãng)</span>
+<span class="text-sky-700 font-semibold">Chuẩn: 60-75%</span>
+<span>Rất mạnh</span>
+</div>
+</div>
+</div>
+<!-- Bottom Audio Controls Toolbar -->
+<div class="mt-space-md flex flex-wrap items-center justify-between gap-space-sm pt-space-xs">
+<div class="flex flex-wrap items-center gap-space-xs sm:gap-space-sm">
+<!-- Audio 1 -->
+<button class="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 font-body-sm text-body-sm font-semibold transition-all shadow-xs" id="btnPlayPhoneme" type="button">
+<span class="material-symbols-outlined text-rose-600 text-lg">volume_up</span>
+<span>Nghe Âm Lẻ <strong class="font-ipa-inline text-rose-600">/θ/</strong></span>
+</button>
+<!-- Audio 2 -->
+<button class="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 font-body-sm text-body-sm font-semibold transition-all shadow-xs" id="btnPlayWord" type="button">
+<span class="material-symbols-outlined text-sky-600 text-lg">record_voice_over</span>
+<span>Nghe Từ <strong class="text-sky-700">"Think"</strong> (US)</span>
+</button>
+</div>
+<!-- Audio 3: Master Trigger Animated Morph -->
+<button class="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-headline-sm text-sm font-semibold shadow-md hover:shadow-lg transition-all" id="btnAnimateVocal" type="button">
+<span class="material-symbols-outlined text-lg">animation</span>
+<span>Xem Hoạt Họa Khẩu Hình</span>
+</button>
+</div>
+</div>
+</div>
+<!-- RIGHT PANE: 4 COLS - Front Lip Camera View & Tactile Guide -->
+<div class="xl:col-span-4 flex flex-col gap-space-md min-w-0">
+<!-- Frontal Lip Posture Card (Facial Graphic + Simulated Video Feed) -->
+<div class="bg-white border border-slate-200/90 rounded-2xl p-space-md shadow-sm flex flex-col gap-space-sm relative overflow-hidden">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-rose-600 text-base">face</span>
+<span class="font-headline-sm text-sm text-slate-800 font-bold">Tư Thế Môi &amp; Đầu Lưỡi Trực Diện</span>
+</div>
+<span class="px-2 py-0.5 rounded-md bg-slate-100 text-slate-600 font-label-mono text-[10px] font-bold border border-slate-200">CORONAL VIEW</span>
+</div>
+<!-- Stylized Frontal Lip Graphic View in clean light card -->
+<div class="relative w-full h-44 bg-[#f8fafc] border border-slate-200 rounded-xl flex items-center justify-center overflow-hidden">
+<!-- Front Lip SVG Graphic -->
+<svg class="w-full h-full object-contain" viewbox="0 0 280 140">
+<!-- Face skin contour (Warm subtle tone) -->
+<rect fill="#f1f5f9" height="140" width="280"></rect>
+<!-- Lip boundary -->
+<!-- Upper lip -->
+<path d="M 60 70 Q 100 50 140 56 Q 180 50 220 70 Q 180 62 140 65 Q 100 62 60 70 Z" fill="#fb7185" opacity="0.9"></path>
+<!-- Mouth opening dark hole -->
+<ellipse cx="140" cy="72" fill="#334155" rx="60" ry="14"></ellipse>
+<!-- Upper Incisors (Hàng răng trên) -->
+<path d="M 105 66 L 105 74 L 118 75 L 118 66 Z" fill="#f8fafc" stroke="#cbd5e1" stroke-width="0.8"></path>
+<path d="M 119 66 L 119 76 L 138 76 L 138 66 Z" fill="#ffffff" stroke="#cbd5e1" stroke-width="0.8"></path>
+<path d="M 142 66 L 142 76 L 161 76 L 161 66 Z" fill="#ffffff" stroke="#cbd5e1" stroke-width="0.8"></path>
+<path d="M 162 66 L 162 74 L 175 75 L 175 66 Z" fill="#f8fafc" stroke="#cbd5e1" stroke-width="0.8"></path>
+<!-- Interdental Tongue Blade Peeking Out (2-3mm protrusion) -->
+<path d="M 120 75 Q 140 85 160 75 Q 155 82 140 83 Q 125 82 120 75 Z" fill="#f43f5e" id="frontTongueTip" stroke="#fda4af" stroke-width="1">
+<animate attributename="d" dur="2s" repeatcount="indefinite" values="M 120 75 Q 140 85 160 75 Q 155 82 140 83 Q 125 82 120 75 Z; M 120 75 Q 140 88 160 75 Q 155 86 140 87 Q 125 86 120 75 Z; M 120 75 Q 140 85 160 75 Q 155 82 140 83 Q 125 82 120 75 Z"></animate>
+</path>
+<!-- Lower Lip -->
+<path d="M 60 70 Q 100 80 140 84 Q 180 80 220 70 Q 180 92 140 92 Q 100 92 60 70 Z" fill="#e11d48" opacity="0.95"></path>
+<!-- Indicator callout for 2-3mm -->
+<line stroke="#0284c7" stroke-dasharray="2 2" stroke-width="1.2" x1="140" x2="140" y1="83" y2="108"></line>
+<circle cx="140" cy="108" fill="#0284c7" r="2.5"></circle>
+<text class="fill-sky-800 font-label-mono text-[9px] font-bold" x="148" y="112">Lưỡi thò 2 - 3mm</text>
+</svg>
+<!-- Guide Overlay Indicator -->
+<div class="absolute top-2 left-2 flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-white/90 backdrop-blur-sm border border-slate-200 text-sky-700 font-label-mono text-[10px] font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-sky-500 animate-ping"></span>
+<span>Interdental Contact Active</span>
+</div>
+</div>
+<div class="flex items-center justify-between text-slate-600 font-body-sm text-body-sm px-1">
+<span>Răng trên &amp; dưới chạm nhẹ lưỡi</span>
+<span class="text-rose-600 font-label-mono text-label-mono font-bold">Không Cắn Răng</span>
+</div>
+</div>
+<!-- 1. Empathic Vietnamese Mistake Diagnostic Card (Soft Rose Tint) -->
+<div class="bg-rose-50 border border-rose-200 border-l-4 border-l-rose-500 p-space-md rounded-xl shadow-xs relative overflow-hidden">
+<div class="flex items-start gap-3">
+<span class="p-1.5 bg-rose-100 text-rose-600 rounded-lg shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-lg">warning</span>
+</span>
+<div class="flex flex-col gap-1 min-w-0">
+<div class="font-headline-sm text-xs font-bold text-rose-900 uppercase tracking-wider">
+                Tật Quen Thuộc Của Người Việt
+              </div>
+<p class="font-body-sm text-body-sm text-rose-950 leading-relaxed">
+                Hay rụt lưỡi vào trong khoang miệng và đọc thành âm <strong class="text-rose-700 font-bold">"Thờ"</strong> tiếng Việt (âm bật tắc hơi <span class="font-ipa-inline text-rose-700 font-bold">/tʰ/</span>) hoặc biến thành âm <span class="font-ipa-inline text-rose-700 font-bold">/t/</span> thuần (nhầm <em class="text-rose-800 font-medium">"think"</em> thành <em>"tink"</em>).
+              </p>
+</div>
+</div>
+</div>
+<!-- 2. Step-by-Step Corrective Guidance (Soft Emerald Tint) -->
+<div class="bg-emerald-50 border border-emerald-200 border-l-4 border-l-emerald-600 p-space-md rounded-xl shadow-xs relative overflow-hidden">
+<div class="flex items-start gap-3">
+<span class="p-1.5 bg-emerald-100 text-emerald-700 rounded-lg shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-lg">check_circle</span>
+</span>
+<div class="flex flex-col gap-1 min-w-0">
+<div class="font-headline-sm text-xs font-bold text-emerald-900 uppercase tracking-wider">
+                Cách Đặt Lưỡi Chuẩn Xác
+              </div>
+<p class="font-body-sm text-body-sm text-emerald-950 leading-relaxed">
+                Đặt nhẹ đầu lưỡi thò ra giữa 2 hàng răng cửa từ <strong class="text-emerald-800">2-3mm</strong>. Tuyệt đối không cắn chặt răng. Nhẹ nhàng đẩy luồng hơi gió êm, liên tục luồn qua kẽ răng mà không ngắt luồng khí.
+              </p>
+</div>
+</div>
+</div>
+<!-- 3. Tactile Trick / Mẹo Cảm Giác (Soft Amber Tint) -->
+<div class="bg-amber-50 border border-amber-200 border-l-4 border-l-amber-500 p-space-md rounded-xl shadow-xs relative overflow-hidden">
+<div class="flex items-start gap-3">
+<span class="p-1.5 bg-amber-100 text-amber-700 rounded-lg shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-lg">touch_app</span>
+</span>
+<div class="flex flex-col gap-1 min-w-0">
+<div class="font-headline-sm text-xs font-bold text-amber-900 uppercase tracking-wider">
+                Mẹo Cảm Giác (Tactile Trick)
+              </div>
+<p class="font-body-sm text-body-sm text-amber-950 leading-relaxed">
+                Đặt ngón tay trỏ sát trước mép môi. Khi phát âm từ <strong class="text-amber-800 font-bold">"think"</strong>, đầu lưỡi bạn phải <em>chạm khẽ vào đầu ngón tay</em> và cảm nhận rõ luồng hơi ấm phả ra liên tục!
+              </p>
+</div>
+</div>
+</div>
+<!-- Phonemic Comparison Badge Tray -->
+<div class="bg-white border border-slate-200/90 p-space-sm rounded-xl flex items-center justify-between shadow-xs">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm text-slate-500">compare_arrows</span>
+<span class="font-label-mono text-label-mono text-slate-600 font-semibold">Cặp Âm Tương Phản:</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 rounded bg-rose-50 border border-rose-200 text-rose-700 font-ipa-inline text-ipa-inline font-bold">/θ/ (Voiceless)</span>
+<span class="text-slate-400 font-medium">vs</span>
+<span class="px-2 py-0.5 rounded bg-sky-50 border border-sky-200 text-sky-700 font-ipa-inline text-ipa-inline font-bold">/ð/ (Voiced)</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Interactive JavaScript Handling Anatomical Sliders, Voicing Switch, and Animation States -->
+<script>
+    (function initAnatomyStudio() {
+      // Elements
+      const tongueElev = document.getElementById('tongueElev');
+      const elevVal = document.getElementById('elevVal');
+      const jawDrop = document.getElementById('jawDrop');
+      const jawVal = document.getElementById('jawVal');
+      const airPressure = document.getElementById('airPressure');
+      const airVal = document.getElementById('airVal');
+      
+      const tongueGroup = document.getElementById('tongueGroup');
+      const airflowStream = document.getElementById('airflowStream');
+      const voicingToggle = document.getElementById('voicingToggle');
+      const larynxIndicator = document.getElementById('larynxIndicator');
+      const larynxLabel = document.getElementById('larynxLabel');
+      const larynxCircle = document.getElementById('larynxCircle');
+      const btnAnimateVocal = document.getElementById('btnAnimateVocal');
+      const btnPlayPhoneme = document.getElementById('btnPlayPhoneme');
+      const btnPlayWord = document.getElementById('btnPlayWord');
+
+      let isVoiced = false;
+      let isAnimating = false;
+
+      // Update Slider Visuals & SVG reactive state
+      function applyMorphs() {
+        const elev = parseInt(tongueElev.value, 10);
+        const jaw = parseInt(jawDrop.value, 10);
+        const air = parseInt(airPressure.value, 10);
+
+        elevVal.textContent = elev + '%';
+        jawVal.textContent = jaw + '%';
+        airVal.textContent = air + '%';
+
+        // Translate / scale tongue according to elevation and jaw opening
+        const yOffset = (35 - elev) * 0.4;
+        const jawY = (jaw - 25) * 0.3;
+        tongueGroup.style.transform = `translateY(${yOffset + jawY}px)`;
+
+        // Adjust airflow opacity based on pressure
+        if (airflowStream) {
+          airflowStream.style.opacity = (air / 100).toFixed(2);
+        }
+      }
+
+      tongueElev.addEventListener('input', applyMorphs);
+      jawDrop.addEventListener('input', applyMorphs);
+      airPressure.addEventListener('input', applyMorphs);
+
+      // Voicing Switch Toggle (/θ/ -> /ð/)
+      voicingToggle.addEventListener('click', () => {
+        isVoiced = !isVoiced;
+        if (isVoiced) {
+          larynxIndicator.className = 'w-2 h-2 rounded-full bg-sky-500 animate-ping';
+          larynxLabel.textContent = 'Đang Rung (Voiced /ð/ - "this")';
+          larynxCircle.setAttribute('stroke', '#0284c7');
+          larynxCircle.setAttribute('fill', '#e0f2fe');
+        } else {
+          larynxIndicator.className = 'w-2 h-2 rounded-full bg-slate-400';
+          larynxLabel.textContent = 'Không Rung (Voiceless /θ/)';
+          larynxCircle.setAttribute('stroke', '#94a3b8');
+          larynxCircle.setAttribute('fill', '#ffffff');
+        }
+      });
+
+      // Animation Playback Demo
+      btnAnimateVocal.addEventListener('click', () => {
+        if (isAnimating) return;
+        isAnimating = true;
+        btnAnimateVocal.classList.add('opacity-75', 'scale-95');
+
+        // Simulate cycle: Tongue retreats slightly then extends forward, air flows
+        tongueGroup.style.transition = 'transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)';
+        tongueGroup.style.transform = 'translate(-8px, 4px)';
+        
+        setTimeout(() => {
+          // Push tip between teeth
+          tongueGroup.style.transform = 'translate(6px, -2px)';
+          airflowStream.style.filter = 'drop-shadow(0 0 8px #0284c7)';
+        }, 400);
+
+        setTimeout(() => {
+          // Return to calibrated position
+          applyMorphs();
+          airflowStream.style.filter = 'none';
+          tongueGroup.style.transition = 'transform 0.3s ease';
+          isAnimating = false;
+          btnAnimateVocal.classList.remove('opacity-75', 'scale-95');
+        }, 1600);
+      });
+
+      // Audio feedback mock triggers
+      function playTone(freq, dur) {
+        try {
+          const ctx = new (window.AudioContext || window.webkitAudioContext)();
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.frequency.setValueAtTime(freq, ctx.currentTime);
+          gain.gain.setValueAtTime(0.08, ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + dur);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start();
+          osc.stop(ctx.currentTime + dur);
+        } catch(e) {
+          // AudioContext restricted or unavailable
+        }
+      }
+
+      btnPlayPhoneme.addEventListener('click', () => {
+        btnPlayPhoneme.classList.add('bg-slate-100');
+        playTone(320, 0.4);
+        setTimeout(() => btnPlayPhoneme.classList.remove('bg-slate-100'), 400);
+      });
+
+      btnPlayWord.addEventListener('click', () => {
+        btnPlayWord.classList.add('bg-slate-100');
+        playTone(440, 0.5);
+        setTimeout(() => btnPlayWord.classList.remove('bg-slate-100'), 500);
+      });
+
+      // Phoneme pills interactive selection
+      document.querySelectorAll('.phoneme-pill').forEach(pill => {
+        pill.addEventListener('click', () => {
+          document.querySelectorAll('.phoneme-pill').forEach(p => {
+            p.className = 'phoneme-pill px-3 py-1 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 font-ipa-inline text-ipa-inline text-xs transition-all';
+          });
+          pill.className = 'phoneme-pill px-3 py-1 rounded-full bg-rose-600 text-white font-ipa-inline text-ipa-inline text-xs font-semibold shadow-sm transition-all';
+        });
+      });
+
+      // Initial alignment
+      applyMorphs();
+    })();
+  </script>
+</div></main><footer class="w-full bg-white border-t border-slate-200 py-space-md shadow-xs"><div class="w-full px-gutter-desktop mx-auto flex flex-col md:flex-row items-center justify-between gap-space-sm font-label-mono text-label-mono text-slate-500"><div class="flex items-center gap-space-md"><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-sky-500 animate-ping"></span><span class="text-slate-700 font-medium">Acoustic Neural Engine: 44.1kHz Formant Tracking v4.2</span></div><span class="hidden md:inline text-slate-300">|</span><span class="hidden md:inline">Spectrogram Latency: 12ms</span></div><div class="flex items-center gap-space-md"><span>L1 Bias Calibration: Vietnamese IPA Matrix</span><span>© 2025 VietPhonics AI Laboratory</span></div></div></footer></body></html>

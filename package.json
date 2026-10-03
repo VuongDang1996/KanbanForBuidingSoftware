@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "concurrently -k -n \"server,client\" -c \"magenta,cyan\" \"npm run server\" \"npm run client\"",
+    "app:dev": "npm --prefix vietphonics-app run dev",
     "client": "vite",
     "server": "node server/index.js",
     "build": "vite build",
