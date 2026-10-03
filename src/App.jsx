@@ -100,33 +100,54 @@ export default function App() {
     setTimeout(() => setToast(null), 3000);
   };
 
+  // JSON of the last project state known to be in sync with SQLite
+  const lastSyncedJsonRef = useRef(null);
+  const pendingSaveRef = useRef(false);
+
   // Check Backend & Connect to SQLite on Mount
   useEffect(() => {
+    async function pullFromDb() {
+      if (pendingSaveRef.current) return; // don't clobber an in-flight local edit
+      try {
+        const dbProject = await fetchActiveProjectFromDb();
+        if (dbProject && dbProject.epics && dbProject.stories) {
+          const json = JSON.stringify(dbProject);
+          if (json !== lastSyncedJsonRef.current) {
+            lastSyncedJsonRef.current = json;
+            setProject(dbProject);
+          }
+          isInitialDbLoadRef.current = true;
+        }
+      } catch (err) {
+        console.warn('[SQLite] Could not fetch active project from SQLite, fallback to local state', err);
+      }
+    }
+
     async function initDbConnection() {
       const health = await checkBackendHealth();
-      setDbStatus(health);
-      if (health.connected && !isInitialDbLoadRef.current) {
-        try {
-          const dbProject = await fetchActiveProjectFromDb();
-          if (dbProject && dbProject.epics && dbProject.stories) {
-            setProject(dbProject);
-            isInitialDbLoadRef.current = true;
-            console.log('[SQLite] Loaded active project from database file');
-          }
-        } catch (err) {
-          console.warn('[SQLite] Could not fetch active project from SQLite, fallback to local state', err);
-        }
+      if (health.connected) {
+        await pullFromDb();
       }
+      setDbStatus(health);
     }
     initDbConnection();
 
-    // Periodic check
+    // Live sync: pull latest Kanban state (automated dev progress) every 3s
+    const pollInterval = setInterval(async () => {
+      if (isInitialDbLoadRef.current) await pullFromDb();
+    }, 3000);
+
+    // Periodic health check
     const interval = setInterval(async () => {
       const health = await checkBackendHealth();
       setDbStatus(health);
+      if (health.connected && !isInitialDbLoadRef.current) await pullFromDb();
     }, 10000);
 
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+      clearInterval(pollInterval);
+    };
   }, []);
 
   // Sync to LocalStorage AND SQLite on project updates
@@ -138,16 +159,25 @@ export default function App() {
       console.error('Failed to persist project to localStorage:', e);
     }
 
-    // 2. SQLite Backend (Debounced save)
-    if (dbStatus.connected) {
+    // 2. SQLite Backend (Debounced save) — only after initial DB load and only for real local edits
+    if (dbStatus.connected && isInitialDbLoadRef.current) {
+      const json = JSON.stringify(project);
+      if (json === lastSyncedJsonRef.current) return;
+      pendingSaveRef.current = true;
       const timer = setTimeout(async () => {
         try {
           await saveProjectToDb(project);
+          lastSyncedJsonRef.current = json;
         } catch (err) {
           console.error('[SQLite] Failed to persist to database:', err);
+        } finally {
+          pendingSaveRef.current = false;
         }
       }, 400);
-      return () => clearTimeout(timer);
+      return () => {
+        clearTimeout(timer);
+        pendingSaveRef.current = false;
+      };
     }
   }, [project, dbStatus.connected]);
 

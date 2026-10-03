@@ -18,16 +18,56 @@ app.use(express.json({ limit: '10mb' }));
 // Initialize SQLite Schema
 initDatabase();
 
-// Sync VIETNAMESE_PRONUNCIATION_PROJECT as the single active project
+// Seed VIETNAMESE_PRONUNCIATION_PROJECT only when the database has no project yet.
+// (Never overwrite existing Kanban progress on server restart.)
 try {
-  saveFullProject(VIETNAMESE_PRONUNCIATION_PROJECT);
+  const existing = db.prepare('SELECT id FROM projects WHERE id = ?').get(VIETNAMESE_PRONUNCIATION_PROJECT.id);
+  if (!existing) {
+    saveFullProject(VIETNAMESE_PRONUNCIATION_PROJECT);
+    console.log('[SQLite] Seeded master Vietnamese Pronunciation project.');
+  } else {
+    console.log('[SQLite] Existing project found — keeping current Kanban state.');
+  }
   db.prepare("INSERT INTO app_settings (key, value) VALUES ('active_project_id', ?) ON CONFLICT(key) DO UPDATE SET value = excluded.value").run(VIETNAMESE_PRONUNCIATION_PROJECT.id);
   // Clean up old demo projects
   db.prepare("DELETE FROM projects WHERE id != ?").run(VIETNAMESE_PRONUNCIATION_PROJECT.id);
-  console.log('[SQLite] Master Vietnamese Pronunciation project synced and set as single active project in SQLite.');
 } catch (err) {
   console.error('[SQLite] Failed to seed project:', err);
 }
+
+// Atomic single-story update (used by automated dev agents: scripts/kanban.mjs)
+app.patch('/api/story/:id', (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status, completeAll, note } = req.body || {};
+    const row = db.prepare('SELECT * FROM stories WHERE id = ?').get(id);
+    if (!row) return res.status(404).json({ error: `Story ${id} not found` });
+
+    const allowed = ['backlog', 'todo', 'in-progress', 'done'];
+    const newStatus = allowed.includes(status) ? status : row.status;
+
+    let ac = row.acceptance_criteria ? JSON.parse(row.acceptance_criteria) : [];
+    let tasks = row.technical_tasks ? JSON.parse(row.technical_tasks) : [];
+    if (completeAll) {
+      ac = ac.map(a => ({ ...a, completed: true }));
+      tasks = tasks.map(t => ({ ...t, completed: true }));
+    }
+    let notes = row.notes || '';
+    if (note) {
+      notes = `${notes}${notes ? '\n\n' : ''}[DEV ${new Date().toISOString().slice(0, 16).replace('T', ' ')}] ${note}`;
+    }
+
+    db.prepare(`
+      UPDATE stories SET status = ?, acceptance_criteria = ?, technical_tasks = ?, notes = ?, updated_at = ?
+      WHERE id = ?
+    `).run(newStatus, JSON.stringify(ac), JSON.stringify(tasks), notes, new Date().toISOString(), id);
+
+    res.json({ success: true, id, status: newStatus });
+  } catch (err) {
+    console.error('Error patching story:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
