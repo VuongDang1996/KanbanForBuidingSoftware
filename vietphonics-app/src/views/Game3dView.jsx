@@ -324,7 +324,7 @@ export default function Game3dView() {
           {/* Primary Voice Recording Trigger */}
           <div className="lg:col-span-7 bg-white rounded-2xl p-space-md border border-slate-200/90 shadow-sm flex flex-col md:flex-row items-center justify-between gap-space-md">
             <div className="flex items-center gap-space-md w-full md:w-auto">
-              <button
+              <button aria-label="Bật tắt ghi âm giọng nói"
                 onClick={handleMicToggle}
                 className={`relative group flex items-center justify-center w-20 h-20 rounded-full transition-all shrink-0 active:scale-95 cursor-pointer ${
                   isRecording
@@ -376,7 +376,7 @@ export default function Game3dView() {
               Bộ Mô Phỏng Thử Nghiệm Phản Ứng Game
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-space-sm">
-              <button
+              <button aria-label="Kiểm thử kết quả đòn đánh"
                 onClick={handleTestPerfect}
                 className="flex flex-col text-left p-space-sm rounded-xl bg-slate-50 hover:bg-sky-50/80 border border-slate-200 hover:border-sky-300 transition-all group cursor-pointer"
                 type="button"
@@ -387,7 +387,7 @@ export default function Game3dView() {
                 <span className="font-label-mono text-[10px] text-slate-500 mt-1">Test 100% Sát Thương (Phá Giáp)</span>
               </button>
 
-              <button
+              <button aria-label="Kiểm thử kết quả đòn đánh"
                 onClick={handleTestError}
                 className="flex flex-col text-left p-space-sm rounded-xl bg-slate-50 hover:bg-rose-50/80 border border-slate-200 hover:border-rose-300 transition-all group cursor-pointer"
                 type="button"

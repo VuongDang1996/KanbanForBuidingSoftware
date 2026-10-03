@@ -57,14 +57,14 @@ export default function ProgressAnalyticsView() {
           </div>
 
           <div className="flex items-center flex-wrap gap-2.5">
-            <button
+            <button aria-label="Nút tương tác" type="button"
               onClick={() => alert('Đang trích xuất Báo Cáo Phổ Âm Học PDF chuẩn CEFR...')}
               className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-label-md text-label-md transition-all shadow-sm font-semibold cursor-pointer"
             >
               <span className="material-symbols-outlined text-lg text-sky-600">picture_as_pdf</span>
               <span>Xuất Báo Cáo PDF</span>
             </button>
-            <button
+            <button aria-label="Nút tương tác" type="button"
               onClick={() => alert('Liên kết chia sẻ bảng điểm GOP đã được sao chép!')}
               className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-rose-600 hover:bg-rose-700 text-white font-label-md text-label-md transition-all shadow-sm font-semibold cursor-pointer"
             >
@@ -551,7 +551,7 @@ export default function ProgressAnalyticsView() {
                     { sym: 'ɜː', score: '69%', state: 'progress', cls: 'bg-amber-50 text-amber-800' },
                     { sym: 'ə', score: '68%', state: 'progress', cls: 'bg-amber-50 text-amber-800' }
                   ].map((p, idx) => (
-                    <button
+                    <button aria-label="Phát âm mẫu chuẩn bản ngữ" type="button"
                       key={idx}
                       onClick={() => {
                         setSelectedPhoneme({
@@ -593,7 +593,7 @@ export default function ProgressAnalyticsView() {
                     { sym: 'eə', score: '67%', cls: 'bg-amber-50 text-amber-800' },
                     { sym: 'ʊə', score: '80%', cls: 'bg-emerald-50 text-emerald-800' }
                   ].map((p, idx) => (
-                    <button
+                    <button aria-label="Phát âm mẫu chuẩn bản ngữ" type="button"
                       key={idx}
                       onClick={() => {
                         setSelectedPhoneme({
@@ -651,7 +651,7 @@ export default function ProgressAnalyticsView() {
                     { sym: 'w', score: '89%', cls: 'bg-emerald-50 text-emerald-800' },
                     { sym: 'j', score: '90%', cls: 'bg-emerald-50 text-emerald-800' }
                   ].map((p, idx) => (
-                    <button
+                    <button aria-label="Phát âm mẫu chuẩn bản ngữ" type="button"
                       key={idx}
                       onClick={() => {
                         setSelectedPhoneme({
@@ -695,7 +695,7 @@ export default function ProgressAnalyticsView() {
                   <p className="font-body-sm text-body-sm text-slate-500">{selectedPhoneme.desc}</p>
                 </div>
               </div>
-              <button
+              <button aria-label="Chuyển phân hệ học" type="button"
                 onClick={() => setActiveTab('khau-hinh-2d')}
                 className="shrink-0 flex items-center gap-1.5 px-4 py-2 rounded-lg bg-rose-600 text-white font-label-md text-label-md hover:bg-rose-700 transition-all font-semibold shadow-sm cursor-pointer"
               >
@@ -741,7 +741,7 @@ export default function ProgressAnalyticsView() {
                       </div>
                     </div>
                   </div>
-                  <button
+                  <button aria-label="Chuyển phân hệ học" type="button"
                     onClick={() => setActiveTab('khau-hinh-2d')}
                     className="px-3 py-1.5 rounded-lg bg-rose-600 hover:bg-rose-700 text-white font-label-mono text-[11px] font-bold transition-all shadow-xs flex items-center gap-1 cursor-pointer"
                   >
@@ -763,7 +763,7 @@ export default function ProgressAnalyticsView() {
                       </div>
                     </div>
                   </div>
-                  <button
+                  <button aria-label="Chuyển phân hệ học" type="button"
                     onClick={() => setActiveTab('phong-luyen-phat-am')}
                     className="px-3 py-1.5 rounded-lg bg-rose-600 hover:bg-rose-700 text-white font-label-mono text-[11px] font-bold transition-all shadow-xs flex items-center gap-1 cursor-pointer"
                   >
@@ -785,7 +785,7 @@ export default function ProgressAnalyticsView() {
                       </div>
                     </div>
                   </div>
-                  <button
+                  <button aria-label="Chuyển phân hệ học" type="button"
                     onClick={() => setActiveTab('khau-hinh-2d')}
                     className="px-3 py-1.5 rounded-lg bg-amber-600 hover:bg-amber-700 text-white font-label-mono text-[11px] font-bold transition-all shadow-xs flex items-center gap-1 cursor-pointer"
                   >

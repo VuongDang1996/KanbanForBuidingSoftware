@@ -130,7 +130,7 @@ export default function ProUpgradeView() {
           {/* Filter Tabs */}
           <div className="flex items-center justify-between gap-space-md overflow-x-auto pb-1">
             <div className="flex items-center gap-1.5 p-1 rounded-xl bg-slate-200/70 border border-slate-200 shrink-0">
-              <button
+              <button aria-label="Nút tương tác" type="button"
                 onClick={() => setFilter('all')}
                 className={`font-body-sm text-body-sm px-4 py-2 rounded-lg font-semibold transition-all cursor-pointer ${
                   filter === 'all' ? 'bg-white text-rose-600 shadow-xs' : 'text-slate-600 hover:text-slate-900'
@@ -138,7 +138,7 @@ export default function ProUpgradeView() {
               >
                 Tất Cả Lỗi (110)
               </button>
-              <button
+              <button aria-label="Nút tương tác" type="button"
                 onClick={() => setFilter('ending')}
                 className={`font-body-sm text-body-sm px-4 py-2 rounded-lg font-semibold transition-all cursor-pointer ${
                   filter === 'ending' ? 'bg-white text-rose-600 shadow-xs' : 'text-slate-600 hover:text-slate-900'
@@ -146,7 +146,7 @@ export default function ProUpgradeView() {
               >
                 Lỗi Âm Đuôi /s/, /ks/, /t/ (46)
               </button>
-              <button
+              <button aria-label="Nút tương tác" type="button"
                 onClick={() => setFilter('flat')}
                 className={`font-body-sm text-body-sm px-4 py-2 rounded-lg font-semibold transition-all cursor-pointer ${
                   filter === 'flat' ? 'bg-white text-rose-600 shadow-xs' : 'text-slate-600 hover:text-slate-900'
@@ -154,7 +154,7 @@ export default function ProUpgradeView() {
               >
                 Lỗi Trọng Âm Flat Tone (38)
               </button>
-              <button
+              <button aria-label="Nút tương tác" type="button"
                 onClick={() => setFilter('swallow')}
                 className={`font-body-sm text-body-sm px-4 py-2 rounded-lg font-semibold transition-all cursor-pointer ${
                   filter === 'swallow' ? 'bg-white text-rose-600 shadow-xs' : 'text-slate-600 hover:text-slate-900'
@@ -243,7 +243,7 @@ export default function ProUpgradeView() {
                 {/* Actions */}
                 <div className="flex flex-col gap-2 pt-space-md mt-space-md border-t border-slate-100">
                   <div className="grid grid-cols-2 gap-2">
-                    <button
+                    <button aria-label="Nút tương tác"
                       onClick={() => alert(`Đang phát bản ghi lỗi được ghi nhận gần nhất cho từ "${item.word}"`)}
                       className="flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg bg-slate-100 hover:bg-slate-200/80 text-slate-700 font-body-sm text-body-sm border border-slate-200/80 transition-all font-medium cursor-pointer"
                       type="button"
@@ -251,7 +251,7 @@ export default function ProUpgradeView() {
                       <span className="material-symbols-outlined text-base text-rose-600">record_voice_over</span>
                       <span>Nghe Lỗi Của Tôi</span>
                     </button>
-                    <button
+                    <button aria-label="Phát âm mẫu chuẩn bản ngữ"
                       onClick={() => playTTS(item.word)}
                       className="flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg bg-slate-100 hover:bg-slate-200/80 text-sky-700 font-body-sm text-body-sm border border-slate-200/80 transition-all font-medium cursor-pointer"
                       type="button"
@@ -260,7 +260,7 @@ export default function ProUpgradeView() {
                       <span>Bản Ngữ Chuẩn</span>
                     </button>
                   </div>
-                  <button
+                  <button aria-label="Nút tương tác"
                     onClick={() => handleSimulateRecord(item.id)}
                     className="flex items-center justify-center gap-2 w-full py-2.5 rounded-lg bg-gradient-to-r from-rose-600 to-rose-500 hover:from-rose-700 hover:to-rose-600 text-white font-headline-sm text-headline-sm font-semibold shadow-sm hover:shadow transition-all cursor-pointer"
                     type="button"
@@ -470,7 +470,7 @@ export default function ProUpgradeView() {
 
                 {/* Checkout Button */}
                 <div className="flex flex-col gap-space-xs">
-                  <button
+                  <button aria-label="Nâng cấp gói VietPhonics PRO"
                     onClick={() => setQrModalOpen(true)}
                     className="w-full py-4 rounded-xl bg-gradient-to-r from-rose-600 via-rose-500 to-rose-600 text-white font-headline-md text-headline-md font-bold shadow-md hover:shadow-lg hover:from-rose-700 hover:to-rose-600 transition-all transform hover:-translate-y-0.5 flex items-center justify-center gap-2 cursor-pointer"
                     type="button"
@@ -543,7 +543,7 @@ export default function ProUpgradeView() {
       {qrModalOpen && (
         <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
           <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 relative animate-scale-in">
-            <button
+            <button aria-label="Nâng cấp gói VietPhonics PRO" type="button"
               onClick={() => setQrModalOpen(false)}
               className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center"
             >
@@ -577,7 +577,7 @@ export default function ProUpgradeView() {
             </div>
 
             <div className="mt-4 flex gap-2">
-              <button
+              <button aria-label="Nâng cấp gói VietPhonics PRO" type="button"
                 onClick={() => {
                   setQrModalOpen(false);
                   alert('Kích hoạt tài khoản VietPhonics PRO thành công! Chúc mừng bạn đã sở hữu trọn đời.');

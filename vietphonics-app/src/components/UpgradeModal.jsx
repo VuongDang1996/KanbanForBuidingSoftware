@@ -40,7 +40,7 @@ export default function UpgradeModal() {
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fade-in overflow-y-auto">
       <div className="relative w-full max-w-lg bg-white rounded-3xl p-6 sm:p-8 shadow-2xl border border-slate-100 flex flex-col my-8">
         {/* Close Button */}
-        <button
+        <button aria-label="Nâng cấp gói VietPhonics PRO" type="button"
           onClick={() => setShowUpgradeModal(false)}
           className="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-600 rounded-full hover:bg-slate-100 transition-colors"
         >
@@ -131,7 +131,7 @@ export default function UpgradeModal() {
                     <span className="text-slate-400 block text-[10px]">Số tài khoản</span>
                     <span className="font-bold text-slate-900">{bankDetails.accountNumber}</span>
                   </div>
-                  <button
+                  <button aria-label="Nút tương tác" type="button"
                     onClick={() => handleCopy('acc', bankDetails.accountNumber)}
                     className="px-2.5 py-1 rounded bg-white hover:bg-slate-100 border text-slate-700 text-[11px] font-bold"
                   >
@@ -144,7 +144,7 @@ export default function UpgradeModal() {
                     <span className="text-slate-400 block text-[10px]">Nội dung chuyển khoản (Bắt buộc)</span>
                     <span className="font-bold text-primary">{bankDetails.content}</span>
                   </div>
-                  <button
+                  <button aria-label="Nút tương tác" type="button"
                     onClick={() => handleCopy('content', bankDetails.content)}
                     className="px-2.5 py-1 rounded bg-white hover:bg-slate-100 border text-slate-700 text-[11px] font-bold"
                   >
@@ -155,7 +155,7 @@ export default function UpgradeModal() {
             </div>
 
             {/* Confirmation CTA */}
-            <button
+            <button aria-label="Nút tương tác" type="button"
               disabled={isVerifying}
               onClick={handleSimulatePayment}
               className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-primary to-rose-600 text-white font-bold text-sm shadow-md hover:shadow-lg transition-all hover:brightness-105 flex items-center justify-center gap-2"

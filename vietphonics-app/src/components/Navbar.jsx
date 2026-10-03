@@ -38,7 +38,7 @@ export default function Navbar() {
       <div className="h-20 w-full px-6 lg:px-12 mx-auto flex items-center justify-between gap-space-md">
         {/* Brand & Dialect */}
         <div className="flex items-center gap-space-md shrink-0">
-          <button
+          <button aria-label="Chuyển phân hệ học"
             onClick={() => setActiveTab('tong-quan')}
             className="flex items-center gap-space-sm group text-left cursor-pointer"
             type="button"
@@ -60,7 +60,7 @@ export default function Navbar() {
 
           {/* L1 Dialect Dropdown */}
           <div className="relative shrink-0 hidden lg:block">
-            <button
+            <button aria-label="Nút tương tác"
               onClick={() => setDialectOpen(!dialectOpen)}
               className="flex items-center gap-space-xs bg-slate-100 hover:bg-slate-200/80 border border-slate-200 px-space-sm py-1.5 rounded-full transition-colors cursor-pointer"
               type="button"
@@ -79,7 +79,7 @@ export default function Navbar() {
                   <div className="px-space-sm py-1 font-label-mono text-[10px] text-slate-400 uppercase tracking-wider">
                     L1 Dialect Adaptation
                   </div>
-                  <button
+                  <button aria-label="Nút tương tác" type="button"
                     onClick={() => {
                       setDialect('bac');
                       setDialectOpen(false);
@@ -98,7 +98,7 @@ export default function Navbar() {
                     )}
                   </button>
 
-                  <button
+                  <button aria-label="Nút tương tác" type="button"
                     onClick={() => {
                       setDialect('trung');
                       setDialectOpen(false);
@@ -117,7 +117,7 @@ export default function Navbar() {
                     )}
                   </button>
 
-                  <button
+                  <button aria-label="Nút tương tác" type="button"
                     onClick={() => {
                       setDialect('nam');
                       setDialectOpen(false);
@@ -146,7 +146,7 @@ export default function Navbar() {
           {navItems.map((item) => {
             const isActive = activeTab === item.id;
             return (
-              <button
+              <button aria-label="Chuyển phân hệ học" type="button"
                 key={item.id}
                 onClick={() => setActiveTab(item.id)}
                 className={`font-body-sm px-3.5 py-1.5 rounded-full transition-all cursor-pointer ${
@@ -164,7 +164,7 @@ export default function Navbar() {
         {/* Right Status Counters & Profile */}
         <div className="flex items-center gap-space-sm shrink-0">
           <div className="hidden md:flex items-center gap-space-xs">
-            <button
+            <button aria-label="Xem chi tiết chuỗi luyện tập" type="button"
               onClick={() => setShowStreakModal(true)}
               className="flex items-center gap-1 px-3 py-1 bg-rose-50 border border-rose-200/80 rounded-full font-label-mono text-label-mono text-primary font-bold hover:scale-105 transition-transform cursor-pointer"
             >
@@ -200,7 +200,7 @@ export default function Navbar() {
       {/* Sub-nav for mobile */}
       <div className="xl:hidden flex items-center gap-2 overflow-x-auto px-4 py-2 border-t border-slate-100 bg-slate-50/80 scrollbar-none">
         {navItems.map((item) => (
-          <button
+          <button aria-label="Chuyển phân hệ học" type="button"
             key={item.id}
             onClick={() => setActiveTab(item.id)}
             className={`whitespace-nowrap px-3 py-1 rounded-full text-xs font-semibold ${

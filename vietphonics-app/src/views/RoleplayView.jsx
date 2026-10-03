@@ -34,6 +34,17 @@ export default function RoleplayView() {
     }
   };
 
+  React.useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.code === 'Space' && e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
+        e.preventDefault();
+        handleMicToggle();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isRecording]);
+
   return (
     <div className="flex flex-col w-full animate-fade-in">
       <section className="relative w-full px-4 md:px-gutter-desktop py-space-md mx-auto max-w-[1560px]">
@@ -145,7 +156,7 @@ export default function RoleplayView() {
                     </p>
                     {/* Audio and translation helpers */}
                     <div className="flex items-center gap-2 pt-2">
-                      <button
+                      <button aria-label="Phát âm mẫu chuẩn bản ngữ"
                         onClick={() => playSpeech(aiMessage, 1.0)}
                         className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-white hover:bg-slate-50 border border-sky-200 text-slate-700 font-label-mono text-label-mono shadow-xs transition-colors cursor-pointer"
                         type="button"
@@ -153,7 +164,7 @@ export default function RoleplayView() {
                         <span className="material-symbols-outlined text-sm text-sky-600">volume_up</span>
                         <span>1.0x</span>
                       </button>
-                      <button
+                      <button aria-label="Phát âm mẫu chuẩn bản ngữ"
                         onClick={() => {
                           setIsSlowAi(!isSlowAi);
                           playSpeech(aiMessage, 0.8);
@@ -166,7 +177,7 @@ export default function RoleplayView() {
                         <span className="material-symbols-outlined text-sm text-slate-500">slow_motion_video</span>
                         <span>0.8x Chậm</span>
                       </button>
-                      <button
+                      <button aria-label="Nút tương tác"
                         onClick={() => setShowViSub(!showViSub)}
                         className="flex items-center gap-1 px-3 py-1 rounded-full bg-white hover:bg-slate-50 border border-sky-200 text-slate-600 hover:text-slate-800 font-label-mono text-label-mono shadow-xs transition-colors cursor-pointer"
                         type="button"
@@ -267,7 +278,7 @@ export default function RoleplayView() {
                           <span className="font-label-mono text-[11px] text-slate-500">Mục tiêu: Động từ quá khứ /t/ vô thanh</span>
                         </div>
                         <div className="flex items-center gap-3 p-2 rounded-lg bg-white border border-slate-200">
-                          <button
+                          <button aria-label="Phát âm mẫu chuẩn bản ngữ"
                             onClick={() => playSpeech('blocked', 0.6)}
                             className="w-8 h-8 rounded-full bg-rose-100 text-rose-700 flex items-center justify-center hover:bg-rose-200 transition-colors shrink-0 cursor-pointer"
                             type="button"
@@ -326,7 +337,7 @@ export default function RoleplayView() {
 
                 {/* Reset / Retry Controls */}
                 <div className="flex items-center gap-2">
-                  <button
+                  <button aria-label="Phát âm mẫu chuẩn bản ngữ"
                     onClick={() => playSpeech("Yesterday I merged the pull request, but today I am blocked by timeout.", 0.85)}
                     className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-700 font-label-mono text-label-mono transition-colors cursor-pointer"
                     type="button"
@@ -334,7 +345,7 @@ export default function RoleplayView() {
                     <span className="material-symbols-outlined text-sm">replay</span>
                     <span>Nghe Mẫu Chuẩn</span>
                   </button>
-                  <button
+                  <button aria-label="Bật tắt ghi âm giọng nói"
                     onClick={handleMicToggle}
                     className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-700 font-label-mono text-label-mono transition-colors cursor-pointer"
                     type="button"
@@ -355,7 +366,7 @@ export default function RoleplayView() {
                 </div>
 
                 <div className="flex items-center gap-space-md">
-                  <button
+                  <button aria-label="Bật tắt ghi âm giọng nói"
                     onClick={handleMicToggle}
                     className={`flex items-center gap-3 px-6 py-3 rounded-full text-white font-headline-sm text-headline-sm font-bold shadow-lg active:scale-95 transition-all cursor-pointer ${
                       isRecording
@@ -536,7 +547,7 @@ export default function RoleplayView() {
                     (Chúng tôi gặp nghẽn hạ tầng bên môi trường thử nghiệm.)
                   </span>
                 </div>
-                <button
+                <button aria-label="Phát âm mẫu chuẩn bản ngữ"
                   onClick={() => playSpeech(proPhrase)}
                   className="w-full py-2 rounded-lg bg-sky-600 hover:bg-sky-700 text-white font-label-mono text-label-mono flex items-center justify-center gap-1 transition-colors font-semibold shadow-xs cursor-pointer"
                   type="button"

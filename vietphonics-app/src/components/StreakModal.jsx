@@ -10,7 +10,7 @@ export default function StreakModal() {
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fade-in">
       <div className="relative w-full max-w-md bg-white rounded-3xl p-6 sm:p-8 shadow-2xl border border-slate-100 flex flex-col items-center text-center">
         {/* Close Button */}
-        <button
+        <button aria-label="Xem chi tiết chuỗi luyện tập" type="button"
           onClick={() => setShowStreakModal(false)}
           className="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-600 rounded-full hover:bg-slate-100 transition-colors"
         >
@@ -80,7 +80,7 @@ export default function StreakModal() {
         </div>
 
         {/* CTA Button */}
-        <button
+        <button aria-label="Xem chi tiết chuỗi luyện tập" type="button"
           onClick={() => setShowStreakModal(false)}
           className="w-full mt-6 py-3.5 rounded-2xl bg-gradient-to-r from-primary to-rose-600 text-white font-bold text-sm shadow-md hover:shadow-lg transition-all hover:brightness-105"
         >

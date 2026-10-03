@@ -33,6 +33,17 @@ export default function PracticeStudioView() {
     }
   };
 
+  React.useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.code === 'Space' && e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
+        e.preventDefault();
+        handleMicToggle();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isRecording]);
+
   return (
     <div className="flex flex-col w-full animate-fade-in">
       {/* Interactive State Context & Lab Control Bar */}
@@ -55,7 +66,7 @@ export default function PracticeStudioView() {
           <div className="flex items-center gap-space-sm self-end md:self-auto">
             {/* Dictation Mode Toggle */}
             <div className="flex items-center bg-slate-100 p-1 rounded-lg border border-slate-200 text-xs font-semibold mr-1">
-              <button
+              <button aria-label="Nút tương tác" type="button"
                 onClick={() => setDrillMode('sentence')}
                 className={`px-2.5 py-1 rounded-md transition-all ${
                   drillMode === 'sentence' ? 'bg-white text-sky-700 shadow-sm' : 'text-slate-600 hover:text-slate-900'
@@ -63,7 +74,7 @@ export default function PracticeStudioView() {
               >
                 Đối Chiếu Sóng
               </button>
-              <button
+              <button aria-label="Chế độ luyện chính tả" type="button"
                 onClick={() => setDrillMode('dictation')}
                 className={`px-2.5 py-1 rounded-md transition-all ${
                   drillMode === 'dictation' ? 'bg-white text-rose-700 shadow-sm' : 'text-slate-600 hover:text-slate-900'
@@ -73,7 +84,7 @@ export default function PracticeStudioView() {
               </button>
             </div>
 
-            <button
+            <button aria-label="Nút tương tác" type="button"
               onClick={() => setShowFormantGrid(!showFormantGrid)}
               className={`px-3.5 py-1.5 rounded-lg border text-slate-700 font-body-sm text-body-sm transition-all flex items-center gap-1.5 shadow-sm font-medium ${
                 showFormantGrid ? 'bg-sky-50 border-sky-300 text-sky-800' : 'bg-slate-100 hover:bg-slate-200/80 border-slate-200'
@@ -94,7 +105,7 @@ export default function PracticeStudioView() {
         <div className="w-full px-margin md:px-margin-desktop max-w-[1440px] mx-auto mb-space-md">
           <div className="p-space-md bg-gradient-to-r from-rose-50 to-amber-50 border border-rose-200 rounded-xl flex flex-col md:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <button
+              <button aria-label="Phát âm mẫu chuẩn bản ngữ" type="button"
                 onClick={() => playAudio("Six baked fresh bread", 0.8)}
                 className="w-12 h-12 rounded-full bg-rose-600 text-white flex items-center justify-center hover:bg-rose-700 shadow-md shrink-0 transition-transform active:scale-95"
               >
@@ -115,7 +126,7 @@ export default function PracticeStudioView() {
                 placeholder="Nhập âm khuyết (vd: x, sh, d)"
                 className="px-3 py-2 border border-slate-300 rounded-lg text-sm font-mono w-full md:w-56 focus:outline-none focus:ring-2 focus:ring-rose-500"
               />
-              <button
+              <button aria-label="Nút tương tác" type="button"
                 onClick={() => setDictationChecked(true)}
                 className="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white font-bold text-sm rounded-lg shadow-sm whitespace-nowrap"
               >
@@ -164,7 +175,7 @@ export default function PracticeStudioView() {
               <h2 className="font-headline-sm text-headline-sm text-slate-700 font-semibold">
                 Câu thực hành mục tiêu &amp; Giám định âm học:
               </h2>
-              <button
+              <button aria-label="Phát âm mẫu chuẩn bản ngữ" type="button"
                 onClick={() => playAudio(targetSentence, 0.9)}
                 className="text-xs font-bold text-sky-700 hover:text-sky-900 bg-sky-50 px-3 py-1.5 rounded-full border border-sky-200 flex items-center gap-1 transition-colors"
               >
@@ -355,7 +366,7 @@ export default function PracticeStudioView() {
               </div>
               <div className="mt-2 pt-2 border-t border-rose-200/60 flex items-center justify-between text-slate-500 font-label-mono text-[10px]">
                 <span>Acoustic Burst: 0.0ms</span>
-                <button
+                <button aria-label="Phát âm mẫu chuẩn bản ngữ" type="button"
                   onClick={() => playAudio('six', 0.6)}
                   className="text-sky-700 hover:text-sky-900 hover:underline flex items-center gap-0.5 font-body-sm font-semibold"
                 >
@@ -377,7 +388,7 @@ export default function PracticeStudioView() {
               </div>
               <div className="mt-2 pt-2 border-t border-rose-200/60 flex items-center justify-between text-slate-500 font-label-mono text-[10px]">
                 <span>Stop-Consonant Void</span>
-                <button
+                <button aria-label="Chuyển phân hệ học" type="button"
                   onClick={() => setActiveTab('khau-hinh-2d')}
                   className="text-sky-700 hover:text-sky-900 hover:underline flex items-center gap-0.5 font-body-sm font-semibold"
                 >
@@ -416,7 +427,7 @@ export default function PracticeStudioView() {
               </div>
               <div className="mt-2 pt-2 border-t border-amber-200/60 flex items-center justify-between text-slate-500 font-label-mono text-[10px]">
                 <span>Missing Dental Transition</span>
-                <button
+                <button aria-label="Phát âm mẫu chuẩn bản ngữ" type="button"
                   onClick={() => playAudio('months', 0.5)}
                   className="text-sky-700 hover:text-sky-900 hover:underline flex items-center gap-0.5 font-body-sm font-semibold"
                 >
@@ -725,7 +736,7 @@ export default function PracticeStudioView() {
               ) : null}
 
               {/* Circular 72px pill-shaped button */}
-              <button
+              <button aria-label="Bật tắt ghi âm giọng nói" type="button"
                 onClick={handleMicToggle}
                 className={`relative z-10 w-20 h-20 rounded-full transition-all duration-300 flex items-center justify-center text-white shadow-lg cursor-pointer ${
                   isRecording
@@ -745,7 +756,7 @@ export default function PracticeStudioView() {
             {/* Action Control Buttons */}
             <div className="w-full xl:w-2/5 flex flex-wrap items-center justify-center xl:justify-end gap-space-sm">
               {/* Button 1: Sample Native Audio */}
-              <button
+              <button aria-label="Phát âm mẫu chuẩn bản ngữ" type="button"
                 onClick={() => playAudio(targetSentence, 1.0)}
                 className="px-4 py-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-sky-700 font-body-sm text-body-sm transition-all flex items-center gap-2 shadow-sm font-semibold"
               >
@@ -754,7 +765,7 @@ export default function PracticeStudioView() {
               </button>
 
               {/* Button 2: Re-record */}
-              <button
+              <button aria-label="Bật tắt ghi âm giọng nói" type="button"
                 onClick={handleMicToggle}
                 className="px-4 py-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 font-body-sm text-body-sm transition-all flex items-center gap-2 shadow-sm font-semibold"
               >
@@ -763,7 +774,7 @@ export default function PracticeStudioView() {
               </button>
 
               {/* Button 3: Spectrogram View */}
-              <button
+              <button aria-label="Mở biểu đồ phổ ký Spectrogram" type="button"
                 onClick={() => setSpectrogramOpen(true)}
                 className="px-4 py-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 font-body-sm text-body-sm transition-all flex items-center gap-2 shadow-sm font-semibold"
               >
@@ -787,7 +798,7 @@ export default function PracticeStudioView() {
                   <p className="font-body-sm text-body-sm text-slate-500">Phân rã Formant F1 (độ mở miệng) &amp; F2 (vị trí lưỡi trước/sau) đối chiếu với chuẩn Oxford US</p>
                 </div>
               </div>
-              <button
+              <button aria-label="Mở biểu đồ phổ ký Spectrogram" type="button"
                 onClick={() => setSpectrogramOpen(false)}
                 className="w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-700 transition-colors"
               >
@@ -854,7 +865,7 @@ export default function PracticeStudioView() {
                 <span className="material-symbols-outlined text-sky-600">tips_and_updates</span>
                 <strong>Khuyến nghị âm học:</strong> Giữ áp lực khí tại vòm miệng sau để âm /t/ nén đủ động năng trước khi xả âm.
               </span>
-              <button
+              <button aria-label="Mở biểu đồ phổ ký Spectrogram" type="button"
                 onClick={() => setSpectrogramOpen(false)}
                 className="px-4 py-1.5 bg-rose-600 text-white rounded-lg font-bold text-xs hover:bg-rose-700 shadow-sm"
               >

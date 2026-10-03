@@ -130,7 +130,7 @@ export default function MasteryLabView() {
 
         {/* Tab Switcher */}
         <div className="flex items-center gap-1.5 bg-slate-100 p-1 rounded-xl text-xs font-bold flex-wrap">
-          <button
+          <button aria-label="Chuyển phân hệ học" type="button"
             onClick={() => setActiveTab('minimal-pairs')}
             className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
               activeTab === 'minimal-pairs' ? 'bg-white text-primary shadow-xs' : 'text-slate-600'
@@ -138,7 +138,7 @@ export default function MasteryLabView() {
           >
             Cặp Âm Tối Thiểu (ELSA-205)
           </button>
-          <button
+          <button aria-label="Chuyển phân hệ học" type="button"
             onClick={() => setActiveTab('alternation')}
             className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
               activeTab === 'alternation' ? 'bg-white text-secondary shadow-xs' : 'text-slate-600'
@@ -146,7 +146,7 @@ export default function MasteryLabView() {
           >
             Quy Tắc Biến Đổi Âm (PRON-207)
           </button>
-          <button
+          <button aria-label="Chuyển phân hệ học" type="button"
             onClick={() => setActiveTab('saturation')}
             className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
               activeTab === 'saturation' ? 'bg-white text-indigo-600 shadow-xs' : 'text-slate-600'
@@ -186,7 +186,7 @@ export default function MasteryLabView() {
                     <span className="font-bold text-sm text-slate-900">{item.noun.word}</span>
                     <span className="font-mono text-xs text-primary font-bold ml-2">{item.noun.ipa}</span>
                   </div>
-                  <button
+                  <button aria-label="Phát âm mẫu chuẩn bản ngữ" type="button"
                     onClick={() => playWord(item.noun.word)}
                     className="p-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700"
                   >
@@ -201,7 +201,7 @@ export default function MasteryLabView() {
                     <span className="font-bold text-sm text-slate-900">{item.verb.word}</span>
                     <span className="font-mono text-xs text-secondary font-bold ml-2">{item.verb.ipa}</span>
                   </div>
-                  <button
+                  <button aria-label="Phát âm mẫu chuẩn bản ngữ" type="button"
                     onClick={() => playWord(item.verb.word)}
                     className="p-1.5 rounded-lg bg-sky-50 hover:bg-sky-100 text-secondary"
                   >
@@ -248,7 +248,7 @@ export default function MasteryLabView() {
                 </div>
 
                 <div className="flex items-center gap-3 pt-2">
-                  <button
+                  <button aria-label="Phát âm mẫu chuẩn bản ngữ" type="button"
                     onClick={() => playWord(s.sentence)}
                     className="px-5 py-2.5 rounded-xl bg-secondary hover:bg-sky-600 text-white font-bold text-xs flex items-center gap-1.5 shadow-xs"
                   >
@@ -256,7 +256,7 @@ export default function MasteryLabView() {
                     <span>Nghe Mẫu Câu Này</span>
                   </button>
 
-                  <button
+                  <button aria-label="Nút tương tác" type="button"
                     onClick={() =>
                       triggerPractice({
                         id: s.id,
@@ -312,7 +312,7 @@ export default function MasteryLabView() {
                 </div>
 
                 {/* Big Audio Play Button */}
-                <button
+                <button aria-label="Phát âm mẫu chuẩn bản ngữ" type="button"
                   onClick={() => playWord(cur.testedWord)}
                   className="w-20 h-20 rounded-full bg-secondary hover:bg-sky-600 text-white flex items-center justify-center text-3xl shadow-lg transition-transform hover:scale-110 active:scale-95 cursor-pointer"
                 >
@@ -321,7 +321,7 @@ export default function MasteryLabView() {
 
                 {/* Option A vs Option B Buttons */}
                 <div className="grid grid-cols-2 gap-4 w-full max-w-md">
-                  <button
+                  <button aria-label="Nút tương tác" type="button"
                     onClick={() => handleSelectQuiz('A')}
                     className="p-5 rounded-2xl bg-white border-2 border-slate-200 hover:border-primary shadow-xs transition-all flex flex-col items-center cursor-pointer hover:scale-102"
                   >
@@ -330,7 +330,7 @@ export default function MasteryLabView() {
                     <span className="font-mono text-[10px] text-primary font-bold mt-2 uppercase">Lựa chọn A</span>
                   </button>
 
-                  <button
+                  <button aria-label="Nút tương tác" type="button"
                     onClick={() => handleSelectQuiz('B')}
                     className="p-5 rounded-2xl bg-white border-2 border-slate-200 hover:border-primary shadow-xs transition-all flex flex-col items-center cursor-pointer hover:scale-102"
                   >
@@ -357,7 +357,7 @@ export default function MasteryLabView() {
 
                 {/* Next Button */}
                 <div className="flex items-center gap-3">
-                  <button
+                  <button aria-label="Nút tương tác" type="button"
                     onClick={() => {
                       setAnsweredState(null);
                       setSelectedQuizPair((p) => (p + 1) % minimalPairs.length);

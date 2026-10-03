@@ -90,7 +90,7 @@ export default function MouthAnatomyView() {
             {PHONEMES.map((p) => {
               const active = p.id === activePhonemeId;
               return (
-                <button
+                <button aria-label="Chọn âm vị thực hành"
                   key={p.id}
                   onClick={() => handlePhonemeSelect(p)}
                   className={`px-3 py-1 rounded-full font-ipa-inline text-ipa-inline text-xs font-semibold shadow-xs transition-all whitespace-nowrap ${
@@ -138,7 +138,7 @@ export default function MouthAnatomyView() {
                 {/* Voicing Comparator Toggle */}
                 <div className="flex items-center gap-2 bg-slate-100/80 border border-slate-200 px-3 py-1.5 rounded-full">
                   <span className="font-body-sm text-body-sm text-slate-600 font-medium">Thanh quản:</span>
-                  <button
+                  <button aria-label="Nút tương tác"
                     onClick={() => setIsVoiced(!isVoiced)}
                     className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white text-slate-700 hover:text-slate-900 border border-slate-200 font-label-mono text-label-mono shadow-xs transition-all cursor-pointer"
                     type="button"
@@ -454,7 +454,7 @@ export default function MouthAnatomyView() {
               <div className="mt-space-md flex flex-wrap items-center justify-between gap-space-sm pt-space-xs">
                 <div className="flex flex-wrap items-center gap-space-xs sm:gap-space-sm">
                   {/* Audio 1 */}
-                  <button
+                  <button aria-label="Phát âm mẫu chuẩn bản ngữ"
                     onClick={() => playTTS(currentPhoneme.word)}
                     className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 font-body-sm text-body-sm font-semibold transition-all shadow-xs cursor-pointer"
                     type="button"
@@ -466,7 +466,7 @@ export default function MouthAnatomyView() {
                   </button>
 
                   {/* Audio 2 */}
-                  <button
+                  <button aria-label="Phát âm mẫu chuẩn bản ngữ"
                     onClick={() => playTTS(currentPhoneme.word)}
                     className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 font-body-sm text-body-sm font-semibold transition-all shadow-xs cursor-pointer"
                     type="button"
@@ -479,7 +479,7 @@ export default function MouthAnatomyView() {
                 </div>
 
                 {/* Audio 3: Master Trigger Animated Morph */}
-                <button
+                <button aria-label="Nút tương tác"
                   onClick={triggerAnimate}
                   className={`flex items-center gap-2 px-5 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-headline-sm text-sm font-semibold shadow-md hover:shadow-lg transition-all cursor-pointer ${
                     isAnimating ? 'opacity-75 scale-95' : ''

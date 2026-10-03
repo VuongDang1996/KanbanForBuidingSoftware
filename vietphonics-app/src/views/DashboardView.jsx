@@ -50,7 +50,7 @@ export default function DashboardView() {
             </div>
           </div>
           <div className="flex items-center gap-space-sm self-end lg:self-auto">
-            <button
+            <button aria-label="Mở bài kiểm tra chẩn đoán L1" type="button"
               onClick={() => setShowDiagnosticModal(true)}
               className="px-2.5 py-1 rounded bg-rose-50 hover:bg-rose-100 border border-rose-200 font-label-mono text-label-mono text-primary font-bold transition-colors cursor-pointer"
             >
@@ -299,7 +299,7 @@ export default function DashboardView() {
               </div>
             </div>
 
-            <button
+            <button aria-label="Chuyển phân hệ học"
               onClick={() => setActiveTab('tien-do')}
               className="w-full py-2.5 rounded-lg bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-700 transition-colors font-label-mono text-label-mono font-semibold flex items-center justify-center gap-1.5 cursor-pointer"
               type="button"
@@ -409,7 +409,7 @@ export default function DashboardView() {
                   <span>Mục tiêu triệt tiêu:</span>
                   <span className="text-primary font-bold">Rụng -ks & Nuốt -t</span>
                 </div>
-                <button
+                <button aria-label="Nút tương tác"
                   className="w-full py-3 rounded-lg bg-gradient-to-r from-primary to-rose-600 text-white font-headline-sm text-body-md font-bold tracking-wide shadow-md hover:shadow-lg hover:brightness-105 transition-all flex items-center justify-center gap-2 cursor-pointer"
                   type="button"
                 >
@@ -447,7 +447,7 @@ export default function DashboardView() {
                   <span>Điều kiện mở:</span>
                   <span>Hoàn thành Step 02 (&gt;75% GOP)</span>
                 </div>
-                <button
+                <button aria-label="Chuyển phân hệ học"
                   onClick={() => setActiveTab('ai-hoi-thoai')}
                   className="w-full py-2.5 rounded-lg bg-slate-200/70 hover:bg-slate-300 border border-slate-300/60 font-label-mono text-label-mono text-slate-700 flex items-center justify-center gap-2 cursor-pointer font-semibold transition-colors"
                   type="button"
@@ -474,7 +474,7 @@ export default function DashboardView() {
                 </span>
               </div>
             </div>
-            <button
+            <button aria-label="Nút tương tác"
               onClick={() => triggerPractice(focusPracticeItem)}
               className="w-full md:w-auto px-8 py-3.5 rounded-full bg-gradient-to-r from-primary to-rose-600 text-white font-headline-sm text-body-md font-bold tracking-wide shadow-md hover:shadow-lg hover:scale-105 transition-all flex items-center justify-center gap-2 shrink-0 cursor-pointer"
               type="button"
@@ -534,7 +534,7 @@ export default function DashboardView() {
                       </div>
                     </td>
                     <td className="py-3 px-3 text-right">
-                      <button
+                      <button aria-label="Phát âm mẫu chuẩn bản ngữ"
                         onClick={() => playWord('Months')}
                         className="p-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-secondary transition-colors cursor-pointer"
                         type="button"
@@ -565,7 +565,7 @@ export default function DashboardView() {
                       </div>
                     </td>
                     <td className="py-3 px-3 text-right">
-                      <button
+                      <button aria-label="Phát âm mẫu chuẩn bản ngữ"
                         onClick={() => playWord('Breakfast')}
                         className="p-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-secondary transition-colors cursor-pointer"
                         type="button"
@@ -596,7 +596,7 @@ export default function DashboardView() {
                       </div>
                     </td>
                     <td className="py-3 px-3 text-right">
-                      <button
+                      <button aria-label="Phát âm mẫu chuẩn bản ngữ"
                         onClick={() => playWord('Street')}
                         className="p-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-secondary transition-colors cursor-pointer"
                         type="button"
@@ -648,7 +648,7 @@ export default function DashboardView() {
 
             <div className="flex items-center justify-between p-2.5 rounded-lg bg-slate-50 border border-slate-100">
               <span className="font-body-sm text-body-sm text-slate-800 font-bold">Tập luyện mô phỏng 2D</span>
-              <button
+              <button aria-label="Chuyển phân hệ học"
                 onClick={() => setActiveTab('khau-hinh-2d')}
                 className="font-label-mono text-label-mono text-secondary hover:underline flex items-center gap-1 font-bold cursor-pointer"
                 type="button"

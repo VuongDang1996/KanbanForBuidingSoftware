@@ -1,101 +1,100 @@
-# BỘ QUY CHUẨN KIỂM DUYỆT CHẤT LƯỢNG (QUALITY GATE PROTOCOL)
+# BỘ QUY CHUẨN KIỂM DUYỆT CHẤT LƯỢNG 10 CỔNG (10-GATE QUALITY PROTOCOL)
 ## Dành riêng cho Dự án Nền tảng Âm học VietPhonics AI
 
 ---
 
 ## I. NGUYÊN TẮC CỐT LÕI (CORE PRINCIPLES)
 
-1. **Không chấp nhận sản phẩm làm dở (Zero Tolerance for Half-Baked Code)**:
-   - Một User Story chỉ được chuyển từ `in-progress` sang `done` khi và chỉ khi **vượt qua toàn bộ 5 Cổng Kiểm Soát Chất Lượng (5 Quality Gates)** dưới đây.
-   - Tuyệt đối không đánh dấu `done` dựa trên giả định, placeholder, hoặc code minh họa chưa chạy được.
+1. **Tuyệt đối Không Khoan Nhượng (Zero Tolerance for Incomplete Implementation)**:
+   - Một User Story chỉ được chuyển từ `in-progress` sang `done` khi và chỉ khi **vượt qua toàn bộ 10 Cổng Kiểm Soát Chất Lượng (10 Mandatory Quality Gates)**.
+   - Nếu trượt dù chỉ 1 cổng, story bắt buộc phải giữ ở trạng thái `in-progress` và đội ngũ kỹ thuật phải bổ sung code cho tới khi đạt 10/10.
 
-2. **Quy tắc phân định Google Stitch vs. Development**:
-   - **Google Stitch là Khuôn mẫu Thẩm mỹ (Single Source of Design Truth)**: Phải giữ đúng 100% bố cục, màu sắc, font chữ, SVG và đồ họa của Stitch.
-   - **Development là Động cơ Thực thi Hoàn chỉnh (Full Functional Engine)**: Phải gắn thêm logic âm thanh thực tế (Web Audio API, Speech Synthesis, State management, L1 Acoustic algorithms, Gamification logic, VietQR payment).
+2. **Google Stitch làm Khuôn Mẫu Thẩm Mỹ & Chuẩn Mực UX**:
+   - Tuân thủ 100% tokens, bố cục Bento Grid, bảng màu âm học, và hệ thống typography. Không được đơn giản hóa hoặc thay thế bằng UI sơ sài.
 
----
-
-## II. 5 CỔNG KIỂM SOÁT CHẤT LƯỢNG (THE 5 MANDATORY QUALITY GATES)
-
-### 🚪 CỔNG 1: UI/UX & VISUAL FIDELITY GATE (Kiểm Duyệt Thẩm Mỹ & Giao Diện)
-- [ ] **1.1 Design Tokens**: Bắt buộc sử dụng hệ thống tokens của Stitch trong `tailwind.config.js` (`space-xs: 0.25rem`, `space-sm: 0.5rem`, `space-md: 1rem`, `space-lg: 1.5rem`, `space-xl: 2.5rem`, `gutter-desktop: 2rem`). Không để xảy ra tình trạng thiếu token khiến card bị xẹp 0 padding hoặc 0 gap.
-- [ ] **1.2 Bảng màu Chuẩn (Acoustic Lab Palette)**: 
-  - Primary Rose: `#b80035` / `#e11d48`
-  - Secondary Sky: `#006398` / `#0284c7`
-  - Background: `#f8fafc`
-  - Surface: `#ffffff` / `#faf8ff`
-  - Semantic: Emerald `#059669` (Chuẩn >90%), Amber `#d97706` (Cảnh báo 60-89%), Rose `#e11d48` (Lỗi <60%).
-- [ ] **1.3 Typography Phân Tầng Rõ Ràng**:
-  - `Plus Jakarta Sans`: Toàn bộ tiêu đề (Headlines), nhãn (Labels), văn bản ngữ cảnh.
-  - `JetBrains Mono`: Toàn bộ ký tự âm vị IPA, thông số telemetry GOP, tần số Hz, độ trễ ms, mã cú pháp thanh toán.
-- [ ] **1.4 Asset & Vector Nguyên Bản**: Cấm thay ảnh 3D, chân dung hoặc biểu đồ SVG bằng icon div hoặc emoji tạm bợ. Phải dùng đúng vector SVG độ nét cao và ảnh từ Google CDN của Stitch.
-- [ ] **1.5 Responsive Viewport**: Kiểm thử giao diện trên 4 độ phân giải: Desktop (1440px), Laptop (1024px), Tablet (768px), Mobile (375px). Không bị vỡ khung, tràn viền ngang (overflow-x), hoặc che khuất nút bấm.
+3. **Development là Động Cơ Âm Học Thực Nghiệm**:
+   - Tất cả tương tác âm thanh, giải phẫu khẩu hình, chẩn đoán thổ âm, tính toán GOP/Formants, và thanh toán VietQR đều phải có mã nguồn chạy thực tế.
 
 ---
 
-### 🚪 CỔNG 2: FUNCTIONAL INTERACTIVITY & AUDIO PIPELINE GATE (Kiểm Duyệt Tương Tác)
-- [ ] **2.1 Không có nút bấm chết (No Dead Buttons)**: 100% các nút bấm (Play, Record, Tab, Slider, Toggle, Modal trigger) phải có hàm xử lý sự kiện `onClick` / `onChange` tạo ra kết quả trực quan trên màn hình.
-- [ ] **2.2 Thu âm Thực tế (Web Audio API)**:
-  - Tích hợp hook ghi âm với tần số 16kHz mono, bộ đệm phân tích tín hiệu âm thanh thực hoặc mô phỏng phản hồi trực tiếp.
-  - Trạng thái rõ ràng: Có hiệu ứng nhấp nháy (ping/pulse) khi đang thu âm và nhãn trạng thái đổi thành *"Đang Thu Âm..."*.
-- [ ] **2.3 Phát âm Mẫu (Speech Synthesis / TTS)**:
-  - Tích hợp Web Speech API hoặc audio file phát âm chuẩn giọng bản ngữ Oxford US.
-  - Hỗ trợ đa tốc độ: Chuẩn (1.0x), Chậm (0.8x), Cực chậm bóc tách âm vị (0.5x).
-- [ ] **2.4 Cử động Giải phẫu Động (SVG Parametric Morphing)**:
-  - Ở màn hình khẩu hình, các thanh trượt (Độ nâng thân lưỡi, Độ mở quai hàm, Lực hơi) phải trực tiếp biến đổi tọa độ `transform: translate()` hoặc thuộc tính SVG theo thời gian thực.
-  - Nút *"Xem hoạt họa khẩu hình"* phải chạy chu kỳ đẩy đầu lưỡi thò ra kẽ răng 2-3mm và thu về tự động.
+## II. 10 CỔNG KIỂM SOÁT CHẤT LƯỢNG (THE 10 MANDATORY QUALITY GATES)
+
+### 🚪 CỔNG 1: UI/UX & GOOGLE STITCH TOKENS FIDELITY GATE (Chuẩn Thẩm Mỹ)
+- [ ] **1.1 Design Tokens**: Bắt buộc sử dụng đúng hệ thống spacing tokens (`space-xs: 0.25rem`, `space-sm: 0.5rem`, `space-md: 1rem`, `space-lg: 1.5rem`, `space-xl: 2.5rem`, `gutter-desktop: 2rem`) trong `tailwind.config.js`.
+- [ ] **1.2 Bảng màu Âm Học (Acoustic Lab Palette)**: 
+  - Primary Rose: `#e11d48` / `#b80035`
+  - Secondary Sky/Teal: `#0284c7` / `#006398`
+  - Semantic Status: Emerald `#10b981` (GOP >80%), Amber `#f59e0b` (GOP 60-79%), Rose `#f43f5e` (GOP <60%).
+- [ ] **1.3 Bento Grid & Responsive**: Bố cục Bento Grid cân đối, hỗ trợ đầy đủ 4 kích thước màn hình (Desktop 1440px, Laptop 1024px, Tablet 768px, Mobile 375px), không bị vỡ layout hoặc tràn viền ngang (`overflow-x`).
+
+### 🚪 CỔNG 2: TYPOGRAPHY & PHONETICS FONT STACK GATE (Chuẩn Ngữ Âm & Font Chữ)
+- [ ] **2.1 Hierarchy Font Chữ**:
+  - `Inter` / `Plus Jakarta Sans`: Hiển thị văn bản, tiêu đề, hướng dẫn học.
+  - `JetBrains Mono`: Hiển thị telemetry, tần số Hz, độ trễ ms, chỉ số GOP, mã Napas VietQR.
+- [ ] **2.2 Ký Tự Ngữ Âm Quốc Tế (IPA Precision)**: Ký hiệu IPA (`/ks/`, `/θ/`, `/ð/`, `/ʃ/`, `/dʒ/`, `/iː/`, `/æ/`, `/eə/`) phải được bọc trong font-ipa chuyên dụng, không bị méo hoặc hiển thị hình vuông (missing glyph).
+
+### 🚪 CỔNG 3: FUNCTIONAL INTERACTIVITY & REACTIVE STATE GATE (Chuẩn Tương Tác)
+- [ ] **3.1 Zero Dead Buttons**: 100% nút bấm, tabs, accordion, toggle và modal triggers đều có sự kiện xử lý thực tế (`onClick`, `onChange`).
+- [ ] **3.2 Luồng Dữ Liệu Đồng Bộ**: Trạng thái âm học, hồ sơ phương ngữ, streak ngày học, số khiên bảo vệ được chia sẻ nhất quán qua `AppContext`.
+
+### 🚪 CỔNG 4: REAL-TIME AUDIO PIPELINE & WEB AUDIO DSP GATE (Xử Lý Tín Hiệu Số)
+- [ ] **4.1 Khởi tạo AudioContext 16kHz / 44.1kHz**: Hỗ trợ bộ đệm chuẩn hóa tín hiệu âm thanh thu từ microphone.
+- [ ] **4.2 AnalyserNode FFT 2048**: Phân tích phổ tần số thời gian thực (Real-time frequency & time-domain data).
+- [ ] **4.3 Quản lý Vòng Đời MediaStream**: Thu âm mượt mà, giải phóng microphone tracks ngay khi dừng để tránh rò rỉ bộ nhớ (memory leak).
+
+### 🚪 CỔNG 5: SPEECH SYNTHESIS & PRONUNCIATION TTS GATE (Phát Âm Mẫu Bản Ngữ)
+- [ ] **5.1 Giọng Bản Ngữ Chuẩn (US/UK Accent)**: Sử dụng Web Speech API `SpeechSynthesisUtterance` với giọng chuẩn `en-US`.
+- [ ] **5.2 Đa Tốc Độ Phát Âm**: Hỗ trợ phát âm chuẩn 1.0x, chậm 0.85x và cực chậm 0.5x để soi chiếu từng âm vị.
+- [ ] **5.3 Hủy Ngắt Trùng Lặp**: Gọi `window.speechSynthesis.cancel()` trước khi phát âm mới để tránh chồng lấn giọng.
+
+### 🚪 CỔNG 6: L1 VIETNAMESE PHONETIC TRANSFER ACCURACY GATE (Chuẩn Thổ Âm L1)
+- [ ] **6.1 Bắt Lỗi Rụng Âm Đuôi (Coda Deletion)**: Chẩn đoán chính xác lỗi rụng cụm `/ks/` (six, box), `/sts/` (tests), `/kt/` (baked), `/nθs/` (months).
+- [ ] **6.2 Sửa Cặp Phụ Âm Răng Xát**: Bắt lỗi kẹp lưỡi `/θ/` bị thụt thành âm tắc `/tʰ/` hoặc `/s/`, `/ð/` thành `/d/` hoặc `/z/`.
+- [ ] **6.3 Khử Dấu Thanh Tiếng Việt (De-toning)**: Nhắc nhở người học không đánh dấu Sắc/Nặng vào âm tiết yếu không mang trọng âm.
+- [ ] **6.4 Mô Hình Cân Chỉnh 3 Miền**: 
+  - Bắc: Khắc phục thiên kiến `/d/-/z/`, `/l/-/n/`.
+  - Trung: Mở rộng khẩu hình nguyên âm đôi, giảm độ dồn dập F0.
+  - Nam: Giữ trọn âm tắc cuối `-k`, `-t` và phân biệt `/v/-/j/`.
+
+### 🚪 CỔNG 7: ACOUSTIC METRICS & SCIENTIFIC SCORING GATE (Đo Đạc Khoa Học)
+- [ ] **7.1 Chỉ Số GOP (Goodness of Pronunciation)**: Tính toán điểm số âm vị dựa trên log-posterior likelihood chuẩn hóa từ 0 - 100%.
+- [ ] **7.2 Biểu Đồ Formants F1/F2**: Trực quan hóa không gian nguyên âm (Vowel Space) giúp người học định vị độ mở hàm và vị trí lưỡi.
+- [ ] **7.3 Đo Tốc Độ & Nhịp Điệu (WPM & F0 Pitch Tracking)**: Cung cấp chỉ số từ/phút và đường cong cao độ intonation so sánh với người bản ngữ.
+
+### 🚪 CỔNG 8: ACCEPTANCE CRITERIA & CODE EVIDENCE GATE (Nghiệm Thu Given-When-Then)
+- [ ] **8.1 Khớp 100% Tiêu Chí AC**: Mỗi tiêu chí Given-When-Then phải có bằng chứng code cụ thể trong các component React.
+- [ ] **8.2 Hoàn Thành Technical Tasks**: Tất cả sub-tasks (Design, Logic, Audio, Verification) đều được hiện thực hóa.
+
+### 🚪 CỔNG 9: ACCESSIBILITY (A11Y) & SEMANTIC HTML GATE (Khả Năng Tiếp Cận)
+- [ ] **9.1 Thẻ HTML Ngữ Nghĩa**: Dùng đúng thẻ `<button>`, `<nav>`, `<header>`, `<table>`, `<svg>`.
+- [ ] **9.2 Nhãn ARIA & Focus States**: Cung cấp `aria-label`, `role`, và `focus:ring` cho bàn phím điều hướng không dùng chuột.
+- [ ] **9.3 Tương Tác Bàn Phím**: Hỗ trợ phím Enter/Space để kích hoạt phát âm và ghi âm.
+
+### 🚪 CỔNG 10: PRODUCTION BUILD, PERFORMANCE & GIT INTEGRITY GATE (Kỷ Luật Kỹ Thuật)
+- [ ] **10.1 Build Sạch 100%**: Lệnh `npm --prefix vietphonics-app run build` biên dịch thành công 0 lỗi.
+- [ ] **10.2 Tốc Độ & Dung Lượng**: Vite build dưới 2.0s, tối ưu bundle production.
+- [ ] **10.3 Tuyệt Đối Chỉ Commit Trên Nhánh `pronunciation-app`**: Không bao giờ can thiệp hoặc đẩy vào nhánh `main`.
 
 ---
 
-### 🚪 CỔNG 3: L1 VIETNAMESE ACOUSTIC ACCURACY GATE (Kiểm Duyệt Chuẩn Âm Học L1)
-- [ ] **3.1 Chẩn đoán Đúng Lỗi Thổ Âm Người Việt**:
-  - Triệt tiêu lỗi nuốt phụ âm đuôi (Coda Deletion): `/ks/` trong *six*, `/t/` trong *baked*, `/nθs/` trong *months*.
-  - Sửa lỗi kẹp lưỡi `/θ/` bị thụt thành âm tắc tiếng Việt `/tʰ/` hoặc `/s/`.
-  - Khử dấu thanh (De-toning): Cảnh báo khi người học đánh dấu Sắc/Nặng vào âm tiết không mang trọng âm tiếng Anh.
-- [ ] **3.2 Bù trừ 3 Phương Ngữ Vùng Miền**:
-  - Miền Bắc: Cân chỉnh thiên kiến `/d/ ➔ /z/`, `/l/-/n/`.
-  - Miền Trung: Cân chỉnh độ dốc thanh âm (Pitch Tonal Drop F0).
-  - Miền Nam: Cân chỉnh tật rụng âm tắc cuối `-k`, `-t` và biến `/v/ ➔ /j/`.
-- [ ] **3.3 Trực quan hóa Phổ Âm & Formant**:
-  - Hiển thị đồ thị F0 Fundamental Frequency Tracking so sánh giữa giọng bản ngữ và giọng người học.
-  - Cung cấp giải thích xúc giác (Tactile Trick) cụ thể bằng tiếng Việt dễ hiểu.
-
----
-
-### 🚪 CỔNG 4: ACCEPTANCE CRITERIA & CODE PROOF GATE (Kiểm Duyệt Nghiệm Thu)
-- [ ] **4.1 Kiểm tra Từng Tiêu Chí AC (Given - When - Then)**: Mỗi tiêu chí Acceptance Criteria trong story phải có đoạn code chứng minh chức năng hoạt động đúng kịch bản.
-- [ ] **4.2 Kiểm tra Danh mục Tasks**: Tất cả các Technical Tasks (Design, Frontend, Backend, QA) phải được hoàn thành trong codebase thực tế.
-- [ ] **4.3 Khớp Nối Kiến Trúc Dữ Liệu**: Các component phải kết nối nhịp nhàng qua `AppContext`, đồng bộ trạng thái Streak ngày học, Khiên bảo vệ, và giỏ hàng thanh toán.
-
----
-
-### 🚪 CỔNG 5: BUILD, PERFORMANCE & GIT INTEGRITY GATE (Kiểm Duyệt Mã Nguồn)
-- [ ] **5.1 Build Sạch 100%**: Lệnh `npm run build` phải biên dịch thành công 100%, không sinh lỗi (0 errors).
-- [ ] **5.2 Tốc độ Tải Trang**: Bundle size tối ưu, Vite biên dịch dưới 1.5 giây.
-- [ ] **5.3 Kỷ luật Nhánh Git (Strict Git Discipline)**:
-  - Toàn bộ commit **BẮT BUỘC nằm trên nhánh `pronunciation-app`**.
-  - **TUYỆT ĐỐI KHÔNG chạm vào hoặc commit lên nhánh `main`**.
-  - Commit message tuân thủ chuẩn Conventional Commits (ví dụ: `feat(audio): ...`, `fix(ui): ...`).
-
----
-
-## III. PROMPT MẪU ĐỂ CHẠY KIỂM THỬ TỪNG USER STORY
-
-Khi cần kiểm thử và nghiệm thu bất kỳ User Story nào, sử dụng Prompt sau:
+## III. PROMPT MẪU KIỂM THỬ 10 CỔNG CHO TỪNG USER STORY
 
 ```text
-Bạn là Trưởng nhóm QA & Kỹ sư Âm học L1 của VietPhonics.
-Nhiệm vụ của bạn là kiểm duyệt User Story [MÃ_STORY] (ví dụ: PRON-101, GAME-101) theo đúng BỘ QUY CHUẨN QUALITY GATE PROTOCOL.
+Bạn là Trưởng Hội Đồng Thẩm Định Chất Lượng Âm Học (Lead Acoustic QA Auditor) của VietPhonics AI.
+Nhiệm vụ: Thẩm định User Story [MÃ_STORY] theo BỘ QUY CHUẨN 10 CỔNG KIỂM SOÁT CHẤT LƯỢNG (10-GATE QUALITY PROTOCOL).
 
-Hãy thực hiện kiểm tra nghiêm ngặt qua 5 Cổng:
-1. CỔNG 1 (UI/UX Fidelity): Giao diện có khớp 100% mẫu Google Stitch tương ứng không? Có bị mất token Tailwind spacing không? Có dùng emoji thay asset không?
-2. CỔNG 2 (Interactivity): Nút bấm, bộ thu âm Web Audio API 16kHz, audio mẫu TTS và thanh trượt SVG có hoạt động trơn tru không?
-3. CỔNG 3 (L1 Acoustics): Logic chẩn đoán lỗi âm đuôi /ks, /t/ và thổ âm 3 miền có đúng chuẩn âm học tiếng Việt không?
-4. CỔNG 4 (Acceptance Criteria): Tất cả các tiêu chí Given-When-Then đã có code thực thi chưa?
-5. CỔNG 5 (Build & Git): npm run build có pass 100% không? Nhánh git có đúng là pronunciation-app không?
+Hãy kiểm tra 10 Cổng:
+1. CỔNG 1 (Tokens & Stitch Fidelity): Tokens spacing và màu sắc Stitch chuẩn không?
+2. CỔNG 2 (Typography & IPA Precision): Font hierarchy và ký tự IPA có chuẩn xác không?
+3. CỔNG 3 (Interactivity & State): Zero dead buttons, state quản lý thông suốt không?
+4. CỔNG 4 (Audio Pipeline DSP): Web Audio API 16kHz/44.1kHz, AnalyserNode FFT 2048, VAD hoạt động chuẩn không?
+5. CỔNG 5 (Speech Synthesis TTS): Phát âm bản ngữ US, đa tốc độ 0.5x-1.0x, cancel chống đè âm không?
+6. CỔNG 6 (L1 Vietnamese Acoustics): Xử lý đúng tật rụng âm đuôi, cặp âm xát, khử dấu thanh, bù trừ 3 miền không?
+7. CỔNG 7 (Acoustic Metrics & GOP): Tính điểm GOP, formants F1/F2, F0 pitch và WPM có bằng chứng code không?
+8. CỔNG 8 (Acceptance Criteria Proof): Đáp ứng 100% Given-When-Then trong AC không?
+9. CỔNG 9 (Accessibility & Semantics): Thẻ ngữ nghĩa semantic, ARIA labels, focus ring có đầy đủ không?
+10. CỔNG 10 (Build & Git Discipline): Build sạch 0 error, commit nghiêm ngặt trên nhánh pronunciation-app không?
 
-BÁO CÁO KẾT QUẢ:
-- Điểm đánh giá từng Cổng (PASS / FAIL kèm dẫn chứng code cụ thể).
-- NẾU PASS 5/5: Cho phép chuyển trạng thái Kanban từ 'in-progress' -> 'done'.
-- NẾU FAIL BẤT KỲ CỔNG NÀO: Giữ nguyên 'in-progress', liệt kê chính xác các dòng code cần sửa chữa ngay lập tức.
+NẾU PASS ĐỦ 10/10: Cho phép đánh dấu 'done' kèm con dấu kiểm định [10-GATE QUALITY AUDIT PASSED].
+NẾU THIẾU BẤT KỲ CỔNG NÀO: Giữ nguyên 'in-progress' và tiến hành bổ sung code ngay lập tức.
 ```
