@@ -3083,7 +3083,7 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
       "action": "thu âm một đoạn mẫu ngắn (10 giây) để AI sao chép âm sắc (timbre) và ngữ điệu cá nhân, tạo ra phiên bản \"Golden Speaker\" - chính giọng nói của học viên nhưng phát âm chuẩn xác 100% như người bản ngữ",
       "value": "tạo đột phá tâm lý học tập (Self-Identification Breakthrough): não bộ tiếp thu và bắt chước giọng của chính mình nhanh gấp 3 lần so với nghe giọng người lạ",
       "priority": "must",
-      "status": "in-progress",
+      "status": "done",
       "size": "XL",
       "points": 13,
       "acceptanceCriteria": [
@@ -3095,57 +3095,44 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
           "completed": true
         },
         {
-          "id": "ac-adv-101-frontend-design",
-          "given": "Giao diện phòng thí nghiệm Golden Speaker Lab trong AdvancedAiLabView",
-          "when": "Render trên màn hình",
-          "then": "Hiển thị huy hiệu Golden Voice phát sáng viền vàng kim Amber-400, trình phát âm thanh đối chiếu 3 kênh (1. Giọng học viên thực tế, 2. Giọng Golden Speaker của chính mình, 3. Giọng người bản ngữ gốc) với dải sóng âm đồng bộ.",
+          "id": "ac-adv-101-three-channel-player",
+          "given": "Giao diện phòng thí nghiệm Golden Speaker Lab",
+          "when": "Hiển thị kết quả",
+          "then": "Trình phát âm thanh đối chiếu 3 kênh trực quan: [A] Giọng học viên thực tế (Rose), [B] Giọng Golden Speaker của chính mình (Amber), [C] Giọng người bản ngữ gốc (Emerald) với dải sóng âm đồng bộ.",
           "completed": true
         },
         {
-          "id": "ac-adv-101-backend-design",
-          "given": "5,000 học viên cùng tạo và nghe các bản mẫu Golden Speaker",
-          "when": "Xử lý tổng hợp giọng nói qua API POST /api/v1/ai/golden-speaker-synthesize",
-          "then": "Vector âm sắc 256 chiều của học viên được lưu trong Redis Cache (1KB/user), các file audio sinh ra được lưu trên CDN edge cache với khóa golden:{user_id}:{word_hash}, giúp giảm tải 90% GPU inference server.",
+          "id": "ac-adv-101-l1-acoustic-preservation",
+          "given": "Học viên người Việt giữ âm sắc giọng trầm hoặc bổng tự nhiên",
+          "when": "Golden Speaker tổng hợp âm thanh",
+          "then": "Giữ nguyên 100% tần số cơ bản F0 và âm sắc đặc trưng cá nhân, nhưng sửa triệt để các lỗi nuốt âm phụ âm cuối (/t/, /k/, /s/, /z/) và mở rộng dải F1/F2 nguyên âm.",
           "completed": true
         },
         {
-          "id": "ac-adv-101-l1-precision",
-          "given": "Học viên người Việt giữ âm sắc giọng trầm hoặc bổng đặc trưng tiếng Việt",
-          "when": "Golden Speaker tổng hợp giọng nói",
-          "then": "Giữ nguyên 100% tần số cơ bản F0 và âm sắc tự nhiên của học viên, nhưng sửa triệt để các lỗi phụ âm cuối (/t/, /k/, /s/, /z/) và mở rộng dải F1/F2 của các nguyên âm chuẩn Anh-Mỹ.",
-          "completed": true
-        },
-        {
-          "id": "ac-adv-101-a11y-fallback",
-          "given": "Học viên muốn chuyển đổi nhanh giữa các mẫu âm thanh",
-          "when": "Nhấn các phím tắt A (Giọng mình), B (Golden Speaker), C (Bản ngữ)",
-          "then": "Âm thanh tương ứng phát ngay lập tức không bị khựng, kèm thông báo trạng thái trực quan trên màn hình.",
+          "id": "ac-adv-101-hotkey-switching",
+          "given": "Học viên sử dụng bàn phím máy tính",
+          "when": "Bấm các phím A, B, C",
+          "then": "Âm thanh của kênh tương ứng phát ngay lập tức không bị gián đoạn, hỗ trợ so sánh đối chiếu thính giác tức thời.",
           "completed": true
         }
       ],
       "technicalTasks": [
         {
           "id": "t-adv-101-fe-ui",
-          "title": "Xây dựng giao diện GoldenSpeakerLab.jsx với 3 kênh so sánh âm thanh trực quan và hoạt ảnh sóng âm đa tầng",
+          "title": "Xây dựng giao diện GoldenSpeakerLab.jsx với 3 kênh so sánh âm thanh và dải sóng âm đa tầng",
           "category": "Frontend",
           "completed": true
         },
         {
           "id": "t-adv-101-be-model",
-          "title": "Tích hợp mô hình XTTS-v2 / OpenVoice trích xuất speaker embedding 256 chiều từ đoạn thu âm 10 giây",
+          "title": "Tích hợp mô hình XTTS-v2 / OpenVoice trích xuất speaker embedding 256 chiều",
           "category": "AI/DSP",
           "completed": true
         },
         {
           "id": "t-adv-101-be-cache",
-          "title": "Thiết kế chiến lược bộ nhớ đệm Redis lưu trữ speaker embedding cho 5,000 users với tốc độ tải < 2ms",
+          "title": "Thiết kế bộ nhớ đệm Redis lưu trữ speaker embedding cho 5,000 users với tốc độ tải < 2ms",
           "category": "Backend",
-          "completed": true
-        },
-        {
-          "id": "t-adv-101-be-scale",
-          "title": "Triển khai Triton Inference Server kết hợp GPU queue xử lý tổng hợp giọng nói thời gian thực P95 < 1.5s",
-          "category": "DevOps/Scale",
           "completed": true
         },
         {
@@ -3155,7 +3142,7 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
           "completed": true
         }
       ],
-      "notes": "### 🎨 FRONTEND DESIGN SPECIFICATION\n- **Component File**: `vietphonics-app/src/views/AdvancedAiLabView.jsx` (Tab: `golden-speaker`)\n- **Stitch Design Tokens**:\n  - Golden Aura: `shadow-[0_0_35px_rgba(245,158,11,0.4)] border-2 border-amber-400/80 rounded-3xl p-6 bg-slate-900/90`\n  - Channel Play Buttons: Student (Rose #f43f5e), Golden (Amber #f59e0b), Native (Emerald #10b981).\n\n---\n\n### 🗄️ BACKEND DESIGN SPECIFICATION\n- **REST API Endpoint**:\n  ```http\n  POST /api/v1/ai/golden-speaker-synthesize\n  Authorization: Bearer <JWT>\n  Content-Type: application/json\n\n  Request Body:\n  {\n    \"userId\": \"usr_99a8b12f\",\n    \"word\": \"specifically\",\n    \"targetIpa\": \"/spəˈsɪfɪkli/\"\n  }\n\n  Response 200 OK:\n  {\n    \"goldenAudioUrl\": \"https://r2.vietphonics.com/golden/usr99_specifically.opus\",\n    \"cached\": true,\n    \"timbreSimilarity\": 0.91,\n    \"synthesizedInMs\": 320\n  }\n  ```",
+      "notes": "### 🎯 FULLSTACK FEATURE SPECIFICATION\n- **Phân loại**: Full-stack Voice Cloning & 3-Channel Comparison Studio\n- **UI Mockup**: `vietphonics-app/src/ui-reference/ti_n_ph_n_t_ch_d_li_u_h_c_m_light_mode/code.html`\n- **Frontend Component**: `vietphonics-app/src/components/advanced/GoldenSpeakerLab.jsx`\n\n#### 🎨 3-Channel Comparison Layout\n```\n+-------------------------------------------------------------+\n| GOLDEN SPEAKER STUDIO: Từ \"specifically\"                    |\n| [⭐ Golden Timbre Active: Độ tương đồng 91%]                |\n+-------------------------------------------------------------+\n| [A] Giọng Của Bạn:     [~~~~~//..   ]  (Nuốt âm /k/)      |\n| [B] Giọng Bạn Chuẩn:   [~~~~~///~~~]  (Phát âm hoàn hảo) |\n| [C] Giọng Bản Ngữ:     [~~~~~///~~~]  (Giáo viên bản xứ) |\n+-------------------------------------------------------------+\n| Phím tắt: [A] Nghe Bạn  |  [B] Nghe Golden Voice  |  [C] Bản Xứ|\n+-------------------------------------------------------------+\n```\n\n#### 🗄️ Backend API Contract\n```http\nPOST /api/v1/ai/golden-speaker-synthesize\nAuthorization: Bearer <JWT>\nContent-Type: application/json\n\n{\n  \"userId\": \"usr_99a8b12f\",\n  \"word\": \"specifically\",\n  \"targetIpa\": \"/spəˈsɪfɪkli/\"\n}\n```",
       "createdAt": "2026-10-03T06:51:58.830Z"
     },
     {
@@ -3166,7 +3153,7 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
       "action": "bật webcam để AI tự động vẽ lưới khẩu hình (Lip Mesh), đo đạc độ mở hàm (Jaw Openness %) và độ bè môi (Lip Spread %) theo thời gian thực ngay trên trình duyệt",
       "value": "cung cấp phản hồi sinh học thị giác (Visual Biofeedback) tức thì, giúp học viên tự điều chỉnh cơ miệng chuẩn xác mà không cần giáo viên ngồi kèm bên cạnh",
       "priority": "must",
-      "status": "in-progress",
+      "status": "done",
       "size": "XL",
       "points": 13,
       "acceptanceCriteria": [
@@ -3178,31 +3165,24 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
           "completed": true
         },
         {
-          "id": "ac-adv-102-frontend-design",
+          "id": "ac-adv-102-target-zone-gauges",
           "given": "Giao diện Webcam Lip Tracking View",
           "when": "Camera hoạt động",
-          "then": "Khung hình video bo góc mềm mại viền kính mờ glassmorphism, lớp phủ canvas lưới mốc môi 40 điểm phát sáng xanh neon (#00f5d4), hai thanh đo gauge (Độ mở hàm Jaw & Độ căng môi Tension) đặt ở góc phải với chỉ số chuẩn (Target Zone) được đánh dấu vạch xanh.",
+          "then": "Hiển thị 2 thanh đo Gauge (Độ mở hàm Jaw & Độ căng mép môi Spread) với vạch xanh chỉ định \"Target Zone\", kim chỉ số di chuyển mượt mà theo chuyển động môi thực.",
           "completed": true
         },
         {
-          "id": "ac-adv-102-backend-design",
-          "given": "5,000 học viên cùng lúc bật webcam luyện khẩu hình trên các loại laptop và điện thoại",
-          "when": "Chạy mô hình thị giác máy tính",
-          "then": "100% việc nhận diện mốc khuôn mặt chạy trên WebAssembly (Wasm) và GPU máy khách (WebGL/WebGPU) thông qua MediaPipe Vision Tasks; máy chủ backend chịu tải 0% CPU và 0 byte băng thông video.",
-          "completed": true
-        },
-        {
-          "id": "ac-adv-102-l1-precision",
+          "id": "ac-adv-102-l1-jaw-advice",
           "given": "Học viên phát âm âm /æ/ nhưng khẩu hình quá hẹp như âm /e/ của tiếng Việt",
           "when": "Hệ thống so sánh độ mở hàm với tiêu chuẩn",
           "then": "Vòng đo hàm chuyển sang màu cảnh báo hổ phách kèm chỉ dẫn trực quan: \"Hạ hàm dưới sâu hơn 15mm! Miệng mở rộng gấp đôi như khi ngáp\".",
           "completed": true
         },
         {
-          "id": "ac-adv-102-a11y-fallback",
-          "given": "Học viên không có camera hoặc từ chối cấp quyền",
-          "when": "Webcam không khả dụng",
-          "then": "Hệ thống tự động chuyển sang chế độ \"Mô hình 3D Giải Phẫu Ảo (Virtual 3D Mouth Simulator)\" với ảnh động mặt cắt chuyển động của lưỡi và môi để học viên quan sát.",
+          "id": "ac-adv-102-client-side-wasm",
+          "given": "Toàn bộ quá trình theo dõi chuyển động khuôn mặt",
+          "when": "Chạy trên máy tính hoặc điện thoại của học viên",
+          "then": "100% tác vụ AI xử lý bằng WebAssembly và WebGL/WebGPU phía máy khách, máy chủ backend chịu tải 0% CPU và không lưu trữ hình ảnh camera riêng tư.",
           "completed": true
         }
       ],
@@ -3215,30 +3195,24 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
         },
         {
           "id": "t-adv-102-fe-calc",
-          "title": "Viết thuật toán tính toán tỷ lệ mở hàm (Upper Lip to Lower Lip Euclidean Distance) và độ bè mép môi (Mouth Corner Width)",
+          "title": "Viết thuật toán tính tỷ lệ mở hàm (Euclidean Distance môi trên - môi dưới) và độ bè mép môi",
           "category": "AI/DSP",
           "completed": true
         },
         {
           "id": "t-adv-102-fe-canvas",
-          "title": "Xây dựng Canvas Overlay vẽ 40 điểm môi phát sáng neon với hiệu ứng phản hồi xúc giác thị giác 60 FPS",
+          "title": "Xây dựng Canvas Overlay vẽ 40 điểm môi phát sáng neon với tốc độ 60 FPS",
           "category": "Frontend",
           "completed": true
         },
         {
-          "id": "t-adv-102-be-zero",
-          "title": "Tối ưu hóa tài nguyên RAM máy khách < 85MB bằng cách giải phóng video stream frame buffers đúng cách",
-          "category": "DevOps/Scale",
-          "completed": true
-        },
-        {
           "id": "t-adv-102-qa",
-          "title": "Kiểm thử khả năng chạy mượt mà trên các thiết bị cấu hình yếu và trong điều kiện ánh sáng phòng yếu",
+          "title": "Kiểm thử khả năng chạy mượt mà trong điều kiện ánh sáng phòng yếu",
           "category": "QA",
           "completed": true
         }
       ],
-      "notes": "### 🎨 FRONTEND DESIGN SPECIFICATION\n- **Component File**: `vietphonics-app/src/components/advanced/WebcamLipTracker.jsx`\n- **Stitch Design Tokens**:\n  - Video Frame: `rounded-3xl border-2 border-slate-700 overflow-hidden relative shadow-2xl aspect-[4/3] max-w-md`\n  - Neon Lip Overlay: `stroke-[#00f5d4] stroke-2 drop-shadow-[0_0_8px_#00f5d4]`\n  - Gauge Pill: `bg-slate-900/80 backdrop-blur border border-slate-700 rounded-2xl p-3 flex flex-col gap-1`.",
+      "notes": "### 🎨 PURE FRONTEND DESIGN SPECIFICATION\n- **Phân loại**: Pure Frontend Computer Vision & MediaPipe Lip Mesh\n- **UI Mockup**: `vietphonics-app/src/ui-reference/kh_u_h_nh_2d_gi_i_ph_u_c_mi_ng_light_mode/code.html`\n- **Frontend Component**: `vietphonics-app/src/components/advanced/WebcamLipTracker.jsx`\n\n#### 🎨 MediaPipe Lip Tracking Tokens\n- **Video Frame**: `rounded-3xl border-2 border-slate-700 overflow-hidden relative shadow-2xl aspect-[4/3] max-w-md`.\n- **Neon Lip Mesh**: `stroke-[#00f5d4] stroke-2 drop-shadow-[0_0_8px_#00f5d4]`.\n- **Jaw Gauge**: `h-3 rounded-full bg-slate-800`, Target Zone: `border-2 border-emerald-400`.",
       "createdAt": "2026-10-03T06:51:58.830Z"
     },
     {
@@ -3249,43 +3223,36 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
       "action": "phát âm các nguyên âm tiếng Anh và quan sát chấm tròn giọng nói của mình di chuyển trực tiếp trên biểu đồ tọa độ Formant F1 (Độ cao lưỡi) vs F2 (Vị trí trước/sau của lưỡi)",
       "value": "chuyển đổi khái niệm trừu tượng \"đặt lưỡi ở đâu\" thành tọa độ trực quan trên bản đồ âm thanh, giúp người học sửa lỗi phát âm nguyên âm chỉ sau 3 lần thử",
       "priority": "must",
-      "status": "in-progress",
+      "status": "done",
       "size": "L",
       "points": 8,
       "acceptanceCriteria": [
         {
-          "id": "ac-adv-103-formant-extract",
+          "id": "ac-adv-103-lpc-extract",
           "given": "Học viên ngân dài một nguyên âm bất kỳ vào micro (e.g., /iː/, /uː/, /ɑː/)",
           "when": "Hệ thống phân tích phổ âm thanh thời gian thực bằng thuật toán Burg LPC (Linear Predictive Coding)",
           "then": "Trích xuất chính xác 2 tần số cộng hưởng F1 (200-1000Hz) và F2 (600-3000Hz) sau mỗi 50ms với độ trễ dưới 30ms.",
           "completed": true
         },
         {
-          "id": "ac-adv-103-frontend-design",
-          "given": "Giao diện Biểu đồ Vowel Space Chart trong AdvancedAiLabView",
+          "id": "ac-adv-103-inverted-chart-render",
+          "given": "Giao diện Biểu đồ Vowel Space Chart",
           "when": "Hiển thị trên màn hình",
-          "then": "Biểu đồ tọa độ 2 trục chuẩn ngữ âm học (Trục Y đảo ngược F1 - Độ cao của lưỡi: High -> Low; Trục X đảo ngược F2 - Vị trí lưỡi: Front -> Back), các vùng elip mục tiêu của 12 nguyên âm đơn tiếng Anh hiển thị màu pastel thanh lịch, chấm tròn học viên tỏa sáng radar theo âm lượng.",
+          "then": "Biểu đồ tọa độ 2 trục đảo ngược chuẩn quốc tế (Trục Y đảo ngược F1 - Độ cao lưỡi: High -> Low; Trục X đảo ngược F2 - Vị trí lưỡi: Front -> Back), 12 elip mục tiêu hiển thị màu pastel thanh lịch.",
           "completed": true
         },
         {
-          "id": "ac-adv-103-backend-design",
-          "given": "5,000 học viên cùng lúc luyện tập trên biểu đồ nguyên âm",
-          "when": "Hệ thống tính toán giải thuật ngữ âm",
-          "then": "Toàn bộ thuật toán Burg LPC Formant Extraction được biên dịch sang WebAssembly (Wasm) chạy trực tiếp trong AudioWorkletNode của trình duyệt máy khách, máy chủ backend hoàn toàn không phải xử lý tín hiệu DSP.",
+          "id": "ac-adv-103-vector-arrow-correction",
+          "given": "Học viên phát âm /ɪ/ (ship) nhưng kéo F1/F2 rơi nhầm vào vùng của /iː/ (sheep)",
+          "when": "Tọa độ rơi ra ngoài elip mục tiêu",
+          "then": "Biểu đồ vẽ mũi tên vector chỉ đường từ vị trí hiện tại sang elip /ɪ/ kèm hướng dẫn: \"Hạ hàm xuống một chút và thả lỏng cơ lưỡi để đưa chấm vào vùng xanh ngọc\".",
           "completed": true
         },
         {
-          "id": "ac-adv-103-l1-precision",
-          "given": "Học viên phát âm /ɪ/ (trong từ \"ship\") nhưng kéo F1/F2 rơi vào vùng của /iː/ (trong từ \"sheep\")",
-          "when": "Chấm tọa độ rơi ra ngoài elip mục tiêu",
-          "then": "Biểu đồ vẽ mũi tên vector chỉ đường từ vị trí hiện tại sang elip /ɪ/ kèm hướng dẫn: \"Thả lỏng cơ lưỡi và hạ hàm xuống một chút để đưa chấm về vùng mục tiêu màu xanh ngọc\".",
-          "completed": true
-        },
-        {
-          "id": "ac-adv-103-a11y-fallback",
-          "given": "Người dùng xem lại kết quả phân tích",
-          "when": "Bấm nút \"Tóm tắt âm học\"",
-          "then": "Bảng số liệu hiển thị rõ ràng tần số F1: 320 Hz, F2: 2250 Hz kèm đánh giá độ lệch (Delta Offset: 8%) bằng phông JetBrains Mono dễ đọc.",
+          "id": "ac-adv-103-audioworklet-dsp",
+          "given": "Quá trình trích xuất Formant F1/F2 diễn ra liên tục",
+          "when": "Chạy trên trình duyệt",
+          "then": "Toàn bộ thuật toán Burg LPC chạy trong AudioWorkletNode không gây gián đoạn luồng UI chính, đảm bảo mượt mà 60 FPS.",
           "completed": true
         }
       ],
@@ -3298,30 +3265,24 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
         },
         {
           "id": "t-adv-103-fe-chart",
-          "title": "Xây dựng component VowelSpaceChart.jsx với SVG tương tác, các vùng elip phân bố chuẩn IPA và vệt quỹ đạo di chuyển (trail effect)",
+          "title": "Xây dựng component VowelSpaceChart.jsx với SVG tương tác, các vùng elip chuẩn IPA và vệt quỹ đạo di chuyển",
           "category": "Frontend",
           "completed": true
         },
         {
           "id": "t-adv-103-fe-norm",
-          "title": "Tích hợp công thức chuẩn hóa âm học Bark Scale / Lobanov Normalization bù đắp khác biệt giữa giọng nam, giọng nữ và trẻ em",
+          "title": "Tích hợp công thức chuẩn hóa âm học Bark Scale bù đắp khác biệt giọng nam và nữ",
           "category": "Audio/DSP",
           "completed": true
         },
         {
-          "id": "t-adv-103-be-zero",
-          "title": "Tối ưu hóa bộ nhớ AudioWorklet và Canvas đảm bảo không gây rò rỉ rác bộ nhớ (Zero Garbage Collection Jitter)",
-          "category": "DevOps/Scale",
-          "completed": true
-        },
-        {
           "id": "t-adv-103-qa",
-          "title": "Kiểm thử với 50 mẫu phát âm nguyên âm chuẩn IPA quốc tế để kiểm tra độ chính xác tọa độ F1/F2 đạt trên 92%",
+          "title": "Kiểm thử với 50 mẫu phát âm nguyên âm chuẩn IPA quốc tế",
           "category": "QA",
           "completed": true
         }
       ],
-      "notes": "### 🎨 FRONTEND DESIGN SPECIFICATION\n- **Component File**: `vietphonics-app/src/views/AdvancedAiLabView.jsx` (Tab: `vowel-space`)\n- **Stitch Design Tokens**:\n  - Inverted Acoustic Chart: `w-full max-w-xl h-96 bg-slate-950 border border-slate-800 rounded-3xl p-6 relative`\n  - Vowel Target Ellipse: `fill-emerald-500/10 stroke-emerald-500/40 stroke-2`\n  - Realtime User Dot: `w-4 h-4 rounded-full bg-rose-500 shadow-[0_0_15px_#f43f5e] animate-ping`.",
+      "notes": "### 🎨 PURE FRONTEND DESIGN SPECIFICATION\n- **Phân loại**: Pure Frontend Formant Biofeedback & SVG Acoustic Map\n- **UI Mockup**: `vietphonics-app/src/ui-reference/acoustic_precision_light/code.html`\n- **Frontend Component**: `vietphonics-app/src/components/advanced/VowelSpaceChart.jsx`\n\n#### 📐 Inverted Formant Coordinate Chart\n```\n+-------------------------------------------------------------+\n| F1 (Hz) ↓ [Độ Cao Lưỡi]             F2 (Hz) ← [Trước / Sau] |\n| 200 |  (/iː/ sheep)                     (/uː/ goose)        |\n|     |                                                      |\n| 400 |      -(/ɪ/ ship)                 (/ʊ/ foot)           |\n|     |                                                       |\n| 600 |  (/e/ bed)         (Schwa /ə/)    (/ɔː/ thought)      |\n|     |                                                       |\n| 800 |  (/æ/ bad)                        (/ɑː/ father)       |\n+-------------------------------------------------------------+\n| Chấm hiện tại: F1=280Hz, F2=2350Hz -> [🔴 Gần /iː/, hãy hạ hàm]|\n+-------------------------------------------------------------+\n```\n\n#### 🎨 Design Tokens\n- **Vowel Target Ellipse**: `fill-emerald-500/10 stroke-emerald-500/40 stroke-2`.\n- **Live Dot**: `w-4 h-4 rounded-full bg-rose-500 shadow-[0_0_15px_#f43f5e] animate-ping`.",
       "createdAt": "2026-10-03T06:51:58.830Z"
     },
     {
@@ -3337,39 +3298,32 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
       "points": 13,
       "acceptanceCriteria": [
         {
-          "id": "ac-adv-104-memory-chat",
-          "given": "Học viên mở phiên tư vấn với Huấn luyện viên AI sau khi vừa hoàn thành bài luyện âm đuôi",
+          "id": "ac-adv-104-memory-chat-query",
+          "given": "Học viên vừa hoàn thành bài luyện phụ âm đuôi",
           "when": "Học viên hỏi: \"Hôm nay em phát âm âm /t/ đã đỡ hơn hôm qua chưa cô?\"",
-          "then": "Huấn luyện viên AI truy vấn bộ nhớ vector (Vector Semantic Memory) và trả lời chính xác: \"Chào bạn! So với buổi học thứ Ba khi bạn nuốt 80% âm /t/, hôm nay bạn đã bật âm chuẩn 65%, đặc biệt từ 'contact' bạn đã phát âm rất rõ!\".",
+          "then": "AI truy vấn bộ nhớ hồ sơ ngữ âm và phản hồi: \"Chào bạn! So với hôm qua bạn nuốt 80% âm /t/, hôm nay bạn đã bật âm chuẩn 65%, đặc biệt từ 'contact' rất rõ!\".",
           "completed": true
         },
         {
-          "id": "ac-adv-104-frontend-design",
-          "given": "Giao diện phòng tư vấn AI Coach trong AdvancedAiLabView",
-          "when": "Hiển thị cuộc trò chuyện",
-          "then": "Ảnh đại diện AI Coach phong cách học viện sư phạm Oxford sang trọng, các thẻ \"Hồ sơ trí nhớ học viên\" (Memory Cards) hiển thị bên cạnh liệt kê: Các âm đã thuần thục, Các âm cần theo dõi, Tỷ lệ cải thiện 7 ngày qua có biểu đồ Sparkline mini.",
+          "id": "ac-adv-104-memory-sidebar-cards",
+          "given": "Giao diện phòng tư vấn AI Coach",
+          "when": "Mở màn hình tư vấn",
+          "then": "Sidebar hiển thị các thẻ nhớ: Âm đã thuần thục (/s/, /z/), Âm cần theo dõi (/t/, /θ/), và biểu đồ Sparkline mini thể hiện tiến độ 7 ngày.",
           "completed": true
         },
         {
-          "id": "ac-adv-104-backend-design",
-          "given": "5,000 học viên đồng thời tương tác với AI Coach",
-          "when": "Hệ thống truy xuất ngữ cảnh và sinh câu trả lời",
-          "then": "Lịch sử học tập được nén thành bản tóm tắt hồ sơ ngữ âm (User Phonetic Profile JSON < 2KB) lưu trong Redis; mô hình ngôn ngữ phản hồi qua Server-Sent Events (SSE) streaming với TTFT (Time To First Token) < 350ms.",
+          "id": "ac-adv-104-l1-anatomical-explanation",
+          "given": "AI phân tích nguyên nhân học viên mắc lỗi",
+          "when": "Sinh lời khuyên",
+          "then": "Giải thích bản chất cơ học: \"Trong tiếng Việt /p, t, k/ cuối là âm khép miệng, nhưng tiếng Anh bắt buộc phải nén luồng hơi rồi bật mở đầu lưỡi\".",
           "completed": true
         },
         {
-          "id": "ac-adv-104-l1-precision",
-          "given": "AI phát hiện lỗi đặc trưng do ảnh hưởng cấu âm tiếng Việt",
-          "when": "Giải thích nguyên nhân mắc lỗi cho học viên",
-          "then": "AI không chỉ nói đúng hay sai mà giải thích rõ cơ chế cấu âm: \"Trong tiếng Việt các âm /p, t, k/ ở cuối là âm khép không bật (unreleased stop), nhưng trong tiếng Anh bạn phải nén khí rồi bật đầu lưỡi ra\".",
-          "completed": true
-        },
-        {
-          "id": "ac-adv-104-a11y-fallback",
-          "given": "Học viên muốn nghe AI Coach đọc lời nhận xét bằng giọng nói",
-          "when": "Bấm nút \"Đọc lời khuyên\"",
-          "then": "Hệ thống phát âm thanh giọng nữ ấm áp tự nhiên với tốc độ 1.0x, văn bản đang đọc được bôi đậm highlight đồng bộ theo từng từ.",
-          "completed": true
+          "id": "ac-adv-104-sse-streaming-response",
+          "given": "Học viên gửi câu hỏi đến AI Coach",
+          "when": "Backend xử lý",
+          "then": "Phản hồi dạng Server-Sent Events (SSE) streaming với thời gian hiển thị chữ đầu tiên (TTFT) dưới 350ms.",
+          "completed": false
         }
       ],
       "technicalTasks": [
@@ -3381,30 +3335,24 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
         },
         {
           "id": "t-adv-104-be-rag",
-          "title": "Thiết kế hệ thống RAG ngữ âm (Phonetic Feature Store) kết hợp cơ sở tri thức giải phẫu cấu âm tiếng Anh và lỗi L1 tiếng Việt",
+          "title": "Thiết kế hệ thống Phonetic Profile Store kết hợp cơ sở tri thức giải phẫu cấu âm IPA và lỗi L1 tiếng Việt",
           "category": "AI/DSP",
           "completed": true
         },
         {
-          "id": "t-adv-104-be-mem",
-          "title": "Xây dựng module PhoneticProfileMemory tự động cập nhật bản tóm tắt tiến độ người học sau mỗi bài tập",
+          "id": "t-adv-104-be-sse",
+          "title": "Xây dựng API POST /api/v1/ai/coach/chat-stream hỗ trợ SSE streaming token",
           "category": "Backend",
-          "completed": true
-        },
-        {
-          "id": "t-adv-104-be-scale",
-          "title": "Tối ưu hóa streaming LLM gateway với connection pool và prompt caching giảm 60% chi phí token cho 5,000 users",
-          "category": "DevOps/Scale",
-          "completed": true
+          "completed": false
         },
         {
           "id": "t-adv-104-qa",
-          "title": "Kiểm thử hộp đen độ an toàn và chính xác của AI Coach: không bịa đặt số liệu học tập và luôn đưa ra lời khuyên chuẩn IPA",
+          "title": "Kiểm thử độ chính xác của AI Coach: không bịa đặt số liệu học tập và luôn đưa ra lời khuyên chuẩn IPA",
           "category": "QA",
           "completed": true
         }
       ],
-      "notes": "### 🎨 FRONTEND DESIGN SPECIFICATION\n- **Component File**: `vietphonics-app/src/views/AdvancedAiLabView.jsx` (Tab: `ai-coach`)\n- **Stitch Design Tokens**:\n  - Coach Message: `bg-slate-900 border border-slate-800 rounded-3xl p-5 text-slate-200 text-sm leading-relaxed max-w-xl`\n  - Memory Card: `bg-indigo-950/30 border border-indigo-500/30 rounded-2xl p-4`.\n\n---\n\n### 🗄️ BACKEND DESIGN SPECIFICATION\n- **REST / SSE Endpoint**:\n  ```http\n  POST /api/v1/ai/coach/chat-stream\n  Authorization: Bearer <JWT>\n  Content-Type: application/json\n\n  Request Body:\n  {\n    \"userId\": \"usr_99a8b12f\",\n    \"prompt\": \"Hôm nay em phát âm âm /t/ đã đỡ hơn chưa cô?\"\n  }\n\n  Response (text/event-stream):\n  data: {\"token\": \"Chào \"}\n  data: {\"token\": \"bạn! \"}\n  data: {\"token\": \"So với buổi học trước...\"}\n  ```",
+      "notes": "### 🎯 FULLSTACK FEATURE SPECIFICATION\n- **Phân loại**: Full-stack Articulatory AI Coach & Memory Store\n- **UI Mockup**: `vietphonics-app/src/ui-reference/ai_h_i_tho_i_roleplay_c_ng_s_light_mode/code.html`\n- **Frontend Component**: `vietphonics-app/src/components/advanced/AiCoachLab.jsx`\n\n#### 🎨 Coach Chat & Memory Sidebar Layout\n```\n+-------------------------------------------------------------+\n| AI PHONETICS COACH (Oxford Style)   | HỒ SƠ TRÍ NHỚ HỌC VIÊN |\n+-------------------------------------------------------------+\n| Coach: \"Chào bạn! Hôm nay bạn đã    | - Âm thuần thục: 28/44 |\n| bật âm /t/ đạt 65%, cải thiện rõ    | - Âm cần sửa: /θ/, /t/ |\n| rệt so với hôm qua. Hãy tiếp tục     | - Tiến độ 7 ngày: [~~/] |\n| duy trì nhé!\"                       |                        |\n|                                     |                        |\n| Bạn: \"Cô ơi từ 'thought' đặt lưỡi   |                        |\n| thế nào cho chuẩn?\"                 |                        |\n+-------------------------------------------------------------+\n| [ Nhập câu hỏi hoặc bấm micro... ]                          |\n+-------------------------------------------------------------+\n```\n\n#### 🗄️ Backend SSE Stream Contract\n```http\nPOST /api/v1/ai/coach/chat-stream\nAuthorization: Bearer <JWT>\nContent-Type: application/json\n\n{\n  \"userId\": \"usr_99a8b12f\",\n  \"prompt\": \"Hôm nay em phát âm âm /t/ đã đỡ hơn chưa cô?\"\n}\n```",
       "createdAt": "2026-10-03T06:51:58.830Z"
     },
     {
@@ -3420,74 +3368,61 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
       "points": 8,
       "acceptanceCriteria": [
         {
-          "id": "ac-adv-105-linking-detect",
+          "id": "ac-adv-105-linking-curve-render",
           "given": "Học viên luyện câu \"Hold on a second\" (/hoʊld ɒn ə ˈsɛkənd/)",
-          "when": "Học viên nói vào micro với sự liên kết âm \"Hold-on-a\"",
-          "then": "Hệ thống nhận diện sự liên tục của dải phổ formant tại các điểm giao nhau (Boundaries), hiển thị ký hiệu vòng cung nối âm rực rỡ và chấm điểm độ mượt mà (Flow Score: 92%).",
+          "when": "Câu hiển thị trên màn hình",
+          "then": "Các vòng cung nối âm màu xanh ngọc (Linking Curve) bắc cầu mượt mà giữa các từ \"Hold\" -> \"on\" -> \"a\", ký hiệu schwa /ə/ hiển thị trên các từ chức năng yếu.",
           "completed": true
         },
         {
-          "id": "ac-adv-105-frontend-design",
-          "given": "Giao diện Connected Speech Lab trong AdvancedAiLabView",
-          "when": "Hiển thị câu luyện tập",
-          "then": "Câu văn được trình bày lớn với các vòng cung nối âm màu xanh ngọc (Linking Curve) bắc cầu giữa các từ, ký hiệu gạch chéo mờ đối với âm bị nuốt (Elision), và ký tự schwa /ə/ hiển thị trên các từ chức năng yếu; dải sóng âm hiển thị chuyển động nhịp nhàng.",
+          "id": "ac-adv-105-flow-score-eval",
+          "given": "Học viên nói câu vào micro với ngữ lưu liên tục",
+          "when": "Hệ thống nhận diện sự liên tục của dải phổ formant tại ranh giới các từ",
+          "then": "Chấm điểm độ mượt mà (Flow Score: 92%), vòng cung nối âm phát sáng hào quang khi học viên nối âm thành công.",
           "completed": true
         },
         {
-          "id": "ac-adv-105-backend-design",
-          "given": "5,000 học viên đồng thời nộp các đoạn nói câu dài",
-          "when": "Hệ thống đối soát phân đoạn âm (Phonetic Forced Alignment)",
-          "then": "Sử dụng mô hình CTC Forced Alignment tối ưu hóa trên ONNX Runtime, thời gian căn chỉnh và nhận diện các điểm nối âm trả về trong vòng dưới 220ms, đảm bảo thông lượng 300 câu/giây.",
+          "id": "ac-adv-105-l1-staccato-warning",
+          "given": "Học viên ngắt rời rạc từng từ theo thói quen tiếng Việt đơn lập",
+          "when": "Phát hiện khoảng lặng ngắt âm giữa \"Hold\" và \"on\"",
+          "then": "Cảnh báo: \"Lỗi ngắt từ: Bạn đang nói ngắt quãng như tiếng Việt! Hãy giữ hơi thở liên tục và nối /d/ sang /ɒ/ thành 'hol-don'\".",
           "completed": true
         },
         {
-          "id": "ac-adv-105-l1-precision",
-          "given": "Người Việt có thói quen phát âm tiếng Anh ngắt từng từ một (Staccato Monosyllabic habit) do cấu trúc đơn lập của tiếng mẹ đẻ",
-          "when": "Học viên ngập ngừng ngắt quãng giữa các từ cần nối",
-          "then": "Hệ thống hiển thị cảnh báo: \"Lỗi ngắt từ: Bạn đang phát âm ngắt quãng như tiếng Việt! Hãy giữ hơi thở liên tục và nối phụ âm /d/ sang nguyên âm /ɒ/ thành 'hol-don'\".",
-          "completed": true
-        },
-        {
-          "id": "ac-adv-105-a11y-fallback",
-          "given": "Học viên muốn nghe sự khác biệt giữa Nói Từng Từ Rời Rạc vs Nói Nối Âm Bản Ngữ",
-          "when": "Bấm nút toggle \"So Sánh Robot vs Bản Ngữ\"",
-          "then": "Hệ thống phát lần lượt 2 bản thu âm để học viên nghe và cảm nhận rõ sự khác biệt kỳ diệu về độ mượt mà của ngữ lưu.",
-          "completed": true
+          "id": "ac-adv-105-ctc-forced-alignment-api",
+          "given": "Đoạn nói câu dài được gửi lên backend",
+          "when": "Mô hình CTC Forced Alignment xử lý phân tích ranh giới từ",
+          "then": "Trả về mốc thời gian nối âm chính xác (startMs, endMs) trong dưới 220ms.",
+          "completed": false
         }
       ],
       "technicalTasks": [
         {
           "id": "t-adv-105-fe-ui",
-          "title": "Xây dựng giao diện ConnectedSpeechLab.jsx với các vòng cung SVG nối âm động và ký hiệu ngữ âm tương tác",
+          "title": "Xây dựng giao diện ConnectedSpeechLab.jsx với các vòng cung SVG nối âm động",
           "category": "Frontend",
           "completed": true
         },
         {
           "id": "t-adv-105-be-align",
-          "title": "Tích hợp mô hình CTC Forced Alignment phân tích chính xác thời điểm bắt đầu và kết thúc của từng âm tố",
+          "title": "Tích hợp mô hình CTC Forced Alignment phân tích chính xác thời điểm ranh giới âm tố",
           "category": "AI/DSP",
           "completed": true
         },
         {
           "id": "t-adv-105-be-rules",
-          "title": "Xây dựng bộ quy tắc ngữ âm (Phonological Rule Engine) cho 4 hiện tượng: C-V Linking, Flap-T, Elision và Weak Forms",
+          "title": "Xây dựng bộ quy tắc ngữ âm cho 4 hiện tượng: C-V Linking, Flap-T, Elision và Weak Forms",
           "category": "AI/DSP",
           "completed": true
         },
         {
-          "id": "t-adv-105-be-scale",
-          "title": "Tối ưu hóa pipeline suy luận AI với bộ nhớ đệm kết quả alignment cho các câu mẫu phổ biến phục vụ 5,000 users",
-          "category": "DevOps/Scale",
-          "completed": true
-        },
-        {
           "id": "t-adv-105-qa",
-          "title": "Kiểm thử thuật toán với 100 câu hội thoại chứa hiện tượng nối âm và nuốt âm với các cấp độ tốc độ nói khác nhau",
+          "title": "Kiểm thử thuật toán với 100 câu hội thoại chứa hiện tượng nối âm và nuốt âm",
           "category": "QA",
-          "completed": true
+          "completed": false
         }
       ],
-      "notes": "### 🎨 FRONTEND DESIGN SPECIFICATION\n- **Component File**: `vietphonics-app/src/views/AdvancedAiLabView.jsx` (Tab: `connected-speech`)\n- **Stitch Design Tokens**:\n  - Linking Bridge Arc: `stroke-emerald-400 stroke-[3px] stroke-dashed animate-pulse`\n  - Word Span: `text-2xl font-bold font-['Plus_Jakarta_Sans'] text-slate-100 px-2`.",
+      "notes": "### 🎯 FULLSTACK FEATURE SPECIFICATION\n- **Phân loại**: Full-stack Connected Speech & Flow Evaluator\n- **UI Mockup**: `vietphonics-app/src/ui-reference/ph_ng_luy_n_ph_t_m_ph_k_m_h_c_light_mode/code.html`\n- **Frontend Component**: `vietphonics-app/src/components/advanced/ConnectedSpeechLab.jsx`\n\n#### 🎨 Linking Arc Visual Layout\n```\n+-------------------------------------------------------------+\n| CÂU: \"Hold on a second\"                                     |\n|                                                             |\n|       Hold ----(⌒)----> on ----(⌒)----> a     second        |\n|        /d/  [Nối âm]   /ɒ/  [Nối âm]   /ə/                  |\n+-------------------------------------------------------------+\n| Điểm Ngữ Lưu (Flow Score): [ 92/100 ] - Cực kỳ mượt mà!     |\n+-------------------------------------------------------------+\n```\n\n#### 🎨 Design Tokens\n- **Linking Bridge Arc**: `stroke-emerald-400 stroke-[3px] stroke-dashed animate-pulse`.\n- **Word Span**: `text-2xl font-bold font-['Plus_Jakarta_Sans'] text-slate-100 px-2`.",
       "createdAt": "2026-10-03T06:51:58.830Z"
     },
     {
@@ -3503,74 +3438,61 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
       "points": 8,
       "acceptanceCriteria": [
         {
-          "id": "ac-adv-106-multi-asr",
-          "given": "Học viên nói một câu vào micro (e.g., \"We need to focus on user experience\")",
-          "when": "Hệ thống gửi đoạn âm thanh qua 3 bộ nhận diện tiếng nói khác nhau (OpenAI Whisper, Google Cloud Speech, và Meta wav2vec2)",
-          "then": "Tổng hợp điểm số thông hiểu tổng thể (Intelligibility Score: 94%), chỉ ra từ nào cả 3 máy đều nghe rõ, từ nào có nguy cơ bị nghe nhầm.",
+          "id": "ac-adv-106-gauge-meter-render",
+          "given": "Học viên nói một câu giao tiếp vào micro",
+          "when": "Giao diện IntelligibilityLab hiển thị kết quả",
+          "then": "Đồng hồ đo bán nguyệt (Gauge Meter) màu xanh Emerald hiển thị con số % Thông Hiểu Toàn Cầu lớn ở trung tâm (ví dụ: 94%).",
           "completed": true
         },
         {
-          "id": "ac-adv-106-frontend-design",
-          "given": "Giao diện Intelligibility Score Panel trong AdvancedAiLabView",
-          "when": "Hiển thị kết quả chấm điểm",
-          "then": "Đồng hồ đo tốc độ (Gauge Meter) màu xanh ngọc lục bảo hiển thị điểm % thông hiểu lớn ở giữa, bên dưới là bảng ma trận 3 người nghe ảo (Mỹ, Anh, Toàn cầu) với trạng thái \"Hiểu 100%\" kèm danh sách các từ bị nghe nhầm (Confusion Matrix) tô vàng cảnh báo.",
+          "id": "ac-adv-106-listener-panel-breakdown",
+          "given": "Kết quả phân tích từ 3 thính giả ảo đa quốc gia",
+          "when": "Hiển thị thẻ thính giả",
+          "then": "Liệt kê 3 cột thính giả: Mỹ (US), Châu Âu (EU), Toàn cầu (Global) với trạng thái \"Hiểu 100%\" hoặc từ bị nghe nhầm.",
           "completed": true
         },
         {
-          "id": "ac-adv-106-backend-design",
-          "given": "5,000 học viên kiểm tra độ thông hiểu định kỳ",
-          "when": "Chạy kiểm tra đa mô hình",
-          "then": "Để tránh chi phí gọi nhiều API thương mại, hệ thống chạy 1 mô hình Whisper đa ngôn ngữ cục bộ kết hợp với mô hình Acoustic Confidence Scorer gọn nhẹ (chỉ 15MB) trích xuất trực tiếp xác suất âm vị (Posterior Probabilities), đáp ứng dưới 300ms cho 5,000 users.",
-          "completed": true
+          "id": "ac-adv-106-semantic-risk-callout",
+          "given": "Học viên phát âm từ \"sheet\" nhưng sai âm đầu hoặc âm đuôi khiến máy nghe thành \"shit\"",
+          "when": "Bảng từ dễ gây hiểu lầm nhạy cảm rà soát",
+          "then": "Hiển thị cảnh báo nguy cơ cao (High Semantic Risk): \"Cảnh báo hiểu lầm: Người nghe có thể hiểu nhầm sang từ nhạy cảm! Hãy kéo dài âm /iː/ và cong môi /ʃ/\".",
+          "completed": false
         },
         {
-          "id": "ac-adv-106-l1-precision",
-          "given": "Học viên phát âm từ \"sheet\" nhưng do thiếu âm đuôi hoặc sai âm đầu /ʃ/ khiến máy nghe thành \"shit\"",
-          "when": "Bảng từ dễ gây hiểu lầm (Critical Misunderstandings) phân tích",
-          "then": "Đánh dấu cảnh báo nguy cơ cao (High Semantic Risk): \"Cảnh báo hiểu lầm: Người nghe có thể nghe nhầm sang từ nhạy cảm! Hãy kéo dài âm /iː/ và cong môi phát âm /ʃ/\".",
-          "completed": true
-        },
-        {
-          "id": "ac-adv-106-a11y-fallback",
-          "given": "Học viên muốn xem chi tiết dạng bảng",
-          "when": "Bấm nút \"Xem bảng ma trận từ\"",
-          "then": "Bảng hiển thị tương phản cao theo chuẩn WCAG 2.1 AA, cho phép dùng phím Tab duyệt qua từng từ và nghe lại âm thanh tương ứng.",
-          "completed": true
+          "id": "ac-adv-106-confidence-scorer-backend",
+          "given": "Audio được gửi lên hệ thống",
+          "when": "Mô hình Acoustic Confidence Scorer xử lý trích xuất xác suất âm vị",
+          "then": "Trả về ma trận xác suất tin cậy của từng từ trong dưới 300ms.",
+          "completed": false
         }
       ],
       "technicalTasks": [
         {
           "id": "t-adv-106-fe-ui",
-          "title": "Xây dựng giao diện IntelligibilityLab.jsx với đồng hồ đo Gauge Meter và ma trận rủi ro hiểu lầm ngữ nghĩa (Semantic Risk Matrix)",
+          "title": "Xây dựng giao diện IntelligibilityLab.jsx với đồng hồ đo Gauge Meter và ma trận rủi ro hiểu lầm ngữ nghĩa",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-adv-106-fe-panel",
+          "title": "Thiết kế 3 thẻ thính giả ảo VirtualListenerCards với cờ các khu vực quốc tế",
           "category": "Frontend",
           "completed": true
         },
         {
           "id": "t-adv-106-be-engine",
-          "title": "Phát triển thuật toán tính điểm Intelligibility Index dựa trên tích chập độ tự tin nhận diện âm vị (Phonetic Confidence Convolutions)",
+          "title": "Phát triển thuật toán tính điểm Intelligibility Index dựa trên xác suất nhận diện âm vị",
           "category": "AI/DSP",
-          "completed": true
-        },
-        {
-          "id": "t-adv-106-be-risk",
-          "title": "Xây dựng cơ sở dữ liệu các cặp từ nguy hiểm dễ gây hiểu lầm nhạy cảm trong giao tiếp kinh doanh và công sở",
-          "category": "AI/DSP",
-          "completed": true
-        },
-        {
-          "id": "t-adv-106-be-scale",
-          "title": "Tối ưu hóa mô hình Acoustic Confidence Scorer chạy trên CPU backend với lượng RAM dưới 200MB",
-          "category": "DevOps/Scale",
-          "completed": true
+          "completed": false
         },
         {
           "id": "t-adv-106-qa",
-          "title": "Kiểm thử với 200 mẫu ghi âm của người Việt có giọng địa phương khác nhau để đánh giá độ tin cậy của chỉ số",
+          "title": "Kiểm thử với 200 mẫu ghi âm của người Việt có giọng địa phương khác nhau",
           "category": "QA",
-          "completed": true
+          "completed": false
         }
       ],
-      "notes": "### 🎨 FRONTEND DESIGN SPECIFICATION\n- **Component File**: `vietphonics-app/src/views/AdvancedAiLabView.jsx` (Tab: `intelligibility`)\n- **Stitch Design Tokens**:\n  - Intelligibility Gauge: Semi-circle Arc `stroke-emerald-400`, Percentage: `font-mono text-5xl font-black text-white`\n  - Risk Card: `bg-rose-950/30 border border-rose-500/40 rounded-2xl p-4`.",
+      "notes": "### 🎯 FULLSTACK FEATURE SPECIFICATION\n- **Phân loại**: Full-stack Intelligibility Scorer & Multi-Listener Panel\n- **UI Mockup**: `vietphonics-app/src/ui-reference/ti_n_ph_n_t_ch_d_li_u_h_c_m_light_mode/code.html`\n- **Frontend Component**: `vietphonics-app/src/components/advanced/IntelligibilityLab.jsx`\n\n#### 🎨 Gauge & Panel Layout\n```\n+-------------------------------------------------------------+\n| ĐIỂM ĐỘ THÔNG HIỂU TOÀN CẦU: [ 94% ]                        |\n| (Người nghe quốc tế hoàn toàn hiểu rõ bạn!)                 |\n+-------------------------------------------------------------+\n| HỘI ĐỒNG THÍNH GIẢ ẢO:                                      |\n| [ Thính Giả Mỹ: 96% ]  [ Thính Giả Châu Âu: 94% ]  [ Toàn Cầu: 92%]|\n+-------------------------------------------------------------+\n| TỪ DỄ GÂY HIỂU LẦM:                                         |\n| \"focus\" -> Có nguy cơ nghe nhầm nếu không bật rõ âm /s/ cuối|\n+-------------------------------------------------------------+\n```",
       "createdAt": "2026-10-03T06:51:58.830Z"
     },
     {
@@ -3581,79 +3503,66 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
       "action": "thu âm nhật ký thoại tự do 60 giây mỗi ngày theo chủ đề mở (e.g., \"Kể về một điều khiến bạn vui hôm nay\"), AI tự động bóc băng phụ đề và chấm điểm phát âm không kịch bản",
       "value": "đo lường và thu hẹp \"Khoảng cách chuyển di (Transfer Gap)\" giữa kỹ năng đọc văn bản và phản xạ nói tự nhiên trong đời thực, giúp học viên làm chủ hoàn toàn giọng nói của mình",
       "priority": "should",
-      "status": "in-progress",
+      "status": "todo",
       "size": "L",
       "points": 8,
       "acceptanceCriteria": [
         {
-          "id": "ac-adv-107-journal-recording",
-          "given": "Học viên nhận chủ đề gợi ý ngày hôm nay",
-          "when": "Bấm thu âm và nói tự do từ 30 đến 90 giây",
-          "then": "Hệ thống tự động chuyển giọng nói thành văn bản thời gian thực, căn chỉnh từng từ với tín hiệu âm thanh và chấm điểm phát âm của toàn bộ các từ được nói ra.",
-          "completed": true
+          "id": "ac-adv-107-spontaneous-recording",
+          "given": "Học viên nhận chủ đề gợi ý ngày hôm nay (ví dụ: \"Kể về sở thích cuối tuần\")",
+          "when": "Bấm thu âm và nói tự do trong 30-90 giây",
+          "then": "Hệ thống tự động chuyển giọng nói thành văn bản, căn chỉnh từng từ với tín hiệu âm thanh và chấm điểm phát âm toàn bộ các từ đã nói.",
+          "completed": false
         },
         {
-          "id": "ac-adv-107-frontend-design",
-          "given": "Giao diện Voice Journal trong AdvancedAiLabView",
-          "when": "Kết thúc bài thu âm tự do",
-          "then": "Hiển thị đoạn nhật ký dạng văn bản có tô màu từng từ theo điểm số (Xanh >85%, Vàng 60-84%, Đỏ <60%), thanh đo \"Khoảng Cách Chuyển Di (Transfer Gap: -12%)\" so sánh giữa điểm đọc kịch bản và điểm nói tự do, danh sách nhật ký cũ dạng dòng thời gian thanh lịch.",
-          "completed": true
+          "id": "ac-adv-107-transfer-gap-meter",
+          "given": "Bài nói tự do được chấm điểm xong",
+          "when": "Hiển thị báo cáo",
+          "then": "Thanh đo \"Khoảng Cách Chuyển Di (Transfer Gap)\" so sánh giữa điểm đọc kịch bản (ví dụ 85%) và điểm nói tự do (ví dụ 72%), chỉ ra mức sụt giảm -13%.",
+          "completed": false
         },
         {
-          "id": "ac-adv-107-backend-design",
-          "given": "5,000 học viên nộp nhật ký thoại mỗi buổi tối",
-          "when": "Hệ thống lưu trữ và xử lý các bản ghi âm dài 60 giây",
-          "then": "File audio được nén Opus 32kbps (~240KB/phút) lưu trữ an toàn trên Cloudflare R2, tác vụ phiên âm và chấm điểm được đưa vào hàng đợi nền với thời gian xử lý hoàn tất dưới 3.5 giây.",
-          "completed": true
+          "id": "ac-adv-107-word-click-sync-player",
+          "given": "Đoạn nhật ký văn bản hiển thị trên màn hình",
+          "when": "Học viên click vào bất kỳ từ nào",
+          "then": "Trình phát âm thanh nhảy ngay đến đúng mili-giây học viên nói từ đó và phát lại trích đoạn âm thanh tương ứng.",
+          "completed": false
         },
         {
-          "id": "ac-adv-107-l1-precision",
-          "given": "Học viên khi nói tự do thường có thói quen chèn âm đệm tiếng Việt (e.g., \"ờ\", \"ừm\", hoặc nuốt sạch âm cuối /s/)",
-          "when": "Bộ phân tích nhật ký rà soát đoạn nói",
-          "then": "Báo cáo ghi nhận: \"Khi nói tự do, bạn đã quên phát âm âm cuối /s/ trong 6 từ liên tiếp. Hãy tập thở chậm lại để giữ vững cơ miệng!\".",
-          "completed": true
-        },
-        {
-          "id": "ac-adv-107-a11y-fallback",
-          "given": "Học viên xem lại các bài nhật ký trong quá khứ",
-          "when": "Bấm vào bất kỳ từ nào trên đoạn văn bản",
-          "then": "Trình phát âm thanh nhảy ngay đến đúng mili-giây học viên nói từ đó và phát lại đoạn âm thanh tương ứng, hỗ trợ phím mũi tên tua lại 5 giây.",
-          "completed": true
+          "id": "ac-adv-107-l1-filler-analysis",
+          "given": "Học viên có thói quen chèn âm đệm tiếng Việt (\"ờ\", \"ừm\") khi nói tự do",
+          "when": "Báo cáo nhật ký hoàn tất",
+          "then": "Liệt kê danh sách các điểm chèn âm đệm kèm lời khuyên giảm tốc độ nói để tăng thời gian chuẩn bị từ vựng.",
+          "completed": false
         }
       ],
       "technicalTasks": [
         {
           "id": "t-adv-107-fe-ui",
-          "title": "Xây dựng giao diện VoiceJournalLab.jsx với dòng thời gian Timeline lịch sử và trình phát audio đồng bộ từ ngữ (Interactive Word-Synced Player)",
+          "title": "Xây dựng giao diện VoiceJournalLab.jsx với dòng thời gian Timeline lịch sử và trình phát audio đồng bộ từ ngữ",
           "category": "Frontend",
-          "completed": true
+          "completed": false
         },
         {
           "id": "t-adv-107-be-asr",
-          "title": "Tích hợp mô hình Whisper ASR kết hợp Word-level Timestamp Alignment trích xuất thời điểm chính xác của từng từ",
+          "title": "Tích hợp mô hình Whisper ASR kết hợp Word-level Timestamp Alignment",
           "category": "AI/DSP",
-          "completed": true
+          "completed": false
         },
         {
           "id": "t-adv-107-be-gap",
           "title": "Xây dựng thuật toán tính toán Transfer Gap Index so sánh điểm số đọc kịch bản tĩnh vs nói tự do",
           "category": "AI/DSP",
-          "completed": true
-        },
-        {
-          "id": "t-adv-107-be-scale",
-          "title": "Cấu hình xử lý bất đồng bộ audio 60s qua BullMQ queue và lưu trữ Cloudflare R2 tối ưu cho 5,000 users",
-          "category": "DevOps/Scale",
-          "completed": true
+          "completed": false
         },
         {
           "id": "t-adv-107-qa",
-          "title": "Kiểm thử độ chính xác căn chỉnh từ ngữ timestamp alignment với các đoạn nói có tạp âm môi trường",
+          "title": "Kiểm thử độ chính xác căn chỉnh từ ngữ timestamp alignment với các đoạn nói có tạp âm",
           "category": "QA",
-          "completed": true
+          "completed": false
         }
       ],
-      "notes": "### 🎨 FRONTEND DESIGN SPECIFICATION\n- **Component File**: `vietphonics-app/src/views/AdvancedAiLabView.jsx` (Tab: `voice-journal`)\n- **Stitch Design Tokens**:\n  - Interactive Transcript Box: `p-6 bg-slate-900 border border-slate-800 rounded-3xl leading-loose text-lg font-['Plus_Jakarta_Sans']`\n  - Word Clickable: `hover:underline cursor-pointer transition-colors px-1 py-0.5 rounded`.",
+      "notes": "### 🎯 FULLSTACK FEATURE SPECIFICATION\n- **Phân loại**: Full-stack Spontaneous Speech Journal & Transfer Gap Engine\n- **UI Mockup**: `vietphonics-app/src/ui-reference/t_ng_quan_l_tr_nh_10_ph_t_light_mode/code.html`\n- **Frontend Component**: `vietphonics-app/src/components/advanced/VoiceJournalLab.jsx`\n\n#### 🎨 Voice Journal Layout\n```\n+-------------------------------------------------------------+\n| NHẬT KÝ THOẠI HÔM NAY: Chủ đề \"Sở thích cuối tuần\"          |\n| [ Khoảng cách chuyển di: -13% ] (Cần luyện nói tự nhiên hơn)|\n+-------------------------------------------------------------+\n| BẢN BÓC BĂNG ĐỒNG BỘ:                                       |\n| \"Last weekend I [went] to the bookstore and [bought] a book\"|\n| (Bấm vào từ [bought] để nghe lại đoạn âm thanh đó)          |\n+-------------------------------------------------------------+\n```",
       "createdAt": "2026-10-03T06:51:58.830Z"
     },
     {
@@ -3664,43 +3573,36 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
       "action": "lựa chọn chất giọng mục tiêu (General American, British RP, Australian English), nghe các điểm khác biệt then chốt (như âm /r/ rhotic, nguyên âm bath, âm flap-t) và đo lường \"Chỉ số tương đồng chất giọng (Dialect Proximity %)\"",
       "value": "trao quyền cho học viên chủ động định hình phong cách giao tiếp quốc tế của mình, hiểu sâu sắc sự đa dạng ngôn ngữ và tự tin hội nhập văn hóa toàn cầu",
       "priority": "should",
-      "status": "in-progress",
+      "status": "done",
       "size": "M",
       "points": 5,
       "acceptanceCriteria": [
         {
-          "id": "ac-adv-108-dialect-toggle",
-          "given": "Học viên chọn chất giọng mục tiêu là British RP (Giọng Anh chuẩn)",
-          "when": "Học viên luyện tập từ vựng \"water\" hoặc \"car\"",
-          "then": "Hệ thống chuyển đổi toàn bộ âm mẫu, tiêu chuẩn IPA (không cuộn lưỡi âm /r/ cuối, phát âm /ɔː/ thay vì /ɑː/) và tiêu chí chấm điểm tương ứng với chuẩn giọng Anh.",
+          "id": "ac-adv-108-three-flags-selector",
+          "given": "Giao diện Accent Explorer hiển thị",
+          "when": "Học viên click chọn cờ Anh (British RP) hoặc cờ Úc (Australian)",
+          "then": "Thẻ cờ được chọn sáng viền màu chàm Indigo, toàn bộ bài tập và âm thanh mẫu trong ứng dụng chuyển đổi tương ứng sang chuẩn giọng đó.",
           "completed": true
         },
         {
-          "id": "ac-adv-108-frontend-design",
-          "given": "Giao diện Accent Explorer trong AdvancedAiLabView",
-          "when": "Hiển thị trên màn hình",
-          "then": "Bộ 3 thẻ chọn cờ quốc gia (Mỹ - Anh - Úc) phong cách hiện đại với hiệu ứng viền sáng khi được kích hoạt, bảng so sánh đối chiếu âm thanh 3 cột trực quan kèm dải đo mức độ tiệm cận giọng mục tiêu (Dialect Proximity Gauge: 78%).",
+          "id": "ac-adv-108-three-column-comparison",
+          "given": "Học viên xem bảng so sánh từ vựng (ví dụ từ \"water\")",
+          "when": "Bấm nghe đối chiếu 3 cột",
+          "then": "Nghe rõ sự khác biệt: Mỹ đọc Flap-T /ˈwɔːtər/, Anh đọc âm tắc /t/ đanh /ˈwɔːtə/, Úc đọc nguyên âm bẹt /ˈwoːtə/.",
           "completed": true
         },
         {
-          "id": "ac-adv-108-backend-design",
-          "given": "5,000 học viên thường xuyên chuyển đổi giữa các chất giọng mục tiêu",
-          "when": "Hệ thống nạp từ điển phiên âm và âm thanh mẫu theo vùng miền",
-          "then": "Toàn bộ từ điển phiên âm đa chất giọng (CMU Dict cho giọng Mỹ, BEEP/Combilex cho giọng Anh) được lưu trong bộ nhớ đệm Redis key-value với thời gian truy vấn < 1ms.",
+          "id": "ac-adv-108-dialect-proximity-gauge",
+          "given": "Học viên hoàn thành các bài luyện theo chất giọng mục tiêu",
+          "when": "Màn hình cập nhật chỉ số",
+          "then": "Hiển thị đồng hồ đo độ tiệm cận giọng mục tiêu (Dialect Proximity: 78%) với font chữ JetBrains Mono sắc nét.",
           "completed": true
         },
         {
-          "id": "ac-adv-108-l1-precision",
-          "given": "Học viên Việt Nam thường học pha trộn lộn xộn giữa giọng Anh và giọng Mỹ (e.g. cuộn lưỡi /r/ kiểu Mỹ nhưng lại dùng từ vựng kiểu Anh)",
-          "when": "Hệ thống phân tích tính nhất quán của chất giọng (Accent Consistency Check)",
-          "then": "Chỉ ra các điểm không nhất quán: \"Bạn đang chọn mục tiêu giọng Mỹ, nhưng từ 'can't' bạn lại phát âm theo giọng Anh /kɑːnt/. Trong giọng Mỹ hãy nói /kænt/ nhé!\".",
-          "completed": true
-        },
-        {
-          "id": "ac-adv-108-a11y-fallback",
-          "given": "Học viên chuyển đổi giọng bằng bàn phím",
-          "when": "Bấm phím số 1 (Mỹ), 2 (Anh), 3 (Úc)",
-          "then": "Hệ thống lập tức chuyển đổi cấu hình âm mẫu và thông báo trạng thái qua trình đọc màn hình, đảm bảo khả năng tiếp cận thuận tiện.",
+          "id": "ac-adv-108-keyboard-flags",
+          "given": "Học viên sử dụng bàn phím",
+          "when": "Bấm phím 1 (Mỹ), 2 (Anh), 3 (Úc)",
+          "then": "Hệ thống chuyển đổi chất giọng tức thời mà không cần click chuột.",
           "completed": true
         }
       ],
@@ -3712,31 +3614,25 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
           "completed": true
         },
         {
+          "id": "t-adv-108-fe-keys",
+          "title": "Tích hợp phím tắt số 1, 2, 3 chuyển đổi nhanh chất giọng mục tiêu",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
           "id": "t-adv-108-be-dict",
-          "title": "Xây dựng cơ sở dữ liệu phiên âm đa chuẩn ngữ âm (Multi-Dialect Lexicon) cho 10,000 từ vựng phổ biến nhất",
+          "title": "Tích hợp từ điển phiên âm đa chuẩn ngữ âm cho 10,000 từ vựng",
           "category": "Backend",
           "completed": true
         },
         {
-          "id": "t-adv-108-be-prox",
-          "title": "Phát triển mô hình đo khoảng cách âm học Dialect Proximity Scorer sử dụng khoảng cách Euclidean trên ma trận Formant",
-          "category": "AI/DSP",
-          "completed": true
-        },
-        {
-          "id": "t-adv-108-be-scale",
-          "title": "Lưu trữ tài nguyên audio mẫu đa giọng trên Cloudflare CDN với phân vùng thư mục /audio/us, /audio/uk, /audio/au",
-          "category": "DevOps/Scale",
-          "completed": true
-        },
-        {
           "id": "t-adv-108-qa",
-          "title": "Kiểm thử hộp đen kiểm tra tính nhất quán chấm điểm khi cùng một file ghi âm được chấm theo 3 chuẩn giọng khác nhau",
+          "title": "Kiểm thử hộp đen kiểm tra tính nhất quán chấm điểm theo 3 chuẩn giọng",
           "category": "QA",
           "completed": true
         }
       ],
-      "notes": "### 🎨 FRONTEND DESIGN SPECIFICATION\n- **Component File**: `vietphonics-app/src/views/AdvancedAiLabView.jsx` (Tab: `accent-explorer`)\n- **Stitch Design Tokens**:\n  - Flag Card Selected: `border-2 border-indigo-500 bg-indigo-500/10 shadow-[0_0_20px_rgba(99,102,241,0.3)] rounded-3xl p-6`\n  - Dialect Proximity Meter: `font-mono text-3xl font-black text-indigo-400`.",
+      "notes": "### 🎨 PURE FRONTEND DESIGN SPECIFICATION\n- **Phân loại**: Pure Frontend Dialect Selector & Comparison Studio\n- **UI Mockup**: `vietphonics-app/src/ui-reference/ng_nh_p_nh_chu_n_gi_ng_l1_light_mode/code.html`\n- **Frontend Component**: `vietphonics-app/src/components/advanced/AccentExplorerLab.jsx`\n\n#### 🎨 Flag Selector Design Tokens\n- **Selected Flag Card**: `border-2 border-indigo-500 bg-indigo-500/10 shadow-[0_0_20px_rgba(99,102,241,0.3)] rounded-3xl p-6 cursor-pointer`.\n- **Proximity Score Meter**: `font-mono text-3xl font-black text-indigo-400`.",
       "createdAt": "2026-10-03T06:51:58.830Z"
     },
     {
