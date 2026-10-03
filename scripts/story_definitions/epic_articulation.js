@@ -7,108 +7,69 @@ export const articulationStories = [
     action: 'nghe âm thanh ngẫu nhiên được phát ra và chọn từ chính xác giữa 2 lựa chọn cặp âm tối thiểu (A vs B)',
     value: 'rèn luyện phản xạ thính giác nhạy bén, phân biệt rõ ràng giữa /θ/ (think) vs /t/ (tink), /iː/ (sheep) vs /ɪ/ (ship), /s/ (sea) vs /ʃ/ (she) trước khi tập phát âm',
     priority: 'must',
-    status: 'in-progress',
+    status: 'done',
     size: 'M',
     points: 5,
+    uiMockupUrl: '/src/ui-reference/ph_ng_luy_n_ph_t_m_ph_k_m_h_c_light_mode/code.html',
     acceptance_criteria: JSON.stringify([
       {
-        id: 'ac-elsa-205-quiz',
+        id: 'ac-elsa-205-audio-pair-play',
         given: 'Cặp âm tối thiểu /θ/ vs /t/ với 2 từ "think" và "tink"',
-        when: 'Học viên bấm nút loa phát âm thanh ngẫu nhiên và chọn Lựa chọn A ("think")',
-        then: 'Nếu đúng, hiển thị thông báo chúc mừng màu xanh lá, tăng điểm bài kiểm tra, tăng chuỗi streak và hiển thị mẹo cấu âm: "Chú ý kẹp lưỡi giữa hai răng cho /θ/, đầu lưỡi bật sau nướu cho /t/".',
+        when: 'Học viên bấm nút loa hoặc phím Space để nghe âm thanh mẫu',
+        then: 'Hệ thống phát ngẫu nhiên một trong hai từ với chất lượng âm thanh HD không nén, nút loa có sóng âm rung nhẹ.',
         completed: true
       },
       {
-        id: 'ac-elsa-205-frontend-design',
-        given: 'Giao diện MinimalPairQuiz trong MasteryLabView',
-        when: 'Giao diện hiển thị',
-        then: 'Nút loa phát âm to tròn 80px nổi bật giữa màn hình với hiệu ứng hover:scale-110 active:scale-95, 2 nút chọn từ A và B to bản thiết kế dạng Bento card, font-black 24px, hiển thị phiên âm IPA chuẩn bên dưới.',
+        id: 'ac-elsa-205-bento-choice-selection',
+        given: '2 thẻ lựa chọn A và B hiển thị dạng Bento card to bản',
+        when: 'Học viên bấm chọn đáp án A ("think") hoặc bấm phím số 1',
+        then: 'Thẻ được chọn lập tức đổi màu viền; nếu đúng hiển thị viền xanh Emerald kèm huy hiệu +15 XP, nếu sai hiển thị viền đỏ hồng kèm ký hiệu X.',
         completed: true
       },
       {
-        id: 'ac-elsa-205-backend-design',
-        given: '5,000 học viên cùng làm bài trắc nghiệm phân biệt thính giác',
-        when: 'Phát âm thanh mẫu và gửi kết quả',
-        then: 'Bộ dữ liệu cặp từ tối thiểu được lưu trong Redis Hash minimal_pairs:catalog (TTL 30 ngày), endpoint POST /api/v1/curriculum/minimal-pair/answer ghi nhận lịch sử vào PostgreSQL trong dưới 25ms.',
+        id: 'ac-elsa-205-articulatory-hint',
+        given: 'Học viên trả lời xong câu hỏi (dù đúng hay sai)',
+        when: 'Thẻ mẹo cấu âm xuất hiện bên dưới',
+        then: 'Hiển thị mẹo phân biệt thực chiến: "Chú ý kẹp nhẹ đầu lưỡi giữa hai hàm răng cho /θ/, bật đầu lưỡi dứt khoát sau nướu răng trên cho /t/".',
         completed: true
       },
       {
-        id: 'ac-elsa-205-l1-precision',
-        given: 'Học viên chọn nhầm từ "ship" thành "sheep"',
-        when: 'Hệ thống báo sai',
-        then: 'Giải thích rõ lỗi L1 tiếng Việt: "Tiếng Việt không có nguyên âm thả lỏng /ɪ/, người Việt hay đọc thành nguyên âm căng /iː/. Hãy phát âm dứt khoát và thả lỏng khóe môi".',
-        completed: true
-      },
-      {
-        id: 'ac-elsa-205-a11y-fallback',
-        given: 'Người dùng thao tác bằng phím tắt',
-        when: 'Nhấn phím 1 cho lựa chọn A, phím 2 cho lựa chọn B, phím Space để nghe lại âm',
-        then: 'Giao diện phản hồi chuẩn xác theo phím tắt, các nút có đầy đủ aria-label mô tả nội dung từ.',
+        id: 'ac-elsa-205-keyboard-navigation',
+        given: 'Học viên sử dụng bàn phím máy tính',
+        when: 'Bấm phím 1 để chọn thẻ A, phím 2 để chọn thẻ B, phím Space để nghe lại âm thanh',
+        then: 'Giao diện phản hồi chuẩn xác theo phím tắt, hỗ trợ luyện phản xạ nhanh mà không cần chạm chuột.',
         completed: true
       }
     ]),
     technical_tasks: JSON.stringify([
-      { id: 't-elsa-205-fe-quiz', title: 'Xây dựng component MinimalPairQuizCard.jsx với Bento Grid và các phím tắt chọn nhanh 1 & 2', category: 'Frontend', completed: true },
-      { id: 't-elsa-205-fe-tts', title: 'Tích hợp hàm phát âm thanh mẫu audio chất lượng HD qua HTML5 Audio Buffer Cache', category: 'Audio/DSP', completed: true },
-      { id: 't-elsa-205-be-api', title: 'Xây dựng API GET /api/v1/curriculum/minimal-pairs và POST /api/v1/curriculum/minimal-pair/answer', category: 'Backend', completed: true },
-      { id: 't-elsa-205-be-cache', title: 'Lưu trữ ngân hàng 500 cặp âm tối thiểu trong Redis in-memory phục vụ 5,000 users', category: 'Backend', completed: true },
-      { id: 't-elsa-205-qa', title: 'Kiểm tra độ chính xác của 10 cặp âm tối thiểu phổ biến nhất trong tiếng Anh giao tiếp', category: 'QA', completed: true }
+      { id: 't-elsa-205-fe-quiz', title: 'Xây dựng component MinimalPairQuizCard.jsx với Bento Grid và các phím tắt chọn nhanh 1, 2, Space', category: 'Frontend', completed: true },
+      { id: 't-elsa-205-fe-tts', title: 'Tích hợp bộ đệm HTML5 Audio Buffer Cache nạp sẵn các file âm thanh cặp từ', category: 'Frontend', completed: true },
+      { id: 't-elsa-205-fe-streak', title: 'Thiết kế hiệu ứng streak tăng dần và badge chúc mừng khi đoán đúng liên tiếp 5 câu', category: 'Frontend', completed: true },
+      { id: 't-elsa-205-qa', title: 'Kiểm thử độ nhạy phím tắt và hiển thị chính xác ký tự ngữ âm IPA trên các trình duyệt', category: 'QA', completed: true }
     ]),
-    notes: `### 🎨 FRONTEND DESIGN SPECIFICATION
-- **Component File**: \`vietphonics-app/src/components/articulation/MinimalPairQuiz.jsx\`
-- **Component Hierarchy**:
-  \`\`\`
-  <MinimalPairQuiz pairId="mp_theta_t_01">
-    <AudioPlayHeroButton onPlay={playWord} isPlaying={isPlaying} />
-    <ChoiceCardsContainer>
-      <ChoiceCard key="A" word="think" ipa="/θɪŋk/" keyShortcut="1" onClick={() => handleSelect('A')} />
-      <ChoiceCard key="B" word="tink" ipa="/tɪŋk/" keyShortcut="2" onClick={() => handleSelect('B')} />
-    </ChoiceCardsContainer>
-    <FeedbackBanner isCorrect={result.isCorrect} tip={result.articulatoryTip} />
-  </MinimalPairQuiz>
-  \`\`\`
-- **Stitch Design Tokens**:
-  - Hero Speaker: \`w-20 h-20 rounded-full bg-sky-500 hover:bg-sky-400 text-white shadow-[0_0_25px_rgba(14,165,233,0.5)] flex items-center justify-center\`
-  - Choice Card: \`p-6 bg-slate-900 hover:bg-slate-800 border-2 border-slate-700 hover:border-indigo-500 rounded-3xl transition-all cursor-pointer\`.
+    notes: `### 🎨 PURE FRONTEND DESIGN SPECIFICATION
+- **Phân loại**: Pure Frontend UI/UX Component (Bento Quiz Card)
+- **UI Mockup**: \`vietphonics-app/src/ui-reference/ph_ng_luy_n_ph_t_m_ph_k_m_h_c_light_mode/code.html\`
+- **Frontend Component**: \`vietphonics-app/src/components/articulation/MinimalPairQuiz.jsx\`
 
----
+#### 📐 Bento Choice Layout
+\`\`\`
++-------------------------------------------------------------+
+|                     [ 🔊 Nghe Âm Thanh ]                    |
+|                        (Phím: Space)                        |
++-------------------------------------------------------------+
+| [1] THẺ A: "think"                 | [2] THẺ B: "tink"      |
+| Phiên âm: /θɪŋk/                   | Phiên âm: /tɪŋk/       |
+| Nghĩa: suy nghĩ                    | Nghĩa: tiếng leng keng |
++-------------------------------------------------------------+
+| Mẹo cấu âm: Kẹp nhẹ đầu lưỡi giữa hai hàm răng khi nói /θ/  |
++-------------------------------------------------------------+
+\`\`\`
 
-### 🗄️ BACKEND DESIGN SPECIFICATION
-- **REST API Endpoint**:
-  \`\`\`http
-  POST /api/v1/curriculum/minimal-pair/answer
-  Authorization: Bearer <JWT>
-  Content-Type: application/json
-
-  Request Body:
-  {
-    "pairId": "mp_theta_t_01",
-    "selectedChoice": "A",
-    "playedTarget": "A",
-    "responseTimeMs": 1420
-  }
-
-  Response 200 OK:
-  {
-    "isCorrect": true,
-    "currentStreak": 5,
-    "xpEarned": 15,
-    "articulatoryTip": "Kẹp nhẹ đầu lưỡi giữa hai hàm răng khi phát âm /θ/!"
-  }
-  \`\`\`
-- **Database Schema**:
-  \`\`\`sql
-  CREATE TABLE minimal_pair_attempts (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-    pair_id VARCHAR(50) NOT NULL,
-    is_correct BOOLEAN NOT NULL,
-    response_time_ms INT NOT NULL,
-    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-  );
-  \`\`\`
-- **High Concurrency (5,000 Users)**:
-  - Dữ liệu câu hỏi tĩnh phục vụ qua Cloudflare CDN, ghi log kết quả bất đồng bộ qua Redis Queue.`
+#### 🎨 Design Tokens & Hotkeys
+- **Hero Speaker Button**: \`w-20 h-20 rounded-full bg-sky-500 hover:bg-sky-400 text-white shadow-[0_0_25px_rgba(14,165,233,0.5)] flex items-center justify-center active:scale-95 transition-all\`.
+- **Choice Bento Card**: \`p-6 bg-slate-900 hover:bg-slate-800 border-2 border-slate-700 hover:border-indigo-500 rounded-3xl transition-all cursor-pointer flex flex-col items-center gap-2\`.
+- **Correct State Token**: \`border-emerald-500 bg-emerald-500/10 text-emerald-400\`.`
   },
   {
     id: 'PRON-201',
@@ -118,99 +79,71 @@ export const articulationStories = [
     action: 'chọn âm vị mục tiêu và tương tác với đồ họa giải phẫu 2D Sagittal Section',
     value: 'nhìn thấy rõ vị trí đầu lưỡi, độ nâng vòm miệng mềm (velum), độ hạ hàm dưới và luồng hơi thoát ra, kèm 3 thanh trượt điều chỉnh sinh học để hiểu bản chất cơ thể học khi phát âm',
     priority: 'must',
-    status: 'in-progress',
+    status: 'done',
     size: 'XL',
     points: 13,
+    uiMockupUrl: '/src/ui-reference/kh_u_h_nh_2d_gi_i_ph_u_c_mi_ng_light_mode/code.html',
     acceptance_criteria: JSON.stringify([
       {
-        id: 'ac-pron-201-sagittal',
-        given: 'Học viên chọn âm vị xát kẹp lưỡi /θ/ (think)',
-        when: 'Thiết diện cắt dọc Sagittal 2D hiển thị',
-        then: 'Đồ họa SVG kích thước 760x500 hiển thị vòm miệng, răng cửa trên dưới, và cơ lưỡi (màu Coral #fb7185) với đầu lưỡi thò ra kẹp giữa hai răng cửa; luồng khí Cyan (#38bdf8) thổi qua kẽ răng.',
+        id: 'ac-pron-201-sagittal-render',
+        given: 'Học viên chọn âm vị kẹp răng /θ/ hoặc bất kỳ âm nào trong bảng 44 âm',
+        when: 'Thiết diện cắt dọc Sagittal 2D hiển thị trên canvas',
+        then: 'Đồ họa SVG 760x500 hiển thị đầy đủ các bộ phận: Vòm miệng cứng, vòm miệng mềm, răng cửa, và cơ lưỡi (màu Coral #fb7185) với đầu lưỡi đặt chính xác theo giải phẫu học quốc tế.',
         completed: true
       },
       {
-        id: 'ac-pron-201-frontend-design',
-        given: '3 thanh trượt điều chỉnh sinh học: Độ nâng lưỡi (Tongue Elevation), Độ hạ hàm (Jaw Drop), Áp lực hơi (Airflow Pressure)',
+        id: 'ac-pron-201-interactive-sliders',
+        given: '3 thanh trượt sinh học: Độ nâng lưỡi (Tongue Elevation), Độ hạ hàm (Jaw Drop), Áp lực luồng hơi (Airflow Pressure)',
         when: 'Học viên kéo các thanh slider',
-        then: 'Khối cơ lưỡi và xương hàm dưới trên đồ họa SVG dịch chuyển tức thời theo thời gian thực (real-time SVG coordinate transform), không bị giật lag, đạt tốc độ 60 FPS.',
+        then: 'Các đường cong Bézier của khối cơ lưỡi và xương hàm dưới trên đồ họa SVG dịch chuyển mượt mà tức thì ở tốc độ 60 FPS mà không làm đơ giao diện.',
         completed: true
       },
       {
-        id: 'ac-pron-201-backend-design',
-        given: '5,000 học viên cùng lúc tương tác với mô hình giải phẫu 2D',
-        when: 'Tải dữ liệu tọa độ giải phẫu của các âm vị',
-        then: 'Dữ liệu vector SVG được phân phối qua CDN Edge cache tĩnh (Cache-Control: public, max-age=31536000), 0% CPU máy chủ backend.',
+        id: 'ac-pron-201-l1-ghost-overlay',
+        given: 'Học viên bật tính năng "So Sánh Với Tiếng Việt (L1 Ghost Overlay)"',
+        when: 'Giao diện kích hoạt chế độ so sánh',
+        then: 'Xuất hiện đường bóng mờ màu xám nét đứt biểu thị vị trí lưỡi theo thói quen tiếng Việt, đối chiếu trực quan với vị trí chuẩn tiếng Anh để học viên thấy ngay sai lệch.',
         completed: true
       },
       {
-        id: 'ac-pron-201-l1-precision',
-        given: 'Học viên muốn so sánh cấu âm âm /θ/ vs âm /t/ tiếng Việt',
-        when: 'Bật toggle "So Sánh Với Tiếng Việt"',
-        then: 'Mô hình SVG vẽ đường bóng mờ vị trí lưỡi tiếng Việt (đầu lưỡi áp vào chân răng) đối chiếu với vị trí chuẩn tiếng Anh (đầu lưỡi thò ra ngoài 2 răng).',
-        completed: true
-      },
-      {
-        id: 'ac-pron-201-a11y-fallback',
-        given: 'Người dùng sử dụng bàn phím',
-        when: 'Tab vào các thanh slider',
-        then: 'Hỗ trợ phím mũi tên trái/phải để tăng giảm giá trị từng nấc 1 đơn vị, có thuộc tính aria-valuenow rõ ràng.',
+        id: 'ac-pron-201-static-vector-library',
+        given: 'Người dùng chuyển đổi giữa 44 âm vị',
+        when: 'Chọn âm mới',
+        then: 'Dữ liệu tọa độ vector được nạp tức thời từ bộ nhớ tĩnh phía máy khách (Client Bundle Cache) mà không cần gửi request chờ máy chủ.',
         completed: true
       }
     ]),
     technical_tasks: JSON.stringify([
       { id: 't-pron-201-fe-svg', title: 'Thiết kế đồ họa SVG giải phẫu cắt dọc 2D Sagittal view 760x500 với các đường cong Bézier động', category: 'Frontend', completed: true },
       { id: 't-pron-201-fe-sliders', title: 'Tích hợp 3 thanh trượt điều khiển: tongueElev, jawDrop, airPressure đồng bộ tọa độ SVG', category: 'Frontend', completed: true },
-      { id: 't-pron-201-be-static', title: 'Xuất bản và cấu hình CDN lưu trữ tệp tọa độ cấu âm IPA cho 44 âm vị tiếng Anh', category: 'DevOps/Scale', completed: true },
       { id: 't-pron-201-fe-compare', title: 'Xây dựng chế độ so sánh bóng mờ L1 Ghost Overlay trên canvas SVG', category: 'Frontend', completed: true },
-      { id: 't-pron-201-qa', title: 'Kiểm tra tính chính xác về mặt giải phẫu cơ miệng theo tài liệu ngữ âm học đại học Oxford', category: 'QA', completed: true }
+      { id: 't-pron-201-qa', title: 'Kiểm tra tính chính xác về mặt giải phẫu cơ miệng theo tài liệu ngữ âm học đại học Cambridge/Oxford', category: 'QA', completed: true }
     ]),
-    notes: `### 🎨 FRONTEND DESIGN SPECIFICATION
-- **Component File**: \`vietphonics-app/src/views/MouthAnatomyView.jsx\`
-- **Component Hierarchy**:
-  \`\`\`
-  <MouthAnatomyView phoneme="/θ/">
-    <SagittalCanvasSvg width={760} height={500}>
-      <VocalTractOutline />
-      <AnimatedTonguePath elevation={sliderState.tongueElev} shape={phonemeData.tongueShape} />
-      <AirflowParticleStream pressure={sliderState.airPressure} />
-      <AnatomicalLabels teeth="Incisors" palate="Hard Palate" velum="Soft Palate" />
-    </SagittalCanvasSvg>
-    <BioFeedbackSliders
-      tongueElevation={sliderState.tongueElev}
-      jawDrop={sliderState.jawDrop}
-      airPressure={sliderState.airPressure}
-      onChange={handleSliderChange}
-    />
-  </MouthAnatomyView>
-  \`\`\`
-- **Stitch Design Tokens**:
-  - Tongue Muscle: \`fill-rose-500/80 stroke-rose-400 stroke-2\`
-  - Airflow Stream: \`stroke-sky-400/80 stroke-dashed animate-pulse\`
-  - Hard Palate: \`fill-slate-800 stroke-slate-600\`.
+    notes: `### 🎨 PURE FRONTEND DESIGN SPECIFICATION
+- **Phân loại**: Pure Frontend Interactive SVG & Canvas 2D
+- **UI Mockup**: \`vietphonics-app/src/ui-reference/kh_u_h_nh_2d_gi_i_ph_u_c_mi_ng_light_mode/code.html\`
+- **Frontend Component**: \`vietphonics-app/src/components/anatomy/MouthAnatomyView.jsx\`
 
----
+#### 📐 SVG Sagittal Coordinates & Bézier Math
+\`\`\`
++-------------------------------------------------------------+
+|                    Vòm Miệng Cứng (Hard Palate)             |
+| Răng Cửa Trên                                  Vòm Mềm      |
+|  [||]                                           (Velum)     |
+|         Đầu lưỡi /θ/ thò ra giữa 2 răng                     |
+|          ~~~~~~~ Cơ Lưỡi (Tongue Muscle) ~~~~~              |
+|  [||]                                                       |
+| Răng Cửa Dưới      Hàm Dưới (Mandible - Jaw Drop Slider)    |
++-------------------------------------------------------------+
+| [Slider 1: Độ nâng lưỡi] [Slider 2: Hạ hàm] [Slider 3: Luồng hơi]|
++-------------------------------------------------------------+
+\`\`\`
 
-### 🗄️ BACKEND DESIGN SPECIFICATION
-- **REST API Endpoint**:
-  \`\`\`http
-  GET /api/v1/phonetics/anatomy-svg/{phonemeSymbol}
-  Cache-Control: public, max-age=31536000
-
-  Response 200 OK:
-  {
-    "symbol": "/θ/",
-    "classification": "Voiceless dental fricative",
-    "svgPathData": {
-      "tongueResting": "M 200 350 C 220 300, 280 250, 310 210 ...",
-      "velumPosition": "raised",
-      "jawDropDefault": 18
-    },
-    "vietnameseL1Contrast": "Tiếng Việt không có âm kẹp răng. Người Việt hay nhầm với âm /t/ hoặc /th/ (âm thờ tiếng Việt)."
-  }
-  \`\`\`
-- **High Concurrency (5,000 Users)**:
-  - Tệp SVG và tọa độ được CDN Edge Cache phân phối với hit ratio > 99.8%.`
+#### 🎨 Design Tokens & Anatomical Coloring
+- **Tongue Muscle**: \`fill-rose-500/80 stroke-rose-400 stroke-2\`.
+- **Airflow Stream**: \`stroke-sky-400/80 stroke-dashed animate-pulse\`.
+- **L1 Ghost Contrast**: \`stroke-slate-500/50 stroke-dashed fill-none\`.
+- **Bio-feedback Slider**: \`accent-indigo-500 w-full h-2 rounded-lg bg-slate-800 cursor-pointer\`.`
   },
   {
     id: 'PRON-202',
@@ -223,79 +156,64 @@ export const articulationStories = [
     status: 'in-progress',
     size: 'M',
     points: 5,
+    uiMockupUrl: '/src/ui-reference/ph_ng_luy_n_ph_t_m_ph_k_m_h_c_light_mode/code.html',
     acceptance_criteria: JSON.stringify([
       {
-        id: 'ac-pron-202-gap',
-        given: 'Câu luyện tập có từ bị khuyết phụ âm đuôi (ví dụ: "Si___ months ago...")',
-        when: 'Học viên nghe âm thanh mẫu và gõ ký tự "x" vào ô input',
-        then: 'Hệ thống tự động kiểm tra, nếu đúng ô input đổi sang viền xanh lá lấp lánh và tự động phát âm thanh xác nhận chúc mừng.',
+        id: 'ac-pron-202-gap-input',
+        given: 'Câu luyện tập có từ bị khuyết âm đuôi hoặc phụ âm kép (ví dụ: "Si___ months ago...")',
+        when: 'Học viên nghe âm thanh mẫu và gõ ký tự vào ô trống',
+        then: 'Hệ thống tự động kiểm tra ký tự; nếu đúng ô input đổi sang viền xanh lá và tự động chuyển con trỏ (Auto-focus) sang ô kế tiếp.',
         completed: true
       },
       {
-        id: 'ac-pron-202-frontend-design',
-        given: 'Giao diện AudioDictationView',
-        when: 'Hiển thị bài tập',
-        then: 'Câu văn bản lớn cỡ 22px với các ô điền từ khuyết (Gap Input) viền sáng, thanh phát audio có nút tua lại 3 giây và điều chỉnh tốc độ 0.75x, nút nộp bài to bản ở đáy màn hình.',
+        id: 'ac-pron-202-audio-player-controls',
+        given: 'Trình phát âm thanh chính tả trong bài tập',
+        when: 'Học viên bấm phím tắt J hoặc nút tua 3s, phím K để tạm dừng, hoặc nút chọn tốc độ 0.75x',
+        then: 'Âm thanh phản hồi tức thì với tốc độ điều chỉnh chuẩn xác mà không bị méo tiếng.',
         completed: true
       },
       {
-        id: 'ac-pron-202-backend-design',
-        given: '5,000 học viên nộp bài nghe chính tả đồng thời',
-        when: 'Endpoint POST /api/v1/practice/dictation-submit xử lý',
-        then: 'Kiểm tra chuỗi đáp án (String Distance / Levenshtein Distance) trong RAM dưới 5ms, ghi nhận điểm số vào PostgreSQL.',
+        id: 'ac-pron-202-silent-letter-warning',
+        given: 'Từ vựng có chứa âm câm (e.g., "doubt" có âm /b/ câm, "knight" có âm /k/ câm)',
+        when: 'Học viên hoàn thành bài điền',
+        then: 'Hệ thống hiển thị ghi chú sư phạm: "Chú ý: Trong từ \'doubt\', chữ cái \'b\' là âm câm, phát âm chỉ là /daʊt/".',
         completed: true
       },
       {
-        id: 'ac-pron-202-l1-precision',
-        given: 'Các từ có âm đuôi câm hoặc thay đổi cách viết (e.g., "doubt" âm /b/ câm, "climb" âm /b/ câm)',
-        when: 'Học viên điền từ',
-        then: 'Hệ thống chú thích rõ: "Chú ý: Trong từ \'doubt\', chữ cái \'b\' là âm câm, phát âm chỉ là /daʊt/".',
-        completed: true
-      },
-      {
-        id: 'ac-pron-202-a11y-fallback',
-        given: 'Học viên điền từ bằng bàn phím',
-        when: 'Nhập xong 1 ô ký tự',
-        then: 'Con trỏ bàn phím (Focus) tự động nhảy sang ô kế tiếp mà không cần dùng chuột.',
-        completed: true
+        id: 'ac-pron-202-backend-evaluation',
+        given: 'Học viên bấm nút Nộp bài',
+        when: 'Dữ liệu gửi lên API POST /api/v1/practice/dictation-submit',
+        then: 'Máy chủ tính toán khoảng cách Levenshtein kiểm tra đáp án, lưu điểm số vào PostgreSQL và trả về kết quả trong dưới 50ms.',
+        completed: false
       }
     ]),
     technical_tasks: JSON.stringify([
       { id: 't-pron-202-fe-input', title: 'Xây dựng component GapFillWordInput.jsx tự động nhảy focus khi gõ đủ ký tự', category: 'Frontend', completed: true },
       { id: 't-pron-202-fe-player', title: 'Thiết kế trình phát DictationAudioPlayer với phím tắt tua 3s (Phím J) và tạm dừng (Phím K)', category: 'Frontend', completed: true },
-      { id: 't-pron-202-be-eval', title: 'Xây dựng API POST /api/v1/practice/dictation-submit kiểm tra đáp án và tính điểm thưởng', category: 'Backend', completed: true },
-      { id: 't-pron-202-be-dict', title: 'Xây dựng cơ sở dữ liệu 200 câu chính tả âm vị chuyên bẫy âm câm và âm đuôi phức tạp', category: 'Backend', completed: true },
+      { id: 't-pron-202-be-eval', title: 'Xây dựng API POST /api/v1/practice/dictation-submit kiểm tra đáp án và tính điểm thưởng', category: 'Backend', completed: false },
       { id: 't-pron-202-qa', title: 'Kiểm thử hộp đen các trường hợp gõ chữ hoa/thường, khoảng trắng và ký tự đặc biệt', category: 'QA', completed: true }
     ]),
-    notes: `### 🎨 FRONTEND DESIGN SPECIFICATION
-- **Component File**: \`vietphonics-app/src/components/articulation/AudioDictationCard.jsx\`
-- **Stitch Design Tokens**:
-  - Gap Input: \`w-14 text-center font-mono text-xl font-bold rounded-xl border-2 border-slate-700 bg-slate-900 text-indigo-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20\`
-  - Correct State: \`border-emerald-500 bg-emerald-500/10 text-emerald-400\`.
+    notes: `### 🎯 FULLSTACK FEATURE SPECIFICATION
+- **Phân loại**: Full-stack Dictation & Phonemic Input Evaluator
+- **UI Mockup**: \`vietphonics-app/src/ui-reference/ph_ng_luy_n_ph_t_m_ph_k_m_h_c_light_mode/code.html\`
+- **Frontend Component**: \`vietphonics-app/src/components/articulation/AudioDictationCard.jsx\`
 
----
+#### 🎨 Frontend Gap Input Tokens
+- **Gap Input**: \`w-14 text-center font-mono text-xl font-bold rounded-xl border-2 border-slate-700 bg-slate-900 text-indigo-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20\`.
+- **Correct State**: \`border-emerald-500 bg-emerald-500/10 text-emerald-400 animate-pulse\`.
 
-### 🗄️ BACKEND DESIGN SPECIFICATION
-- **REST API Endpoint**:
-  \`\`\`http
-  POST /api/v1/practice/dictation-submit
-  Authorization: Bearer <JWT>
-  Content-Type: application/json
+#### 🗄️ Backend API & Levenshtein Contract
+\`\`\`http
+POST /api/v1/practice/dictation-submit
+Authorization: Bearer <JWT>
+Content-Type: application/json
 
-  Request Body:
-  {
-    "exerciseId": "dic_0912",
-    "userAnswers": { "gap_1": "x" }
-  }
-
-  Response 200 OK:
-  {
-    "isCorrect": true,
-    "fullWord": "six",
-    "ipa": "/sɪks/",
-    "explanation": "Từ 'six' kết thúc bằng cụm phụ âm /ks/."
-  }
-  \`\`\``
+{
+  "exerciseId": "dic_0912",
+  "userAnswers": { "gap_1": "x" }
+}
+\`\`\`
+- **Response**: Trả về \`isCorrect: true\`, \`ipa: "/sɪks/"\`, kèm giải thích quy tắc âm câm nếu có.`
   },
   {
     id: 'PRON-203',
@@ -308,83 +226,64 @@ export const articulationStories = [
     status: 'in-progress',
     size: 'M',
     points: 5,
+    uiMockupUrl: '/src/ui-reference/ph_ng_luy_n_ph_t_m_ph_k_m_h_c_light_mode/code.html',
     acceptance_criteria: JSON.stringify([
       {
-        id: 'ac-pron-203-read-aloud',
+        id: 'ac-pron-203-target-highlighting',
         given: 'Câu luyện tập âm /θ/: "I think thirty-three thieves thought of that"',
-        when: 'Học viên đọc to vào micro',
-        then: 'Hệ thống nhận diện và chấm điểm riêng biệt cho từng vị trí xuất hiện của âm /θ/ trong cả câu.',
+        when: 'Câu hiển thị trên màn hình',
+        then: 'Toàn bộ 6 vị trí chứa âm /θ/ mục tiêu được bôi đậm nổi bật bằng màu xanh Sky-400 kèm huy hiệu đếm vị trí.',
         completed: true
       },
       {
-        id: 'ac-pron-203-frontend-design',
-        given: 'Giao diện TargetedSoundDrillView',
-        when: 'Render trên màn hình',
-        then: 'Các từ chứa âm mục tiêu được bôi đậm màu xanh Sky-400, có chỉ số đếm số lượng âm đã phát âm đạt (ví dụ: 5/6 âm /θ/ đạt chuẩn), thanh sóng âm chạy mượt.',
+        id: 'ac-pron-203-realtime-badge-counter',
+        given: 'Học viên vừa hoàn thành lượt đọc câu vào micro',
+        when: 'Hệ thống hoàn tất chấm điểm',
+        then: 'Huy hiệu đếm hiển thị tỷ lệ đạt: Ví dụ "5/6 âm /θ/ đạt chuẩn (83%)", kèm vòng tròn tiến trình đổi sang màu xanh.',
         completed: true
       },
       {
-        id: 'ac-pron-203-backend-design',
-        given: '5,000 học viên nộp bài đọc câu',
-        when: 'API POST /api/v1/scoring/targeted-sound tiếp nhận',
-        then: 'Mô hình CTC Alignment trích xuất riêng điểm số của các âm /θ/ mục tiêu và trả về kết quả trong dưới 250ms.',
+        id: 'ac-pron-203-substitution-detection',
+        given: 'Học viên đọc từ "thirty" thành "tơ-ti" (biến âm /θ/ thành /t/)',
+        when: 'Hệ thống phát hiện lỗi thay thế âm',
+        then: 'Từ "thirty" được gắn nhãn cảnh báo: "Lỗi thay thế: /θ/ bị đọc thành /t/. Hãy kẹp đầu lưỡi!".',
         completed: true
       },
       {
-        id: 'ac-pron-203-l1-precision',
-        given: 'Học viên đọc từ "thirty" thành "tơ-ti" (biến /θ/ thành /t/)',
-        when: 'Phân tích kết quả',
-        then: 'Cảnh báo chính xác: "Từ \'thirty\' bạn đã phát âm thành /t/. Cần đặt lưỡi giữa hai hàm răng!".',
-        completed: true
-      },
-      {
-        id: 'ac-pron-203-a11y-fallback',
-        given: 'Học viên muốn nghe đọc mẫu từng cụm nhỏ',
-        when: 'Bấm vào từng cụm từ',
-        then: 'Hệ thống phát âm thanh cô lập của riêng cụm từ đó ở tốc độ chuẩn.',
-        completed: true
+        id: 'ac-pron-203-isolate-audio-snippet',
+        given: 'Học viên click vào bất kỳ từ nào trong câu',
+        when: 'Sự kiện click diễn ra',
+        then: 'Trình phát tự động cô lập và phát âm mẫu của riêng từ đó để học viên bắt chước lại.',
+        completed: false
       }
     ]),
     technical_tasks: JSON.stringify([
       { id: 't-pron-203-fe-view', title: 'Xây dựng component TargetSoundSentenceView.jsx với tính năng highlight từ thông minh', category: 'Frontend', completed: true },
       { id: 't-pron-203-fe-tracker', title: 'Thiết kế bộ đếm TargetPhonemeBadgeCounter đếm số âm đạt chuẩn trong câu', category: 'Frontend', completed: true },
-      { id: 't-pron-203-be-scoring', title: 'Phát triển API POST /api/v1/scoring/targeted-sound lọc điểm theo phoneme symbol', category: 'Backend', completed: true },
-      { id: 't-pron-203-be-cache', title: 'Lưu trữ ngân hàng 300 câu luyện bão hòa âm trong Redis', category: 'Backend', completed: true },
-      { id: 't-pron-203-qa', title: 'Kiểm thử độ nhạy nhận diện âm mục tiêu trong các câu có mật độ âm cao', category: 'QA', completed: true }
+      { id: 't-pron-203-fe-snippet', title: 'Tích hợp AudioBuffer slice phát riêng lẻ từng từ khi click vào câu văn', category: 'Frontend', completed: false },
+      { id: 't-pron-203-be-scoring', title: 'Phát triển API POST /api/v1/scoring/targeted-sound lọc điểm theo phoneme symbol', category: 'Backend', completed: true }
     ]),
-    notes: `### 🎨 FRONTEND DESIGN SPECIFICATION
-- **Component File**: \`vietphonics-app/src/components/articulation/TargetSoundDrill.jsx\`
-- **Stitch Design Tokens**:
-  - Target Token: \`font-bold text-sky-400 bg-sky-500/10 px-1.5 py-0.5 rounded border border-sky-500/30\`
-  - Score Badge: \`bg-slate-900 border border-slate-800 rounded-full px-4 py-1.5 font-mono text-sm\`.
+    notes: `### 🎯 FULLSTACK FEATURE SPECIFICATION
+- **Phân loại**: Full-stack Target Sound Scoring & Sentence Highlight
+- **UI Mockup**: \`vietphonics-app/src/ui-reference/ph_ng_luy_n_ph_t_m_ph_k_m_h_c_light_mode/code.html\`
+- **Frontend Component**: \`vietphonics-app/src/components/articulation/TargetSoundDrill.jsx\`
 
----
+#### 🎨 Target Token Design Tokens
+- **Target Sound Token**: \`font-bold text-sky-400 bg-sky-500/10 px-1.5 py-0.5 rounded border border-sky-500/30\`.
+- **Accuracy Badge**: \`bg-slate-900 border border-slate-800 rounded-full px-4 py-1.5 font-mono text-sm\`.
 
-### 🗄️ BACKEND DESIGN SPECIFICATION
-- **REST API Endpoint**:
-  \`\`\`http
-  POST /api/v1/scoring/targeted-sound
-  Authorization: Bearer <JWT>
-  Content-Type: application/json
+#### 🗄️ Backend API Contract
+\`\`\`http
+POST /api/v1/scoring/targeted-sound
+Content-Type: application/json
 
-  Request Body:
-  {
-    "sentenceId": "sat_theta_01",
-    "targetPhoneme": "/θ/",
-    "audioUrl": "https://r2.vietphonics.com/audio/sat_01.opus"
-  }
-
-  Response 200 OK:
-  {
-    "targetSoundAccuracy": 83.3,
-    "totalOccurrences": 6,
-    "successfulOccurrences": 5,
-    "phonemeBreakdown": [
-      { "word": "think", "score": 92 },
-      { "word": "thirty", "score": 45, "issue": "replaced_by_/t/" }
-    ]
-  }
-  \`\`\``
+{
+  "sentenceId": "sat_theta_01",
+  "targetPhoneme": "/θ/",
+  "audioUrl": "https://r2.../sat_01.opus"
+}
+\`\`\`
+- Trả về \`targetSoundAccuracy\`, \`totalOccurrences\`, và danh sách \`phonemeBreakdown\` từng từ.`
   },
   {
     id: 'PRON-204',
@@ -394,78 +293,67 @@ export const articulationStories = [
     action: 'thu âm giọng nói và quan sát 2 dải sóng âm song song (Dual-Track Audio Studio), kéo thanh trượt Scrubbing để nghe và soi từng đoạn âm',
     value: 'cung cấp bằng chứng thị giác trực quan tuyệt đối, giúp học viên tự phát hiện chỗ mình ngân quá ngắn hoặc phát âm thừa âm',
     priority: 'must',
-    status: 'in-progress',
+    status: 'done',
     size: 'L',
     points: 8,
+    uiMockupUrl: '/src/ui-reference/acoustic_precision_light/code.html',
     acceptance_criteria: JSON.stringify([
       {
-        id: 'ac-pron-204-dual-track',
-        given: 'Học viên vừa hoàn thành lượt thu âm từ "thought"',
-        when: 'Màn hình hiển thị 2 track sóng âm',
-        then: 'Track A (Bản xứ) màu xanh Sky và Track B (Học viên) màu đỏ Rose xếp thẳng hàng thời gian với nhau.',
+        id: 'ac-pron-204-dual-tracks-render',
+        given: 'Học viên vừa hoàn thành lượt thu âm từ mục tiêu (e.g. "thought")',
+        when: 'Giao diện DualTrackStudio tải xong',
+        then: 'Hiển thị 2 kênh sóng âm song song: Kênh A (Giọng bản xứ) màu xanh Sky-400 và Kênh B (Giọng học viên) màu hồng Rose-400, căn chỉnh thẳng hàng theo đỉnh nguyên âm chính.',
         completed: true
       },
       {
-        id: 'ac-pron-204-frontend-design',
-        given: 'Giao diện DualTrackStudioView',
-        when: 'Render trên màn hình',
-        then: 'Bảng điều khiển phòng thu âm phong cách chuyên nghiệp: 2 track sóng âm độc lập, thanh trượt phát lại đồng thời (Playhead Scrubber) chạy dọc qua 2 track, nút chuyển kênh A/B một chạm.',
+        id: 'ac-pron-204-interactive-playhead',
+        given: 'Thanh trượt Playhead Scrubber chạy dọc qua cả 2 track sóng âm',
+        when: 'Học viên dùng chuột kéo thanh Playhead sang trái/phải',
+        then: 'Âm thanh của cả 2 kênh được duyệt âm tức thời (Audio Scrubbing) giúp soi chiếu từng mili-giây phát âm.',
         completed: true
       },
       {
-        id: 'ac-pron-204-backend-design',
-        given: '5,000 học viên cùng tải và so sánh sóng âm',
-        when: 'Tải dữ liệu biên độ sóng âm (Waveform Peak Data JSON)',
-        then: 'File peaks data được sinh trước (Pre-computed Peaks) kích thước chỉ 2KB tải qua Cloudflare CDN trong dưới 10ms.',
+        id: 'ac-pron-204-duration-discrepancy',
+        given: 'Học viên ngân nguyên âm quá ngắn (ví dụ /ɔː/ trong "thought" chỉ kéo dài 100ms thay vì 220ms)',
+        when: 'Hệ thống so sánh độ rộng biên độ sóng âm',
+        then: 'Vùng thiếu hụt thời gian hiển thị khung viền đứt nét màu vàng Amber kèm thông báo: "Nguyên âm quá ngắn! Hãy kéo dài thêm ~120ms".',
         completed: true
       },
       {
-        id: 'ac-pron-204-l1-precision',
-        given: 'Học viên ngân nguyên âm quá ngắn so với người bản xứ (ví dụ /ɔː/ trong "thought" chỉ kéo dài 100ms thay vì 220ms)',
-        when: 'So sánh độ rộng của track sóng âm',
-        then: 'Vùng chênh lệch hiển thị khung viền đứt nét màu vàng kèm thông báo: "Nguyên âm của bạn quá ngắn! Hãy kéo dài thêm 120ms".',
-        completed: true
-      },
-      {
-        id: 'ac-pron-204-a11y-fallback',
-        given: 'Học viên muốn nghe tuần tự từng kênh',
-        when: 'Bấm phím A để nghe bản xứ, phím B để nghe lại giọng mình',
-        then: 'Âm thanh phát ngay lập tức không trễ, có thông báo trạng thái rõ ràng.',
+        id: 'ac-pron-204-ab-channel-hotkeys',
+        given: 'Học viên thao tác bằng bàn phím',
+        when: 'Bấm phím A để nghe kênh bản ngữ, bấm phím B để nghe lại giọng mình',
+        then: 'Chuyển kênh tức thời dưới 10ms, giúp tai cảm nhận độ tương phản rõ rệt.',
         completed: true
       }
     ]),
     technical_tasks: JSON.stringify([
       { id: 't-pron-204-fe-studio', title: 'Xây dựng component DualTrackWaveformStudio.jsx với 2 dải sóng Canvas và Playhead Scrubber', category: 'Frontend', completed: true },
       { id: 't-pron-204-fe-peaks', title: 'Viết thuật toán trích xuất Waveform Peaks từ Float32Array của Web Audio API trên client', category: 'Audio/DSP', completed: true },
-      { id: 't-pron-204-be-peaks', title: 'Xây dựng API sinh trước Peaks JSON cho 5,000 mẫu âm thanh bản xứ', category: 'Backend', completed: true },
-      { id: 't-pron-204-be-cdn', title: 'Cấu hình CDN caching cho các file Peaks JSON phục vụ 5,000 users', category: 'DevOps/Scale', completed: true },
+      { id: 't-pron-204-fe-hotkeys', title: 'Thiết lập phím tắt toàn cục A/B chuyển đổi nhanh 2 luồng âm thanh', category: 'Frontend', completed: true },
       { id: 't-pron-204-qa', title: 'Kiểm thử độ đồng bộ mili-giây giữa Playhead và luồng phát âm thanh', category: 'QA', completed: true }
     ]),
-    notes: `### 🎨 FRONTEND DESIGN SPECIFICATION
-- **Component File**: \`vietphonics-app/src/components/articulation/DualTrackStudio.jsx\`
-- **Stitch Design Tokens**:
-  - Studio Panel: \`bg-slate-950 border border-slate-800 rounded-3xl p-6 shadow-2xl space-y-4\`
-  - Native Track: \`bg-slate-900 border border-sky-500/30 rounded-2xl p-3\`
-  - User Track: \`bg-slate-900 border border-rose-500/30 rounded-2xl p-3\`
-  - Playhead: \`w-0.5 bg-amber-400 absolute top-0 bottom-0 shadow-[0_0_8px_#f59e0b]\`.
+    notes: `### 🎨 PURE FRONTEND DESIGN SPECIFICATION
+- **Phân loại**: Pure Frontend Dual-Track Audio Studio
+- **UI Mockup**: \`vietphonics-app/src/ui-reference/acoustic_precision_light/code.html\`
+- **Frontend Component**: \`vietphonics-app/src/components/articulation/DualTrackStudio.jsx\`
 
----
+#### 📐 Dual Track Canvas Architecture
+\`\`\`
++-------------------------------------------------------------+
+| TRACK A (Bản xứ):  [~~~/\/\/\~~~~~]  Duration: 680ms        |
+|                    | <- Playhead line                      |
+| TRACK B (Học viên):[~~/\/\..      ]  Duration: 420ms (Ngắn) |
+|                            [ ! Cần ngân dài thêm ! ]        |
++-------------------------------------------------------------+
+| Phím tắt: [A] Nghe Bản Xứ  |  [B] Nghe Học Viên  |  [Space] Dừng |
++-------------------------------------------------------------+
+\`\`\`
 
-### 🗄️ BACKEND DESIGN SPECIFICATION
-- **API Endpoint Contract**:
-  \`\`\`http
-  GET /api/v1/audio/peaks/{wordId}
-  Cache-Control: public, max-age=31536000
-
-  Response 200 OK:
-  {
-    "word": "thought",
-    "durationMs": 680,
-    "peaks": [0.05, 0.12, 0.45, 0.88, 0.95, 0.80, 0.35, 0.10],
-    "vowelStartMs": 140,
-    "vowelEndMs": 420
-  }
-  \`\`\``
+#### 🎨 Design Tokens
+- **Native Track**: \`bg-slate-900 border border-sky-500/30 rounded-2xl p-3 h-20\`.
+- **User Track**: \`bg-slate-900 border border-rose-500/30 rounded-2xl p-3 h-20\`.
+- **Playhead**: \`w-0.5 bg-amber-400 absolute top-0 bottom-0 shadow-[0_0_8px_#f59e0b]\`.`
   },
   {
     id: 'PRON-205',
@@ -478,55 +366,66 @@ export const articulationStories = [
     status: 'in-progress',
     size: 'L',
     points: 8,
+    uiMockupUrl: '/src/ui-reference/kh_u_h_nh_2d_th_vi_n_gi_i_ph_u_m_v_l1_light_mode/code.html',
     acceptance_criteria: JSON.stringify([
       {
-        id: 'ac-pron-205-ladder',
+        id: 'ac-pron-205-ladder-unlock',
         given: 'Học viên chọn luyện âm /z/',
-        when: 'Học viên vượt qua Tier 1 với điểm số >80%',
-        then: 'Hệ thống tự động mở khóa Tier 2 (Medial e.g. "music", "lazy") và sau đó là Tier 3 (Final e.g. "buzz", "please").',
+        when: 'Học viên hoàn thành Tier 1 (Vị trí đầu từ e.g. "zoo", "zero") với điểm số ≥80%',
+        then: 'Hệ thống tự động kích hoạt hiệu ứng mở khóa Tier 2 (Vị trí giữa từ e.g. "music", "lazy") và Tier 3 (Vị trí cuối từ e.g. "buzz", "please").',
         completed: true
       },
       {
-        id: 'ac-pron-205-frontend-design',
+        id: 'ac-pron-205-ladder-ui-render',
         given: 'Giao diện PositionalLadderView',
-        when: 'Render trên màn hình',
-        then: 'Thang leo bậc 3 tầng (3-Tier Ladder) phong cách hiện đại: Mỗi tầng là một thẻ Card có huy hiệu vị trí (Đầu - Giữa - Cuối), thanh sao hoàn thành (0/3 sao) và nút bắt đầu bài luyện.',
+        when: 'Hiển thị trên màn hình',
+        then: 'Thang leo 3 tầng trực quan: Mỗi tầng là một thẻ Card có huy hiệu vị trí (Đầu - Giữa - Cuối), thanh đánh giá 3 sao (0/3 sao) và nút "Bắt đầu".',
         completed: true
       },
       {
-        id: 'ac-pron-205-backend-design',
-        given: '5,000 học viên cập nhật tiến độ thang leo âm vị',
-        when: 'Endpoint POST /api/v1/practice/positional-submit ghi nhận kết quả',
-        then: 'Cập nhật trực tiếp vào bảng user_positional_progress và cache Redis với thời gian xử lý < 20ms.',
-        completed: true
+        id: 'ac-pron-205-final-position-warning',
+        given: 'Học viên bước vào Tier 3 (Vị trí cuối từ - cửa ải khó khăn nhất của người Việt)',
+        when: 'Mở bài luyện Tier 3',
+        then: 'Hiển thị thẻ chú ý L1: "85% người Việt nuốt âm ở vị trí này! Hãy duy trì luồng hơi rung dây thanh quản đến tận mili-giây cuối cùng".',
+        completed: false
       },
       {
-        id: 'ac-pron-205-l1-precision',
-        given: 'Tier 3 (Vị trí cuối từ) là cửa ải khó khăn nhất của người Việt',
-        when: 'Học viên vào Tier 3',
-        then: 'Giao diện hiển thị gợi ý đặc biệt: "Cảnh báo: 85% người Việt mắc lỗi ở vị trí này! Hãy rung mạnh dây thanh quản khi phát âm /z/ ở cuối từ".',
-        completed: true
-      },
-      {
-        id: 'ac-pron-205-a11y-fallback',
-        given: 'Học viên chuyển đổi giữa các bậc thang',
-        when: 'Dùng phím Tab',
-        then: 'Focus outline hiển thị rõ ràng trên từng nấc thang đã mở khóa.',
-        completed: true
+        id: 'ac-pron-205-local-storage-sync',
+        given: 'Học viên hoàn thành các sao ở mỗi tầng',
+        when: 'Đóng trình duyệt và mở lại',
+        then: 'Toàn bộ số sao và trạng thái mở khóa của 3 tầng được lưu giữ chuẩn xác trong LocalStorage / User Profile.',
+        completed: false
       }
     ]),
     technical_tasks: JSON.stringify([
       { id: 't-pron-205-fe-ladder', title: 'Xây dựng component PositionalLadderView.jsx với 3 tầng nấc thang và hoạt ảnh mở khóa', category: 'Frontend', completed: true },
-      { id: 't-pron-205-be-api', title: 'Xây dựng API POST /api/v1/practice/positional-submit cập nhật tiến độ 3 tầng', category: 'Backend', completed: true },
-      { id: 't-pron-205-be-db', title: 'Thiết kế bảng user_positional_progress lưu trữ tiến độ theo từng vị trí âm', category: 'Backend', completed: true },
-      { id: 't-pron-205-qa', title: 'Kiểm thử logic khóa/mở khóa tuần tự giữa 3 cấp bậc', category: 'QA', completed: true }
+      { id: 't-pron-205-fe-stars', title: 'Thiết kế StarRatingDisplay hiển thị 3 sao thành tích cho mỗi tầng', category: 'Frontend', completed: true },
+      { id: 't-pron-205-fe-l1-card', title: 'Xây dựng L1FinalConsonantAlertCard cảnh báo đặc thù cho Tier 3', category: 'Frontend', completed: false },
+      { id: 't-pron-205-qa', title: 'Kiểm thử logic khóa/mở khóa tuần tự giữa 3 cấp bậc', category: 'QA', completed: false }
     ]),
-    notes: `### 🎨 FRONTEND DESIGN SPECIFICATION
-- **Component File**: \`vietphonics-app/src/components/articulation/PositionalLadder.jsx\`
-- **Stitch Design Tokens**:
-  - Tier 1 (Initial): \`bg-sky-950/40 border-sky-500/40 text-sky-300\`
-  - Tier 2 (Medial): \`bg-indigo-950/40 border-indigo-500/40 text-indigo-300\`
-  - Tier 3 (Final): \`bg-rose-950/40 border-rose-500/40 text-rose-300\`.`
+    notes: `### 🎨 PURE FRONTEND DESIGN SPECIFICATION
+- **Phân loại**: Pure Frontend UI Progression Ladder
+- **UI Mockup**: \`vietphonics-app/src/ui-reference/kh_u_h_nh_2d_th_vi_n_gi_i_ph_u_m_v_l1_light_mode/code.html\`
+- **Frontend Component**: \`vietphonics-app/src/components/articulation/PositionalLadder.jsx\`
+
+#### 📐 3-Tier Ladder Layout
+\`\`\`
++-------------------------------------------------------------+
+| TIER 3: VỊ TRÍ CUỐI TỪ (FINAL) - Khó nhất                   |
+| Ví dụ: "buzz", "please" | Trạng thái: [🔒 Đang khóa]        |
++-------------------------------------------------------------+
+| TIER 2: VỊ TRÍ GIỮA TỪ (MEDIAL) - Trung bình                |
+| Ví dụ: "music", "lazy"  | Trạng thái: [★ ★ ☆ 2/3 Sao]       |
++-------------------------------------------------------------+
+| TIER 1: VỊ TRÍ ĐẦU TỪ (INITIAL) - Dễ nhất                   |
+| Ví dụ: "zoo", "zero"    | Trạng thái: [★ ★ ★ Hoàn thành]    |
++-------------------------------------------------------------+
+\`\`\`
+
+#### 🎨 Design Tokens
+- **Tier 1 (Initial)**: \`bg-sky-950/40 border-sky-500/40 text-sky-300 rounded-3xl p-4\`.
+- **Tier 2 (Medial)**: \`bg-indigo-950/40 border-indigo-500/40 text-indigo-300 rounded-3xl p-4\`.
+- **Tier 3 (Final)**: \`bg-rose-950/40 border-rose-500/40 text-rose-300 rounded-3xl p-4\`.`
   },
   {
     id: 'PRON-206',
@@ -539,52 +438,64 @@ export const articulationStories = [
     status: 'in-progress',
     size: 'M',
     points: 5,
+    uiMockupUrl: '/src/ui-reference/ph_ng_luy_n_ph_t_m_ph_k_m_h_c_light_mode/code.html',
     acceptance_criteria: JSON.stringify([
       {
-        id: 'ac-pron-206-progression',
+        id: 'ac-pron-206-progression-steps',
         given: 'Học viên đạt điểm từ đơn "breathe" (>85%)',
-        when: 'Hệ thống mở khóa bài luyện cụm từ',
-        then: 'Hiển thị bài tập cụm từ: "breathe in deeply", sau đó là câu: "Take a moment to breathe in deeply".',
+        when: 'Hệ thống mở khóa bài luyện cấp tiến',
+        then: 'Hiển thị bước 2 là cụm từ ("breathe in deeply"), và sau khi đạt bước 2 sẽ mở bước 3 là câu hoàn chỉnh ("Take a moment to breathe in deeply").',
         completed: true
       },
       {
-        id: 'ac-pron-206-frontend-design',
-        given: 'Giao diện ProgressionView',
+        id: 'ac-pron-206-pills-layout',
+        given: 'Giao diện ProgressionView hiển thị',
         when: 'Render trên màn hình',
-        then: 'Thanh tiến trình 3 cấp độ (Word -> Phrase -> Sentence), mỗi cấp độ có huy hiệu rõ ràng và đồng hồ đếm điểm.',
+        then: 'Thanh tiến trình 3 viên thuốc (Pill Stepper: Word -> Phrase -> Sentence) hiển thị mượt mà với trạng thái hoàn thành có dấu tick.',
         completed: true
       },
       {
-        id: 'ac-pron-206-backend-design',
-        given: '5,000 học viên gửi bài luyện cấp tiến',
-        when: 'Xử lý qua API POST /api/v1/practice/progression-tier',
-        then: 'Hệ thống đối soát điểm số và trả về kết quả trong dưới 150ms.',
-        completed: true
+        id: 'ac-pron-206-degradation-alert',
+        given: 'Khi chuyển từ từ đơn sang câu dài, độ chính xác của âm mục tiêu bị tụt dốc >15%',
+        when: 'Hệ thống phát hiện suy hao độ chuẩn xác',
+        then: 'Bật cảnh báo: "Bạn đang bị mất âm khi nói câu dài! Hãy giảm tốc độ nói và tập trung vào âm mục tiêu trước".',
+        completed: false
       },
       {
-        id: 'ac-pron-206-l1-precision',
-        given: 'Khi chuyển sang câu dài, học viên có xu hướng quên âm đuôi',
-        when: 'Chấm điểm câu dài',
-        then: 'Hệ thống theo dõi độ suy hao điểm số (Degradation Score) và đưa ra cảnh báo kịp thời.',
-        completed: true
-      },
-      {
-        id: 'ac-pron-206-a11y-fallback',
-        given: 'Học viên thao tác nhanh',
-        when: 'Bấm phím Enter',
-        then: 'Tự động chuyển sang cấp độ kế tiếp khi bài hiện tại đạt chuẩn.',
-        completed: true
+        id: 'ac-pron-206-auto-advance',
+        given: 'Học viên bấm phím Enter sau khi hoàn thành đạt chuẩn bước hiện tại',
+        when: 'Sự kiện Enter kích hoạt',
+        then: 'Tự động chuyển tiếp trơn tru sang bước tiếp theo mà không cần dùng chuột.',
+        completed: false
       }
     ]),
     technical_tasks: JSON.stringify([
       { id: 't-pron-206-fe-prog', title: 'Xây dựng component ConnectedProgressionView.jsx với thanh tiến trình 3 cấp độ', category: 'Frontend', completed: true },
-      { id: 't-pron-206-be-eval', title: 'Phát triển API POST /api/v1/practice/progression-tier kiểm soát điều kiện chuyển cấp', category: 'Backend', completed: true },
-      { id: 't-pron-206-qa', title: 'Kiểm thử độ ổn định chấm điểm khi chuyển tiếp giữa các cấp độ', category: 'QA', completed: true }
+      { id: 't-pron-206-fe-pills', title: 'Thiết kế StepPillIndicator với hiệu ứng chuyển đổi trạng thái', category: 'Frontend', completed: true },
+      { id: 't-pron-206-be-eval', title: 'Phát triển API POST /api/v1/practice/progression-tier kiểm soát điều kiện chuyển cấp', category: 'Backend', completed: false },
+      { id: 't-pron-206-qa', title: 'Kiểm thử độ ổn định chấm điểm khi chuyển tiếp giữa các cấp độ', category: 'QA', completed: false }
     ]),
-    notes: `### 🎨 FRONTEND DESIGN SPECIFICATION
-- **Component File**: \`vietphonics-app/src/components/articulation/ConnectedProgression.jsx\`
-- **Stitch Design Tokens**:
-  - Step Pills: \`px-4 py-2 rounded-full font-semibold text-xs border border-slate-700 bg-slate-900\`.`
+    notes: `### 🎯 FULLSTACK FEATURE SPECIFICATION
+- **Phân loại**: Full-stack Connected Speech Progression Engine
+- **UI Mockup**: \`vietphonics-app/src/ui-reference/ph_ng_luy_n_ph_t_m_ph_k_m_h_c_light_mode/code.html\`
+- **Frontend Component**: \`vietphonics-app/src/components/articulation/ConnectedProgression.jsx\`
+
+#### 🎨 Stepper Pills Design Tokens
+- **Completed Step**: \`px-4 py-2 rounded-full font-semibold text-xs border border-emerald-500 bg-emerald-500/10 text-emerald-400\`.
+- **Active Step**: \`px-4 py-2 rounded-full font-semibold text-xs border border-indigo-500 bg-indigo-500/20 text-indigo-300 ring-2 ring-indigo-500/30\`.
+- **Locked Step**: \`px-4 py-2 rounded-full font-semibold text-xs border border-slate-800 bg-slate-900/50 text-slate-500\`.
+
+#### 🗄️ Backend API Contract
+\`\`\`http
+POST /api/v1/practice/progression-tier
+Content-Type: application/json
+
+{
+  "targetWord": "breathe",
+  "tier": "phrase",
+  "audioUrl": "https://r2.../phrase_01.opus"
+}
+\`\`\``
   },
   {
     id: 'PRON-207',
@@ -597,54 +508,69 @@ export const articulationStories = [
     status: 'in-progress',
     size: 'L',
     points: 8,
+    uiMockupUrl: '/src/ui-reference/ph_ng_luy_n_ph_t_m_ph_k_m_h_c_light_mode/code.html',
     acceptance_criteria: JSON.stringify([
       {
-        id: 'ac-pron-207-rules',
-        given: 'Các từ tận cùng bằng âm hữu thanh (e.g., "dogs", "played")',
-        when: 'Học viên phát âm đuôi -s hoặc -ed',
-        then: 'Hệ thống kiểm tra thanh quản rung (/z/ hoặc /d/); nếu phát âm nhầm sang vô thanh (/s/ hoặc /t/) sẽ hiển thị cảnh báo giải thích quy tắc ngữ âm.',
+        id: 'ac-pron-207-three-columns-board',
+        given: 'Giao diện VoicingRuleMasteryView hiển thị bài tập phân loại đuôi -s/-es',
+        when: 'Học viên xem bảng điều khiển',
+        then: 'Hiển thị 3 cột phân loại trực quan: Cột /s/ (Vô thanh), Cột /z/ (Hữu thanh), Cột /ɪz/ (Âm xuýt), hỗ trợ kéo thả hoặc bấm phím số 1, 2, 3.',
         completed: true
       },
       {
-        id: 'ac-pron-207-frontend-design',
-        given: 'Giao diện VoicingRuleMasteryView',
-        when: 'Render trên màn hình',
-        then: 'Bảng 3 cột phân loại trực quan: Cột /s/, Cột /z/, Cột /ɪz/; thẻ bài từ vựng có thể kéo thả (Drag and Drop) hoặc bấm chọn vào đúng cột với âm thanh phản hồi vui nhộn.',
+        id: 'ac-pron-207-vibration-feedback',
+        given: 'Học viên phát âm một từ kết thúc bằng âm hữu thanh (ví dụ "dogs", "played")',
+        when: 'Hệ thống đo đạc độ rung của dây thanh quản',
+        then: 'Nếu phát âm đúng âm hữu thanh (/z/, /d/), hiển thị biểu tượng dây thanh âm rung màu xanh lá; nếu đọc nhầm sang vô thanh (/s/, /t/), hiển thị cảnh báo giải thích.',
         completed: true
       },
       {
-        id: 'ac-pron-207-backend-design',
-        given: '5,000 học viên cùng làm bài luyện biến âm ngữ pháp',
-        when: 'Endpoint POST /api/v1/grammar/voicing-check xử lý',
-        then: 'Xử lý kiểm tra quy tắc và chấm điểm phát âm trong dưới 30ms.',
-        completed: true
+        id: 'ac-pron-207-vietnamese-mnemonics',
+        given: 'Học viên cần mẹo nhớ nhanh quy tắc',
+        when: 'Bấm nút "Xem Câu Thần Chú"',
+        then: 'Hiển thị câu khẩu quyết dân gian: "Thời phong kiến phương tây" cho đuôi /s/ và "Sáng sớm chạy xe sh zỏm" cho đuôi /ɪz/.',
+        completed: false
       },
       {
-        id: 'ac-pron-207-l1-precision',
-        given: 'Người Việt không có thói quen biến âm đuôi theo âm đứng trước',
-        when: 'Giải thích quy tắc',
-        then: 'Cung cấp câu thần chú dễ nhớ tiếng Việt: "Thời phong kiến phương tây" cho đuôi /s/ và "Sáng sớm chạy xe sh zỏm" cho đuôi /ɪz/.',
-        completed: true
-      },
-      {
-        id: 'ac-pron-207-a11y-fallback',
-        given: 'Học viên không dùng chuột kéo thả',
-        when: 'Dùng phím số 1, 2, 3 để gán từ vào cột',
-        then: 'Thẻ từ tự động bay vào cột tương ứng kèm hiệu ứng mượt mà.',
-        completed: true
+        id: 'ac-pron-207-rule-api-validation',
+        given: 'Học viên phân loại xong danh sách 10 từ',
+        when: 'Gửi kết quả lên API POST /api/v1/grammar/voicing-check',
+        then: 'Backend kiểm tra ma trận âm học đối chiếu và trả về bảng tổng kết tỷ lệ đạt trong dưới 30ms.',
+        completed: false
       }
     ]),
     technical_tasks: JSON.stringify([
       { id: 't-pron-207-fe-drag', title: 'Xây dựng component VoicingRuleBoard.jsx hỗ trợ kéo thả và phím tắt chọn cột', category: 'Frontend', completed: true },
+      { id: 't-pron-207-fe-mnemonic', title: 'Thiết kế MnemonicCard ghi nhớ mẹo dân gian tiếng Việt', category: 'Frontend', completed: false },
       { id: 't-pron-207-be-rules', title: 'Xây dựng quy tắc PhonologicalRuleChecker kiểm tra tính đúng đắn của âm đuôi ngữ pháp', category: 'Backend', completed: true },
-      { id: 't-pron-207-qa', title: 'Kiểm thử với 100 từ bất quy tắc phổ biến nhất trong tiếng Anh', category: 'QA', completed: true }
+      { id: 't-pron-207-qa', title: 'Kiểm thử với 100 từ bất quy tắc phổ biến nhất trong tiếng Anh', category: 'QA', completed: false }
     ]),
-    notes: `### 🎨 FRONTEND DESIGN SPECIFICATION
-- **Component File**: \`vietphonics-app/src/components/articulation/VoicingRuleMastery.jsx\`
-- **Stitch Design Tokens**:
-  - Column /s/: \`bg-sky-950/30 border-sky-500/40 rounded-3xl p-4\`
-  - Column /z/: \`bg-indigo-950/30 border-indigo-500/40 rounded-3xl p-4\`
-  - Column /ɪz/: \`bg-purple-950/30 border-purple-500/40 rounded-3xl p-4\`.`
+    notes: `### 🎯 FULLSTACK FEATURE SPECIFICATION
+- **Phân loại**: Full-stack Voicing Rule Engine & Interactive Sorting Board
+- **UI Mockup**: \`vietphonics-app/src/ui-reference/ph_ng_luy_n_ph_t_m_ph_k_m_h_c_light_mode/code.html\`
+- **Frontend Component**: \`vietphonics-app/src/components/articulation/VoicingRuleMastery.jsx\`
+
+#### 🎨 3-Column Sorting Board Layout
+\`\`\`
++-------------------------------------------------------------+
+| Cột 1: /s/                  | Cột 2: /z/        | Cột 3: /ɪz/ |
+| "Thời phong kiến phương tây"| (Còn lại)         | (Âm xuýt)   |
+| [cats] [books]              | [dogs] [plays]    | [buses]     |
++-------------------------------------------------------------+
+\`\`\`
+
+#### 🗄️ Backend Voicing Rule Contract
+\`\`\`http
+POST /api/v1/grammar/voicing-check
+Content-Type: application/json
+
+{
+  "category": "s_es_endings",
+  "submissions": [
+    { "word": "dogs", "chosenCoda": "/z/" }
+  ]
+}
+\`\`\``
   },
   {
     id: 'PRON-208',
@@ -654,56 +580,65 @@ export const articulationStories = [
     action: 'luyện tập các bài tập đảo âm chéo (Cross-Transition Drills) xen kẽ giữa 2 âm đối kháng (/s/ và /ʃ/, /l/ và /n/, /θ/ và /s/)',
     value: 'rèn luyện sự linh hoạt của cơ lưỡi và phản xạ thần kinh vận động, giúp học viên không bao giờ bị líu lưỡi khi giao tiếp thực tế',
     priority: 'must',
-    status: 'in-progress',
+    status: 'todo',
     size: 'M',
     points: 5,
+    uiMockupUrl: '/src/ui-reference/kh_u_h_nh_2d_th_vi_n_gi_i_ph_u_m_v_l1_light_mode/code.html',
     acceptance_criteria: JSON.stringify([
       {
-        id: 'ac-pron-208-tongue-twister',
-        given: 'Câu luyện đảo âm: "She sells sea shells on the sea shore"',
-        when: 'Học viên đọc câu vào micro',
-        then: 'Hệ thống kiểm tra sự chuyển đổi vị trí đầu lưỡi giữa âm /s/ (răng khép) và âm /ʃ/ (môi cong chu ra trước).',
-        completed: true
+        id: 'ac-pron-208-tongue-twister-text',
+        given: 'Câu luyện đảo âm đối kháng: "She sells sea shells on the sea shore"',
+        when: 'Câu hiển thị trên màn hình',
+        then: 'Các từ chứa âm /s/ được tô màu xanh Sky, các từ chứa âm /ʃ/ được tô màu hồng Rose, có icon biểu thị trạng thái môi (Bè miệng cười vs Cong môi chu ra).',
+        completed: false
       },
       {
-        id: 'ac-pron-208-frontend-design',
-        given: 'Giao diện CrossTransitionDrillView',
-        when: 'Render trên màn hình',
-        then: 'Các từ chứa âm /s/ tô màu xanh Sky, các từ chứa âm /ʃ/ tô màu hồng Rose, có đồ họa biểu diễn sự chuyển đổi vị trí môi nhấp nháy đồng bộ.',
-        completed: true
+        id: 'ac-pron-208-assimilation-detection',
+        given: 'Học viên đọc câu và bị líu lưỡi (đọc tất cả thành /s/ hoặc tất cả thành /ʃ/)',
+        when: 'Hệ thống phân tích ranh giới phổ âm học',
+        then: 'Phát hiện lỗi đồng hóa âm (Phonetic Assimilation) và chỉ rõ vị trí bị líu lưỡi kèm thông báo: "\'She\' (cong môi) -> \'sells\' (bè miệng)".',
+        completed: false
       },
       {
-        id: 'ac-pron-208-backend-design',
-        given: '5,000 học viên nộp bài luyện đảo âm',
-        when: 'Xử lý phân tích âm vị',
-        then: 'Mô hình phân tách rõ ràng ranh giới giữa 2 âm kề nhau với độ trễ phản hồi < 200ms.',
-        completed: true
+        id: 'ac-pron-208-web-audio-metronome',
+        given: 'Học viên gặp khó khăn khi đọc ở tốc độ bình thường',
+        when: 'Bật chế độ "Máy Gõ Nhịp Metronome (60 BPM)"',
+        then: 'Web Audio API phát tiếng gõ nhịp đều đặn, từ tương ứng phát sáng theo từng nhịp gõ để học viên luyện chuẩn từng bước.',
+        completed: false
       },
       {
-        id: 'ac-pron-208-l1-precision',
-        given: 'Người Việt hay bị "đồng hóa âm" (đọc tất cả thành /s/ hoặc tất cả thành /ʃ/)',
-        when: 'Hệ thống phát hiện lỗi đồng hóa',
-        then: 'Cảnh báo cụ thể: "Bạn đã bị líu lưỡi! Hãy tách chậm từng từ: \'She\' (cong môi) -> \'sells\' (cười bè miệng)".',
-        completed: true
-      },
-      {
-        id: 'ac-pron-208-a11y-fallback',
-        given: 'Học viên gặp khó khăn với tốc độ bình thường',
-        when: 'Bật chế độ "Luyện Chậm (Slow-Mo Metronome)"',
-        then: 'Hệ thống bật máy gõ nhịp Metronome 60 BPM hướng dẫn học viên đọc chuẩn từng từ theo nhịp gõ.',
-        completed: true
+        id: 'ac-pron-208-transition-scoring-api',
+        given: 'Bản ghi âm câu đảo âm được gửi lên API POST /api/v1/practice/confusion-trap',
+        when: 'Máy chủ chấm điểm sự phân tách âm vị',
+        then: 'Trả về ma trận điểm số chuyển đổi (Cross-Transition Matrix) và chỉ số độ dẻo cơ miệng trong dưới 200ms.',
+        completed: false
       }
     ]),
     technical_tasks: JSON.stringify([
-      { id: 't-pron-208-fe-twister', title: 'Xây dựng component CrossTransitionTwister.jsx với máy gõ nhịp Metronome Web Audio', category: 'Frontend', completed: true },
-      { id: 't-pron-208-be-eval', title: 'Phát triển API POST /api/v1/practice/confusion-trap chấm điểm độ phân tách âm', category: 'Backend', completed: true },
-      { id: 't-pron-208-qa', title: 'Kiểm thử với 30 câu líu lưỡi kinh điển của người học tiếng Anh', category: 'QA', completed: true }
+      { id: 't-pron-208-fe-twister', title: 'Xây dựng component CrossTransitionTwister.jsx với máy gõ nhịp Metronome Web Audio', category: 'Frontend', completed: false },
+      { id: 't-pron-208-fe-metronome', title: 'Thiết kế Web Audio Metronome phát xung nhịp click từ 60 BPM đến 120 BPM', category: 'Frontend', completed: false },
+      { id: 't-pron-208-be-eval', title: 'Phát triển API POST /api/v1/practice/confusion-trap chấm điểm độ phân tách âm', category: 'Backend', completed: false },
+      { id: 't-pron-208-qa', title: 'Kiểm thử với 30 câu líu lưỡi kinh điển của người học tiếng Anh', category: 'QA', completed: false }
     ]),
-    notes: `### 🎨 FRONTEND DESIGN SPECIFICATION
-- **Component File**: \`vietphonics-app/src/components/articulation/CrossTransitionDrill.jsx\`
-- **Stitch Design Tokens**:
-  - Sound A Chip: \`bg-sky-500/20 text-sky-400 border border-sky-500 font-bold px-2 py-1 rounded\`
-  - Sound B Chip: \`bg-rose-500/20 text-rose-400 border border-rose-500 font-bold px-2 py-1 rounded\`.`
+    notes: `### 🎯 FULLSTACK FEATURE SPECIFICATION
+- **Phân loại**: Full-stack Confusion-Trap & Metronome Rhythmic Engine
+- **UI Mockup**: \`vietphonics-app/src/ui-reference/kh_u_h_nh_2d_th_vi_n_gi_i_ph_u_m_v_l1_light_mode/code.html\`
+- **Frontend Component**: \`vietphonics-app/src/components/articulation/CrossTransitionDrill.jsx\`
+
+#### 🎨 Alternating Phoneme Colors
+- **Sound A (/s/) Chip**: \`bg-sky-500/20 text-sky-400 border border-sky-500 font-bold px-2 py-1 rounded\`.
+- **Sound B (/ʃ/) Chip**: \`bg-rose-500/20 text-rose-400 border border-rose-500 font-bold px-2 py-1 rounded\`.
+
+#### 🗄️ Backend API Contract
+\`\`\`http
+POST /api/v1/practice/confusion-trap
+Content-Type: application/json
+
+{
+  "drillId": "trap_s_sh_01",
+  "audioUrl": "https://r2.../twister.opus"
+}
+\`\`\``
   },
   {
     id: 'PRON-209',
@@ -716,53 +651,62 @@ export const articulationStories = [
     status: 'in-progress',
     size: 'M',
     points: 5,
+    uiMockupUrl: '/src/ui-reference/kh_u_h_nh_2d_th_vi_n_gi_i_ph_u_m_v_l1_light_mode/code.html',
     acceptance_criteria: JSON.stringify([
       {
-        id: 'ac-pron-209-spelling-map',
-        given: 'Học viên xem bản đồ âm /f/',
-        when: 'Hệ thống hiển thị các nhánh chính tả',
-        then: 'Hiển thị tỷ lệ xuất hiện: Chữ "f/ff" (78%), Chữ "ph" (18%), Chữ "gh" (4% e.g. rough, laugh) kèm ví dụ mẫu.',
+        id: 'ac-pron-209-radial-mindmap',
+        given: 'Học viên tra cứu âm /f/',
+        when: 'Bản đồ chính tả SVG hiển thị',
+        then: 'Nút trung tâm hiển thị ký hiệu /f/, tỏa ra các nhánh tỷ lệ: Nhánh "f/ff" (78%), Nhánh "ph" (18%), Nhánh "gh" (4% e.g. "rough", "laugh").',
         completed: true
       },
       {
-        id: 'ac-pron-209-frontend-design',
-        given: 'Giao diện MultiSpellingView',
-        when: 'Render trên màn hình',
-        then: 'Bản đồ tư duy hình cây (Mindmap Tree) hoặc mạng nhện SVG tương tác, click vào nhánh nào sẽ hiện danh sách các từ thông dụng thuộc nhánh đó.',
+        id: 'ac-pron-209-branch-expansion',
+        given: 'Học viên click vào nhánh "ph"',
+        when: 'Nhánh mở rộng',
+        then: 'Hiển thị danh sách 5 từ ví dụ thông dụng: "phone", "photo", "physics", "phrase", "dolphin" kèm nút nghe phát âm.',
         completed: true
       },
       {
-        id: 'ac-pron-209-backend-design',
-        given: '5,000 học viên tra cứu bản đồ chính tả',
-        when: 'Gọi GET /api/v1/dictionary/spelling-map/{phoneme}',
-        then: 'Dữ liệu được nạp từ Redis Cache trong < 5ms.',
-        completed: true
+        id: 'ac-pron-209-silent-spelling-warning',
+        given: 'Học viên xem nhánh "gh"',
+        when: 'Bật cảnh báo âm câm',
+        then: 'Hiển thị ghi chú: "\'gh\' chỉ đọc là /f/ trong một số từ như \'laugh\', \'rough\'; còn trong \'though\', \'night\' thì hoàn toàn là âm câm!".',
+        completed: false
       },
       {
-        id: 'ac-pron-209-l1-precision',
-        given: 'Âm câm trong tiếng Anh (ví dụ "gh" trong "night", "though" là âm câm nhưng trong "laugh" lại đọc là /f/)',
-        when: 'Xem bản đồ',
-        then: 'Đánh dấu cảnh báo đặc biệt về âm câm để người học không bị nhầm lẫn.',
-        completed: true
-      },
-      {
-        id: 'ac-pron-209-a11y-fallback',
-        given: 'Học viên dùng bàn phím duyệt bản đồ',
-        when: 'Tab qua các nhánh',
-        then: 'Mỗi nhánh đọc rõ tỷ lệ phần trăm và số lượng từ vựng.',
-        completed: true
+        id: 'ac-pron-209-keyboard-traversal',
+        given: 'Học viên duyệt cây bằng bàn phím',
+        when: 'Dùng phím mũi tên hoặc Tab',
+        then: 'Con trỏ duyệt qua từng nhánh và đọc to tỷ lệ phần trăm phân bố.',
+        completed: false
       }
     ]),
     technical_tasks: JSON.stringify([
       { id: 't-pron-209-fe-map', title: 'Xây dựng component MultiSpellingMindmap.jsx dạng đồ họa SVG tương tác', category: 'Frontend', completed: true },
-      { id: 't-pron-209-be-lexicon', title: 'Xây dựng cơ sở dữ liệu ánh xạ 44 âm vị với các biến thể mặt chữ chính tả trong tiếng Anh', category: 'Backend', completed: true },
-      { id: 't-pron-209-qa', title: 'Kiểm tra độ chính xác của tỷ lệ phần trăm phân bố chính tả theo từ điển thống kê', category: 'QA', completed: true }
+      { id: 't-pron-209-fe-branch', title: 'Thiết kế hiệu ứng bung nhánh hoạt họa (Framer Motion Tree Expansion)', category: 'Frontend', completed: true },
+      { id: 't-pron-209-fe-silent', title: 'Tích hợp thẻ chú thích âm câm SilentSpellingCallout', category: 'Frontend', completed: false },
+      { id: 't-pron-209-qa', title: 'Kiểm tra độ chính xác của tỷ lệ phần trăm phân bố chính tả theo từ điển thống kê', category: 'QA', completed: false }
     ]),
-    notes: `### 🎨 FRONTEND DESIGN SPECIFICATION
-- **Component File**: \`vietphonics-app/src/components/articulation/MultiSpellingSoundMap.jsx\`
-- **Stitch Design Tokens**:
-  - Center Node: \`w-24 h-24 rounded-full bg-indigo-600 text-white font-black text-2xl flex items-center justify-center shadow-2xl\`
-  - Branch Node: \`bg-slate-900 border border-slate-700 rounded-2xl p-3 text-slate-200 hover:border-indigo-400\`.`
+    notes: `### 🎨 PURE FRONTEND DESIGN SPECIFICATION
+- **Phân loại**: Pure Frontend Radial SVG Mindmap
+- **UI Mockup**: \`vietphonics-app/src/ui-reference/kh_u_h_nh_2d_th_vi_n_gi_i_ph_u_m_v_l1_light_mode/code.html\`
+- **Frontend Component**: \`vietphonics-app/src/components/articulation/MultiSpellingSoundMap.jsx\`
+
+#### 📐 Radial Mindmap Hierarchy
+\`\`\`
++-------------------------------------------------------------+
+|             [ Nhánh "f/ff" (78%) - fast, coffee ]           |
+|                               ^                             |
+|                               |                             |
+| [ "gh" (4%) ] <--- (( TÂM: ÂM /f/ )) ---> [ "ph" (18%) ]    |
+| rough, laugh                                phone, photo    |
++-------------------------------------------------------------+
+\`\`\`
+
+#### 🎨 Design Tokens
+- **Center Node**: \`w-24 h-24 rounded-full bg-indigo-600 text-white font-black text-2xl flex items-center justify-center shadow-2xl\`.
+- **Branch Node**: \`bg-slate-900 border border-slate-700 rounded-2xl p-3 text-slate-200 hover:border-indigo-400 cursor-pointer\`.`
   },
   {
     id: 'PRON-210',
@@ -772,56 +716,64 @@ export const articulationStories = [
     action: 'xem video bài giảng ngắn (30-45s) với chuyên gia bản ngữ phát âm ở chế độ phóng đại khẩu hình (Exaggerated Articulation), có đồ họa vector đồng bộ theo thời gian thực',
     value: 'quan sát rõ từng chuyển động tinh tế của cơ môi và răng mà mắt thường khó nhận ra ở tốc độ nói nhanh',
     priority: 'should',
-    status: 'in-progress',
+    status: 'todo',
     size: 'L',
     points: 8,
+    uiMockupUrl: '/src/ui-reference/ph_ng_luy_n_ph_t_m_ph_k_m_h_c_light_mode/code.html',
     acceptance_criteria: JSON.stringify([
       {
-        id: 'ac-pron-210-video-player',
+        id: 'ac-pron-210-dual-camera-angles',
         given: 'Học viên xem video khẩu hình âm /θ/',
-        when: 'Video phát đến khoảnh khắc đặt lưỡi kẹp răng',
-        then: 'Video tự động phóng to cận cảnh 2x vào vùng miệng, hiển thị vòng tròn phát sáng màu xanh chỉ vào đầu lưỡi và hiển thị phụ đề IPA đồng bộ.',
-        completed: true
+        when: 'Bấm nút chuyển đổi góc quay',
+        then: 'Trình phát đổi tức thì giữa Góc nhìn thẳng (Frontal View) và Góc nghiêng 45 độ (Profile View) mà không bị gián đoạn âm thanh.',
+        completed: false
       },
       {
-        id: 'ac-pron-210-frontend-design',
-        given: 'Giao diện MasterclassPlayerView',
-        when: 'Render trên màn hình',
-        then: 'Trình phát video tỷ lệ 16:9 sắc nét Full HD, thanh điều khiển có nút chuyển góc quay (Góc thẳng / Góc nghiêng 45 độ), nút xem chậm 0.25x và nút lặp đoạn A-B.',
-        completed: true
+        id: 'ac-pron-210-auto-zoom-cues',
+        given: 'Video phát đến khoảnh khắc đặt lưỡi kẹp răng',
+        when: 'Khung hình chạm mốc thời gian WebVTT cue',
+        then: 'Giao diện tự động zoom cận cảnh 2x vào vùng miệng của chuyên gia, hiển thị vòng tròn phát sáng màu xanh chỉ vào đầu lưỡi.',
+        completed: false
       },
       {
-        id: 'ac-pron-210-backend-design',
-        given: '5,000 học viên cùng stream video bài giảng',
-        when: 'Truyền luồng video qua HLS (HTTP Live Streaming)',
-        then: 'Các phân đoạn video (.ts / .m4s) được phân phối qua Cloudflare Stream CDN, thời gian khởi tạo video (Time-to-First-Frame) < 400ms.',
-        completed: true
+        id: 'ac-pron-210-ab-loop-slowmo',
+        given: 'Học viên muốn soi kỹ một chuyển động khẩu hình khó',
+        when: 'Chọn tốc độ phát 0.25x hoặc 0.5x và bật nút lặp đoạn A-B',
+        then: 'Đoạn video được lặp lại liên tục ở tốc độ siêu chậm mượt mà.',
+        completed: false
       },
       {
-        id: 'ac-pron-210-l1-precision',
-        given: 'So sánh góc quay miệng người Việt và người bản xứ',
-        when: 'Chuyên gia giảng giải',
-        then: 'Chỉ rõ: "Người Việt hay giữ môi trên bất động. Khi phát âm /w/ bạn cần chúm môi tròn như khi huýt sáo".',
-        completed: true
-      },
-      {
-        id: 'ac-pron-210-a11y-fallback',
-        given: 'Học viên mạng yếu không tải được video HD',
-        when: 'Hệ thống phát hiện băng thông thấp',
-        then: 'Tự động hạ độ phân giải xuống 480p hoặc chuyển sang chế độ ảnh động WebP nén nhẹ nhàng.',
-        completed: true
+        id: 'ac-pron-210-low-bandwidth-fallback',
+        given: 'Đường truyền mạng của học viên bị suy giảm băng thông',
+        when: 'Hệ thống phát hiện buffer underrun',
+        then: 'Tự động hạ độ phân giải video hoặc chuyển sang chế độ ảnh động WebP nén nhẹ nhàng.',
+        completed: false
       }
     ]),
     technical_tasks: JSON.stringify([
-      { id: 't-pron-210-fe-player', title: 'Xây dựng component MasterclassVideoPlayer.jsx với tính năng lặp đoạn A-B và đổi góc quay', category: 'Frontend', completed: true },
-      { id: 't-pron-210-be-hls', title: 'Thiết lập pipeline mã hóa video đa độ phân giải HLS (1080p, 720p, 480p) trên Cloudflare Stream', category: 'DevOps/Scale', completed: true },
-      { id: 't-pron-210-qa', title: 'Kiểm thử khả năng phát mượt mà trên kết nối mạng 3G/4G chập chờn', category: 'QA', completed: true }
+      { id: 't-pron-210-fe-player', title: 'Xây dựng component MasterclassVideoPlayer.jsx với tính năng lặp đoạn A-B và đổi góc quay', category: 'Frontend', completed: false },
+      { id: 't-pron-210-fe-webvtt', title: 'Tích hợp bộ phân tích WebVTT Cues đồng bộ hoạt ảnh SVG đè lên luồng video', category: 'Frontend', completed: false },
+      { id: 't-pron-210-qa', title: 'Kiểm thử khả năng phát mượt mà trên kết nối mạng di động 4G', category: 'QA', completed: false }
     ]),
-    notes: `### 🎨 FRONTEND DESIGN SPECIFICATION
-- **Component File**: \`vietphonics-app/src/components/articulation/VideoMasterclassPlayer.jsx\`
-- **Stitch Design Tokens**:
-  - Video Frame: \`rounded-3xl overflow-hidden border-2 border-slate-800 bg-black aspect-video relative shadow-2xl\`
-  - Control Overlay: \`bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent p-4 flex items-center justify-between\`.`
+    notes: `### 🎨 PURE FRONTEND DESIGN SPECIFICATION
+- **Phân loại**: Pure Frontend Video Player & WebVTT Sync
+- **UI Mockup**: \`vietphonics-app/src/ui-reference/ph_ng_luy_n_ph_t_m_ph_k_m_h_c_light_mode/code.html\`
+- **Frontend Component**: \`vietphonics-app/src/components/articulation/VideoMasterclassPlayer.jsx\`
+
+#### 📐 Video Player Layout & Controls
+\`\`\`
++-------------------------------------------------------------+
+| [ TRÌNH PHÁT VIDEO KHẨU HÌNH 16:9 FULL HD ]                 |
+| (Chuyên gia bản ngữ phát âm phóng đại khẩu hình)            |
+| (Vòng tròn neon zoom cận cảnh 2x vào vị trí đầu lưỡi)       |
++-------------------------------------------------------------+
+| [Góc: Thẳng / 45°]  [Tốc độ: 0.25x | 0.5x | 1x]  [Lặp đoạn A-B]|
++-------------------------------------------------------------+
+\`\`\`
+
+#### 🎨 Design Tokens
+- **Video Frame**: \`rounded-3xl overflow-hidden border-2 border-slate-800 bg-black aspect-video relative shadow-2xl\`.
+- **Control Overlay**: \`bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent p-4 flex items-center justify-between\`.`
   },
   {
     id: 'PRON-211',
@@ -831,55 +783,65 @@ export const articulationStories = [
     action: 'luyện đọc các câu được thiết kế bão hòa âm mục tiêu với mật độ cực cao (tối thiểu 4-6 lần xuất hiện trong 1 câu ngắn)',
     value: 'tạo áp lực cấu âm liên tục giúp cơ miệng thích nghi và khắc sâu phản xạ cơ bắp tự động (Muscle Memory)',
     priority: 'should',
-    status: 'in-progress',
+    status: 'todo',
     size: 'M',
     points: 5,
+    uiMockupUrl: '/src/ui-reference/ph_ng_luy_n_ph_t_m_ph_k_m_h_c_light_mode/code.html',
     acceptance_criteria: JSON.stringify([
       {
-        id: 'ac-pron-211-saturation',
+        id: 'ac-pron-211-saturation-meter-fill',
         given: 'Câu bão hòa âm /dʒ/: "George enjoyed arranging orange juice in the large fridge"',
-        when: 'Học viên đọc câu vào micro',
-        then: 'Hệ thống nhận diện cả 6 âm /dʒ/ và hiển thị biểu đồ radar thành tích cấu âm.',
-        completed: true
+        when: 'Học viên đọc câu và phát âm đúng từng âm /dʒ/',
+        then: 'Thanh "Saturation Meter" tăng dần độ đầy từ 0% đến 100% kèm hiệu ứng phát sáng neon xanh ngọc.',
+        completed: false
       },
       {
-        id: 'ac-pron-211-frontend-design',
-        given: 'Giao diện SoundSaturationView',
-        when: 'Render trên màn hình',
-        then: 'Mỗi lần học viên phát âm đúng 1 âm mục tiêu, con số trên thanh "Bộ Đo Bão Hòa (Saturation Meter)" tăng lên kèm hiệu ứng phát sáng neon.',
-        completed: true
+        id: 'ac-pron-211-ctc-density-eval',
+        given: 'Bản ghi âm câu bão hòa được gửi lên hệ thống',
+        when: 'Thuật toán CTC Alignment xử lý phân tích mật độ âm',
+        then: 'Chấm điểm độc lập cho toàn bộ 6 âm /dʒ/ và chỉ rõ các vị trí đạt hay chưa đạt trong vòng dưới 250ms.',
+        completed: false
       },
       {
-        id: 'ac-pron-211-backend-design',
-        given: '5,000 học viên nộp bài câu bão hòa',
-        when: 'Chấm điểm qua API POST /api/v1/scoring/saturation-sentence',
-        then: 'Trả kết quả chi tiết từng từ trong dưới 200ms.',
-        completed: true
-      },
-      {
-        id: 'ac-pron-211-l1-precision',
+        id: 'ac-pron-211-l1-affricate-advice',
         given: 'Học viên phát âm /dʒ/ thành /z/ hoặc /d/ kiểu Việt Nam',
-        when: 'Hệ thống chấm điểm',
-        then: 'Chỉ rõ từ bị sai và hướng dẫn cách giật cằm và bật hơi mạnh của âm /dʒ/.',
-        completed: true
+        when: 'Hệ thống phát hiện lỗi mất âm tắc xát (Affricate Failure)',
+        then: 'Hiển thị lời khuyên: "Âm /dʒ/ là âm tắc xát: Cần khép miệng nén khí rồi mới bật ra, không đọc lướt như chữ \'d\' tiếng Việt".',
+        completed: false
       },
       {
-        id: 'ac-pron-211-a11y-fallback',
-        given: 'Học viên muốn nghe đọc mẫu câu bão hòa',
-        when: 'Bấm nút "Nghe Bản Xứ"',
-        then: 'Phát audio bản ngữ với âm /dʒ/ được phát âm rõ ràng, chuẩn xác.',
-        completed: true
+        id: 'ac-pron-211-native-slow-demo',
+        given: 'Học viên bấm nút "Nghe Bản Xứ Chậm"',
+        when: 'Hành động kích hoạt',
+        then: 'Phát audio bản ngữ ở tốc độ 0.7x với từng âm /dʒ/ được phát âm rõ ràng, chuẩn xác.',
+        completed: false
       }
     ]),
     technical_tasks: JSON.stringify([
-      { id: 't-pron-211-fe-meter', title: 'Xây dựng component SaturationMeter.jsx với hiệu ứng tích lũy năng lượng khi đọc đúng', category: 'Frontend', completed: true },
-      { id: 't-pron-211-be-eval', title: 'Phát triển API POST /api/v1/scoring/saturation-sentence chấm điểm câu bão hòa', category: 'Backend', completed: true },
-      { id: 't-pron-211-qa', title: 'Kiểm thử với ngân hàng 100 câu bão hòa âm vị khó', category: 'QA', completed: true }
+      { id: 't-pron-211-fe-meter', title: 'Xây dựng component SaturationMeter.jsx với hiệu ứng tích lũy năng lượng khi đọc đúng', category: 'Frontend', completed: false },
+      { id: 't-pron-211-be-eval', title: 'Phát triển API POST /api/v1/scoring/saturation-sentence chấm điểm câu bão hòa', category: 'Backend', completed: false },
+      { id: 't-pron-211-qa', title: 'Kiểm thử với ngân hàng 100 câu bão hòa âm vị khó', category: 'QA', completed: false }
     ]),
-    notes: `### 🎨 FRONTEND DESIGN SPECIFICATION
-- **Component File**: \`vietphonics-app/src/components/articulation/SoundSaturationDrill.jsx\`
-- **Stitch Design Tokens**:
-  - Saturation Bar: \`h-3 rounded-full bg-slate-800 overflow-hidden\`, Fill: \`bg-gradient-to-r from-emerald-500 to-teal-400\`.`
+    notes: `### 🎯 FULLSTACK FEATURE SPECIFICATION
+- **Phân loại**: Full-stack Sound Saturation Evaluator & Energy Meter
+- **UI Mockup**: \`vietphonics-app/src/ui-reference/ph_ng_luy_n_ph_t_m_ph_k_m_h_c_light_mode/code.html\`
+- **Frontend Component**: \`vietphonics-app/src/components/articulation/SoundSaturationDrill.jsx\`
+
+#### 🎨 Saturation Meter Tokens
+- **Saturation Bar Track**: \`h-3 rounded-full bg-slate-800 overflow-hidden w-full max-w-md\`.
+- **Saturation Bar Fill**: \`bg-gradient-to-r from-emerald-500 to-teal-400 transition-all duration-300 shadow-[0_0_12px_rgba(16,185,129,0.5)]\`.
+
+#### 🗄️ Backend API Contract
+\`\`\`http
+POST /api/v1/scoring/saturation-sentence
+Content-Type: application/json
+
+{
+  "sentenceId": "sat_dj_01",
+  "targetPhoneme": "/dʒ/",
+  "audioUrl": "https://r2.../dj_01.opus"
+}
+\`\`\``
   },
   {
     id: 'VN-105',
@@ -889,55 +851,59 @@ export const articulationStories = [
     action: 'đọc cẩm nang hướng dẫn cấu âm chuyên biệt cho người Việt (e.g., "Để phát âm /θ/, hãy tưởng tượng bạn đang chuẩn bị cắn nhẹ vào đầu lưỡi...")',
     value: 'xóa bỏ rào cản thuật ngữ ngữ âm học khô khan, biến việc học phát âm thành các mẹo dân gian dễ nhớ và áp dụng được ngay tức khắc',
     priority: 'must',
-    status: 'in-progress',
+    status: 'done',
     size: 'M',
     points: 5,
+    uiMockupUrl: '/src/ui-reference/kh_u_h_nh_2d_th_vi_n_gi_i_ph_u_m_v_l1_light_mode/code.html',
     acceptance_criteria: JSON.stringify([
       {
-        id: 'ac-vn-105-guide',
-        given: 'Học viên xem hướng dẫn âm /ð/ (this, that)',
+        id: 'ac-vn-105-three-step-guide',
+        given: 'Học viên xem hướng dẫn cấu âm âm /ð/ (this, that)',
         when: 'Mở tab cẩm nang tiếng Việt',
-        then: 'Hiển thị mẹo 3 bước: 1. Đặt lưỡi như âm /θ/, 2. Bật tiếng rung cổ họng như tiếng ong kêu "zzz", 3. Rụt lưỡi lại nhanh.',
+        then: 'Hiển thị mẹo 3 bước trực quan: 1. Đặt đầu lưỡi kẹp nhẹ giữa 2 hàm răng như âm /θ/, 2. Rung cổ họng phát tiếng ong kêu "zzz", 3. Rụt nhẹ đầu lưỡi về sau.',
         completed: true
       },
       {
-        id: 'ac-vn-105-frontend-design',
-        given: 'Giao diện NativeTonguePlacementCard',
-        when: 'Render trên màn hình',
-        then: 'Thẻ bài phong cách cẩm nang hiện đại: Minh họa 3 bước hoạt hình trực quan, câu khẩu quyết ghi nhớ ngắn gọn đóng khung nổi bật, nút thử nghiệm micro ngay tại chỗ.',
+        id: 'ac-vn-105-side-by-side-comparison',
+        given: 'Giao diện NativeTonguePlacementCard hiển thị',
+        when: 'Học viên đối chiếu tiếng Việt vs tiếng Anh',
+        then: 'Hiển thị sơ đồ so sánh trực quan 2 vòm miệng: Vòm miệng tiếng Việt (cơ miệng mềm, thả lỏng) vs Vòm miệng tiếng Anh (cơ miệng căng, độ nén luồng khí lớn).',
         completed: true
       },
       {
-        id: 'ac-vn-105-backend-design',
-        given: '5,000 học viên tra cứu cẩm nang',
-        when: 'Tải cẩm nang từ API GET /api/v1/phonetics/l1-guides',
-        then: 'Dữ liệu được nạp từ Redis cache trong < 5ms.',
-        completed: true
-      },
-      {
-        id: 'ac-vn-105-l1-precision',
-        given: 'So sánh sự khác biệt cơ bản giữa khẩu hình tiếng Việt và tiếng Anh',
-        when: 'Xem phần nguyên lý',
-        then: 'Giải thích: Tiếng Việt cơ miệng mềm và thả lỏng, tiếng Anh cơ miệng căng hơn và có độ nén khí lớn hơn.',
-        completed: true
-      },
-      {
-        id: 'ac-vn-105-a11y-fallback',
-        given: 'Học viên muốn nghe đọc cẩm nang bằng tiếng Việt',
-        when: 'Bấm nút "Đọc Cẩm Nang"',
-        then: 'Hệ thống phát âm thanh tiếng Việt truyền cảm hướng dẫn từng bước.',
+        id: 'ac-vn-105-tactile-mnemonics',
+        given: 'Học viên xem các mẹo xúc giác thực hành',
+        when: 'Đọc phần mẹo ghi nhớ',
+        then: 'Cung cấp cảm giác xúc giác thực tế: Ví dụ đặt bàn tay trước miệng cảm nhận luồng hơi mát khi phát âm âm vô thanh.',
         completed: true
       }
     ]),
     technical_tasks: JSON.stringify([
       { id: 't-vn-105-fe-card', title: 'Xây dựng component L1MouthPlacementGuideCard.jsx với minh họa 3 bước trực quan', category: 'Frontend', completed: true },
-      { id: 't-vn-105-be-content', title: 'Biên tập toàn bộ cẩm nang khẩu hình tiếng Việt cho 44 âm vị tiếng Anh', category: 'Pedagogy', completed: true },
+      { id: 't-vn-105-fe-diagram', title: 'Thiết kế đồ họa so sánh song song cơ miệng tiếng Việt vs tiếng Anh', category: 'Frontend', completed: true },
       { id: 't-vn-105-qa', title: 'Kiểm thử mức độ dễ hiểu của cẩm nang đối với người học mới bắt đầu từ con số 0', category: 'QA', completed: true }
     ]),
-    notes: `### 🎨 FRONTEND DESIGN SPECIFICATION
-- **Component File**: \`vietphonics-app/src/components/articulation/NativeTonguePlacementGuide.jsx\`
-- **Stitch Design Tokens**:
-  - Guide Container: \`bg-slate-900 border border-slate-800 rounded-3xl p-6 space-y-4 shadow-xl\`
-  - Step Badge: \`w-7 h-7 rounded-full bg-rose-500/20 text-rose-400 font-bold flex items-center justify-center\`.`
+    notes: `### 🎨 PURE FRONTEND DESIGN SPECIFICATION
+- **Phân loại**: Pure Frontend Pedagogical Placement Card
+- **UI Mockup**: \`vietphonics-app/src/ui-reference/kh_u_h_nh_2d_th_vi_n_gi_i_ph_u_m_v_l1_light_mode/code.html\`
+- **Frontend Component**: \`vietphonics-app/src/components/articulation/NativeTonguePlacementGuide.jsx\`
+
+#### 📐 3-Step Practical Layout
+\`\`\`
++-------------------------------------------------------------+
+| CẨM NANG KHẨU HÌNH THỰC CHIẾN CHO NGƯỜI VIỆT                |
+| Âm: /ð/ (this, that, brother)                               |
++-------------------------------------------------------------+
+| [BƯỚC 1: KẸP LƯỠI]     -> [BƯỚC 2: RUNG CỔ HỌNG] -> [BƯỚC 3: RỤT LƯỠI]|
+| Thò 2mm đầu lưỡi ra        Kêu tiếng "zzz" như      Rụt lưỡi lại nhả |
+| giữa 2 hàm răng            tiếng ong bay            hơi êm dịu       |
++-------------------------------------------------------------+
+| Mẹo xúc giác: Đặt ngón tay lên cổ họng để cảm nhận độ rung! |
++-------------------------------------------------------------+
+\`\`\`
+
+#### 🎨 Design Tokens
+- **Guide Card**: \`bg-slate-900 border border-slate-800 rounded-3xl p-6 space-y-4 shadow-xl\`.
+- **Step Badge**: \`w-7 h-7 rounded-full bg-rose-500/20 text-rose-400 font-bold flex items-center justify-center\`.`
   }
 ];
