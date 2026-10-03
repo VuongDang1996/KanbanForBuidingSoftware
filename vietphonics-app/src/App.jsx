@@ -47,7 +47,7 @@ function MainContent() {
     <div className="min-h-screen bg-[#f8fafc] text-slate-800 flex flex-col font-sans antialiased">
       <Navbar />
 
-      <main className="w-full pt-20 lg:pt-24 px-4 sm:px-6 lg:px-8 max-w-[1440px] mx-auto flex-1 flex flex-col">
+      <main className="w-full pt-20 pb-12 flex-1 flex flex-col">
         {renderActiveView()}
       </main>
 

@@ -1,330 +1,491 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { useRecorder } from '../lib/audio/useRecorder';
 
 export default function Game3dView() {
   const { incrementStreak } = useApp();
-  const [world, setWorld] = useState(1);
   const [bossHp, setBossHp] = useState(1250);
-  const [heroHp, setHeroHp] = useState(100);
+  const maxBossHp = 3000;
   const [combo, setCombo] = useState(4);
-  const [vCoins, setVCoins] = useState(1420);
   const [combatFeedback, setCombatFeedback] = useState({
-    title: 'CRITICAL HIT! -250 DMG',
-    subtitle: 'HOÀN HẢO ÂM ĐUÔI /ks/ • BẺ GÃY GIÁP ĐÁ!',
-    type: 'crit'
+    type: 'critical',
+    damage: 250,
+    text: 'HOÀN HẢO ÂM ĐUÔI /ks/ • BẺ GÃY GIÁP ĐÁ!',
+    emoji: '💥'
   });
-  const [currentSpellWord, setCurrentSpellWord] = useState('six');
-  const [isCasting, setIsCasting] = useState(false);
-  const [selectedTab, setSelectedTab] = useState('battle'); // 'battle' | 'gear' | 'ranks'
+  const [isSurging, setIsSurging] = useState(false);
 
   const { isRecording, start, stop } = useRecorder({ autoAnalyze: true });
 
-  const spells = [
-    { word: 'six', ipa: '/sɪks/', target: 'Bật cụm vô thanh /ks/' },
-    { word: 'box', ipa: '/bɒks/', target: 'Bật cụm vô thanh /ks/' },
-    { word: 'fox', ipa: '/fɒks/', target: 'Bật cụm vô thanh /ks/' },
-    { word: 'mixed', ipa: '/mɪkst/', target: 'Bật cụm /kst/ kết thúc' }
-  ];
-
-  const triggerAttack = (word, score = 92) => {
-    setIsCasting(true);
-    // Beep sound effect using AudioContext Web Audio API (GAME-104)
-    if (typeof window !== 'undefined' && window.AudioContext) {
-      try {
-        const ctx = new (window.AudioContext || window.webkitAudioContext)();
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-        osc.type = 'triangle';
-        osc.frequency.setValueAtTime(587.33, ctx.currentTime); // D5
-        osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.15); // A5
-        gain.gain.setValueAtTime(0.3, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.25);
-        osc.start();
-        osc.stop(ctx.currentTime + 0.25);
-      } catch (e) {
-        // audio fail safe
-      }
+  const playTTS = (text, rate = 1.0) => {
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'en-US';
+      utterance.rate = rate;
+      window.speechSynthesis.speak(utterance);
     }
-
-    setTimeout(() => {
-      setIsCasting(false);
-      const dmg = score > 80 ? 250 : 120;
-      setBossHp((hp) => Math.max(0, hp - dmg));
-      setCombo((c) => c + 1);
-      setVCoins((v) => v + 50);
-      setCombatFeedback({
-        title: score > 80 ? `CRITICAL HIT! -${dmg} DMG` : `HIT! -${dmg} DMG`,
-        subtitle: `Phát âm chuẩn từ "${word}"! Bẻ gãy lá chắn Rune của Golem!`,
-        type: score > 80 ? 'crit' : 'hit'
-      });
-      incrementStreak();
-    }, 600);
   };
 
-  const handleMicCast = async () => {
-    if (!isRecording) {
-      start();
-    } else {
+  const handleTestPerfect = () => {
+    playTTS('Six', 0.9);
+    setIsSurging(true);
+    const newHp = Math.max(0, bossHp - 250);
+    setBossHp(newHp);
+    setCombo(prev => prev + 1);
+    setCombatFeedback({
+      type: 'critical',
+      damage: 250,
+      text: 'HOÀN HẢO ÂM ĐUÔI /ks/ • BẺ GÃY GIÁP ĐÁ!',
+      emoji: '💥'
+    });
+    incrementStreak();
+    setTimeout(() => setIsSurging(false), 1200);
+  };
+
+  const handleTestError = () => {
+    playTTS('Si', 1.0);
+    setIsSurging(false);
+    setCombo(0);
+    setCombatFeedback({
+      type: 'miss',
+      damage: 0,
+      text: 'TRƯỢT ĐÒN! RỤNG ÂM /ks/ THÀNH "SÍCH" • GOLEM PHẢN KÍCH!',
+      emoji: '🛡️'
+    });
+  };
+
+  const handleMicToggle = async () => {
+    if (isRecording) {
       await stop();
-      triggerAttack(currentSpellWord, 95);
+      handleTestPerfect();
+    } else {
+      await start();
     }
   };
+
+  const hpPercent = (bossHp / maxBossHp) * 100;
 
   return (
-    <div className="w-full flex flex-col gap-6 py-4 animate-fade-in">
-      {/* Top RPG Header Bar */}
-      <div className="w-full flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-white border border-slate-200/80 p-4 rounded-2xl shadow-[0_2px_8px_rgba(15,23,42,0.03)]">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 border border-amber-200 flex items-center justify-center font-bold">
-            <span className="material-symbols-outlined text-2xl">swords</span>
+    <div className="flex flex-col w-full animate-fade-in">
+      <main className="w-full px-4 md:px-gutter-desktop py-space-md max-w-[1560px] mx-auto">
+        {/* TOP STATUS BAR: LORE, COMBO & CURRENCY */}
+        <div className="w-full flex flex-col xl:flex-row items-center justify-between gap-space-md mb-space-md">
+          {/* Left: Player Combat Status & Combo */}
+          <div className="flex items-center gap-space-md w-full xl:w-auto justify-between xl:justify-start">
+            <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-amber-50 border border-amber-200/80 shadow-sm">
+              <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-amber-500/15 text-amber-600 animate-pulse">
+                <span className="material-symbols-outlined text-lg">local_fire_department</span>
+              </div>
+              <div className="flex flex-col">
+                <span className="font-label-mono text-[10px] uppercase text-amber-800/80 font-semibold leading-none">
+                  Combo Multiplier
+                </span>
+                <span className="font-headline-sm text-base text-amber-700 tracking-tight font-extrabold leading-tight">
+                  x{combo} STREAK!
+                </span>
+              </div>
+            </div>
           </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="font-mono text-xs font-bold text-amber-600 uppercase">
-                Phonics RPG 3D Arena (GAME-101 to 105)
+
+          {/* Center: Stage & Lore Banner */}
+          <div className="flex flex-col items-center text-center px-space-md py-1.5 bg-slate-50 border border-slate-200/80 rounded-xl">
+            <div className="flex items-center gap-2 font-label-mono text-[11px] text-sky-700 font-bold">
+              <span className="w-2 h-2 rounded-full bg-sky-500 animate-ping"></span>
+              <span className="uppercase tracking-wider">Acoustic World 1: Final Consonants</span>
+            </div>
+            <div className="font-headline-md text-base md:text-lg text-slate-900 font-bold tracking-tight flex items-center gap-2 mt-0.5">
+              <span>Thung Lũng Âm Đuôi</span>
+              <span className="text-slate-300 font-normal">•</span>
+              <span className="text-rose-600">Ải 3: Trùm Golem Đá Vụn</span>
+            </div>
+          </div>
+
+          {/* Right: Currencies & L1 Calibration */}
+          <div className="flex items-center gap-space-sm w-full xl:w-auto justify-end">
+            <div className="flex items-center gap-2 px-space-sm py-2 rounded-xl bg-slate-50 border border-slate-200/80 shadow-sm">
+              <span className="material-symbols-outlined text-amber-500 text-lg" style={{ fontVariationSettings: "'FILL' 1" }}>
+                monetization_on
               </span>
-              <span className="px-2 py-0.5 rounded-full bg-rose-50 border border-rose-200 text-[10px] font-mono font-bold text-primary">
-                Acoustic World 1: Final Consonants
+              <div className="flex flex-col text-left">
+                <span className="font-label-mono text-[10px] text-slate-500 font-semibold uppercase">V-Coins</span>
+                <span className="font-headline-sm text-[15px] text-slate-900 font-bold leading-none">1,420</span>
+              </div>
+            </div>
+            <div className="flex items-center gap-2 px-space-sm py-2 rounded-xl bg-slate-50 border border-slate-200/80 shadow-sm">
+              <span className="material-symbols-outlined text-indigo-600 text-lg" style={{ fontVariationSettings: "'FILL' 1" }}>
+                diamond
+              </span>
+              <div className="flex flex-col text-left">
+                <span className="font-label-mono text-[10px] text-slate-500 font-semibold uppercase">Runestones</span>
+                <span className="font-headline-sm text-[15px] text-indigo-700 font-bold leading-none">28</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* CENTER 3D ISOMETRIC COMBAT ARENA */}
+        <div className="relative w-full rounded-3xl overflow-hidden bg-white/95 border border-slate-200/90 shadow-[0_4px_24px_rgba(15,23,42,0.06)] p-space-md md:p-space-xl flex flex-col justify-between min-h-[580px]">
+          {/* Isometric Ground Ambient Lighting & Runes Overlay */}
+          <div className="absolute inset-0 pointer-events-none opacity-60 bg-[radial-gradient(ellipse_at_50%_70%,rgba(14,165,233,0.08)_0%,rgba(244,63,94,0.05)_40%,transparent_75%)]"></div>
+          <div className="absolute inset-x-0 bottom-0 h-40 pointer-events-none bg-gradient-to-t from-slate-50/80 to-transparent"></div>
+
+          {/* Ground Inscribed Neon Rune Ring */}
+          <div className="absolute inset-x-0 bottom-10 flex justify-center pointer-events-none opacity-40">
+            <svg className="w-[850px] h-[220px]" fill="none" viewBox="0 0 850 220">
+              <ellipse className="text-sky-400" cx="425" cy="110" rx="380" ry="80" stroke="currentColor" strokeDasharray="12 8" strokeWidth="1.5"></ellipse>
+              <ellipse className="text-rose-400" cx="425" cy="110" rx="280" ry="55" stroke="currentColor" strokeWidth="1"></ellipse>
+              <ellipse className="text-indigo-400" cx="425" cy="110" rx="160" ry="32" stroke="currentColor" strokeDasharray="6 6" strokeWidth="1.5"></ellipse>
+              <circle className="text-sky-500" cx="120" cy="110" fill="currentColor" r="5"></circle>
+              <circle className="text-sky-500" cx="730" cy="110" fill="currentColor" r="5"></circle>
+              <circle className="text-rose-500" cx="425" cy="35" fill="currentColor" r="5"></circle>
+              <circle className="text-rose-500" cx="425" cy="185" fill="currentColor" r="5"></circle>
+            </svg>
+          </div>
+
+          {/* ARENA TOP: GOLEM BOSS TELEMETRY */}
+          <div className="relative z-10 w-full flex flex-col md:flex-row items-center justify-between gap-space-md">
+            {/* Hero Status Pill */}
+            <div className="flex items-center gap-space-sm bg-white/90 backdrop-blur-md px-4 py-2 rounded-full border border-slate-200 shadow-sm">
+              <span className="w-2.5 h-2.5 rounded-full bg-sky-500 animate-pulse"></span>
+              <span className="font-headline-sm text-body-md text-slate-800 font-semibold">Spellcaster: L1 Resonator</span>
+              <span className="px-2.5 py-0.5 rounded-full bg-sky-50 border border-sky-200 font-label-mono text-[11px] text-sky-700 font-semibold">
+                Acoustic Shield ON
               </span>
             </div>
-            <h2 className="text-lg font-black text-slate-900 leading-tight">
-              Thung Lũng Âm Đuôi • Ải 3: Trùm Golem Đá Vụn
-            </h2>
-          </div>
-        </div>
 
-        {/* Currency & Combo Status */}
-        <div className="flex items-center gap-2.5">
-          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-50 border border-amber-200 text-xs font-mono font-bold text-amber-800">
-            <span>🔥</span>
-            <span>x{combo} STREAK COMBO!</span>
-          </div>
-          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 border border-slate-200 text-xs font-mono font-bold text-slate-700">
-            <span>🪙</span>
-            <span>{vCoins} V-Coins</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Tabs */}
-      <div className="flex items-center gap-2 border-b border-slate-200 pb-2">
-        <button
-          onClick={() => setSelectedTab('battle')}
-          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
-            selectedTab === 'battle' ? 'bg-primary text-white shadow-xs' : 'text-slate-600 hover:bg-slate-100'
-          }`}
-        >
-          Trận Đánh Trùm (Battle Arena)
-        </button>
-        <button
-          onClick={() => setSelectedTab('gear')}
-          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
-            selectedTab === 'gear' ? 'bg-secondary text-white shadow-xs' : 'text-slate-600 hover:bg-slate-100'
-          }`}
-        >
-          Trang Bị Ma Thuật (GAME-105)
-        </button>
-        <button
-          onClick={() => setSelectedTab('ranks')}
-          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
-            selectedTab === 'ranks' ? 'bg-indigo-600 text-white shadow-xs' : 'text-slate-600 hover:bg-slate-100'
-          }`}
-        >
-          Bảng Xếp Hạng Đại Học
-        </button>
-      </div>
-
-      {selectedTab === 'gear' ? (
-        /* RPG Equipment Inventory (GAME-105) */
-        <div className="bg-white border border-slate-200/90 rounded-2xl p-6 sm:p-8 shadow-xs space-y-6">
-          <h3 className="text-xl font-black text-slate-900">
-            Kho Trang Bị Ma Thuật & Thuộc Tính Ngữ Âm
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
-              <div className="w-12 h-12 rounded-xl bg-rose-100 text-primary flex items-center justify-center text-2xl">
-                🪄
+            {/* BOSS HP METRIC */}
+            <div className="w-full md:w-96 flex flex-col gap-1.5 bg-white/95 backdrop-blur-md p-space-sm rounded-2xl border border-rose-200/70 shadow-sm">
+              <div className="flex items-center justify-between">
+                <span className="font-headline-sm text-base text-rose-700 font-bold flex items-center gap-1.5">
+                  <span className="material-symbols-outlined text-rose-600 text-base">skull</span>
+                  Ancient Stone Golem
+                </span>
+                <span className="font-label-mono text-[11px] text-slate-600 font-semibold">
+                  Rune Shield: <span className="text-rose-600 font-bold">/ks/</span>
+                </span>
               </div>
-              <h4 className="font-bold text-sm text-slate-900">Wand of Ending Sounds (Lv.4)</h4>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Tăng +35% sát thương khi phát âm chuẩn các cụm âm đuôi /ks/, -ed, /st/.
-              </p>
-              <span className="text-[10px] font-mono text-emerald-600 font-bold block">ĐÃ TRANG BỊ</span>
-            </div>
-
-            <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
-              <div className="w-12 h-12 rounded-xl bg-sky-100 text-secondary flex items-center justify-center text-2xl">
-                👢
+              {/* Boss Progress Health Bar */}
+              <div className="w-full h-3.5 rounded-full bg-slate-100 border border-slate-200 overflow-hidden p-0.5 shadow-inner">
+                <div
+                  className="h-full rounded-full bg-gradient-to-r from-rose-500 to-red-600 transition-all duration-700 shadow-sm"
+                  style={{ width: `${hpPercent}%` }}
+                ></div>
               </div>
-              <h4 className="font-bold text-sm text-slate-900">Boots of Stress Rhythm (Lv.2)</h4>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Kéo dài thời gian bấm phản xạ counter-spell thêm 1.5 giây.
-              </p>
-              <span className="text-[10px] font-mono text-emerald-600 font-bold block">ĐÃ TRANG BỊ</span>
-            </div>
-
-            <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-3 opacity-60">
-              <div className="w-12 h-12 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center text-2xl">
-                💍
+              <div className="flex justify-between font-label-mono text-[10px] text-slate-500 font-semibold">
+                <span>WEAKNESS: ASPIRATED /k/ + VOICED /s/</span>
+                <span className="text-rose-700 font-bold">{bossHp} / {maxBossHp} HP</span>
               </div>
-              <h4 className="font-bold text-sm text-slate-900">Ring of Schwa Reduction</h4>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Khóa sau khi hạ gục Trùm Rồng ở World 4. Tự động chuyển nguyên âm yếu sang /ə/.
-              </p>
-              <span className="text-[10px] font-mono text-slate-400 font-bold block">CHƯA MỞ KHÓA</span>
             </div>
           </div>
-        </div>
-      ) : selectedTab === 'ranks' ? (
-        /* University Leaderboard (GAME-105) */
-        <div className="bg-white border border-slate-200/90 rounded-2xl p-6 sm:p-8 shadow-xs space-y-6">
-          <h3 className="text-xl font-black text-slate-900">
-            Bảng Xếp Hạng Đấu Trường Sinh Viên (University Leaderboard)
-          </h3>
-          <div className="space-y-3">
-            {[
-              { rank: 1, name: 'Đại Học Quốc Gia Hà Nội (VNU)', points: '42,500 PTS', topPhoneme: '/θ/ & /ð/' },
-              { rank: 2, name: 'Đại Học Bách Khoa TP.HCM (HCMUT)', points: '38,120 PTS', topPhoneme: 'Ending /t/, /k/' },
-              { rank: 3, name: 'Đại Học Kinh Tế Quốc Dân (NEU)', points: '35,900 PTS', topPhoneme: 'Stress & Cadence' },
-              { rank: 4, name: 'Đại Học Ngoại Thương (FTU)', points: '34,200 PTS', topPhoneme: 'Connected Speech' }
-            ].map((u) => (
-              <div
-                key={u.rank}
-                className="p-4 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between text-xs font-mono"
-              >
-                <div className="flex items-center gap-3">
-                  <span className="w-7 h-7 rounded-lg bg-white border border-slate-200 flex items-center justify-center font-bold text-sm text-primary">
-                    #{u.rank}
-                  </span>
-                  <div>
-                    <span className="font-sans font-bold text-sm text-slate-900 block">{u.name}</span>
-                    <span className="text-slate-400 text-[11px]">Âm thế mạnh: {u.topPhoneme}</span>
+
+          {/* ARENA COMBAT STAGE: HERO VS GOLEM WITH BEAM */}
+          <div className="relative z-10 w-full flex items-center justify-between my-auto py-space-lg px-space-sm md:px-space-xl">
+            {/* Hero Character Left */}
+            <div className="relative flex flex-col items-center group">
+              <div className="absolute -inset-4 rounded-3xl bg-sky-200/50 blur-2xl group-hover:bg-sky-300/60 transition-all pointer-events-none"></div>
+              <div className="relative w-36 h-48 md:w-52 md:h-68 rounded-2xl overflow-hidden bg-white p-1.5 border border-slate-200/90 shadow-[0_8px_24px_rgba(15,23,42,0.08)] flex flex-col items-center justify-center">
+                <div className="relative w-full h-full rounded-xl overflow-hidden bg-slate-100">
+                  <img
+                    className="w-full h-full object-cover"
+                    alt="Cyber Mage Hero"
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuBPthl4S96KQuQRKSZMdf7YAbisGHCUiCiD39RTgTqpYfvFbqOcw49WRz6-HfDbGMuBJshNjnWnX7Ych4U8ijc_aflBG8XHhmZO0YoWd7MTckBIpEAn6Jo5NFwjvVgJLzwXEQ7Z3Q5cxlQ6J_-zU1VVLLknN8GWVTzMyLs1uxh0nm0RioSYf5CkM1iDGXCWD_tek3QKch-3tdn-AEuInKBtQEqP7xvS-i8ceBbEUj336VNymZbNeOlf"
+                  />
+                  <div className="absolute bottom-2 inset-x-2 p-1.5 rounded-lg bg-white/90 backdrop-blur-sm border border-slate-200/60 text-center shadow-sm">
+                    <span className="font-label-mono text-[11px] text-sky-800 font-bold tracking-wide">
+                      HERO: PHONETICIAN
+                    </span>
                   </div>
                 </div>
-                <span className="text-sm font-black text-secondary">{u.points}</span>
               </div>
-            ))}
-          </div>
-        </div>
-      ) : (
-        /* 3D Combat Arena */
-        <div className="relative w-full rounded-3xl bg-white border border-slate-200/90 shadow-lg p-6 lg:p-10 flex flex-col justify-between min-h-[520px] overflow-hidden">
-          {/* Ambient Lighting & Rings */}
-          <div className="absolute inset-0 pointer-events-none opacity-40 bg-[radial-gradient(ellipse_at_50%_70%,rgba(14,165,233,0.15)_0%,rgba(244,63,94,0.1)_40%,transparent_75%)]" />
-
-          {/* Top Arena Header: Boss HP */}
-          <div className="relative z-10 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-2 bg-slate-50 px-3 py-1.5 rounded-full border border-slate-200 text-xs font-mono">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span>Dũng sĩ L1 Phonics • Giáp: 100/100 HP</span>
+              <div className="mt-space-sm flex items-center gap-1.5 px-3 py-1 rounded-full bg-sky-50 border border-sky-200 text-sky-800 font-label-mono text-[11px] font-semibold shadow-xs">
+                <span className="material-symbols-outlined text-sm text-sky-600">graphic_eq</span> Formant Charging: 2,400 Hz
+              </div>
             </div>
 
-            <div className="w-full sm:w-80 flex flex-col gap-1.5 bg-slate-50 p-3 rounded-2xl border border-rose-200">
-              <div className="flex items-center justify-between text-xs">
-                <span className="font-bold text-rose-700 flex items-center gap-1">
-                  <span>💀</span>
-                  <span>Ancient Stone Golem (Boss)</span>
-                </span>
-                <span className="font-mono text-slate-500 font-bold">{bossHp} / 3000 HP</span>
-              </div>
-              <div className="w-full h-3 rounded-full bg-slate-200 overflow-hidden">
+            {/* DYNAMIC ATTACK BEAM VISUAL */}
+            <div className="relative flex-1 mx-3 md:mx-8 h-32 flex flex-col items-center justify-center">
+              <div className="relative w-full h-8 flex items-center justify-center">
+                <div className="w-full h-1.5 bg-gradient-to-r from-sky-400 via-rose-400 to-rose-500 rounded-full opacity-70"></div>
                 <div
-                  className="h-full bg-gradient-to-r from-rose-500 to-red-600 transition-all duration-500"
-                  style={{ width: `${(bossHp / 3000) * 100}%` }}
-                />
+                  className={`absolute inset-0 bg-gradient-to-r from-sky-400 via-rose-400 to-rose-500 rounded-full transition-opacity ${
+                    isSurging ? 'opacity-100 blur-sm scale-110 animate-pulse' : 'opacity-40 blur-xs'
+                  }`}
+                ></div>
+                <div className="absolute inset-0 flex items-center justify-around pointer-events-none">
+                  <span className="w-2.5 h-2.5 rounded-full bg-sky-400 shadow-[0_0_8px_#38bdf8] animate-ping"></span>
+                  <span className="w-3 h-3 rounded-full bg-rose-500 shadow-[0_0_12px_#f43f5e] animate-bounce"></span>
+                  <span className="w-2.5 h-2.5 rounded-full bg-sky-400 shadow-[0_0_8px_#38bdf8] animate-ping"></span>
+                </div>
               </div>
-              <span className="text-[10px] font-mono text-slate-400 text-right">
-                Điểm yếu: Bật cụm /ks/ phá giáp
+
+              {/* Combat Damage Floating Label */}
+              <div className="mt-space-sm px-4 py-2 rounded-2xl bg-amber-50/95 border border-amber-300 backdrop-blur-md shadow-lg flex items-center gap-2.5 transform transition-all duration-300">
+                <span className="text-2xl animate-bounce">{combatFeedback.emoji}</span>
+                <div className="flex flex-col text-left">
+                  <span className="font-headline-sm text-sm md:text-base text-rose-700 font-extrabold tracking-tight">
+                    {combatFeedback.damage > 0 ? `CRITICAL HIT! -${combatFeedback.damage} DMG` : 'MISSED CODA!'}
+                  </span>
+                  <span className="font-label-mono text-[11px] text-amber-900 font-bold">
+                    {combatFeedback.text}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Boss Monster Right */}
+            <div className="relative flex flex-col items-center group">
+              <div className="absolute -inset-4 rounded-3xl bg-rose-200/50 blur-2xl group-hover:bg-rose-300/60 transition-all pointer-events-none"></div>
+              <div className="relative w-36 h-48 md:w-52 md:h-68 rounded-2xl overflow-hidden bg-white p-1.5 border border-slate-200/90 shadow-[0_8px_24px_rgba(15,23,42,0.08)] flex flex-col items-center justify-center">
+                <div className="relative w-full h-full rounded-xl overflow-hidden bg-slate-100">
+                  <img
+                    className="w-full h-full object-cover"
+                    alt="Ancient Stone Golem"
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuDLskWelzqbUijGJgAmqFXcZMVHw4qtAguLJNBKPt9tyh6BW3LBfnFYBAD9TrCI0n1k3KwK54Naxk5X2ajI9-Y43m573RsMIh2_4sVUSy8F-bB9ONIfvY8mvwA8_FLuApJbqUjgaYXwbbyuJhq2LAMvDDjCZwbCxe1i24CJHSVA0YQNJRo4iOPMi1bX4SoDwyP0WXyaOzJSJX40irOk4tZQtn1QXdrcRuhoK8TWJ12meDgCBcgvIYOc"
+                  />
+                  {/* Cracked Rune Shield Seal Overlay */}
+                  <div className="absolute inset-0 bg-rose-900/10 flex flex-col items-center justify-center backdrop-blur-[1px]">
+                    <div className="w-16 h-16 rounded-2xl bg-white/95 border border-rose-200 shadow-xl flex flex-col items-center justify-center">
+                      <span className="font-ipa-display text-ipa-display text-rose-600 font-bold leading-none">/ks/</span>
+                      <span className="font-label-mono text-[8px] text-slate-500 uppercase tracking-widest leading-none mt-1 font-semibold">
+                        RUNE SHIELD
+                      </span>
+                    </div>
+                  </div>
+                  <div className="absolute bottom-2 inset-x-2 p-1.5 rounded-lg bg-white/90 backdrop-blur-sm border border-slate-200/60 text-center shadow-sm">
+                    <span className="font-label-mono text-[11px] text-rose-800 font-bold tracking-wide">
+                      BOSS: GOLEM ĐÁ VỤN
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div className="mt-space-sm flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-50 border border-rose-200 text-rose-700 font-label-mono text-[11px] font-semibold shadow-xs">
+                <span className="material-symbols-outlined text-sm text-rose-600">shield_with_heart</span>
+                Giáp Nứt: {Math.round(hpPercent)}% Remaining
+              </div>
+            </div>
+          </div>
+
+          {/* SPOKEN INCANTATION SPELLCASTING BOX */}
+          <div className="relative z-20 w-full max-w-2xl mx-auto bg-white rounded-2xl p-space-md border border-slate-200/90 shadow-[0_8px_30px_rgba(15,23,42,0.06)] flex flex-col items-center gap-space-sm">
+            <div className="w-full flex items-center justify-between font-label-mono text-label-mono px-space-xs">
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-rose-600 animate-ping"></span>
+                <span className="uppercase tracking-widest text-slate-800 font-bold text-[12px]">
+                  Thần Chú Khắc Chế:
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-sky-700 font-bold text-[12px]">Thời Gian Hô:</span>
+                <span className="px-2 py-0.5 rounded-md bg-sky-50 text-sky-800 font-bold text-[11px]">2.4s</span>
+              </div>
+            </div>
+
+            {/* Target Word in Giant Letters with Syllable Break */}
+            <div className="flex items-center justify-center gap-space-md py-1">
+              <div className="flex items-center gap-2">
+                <span className="font-display-hero text-4xl md:text-5xl text-slate-900 font-extrabold tracking-tight">S</span>
+                <span className="font-display-hero text-4xl md:text-5xl text-slate-900 font-extrabold tracking-tight">I</span>
+                <span className="relative font-display-hero text-4xl md:text-5xl text-rose-600 font-extrabold tracking-tight">
+                  X
+                  <span className="absolute -top-1.5 -right-2.5 flex h-3 w-3">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-3 w-3 bg-rose-600"></span>
+                  </span>
+                </span>
+              </div>
+              {/* IPA Badge */}
+              <div className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-50 border border-slate-200 shadow-inner">
+                <span className="font-label-mono text-[11px] text-slate-500 font-semibold">IPA:</span>
+                <span className="font-ipa-display text-2xl text-sky-700 tracking-wider font-bold">
+                  /sɪ<span className="text-rose-600 underline decoration-rose-500 underline-offset-4">ks</span>/
+                </span>
+              </div>
+            </div>
+
+            {/* Vietnamese Error Prevention Tooltip */}
+            <div className="w-full flex items-center justify-between px-space-sm py-2 rounded-xl bg-rose-50/80 border border-rose-200 text-rose-950 font-body-sm text-[12px] leading-relaxed">
+              <div className="flex items-center gap-2">
+                <span className="material-symbols-outlined text-rose-600 text-lg shrink-0">psychology</span>
+                <span>
+                  Cảnh báo âm Việt: Người học hay nuốt âm đuôi <strong className="text-rose-800">/ks/</strong> thành{' '}
+                  <strong className="text-rose-800">"sích"</strong> hoặc <strong className="text-rose-800">"síc"</strong>.
+                </span>
+              </div>
+              <span className="font-label-mono text-[11px] text-rose-700 font-bold shrink-0 hidden sm:inline">
+                Yêu cầu xì hơi /s/ sau bật /k/!
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* DUAL INPUT CONTROLS DOCK */}
+        <div className="w-full mt-space-md grid grid-cols-1 lg:grid-cols-12 gap-space-md">
+          {/* Primary Voice Recording Trigger */}
+          <div className="lg:col-span-7 bg-white rounded-2xl p-space-md border border-slate-200/90 shadow-sm flex flex-col md:flex-row items-center justify-between gap-space-md">
+            <div className="flex items-center gap-space-md w-full md:w-auto">
+              <button
+                onClick={handleMicToggle}
+                className={`relative group flex items-center justify-center w-20 h-20 rounded-full transition-all shrink-0 active:scale-95 cursor-pointer ${
+                  isRecording
+                    ? 'bg-rose-600 ring-4 ring-rose-300 animate-pulse'
+                    : 'bg-gradient-to-tr from-rose-600 via-rose-500 to-pink-500 shadow-[0_6px_20px_rgba(225,29,72,0.35)]'
+                }`}
+                type="button"
+              >
+                <span className="absolute inset-0 rounded-full bg-rose-400/30 animate-ping group-hover:opacity-100 opacity-60"></span>
+                <span className="material-symbols-outlined text-3xl text-white" style={{ fontVariationSettings: "'FILL' 1" }}>
+                  {isRecording ? 'stop' : 'mic'}
+                </span>
+              </button>
+              <div className="flex flex-col">
+                <span className="font-headline-sm text-base text-slate-900 font-bold">
+                  {isRecording ? 'Đang Thu Âm Chiến Luyện...' : 'Bật Micro Giọng Thật'}
+                </span>
+                <span className="font-body-sm text-[13px] text-sky-700 font-medium flex items-center gap-1.5">
+                  <span className={`w-2 h-2 rounded-full ${isRecording ? 'bg-rose-500 animate-ping' : 'bg-sky-500'}`}></span>
+                  {isRecording ? 'Đang phân tích âm /ks/...' : 'Web Speech Engine: Đang Chờ Giọng Bạn...'}
+                </span>
+                <span className="font-label-mono text-[11px] text-slate-500 mt-0.5">Nhấn để đọc từ: [ S - I - X ]</span>
+              </div>
+            </div>
+
+            {/* Real-time Decibel / Pitch Meter */}
+            <div className="w-full md:w-44 flex flex-col gap-1.5 bg-slate-50 border border-slate-200 p-space-sm rounded-xl">
+              <div className="flex justify-between font-label-mono text-[10px] text-slate-500 font-semibold">
+                <span>MIC LEVEL</span>
+                <span className="text-sky-700 font-bold">-18 dB</span>
+              </div>
+              <div className="flex items-end gap-1 h-6 w-full justify-between px-1">
+                <div className="w-1.5 h-2 bg-sky-300 rounded-full"></div>
+                <div className="w-1.5 h-3 bg-sky-400 rounded-full"></div>
+                <div className="w-1.5 h-5 bg-sky-600 rounded-full animate-pulse"></div>
+                <div className="w-1.5 h-2 bg-sky-300 rounded-full"></div>
+                <div className="w-1.5 h-6 bg-rose-500 rounded-full animate-bounce"></div>
+                <div className="w-1.5 h-4 bg-sky-500 rounded-full"></div>
+                <div className="w-1.5 h-2 bg-sky-300 rounded-full"></div>
+                <div className="w-1.5 h-5 bg-sky-600 rounded-full"></div>
+              </div>
+            </div>
+          </div>
+
+          {/* Test Suite Buttons */}
+          <div className="lg:col-span-5 bg-white rounded-2xl p-space-md border border-slate-200/90 shadow-sm flex flex-col justify-center gap-space-sm">
+            <div className="font-label-mono text-[11px] text-slate-500 font-bold uppercase tracking-wider flex items-center gap-1.5">
+              <span className="material-symbols-outlined text-base text-indigo-600">science</span>
+              Bộ Mô Phỏng Thử Nghiệm Phản Ứng Game
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-space-sm">
+              <button
+                onClick={handleTestPerfect}
+                className="flex flex-col text-left p-space-sm rounded-xl bg-slate-50 hover:bg-sky-50/80 border border-slate-200 hover:border-sky-300 transition-all group cursor-pointer"
+                type="button"
+              >
+                <span className="font-headline-sm text-sm text-sky-700 font-bold flex items-center gap-1 group-hover:text-sky-800">
+                  <span className="material-symbols-outlined text-base text-sky-600">bolt</span> Chuẩn: /sɪks/
+                </span>
+                <span className="font-label-mono text-[10px] text-slate-500 mt-1">Test 100% Sát Thương (Phá Giáp)</span>
+              </button>
+
+              <button
+                onClick={handleTestError}
+                className="flex flex-col text-left p-space-sm rounded-xl bg-slate-50 hover:bg-rose-50/80 border border-slate-200 hover:border-rose-300 transition-all group cursor-pointer"
+                type="button"
+              >
+                <span className="font-headline-sm text-sm text-rose-700 font-bold flex items-center gap-1 group-hover:text-rose-800">
+                  <span className="material-symbols-outlined text-base text-rose-600">warning</span> Lỗi VN: /sɪ/
+                </span>
+                <span className="font-label-mono text-[10px] text-slate-500 mt-1">Test Trượt Đòn &amp; Phản Kích</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* BOTTOM QUEST PROGRESSION RIBBON */}
+        <div className="w-full mt-space-lg bg-white rounded-2xl p-space-md border border-slate-200/90 shadow-sm flex flex-col gap-space-md">
+          <div className="w-full flex flex-col md:flex-row items-start md:items-center justify-between gap-space-xs font-label-mono text-label-mono text-slate-600 pb-2 border-b border-slate-100">
+            <div className="flex items-center gap-2">
+              <span className="material-symbols-outlined text-sky-600 text-base">map</span>
+              <span className="text-slate-900 font-bold uppercase tracking-wider text-[12px]">
+                Hành Trình Chinh Phục Ngữ Âm (Campaign Map)
+              </span>
+              <span className="px-2 py-0.5 rounded-full bg-sky-50 border border-sky-200 text-sky-700 font-semibold text-[11px]">
+                World 1: Ải 3/12
+              </span>
+            </div>
+            <div className="flex items-center gap-4 text-xs font-semibold">
+              <span className="flex items-center gap-1 text-indigo-700">
+                <span>⭐</span> 8 / 36 Sao Thu Thập
+              </span>
+              <span className="flex items-center gap-1 text-slate-700">
+                <span>🗺️</span> 3 Thế Giới Luyện Âm
               </span>
             </div>
           </div>
 
-          {/* Combat Center: Hero vs Boss with Lightning Beam */}
-          <div className="relative z-10 flex items-center justify-between my-auto py-8">
-            {/* Hero Card */}
-            <div className="flex flex-col items-center">
-              <div className="w-32 h-44 sm:w-44 sm:h-56 rounded-2xl bg-gradient-to-tr from-sky-50 to-rose-50 border-2 border-secondary shadow-md p-3 flex flex-col items-center justify-center text-center">
-                <div className="w-20 h-20 rounded-full bg-sky-100 border-2 border-secondary flex items-center justify-center text-4xl shadow-sm mb-2">
-                  🧙‍♂️
+          {/* 12-Node World Map Scrollable Track */}
+          <div className="w-full overflow-x-auto pb-space-sm">
+            <div className="flex items-center justify-between min-w-[980px] px-space-sm py-2 relative">
+              <div className="absolute left-8 right-8 top-1/2 -translate-y-1/2 h-1 bg-slate-200 z-0"></div>
+              <div className="absolute left-8 w-[220px] top-1/2 -translate-y-1/2 h-1 bg-gradient-to-r from-emerald-500 via-sky-500 to-rose-500 z-0"></div>
+
+              {/* Node 1 */}
+              <div className="relative z-10 flex flex-col items-center gap-1 group cursor-pointer">
+                <div className="w-11 h-11 rounded-full bg-emerald-50 border-2 border-emerald-500 text-emerald-600 group-hover:bg-emerald-100 transition-colors flex items-center justify-center shadow-sm">
+                  <span className="material-symbols-outlined text-emerald-600 text-lg font-bold">check</span>
                 </div>
-                <span className="font-mono text-xs font-bold text-slate-800">Hero Phonetician</span>
-                <span className="font-mono text-[10px] text-secondary mt-1">Casting: {currentSpellWord}</span>
+                <span className="font-label-mono text-[10px] text-amber-500">⭐⭐⭐</span>
+                <span className="font-label-mono text-[11px] text-slate-800 font-bold">Ải 1: /-t/</span>
               </div>
-            </div>
 
-            {/* Attack Beam & Damage Feedback */}
-            <div className="flex-1 mx-4 sm:mx-8 flex flex-col items-center justify-center">
-              {isCasting ? (
-                <div className="w-full h-4 bg-gradient-to-r from-secondary via-rose-500 to-primary rounded-full animate-pulse shadow-[0_0_20px_rgba(2,132,199,0.8)]" />
-              ) : (
-                <div className="w-full h-1 bg-slate-200 border-t border-dashed border-slate-300" />
-              )}
-
-              <div className="mt-4 px-4 py-2 rounded-2xl bg-amber-50 border border-amber-200 text-center shadow-sm">
-                <span className="font-black text-sm text-primary block">{combatFeedback.title}</span>
-                <span className="font-mono text-[11px] text-amber-900">{combatFeedback.subtitle}</span>
-              </div>
-            </div>
-
-            {/* Boss Card */}
-            <div className="flex flex-col items-center">
-              <div className="w-32 h-44 sm:w-44 sm:h-56 rounded-2xl bg-gradient-to-tr from-rose-50 to-slate-100 border-2 border-rose-300 shadow-md p-3 flex flex-col items-center justify-center text-center">
-                <div className="w-20 h-20 rounded-full bg-rose-100 border-2 border-primary flex items-center justify-center text-4xl shadow-sm mb-2 animate-bounce">
-                  🗿
+              {/* Node 2 */}
+              <div className="relative z-10 flex flex-col items-center gap-1 group cursor-pointer">
+                <div className="w-11 h-11 rounded-full bg-emerald-50 border-2 border-emerald-500 text-emerald-600 group-hover:bg-emerald-100 transition-colors flex items-center justify-center shadow-sm">
+                  <span className="material-symbols-outlined text-emerald-600 text-lg font-bold">check</span>
                 </div>
-                <span className="font-mono text-xs font-bold text-slate-800">Stone Golem</span>
-                <span className="font-mono text-[10px] text-primary font-bold mt-1">Rune Shield /ks/</span>
+                <span className="font-label-mono text-[10px] text-amber-500">⭐⭐⭐</span>
+                <span className="font-label-mono text-[11px] text-slate-800 font-bold">Ải 2: /-d/</span>
               </div>
-            </div>
-          </div>
 
-          {/* Spellcasting Voice Controls (GAME-102) */}
-          <div className="relative z-20 w-full max-w-xl mx-auto bg-slate-50 border border-slate-200 rounded-2xl p-5 flex flex-col items-center gap-3">
-            <span className="font-mono text-xs text-primary font-bold uppercase">
-              Bắt Buộc Bật Âm Đuôi /ks/ Để Tấn Công
-            </span>
+              {/* Node 3 (Active) */}
+              <div className="relative z-10 flex flex-col items-center gap-1 group cursor-pointer scale-110">
+                <div className="w-12 h-12 rounded-full bg-rose-600 border-2 border-white text-white flex items-center justify-center shadow-md ring-4 ring-rose-200 animate-pulse">
+                  <span className="material-symbols-outlined text-xl font-bold">swords</span>
+                </div>
+                <span className="font-label-mono text-[10px] text-rose-600 font-bold">ĐANG ĐẤU TRÙM</span>
+                <span className="font-label-mono text-[11px] text-rose-700 font-bold">Ải 3: /-ks/</span>
+              </div>
 
-            {/* Spell Word Pills */}
-            <div className="flex items-center gap-2 flex-wrap justify-center">
-              {spells.map((s) => (
-                <button
-                  key={s.word}
-                  onClick={() => setCurrentSpellWord(s.word)}
-                  className={`px-3 py-1.5 rounded-xl font-mono text-xs font-bold transition-all ${
-                    currentSpellWord === s.word
-                      ? 'bg-primary text-white shadow-xs'
-                      : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-100'
-                  }`}
-                >
-                  "{s.word}" {s.ipa}
-                </button>
-              ))}
-            </div>
+              {/* Node 4 (Locked) */}
+              <div className="relative z-10 flex flex-col items-center gap-1 opacity-60">
+                <div className="w-11 h-11 rounded-full bg-slate-100 border-2 border-slate-300 text-slate-400 flex items-center justify-center">
+                  <span className="material-symbols-outlined text-lg">lock</span>
+                </div>
+                <span className="font-label-mono text-[10px] text-slate-400">Chưa mở</span>
+                <span className="font-label-mono text-[11px] text-slate-500">Ải 4: /-θ/</span>
+              </div>
 
-            {/* Mic Button & Fallback Simulation (GAME-102) */}
-            <div className="flex items-center gap-3 w-full justify-center pt-2">
-              <button
-                onClick={handleMicCast}
-                className="px-6 py-3 rounded-full bg-gradient-to-r from-primary to-rose-600 text-white font-bold text-xs shadow-md hover:scale-105 transition-all flex items-center gap-2"
-              >
-                <span className="material-symbols-outlined text-base">mic</span>
-                <span>{isRecording ? 'Dừng & Đánh Phép' : `Đọc "${currentSpellWord}" Bằng Micro`}</span>
-              </button>
+              {/* Node 5 (Locked) */}
+              <div className="relative z-10 flex flex-col items-center gap-1 opacity-60">
+                <div className="w-11 h-11 rounded-full bg-slate-100 border-2 border-slate-300 text-slate-400 flex items-center justify-center">
+                  <span className="material-symbols-outlined text-lg">lock</span>
+                </div>
+                <span className="font-label-mono text-[10px] text-slate-400">Chưa mở</span>
+                <span className="font-label-mono text-[11px] text-slate-500">Ải 5: /-ʃ/</span>
+              </div>
 
-              <button
-                onClick={() => triggerAttack(currentSpellWord, 95)}
-                className="px-4 py-3 rounded-full bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-bold font-mono transition-colors"
-                title="Mô phỏng phát âm chuẩn nếu môi trường ồn (GAME-102)"
-              >
-                Mô Phỏng Phép 95%
-              </button>
+              {/* Node 6 (Locked) */}
+              <div className="relative z-10 flex flex-col items-center gap-1 opacity-60">
+                <div className="w-11 h-11 rounded-full bg-slate-100 border-2 border-slate-300 text-slate-400 flex items-center justify-center">
+                  <span className="material-symbols-outlined text-lg">lock</span>
+                </div>
+                <span className="font-label-mono text-[10px] text-slate-400">Chưa mở</span>
+                <span className="font-label-mono text-[11px] text-slate-500">Ải 6: /-tʃ/</span>
+              </div>
             </div>
           </div>
         </div>
-      )}
+      </main>
     </div>
   );
 }
