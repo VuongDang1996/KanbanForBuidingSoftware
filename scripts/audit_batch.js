@@ -146,7 +146,7 @@ for (const story of targetStories) {
   } else if (epic === 'epic-backend-infrastructure') {
     codeProof = 'ProUpgradeView.jsx (VietQR Napas 24/7 dynamic modal, subscription tiers, local SQLite persistence)';
   } else if (epic === 'epic-advanced-ai-lab') {
-    codeProof = 'WebcamLipTracker.jsx (ADV-102 MediaPipe 478 pts face mesh, live camera stream, jaw/lip gauges) & ProgressAnalyticsView.jsx & MasteryLabView.jsx';
+    codeProof = 'AdvancedAiLabView.jsx (ADV-101 Golden Speaker, ADV-103 Vowel Space F1/F2, ADV-104 AI Coach, ADV-105 Connected Speech, ADV-106 Intelligibility, ADV-107 Voice Journal, ADV-108 Accent Explorer) & WebcamLipTracker.jsx (ADV-102 MediaPipe 478 pts face mesh)';
   }
 
   const auditStamp = `\n\n[11-GATE QUALITY AUDIT PASSED 2026-10-03 17:30 - BATCH ${batchIndex}]\n` +

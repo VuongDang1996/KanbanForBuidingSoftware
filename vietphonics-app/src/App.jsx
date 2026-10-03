@@ -14,6 +14,7 @@ import ProUpgradeView from './views/ProUpgradeView';
 import ProgressAnalyticsView from './views/ProgressAnalyticsView';
 import OnboardingView from './views/OnboardingView';
 import MasteryLabView from './views/MasteryLabView';
+import AdvancedAiLabView from './views/AdvancedAiLabView';
 
 function MainContent() {
   const { activeTab } = useApp();
@@ -26,6 +27,10 @@ function MainContent() {
         return <PracticeStudioView />;
       case 'khau-hinh-2d':
         return <MouthAnatomyView />;
+      case 'mastery-lab':
+        return <MasteryLabView />;
+      case 'ai-lab':
+        return <AdvancedAiLabView />;
       case 'ai-hoi-thoai':
         return <RoleplayView />;
       case 'game-3d-rpg':
@@ -36,8 +41,6 @@ function MainContent() {
         return <ProgressAnalyticsView />;
       case 'chan-doan':
         return <OnboardingView />;
-      case 'mastery-lab':
-        return <MasteryLabView />;
       default:
         return <DashboardView />;
     }

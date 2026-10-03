@@ -22,6 +22,7 @@ export default function Navbar() {
     { id: 'phong-luyen-phat-am', label: 'Phòng Luyện Phát Âm' },
     { id: 'khau-hinh-2d', label: 'Khẩu Hình & Webcam AI' },
     { id: 'mastery-lab', label: 'Mastery Lab' },
+    { id: 'ai-lab', label: 'AI Speech Lab' },
     { id: 'ai-hoi-thoai', label: 'AI Hội Thoại' },
     { id: 'game-3d-rpg', label: 'Game 3D RPG' },
     { id: 'ngan-hang-tu-loi', label: 'Ngân Hàng Từ Lỗi' },
