@@ -160,6 +160,7 @@ export default function StoryMapMatrix({
                         onStatusChange={onStatusChange}
                         showEpicBadge={false}
                         showQuickMove={true}
+                        theme="dark"
                       />
                     ))
                   )}
