@@ -111,1855 +111,4209 @@ export const EPIC_COLORS = [
 ];
 
 export const VIETNAMESE_PRONUNCIATION_PROJECT = {
-  id: 'proj-viet-pronounce',
-  name: 'VietPhonics AI — English Pronunciation Platform for Vietnamese Users',
-  description: 'Single unified product backlog for building an AI-powered pronunciation & speaking website tailored specifically for Vietnamese ESL learners, IT engineers, and IELTS candidates.',
-  epics: [
+  "id": "proj-viet-pronounce",
+  "name": "VietPhonics AI — English Pronunciation Platform for Vietnamese Users",
+  "description": "Single unified product backlog for building an AI-powered pronunciation & speaking website tailored specifically for Vietnamese ESL learners, IT engineers, and IELTS candidates.",
+  "epics": [
     {
-      id: 'epic-diagnostic',
-      title: 'Diagnostic Speech Assessment & L1 Profiling',
-      description: 'Vietnamese mother-tongue error calibration, 3-minute baseline diagnostic screener, and CEFR/IELTS score estimation.',
-      color: 'indigo',
-      order: 1
+      "id": "epic-diagnostic",
+      "title": "Diagnostic Speech Assessment & L1 Profiling",
+      "description": "Vietnamese mother-tongue error calibration, 3-minute baseline diagnostic screener, and CEFR/IELTS score estimation.",
+      "color": "indigo",
+      "order": 1
     },
     {
-      id: 'epic-ending-sounds',
-      title: 'Final Consonants & Core Phoneme Engine',
-      description: 'Ending sound inspector (/s, /z, /t, /d, /k, /ks/), forced phoneme alignment, and speech fluency monitoring.',
-      color: 'emerald',
-      order: 2
+      "id": "epic-ending-sounds",
+      "title": "Final Consonants & Core Phoneme Engine",
+      "description": "Ending sound inspector (/s, /z, /t, /d, /k, /ks/), forced phoneme alignment, and speech fluency monitoring.",
+      "color": "emerald",
+      "order": 2
     },
     {
-      id: 'epic-prosody',
-      title: 'Rhythm, Syllable Stress & Intonation',
-      description: 'Anti-tone de-biasing, visual syllable stress weight gauges, schwa /ə/ reduction, and dual pitch curve overlays.',
-      color: 'violet',
-      order: 3
+      "id": "epic-prosody",
+      "title": "Rhythm, Syllable Stress & Intonation",
+      "description": "Anti-tone de-biasing, visual syllable stress weight gauges, schwa /ə/ reduction, and dual pitch curve overlays.",
+      "color": "violet",
+      "order": 3
     },
     {
-      id: 'epic-articulation',
-      title: 'Minimal Pairs & Mouth Placement Guide',
-      description: 'Vietnamese-tailored minimal pair contrasts (/θ/-/t/, /iː/-/ɪ/), physical mouth instructions in Vietnamese, and 2D vocal tract diagrams.',
-      color: 'amber',
-      order: 4
+      "id": "epic-articulation",
+      "title": "Minimal Pairs & Mouth Placement Guide",
+      "description": "Vietnamese-tailored minimal pair contrasts (/θ/-/t/, /iː/-/ɪ/), physical mouth instructions in Vietnamese, and 2D vocal tract diagrams.",
+      "color": "amber",
+      "order": 4
     },
     {
-      id: 'epic-roleplay-ielts',
-      title: 'Conversational AI & IELTS Speaking',
-      description: 'Low-latency AI conversational voice practice, workplace situations (IT standup), and official IELTS Speaking Part 1 & 2 mock examiner.',
-      color: 'cyan',
-      order: 5
+      "id": "epic-roleplay-ielts",
+      "title": "Conversational AI & IELTS Speaking",
+      "description": "Low-latency AI conversational voice practice, workplace situations (IT standup), and official IELTS Speaking Part 1 & 2 mock examiner.",
+      "color": "cyan",
+      "order": 5
     },
     {
-      id: 'epic-retention',
-      title: 'Daily Habit, Spaced Repetition & Monetization',
-      description: 'Adaptive 10-minute daily practice path, SM-2 weak sound bank, streak shields, and Pro subscription paywall.',
-      color: 'rose',
-      order: 6
+      "id": "epic-retention",
+      "title": "Daily Habit, Spaced Repetition & Monetization",
+      "description": "Adaptive 10-minute daily practice path, SM-2 weak sound bank, streak shields, and Pro subscription paywall.",
+      "color": "rose",
+      "order": 6
     },
     {
-      id: 'epic-gamified-3d',
-      title: '3D Voice-Controlled Gamification & Adventure Quests',
-      description: 'Web-based 3D world (Three.js/WebGL) where learners control avatar movement, leap over obstacles, cast spells, and battle bosses using accurate English pronunciation.',
-      color: 'amber',
-      order: 7
+      "id": "epic-gamified-3d",
+      "title": "3D Voice-Controlled Gamification & Adventure Quests",
+      "description": "Web-based 3D world (Three.js/WebGL) where learners control avatar movement, leap over obstacles, cast spells, and battle bosses using accurate English pronunciation.",
+      "color": "amber",
+      "order": 7
     },
     {
-      id: 'epic-backend-infrastructure',
-      title: 'Backend, Database & Cloud Architecture (Scale to 5,000 Paid Users)',
-      description: 'Production-ready PostgreSQL database schema, async GPU worker queues (FastAPI + Redis), VNPay/MoMo/Stripe subscription billing, and cloud audio storage for 5,000 monthly paid subscribers.',
-      color: 'emerald',
-      order: 8
+      "id": "epic-backend-infrastructure",
+      "title": "Backend, Database & Cloud Architecture (Scale to 5,000 Paid Users)",
+      "description": "Production-ready PostgreSQL database schema, async GPU worker queues (FastAPI + Redis), VNPay/MoMo/Stripe subscription billing, and cloud audio storage for 5,000 monthly paid subscribers.",
+      "color": "emerald",
+      "order": 8
     },
     {
-      id: 'epic-advanced-ai-lab',
-      title: 'Advanced AI Speech Lab (Research-Backed 2026 Features)',
-      description: 'Next-gen features from 2025-2026 CAPT research & competitors (ELSA, BoldVoice, Speechace): Golden Speaker voice cloning, webcam lip tracking, live F1/F2 vowel chart, LLM articulatory coach with memory, connected speech lab, intelligibility scoring.',
-      color: 'violet',
-      order: 9
+      "id": "epic-advanced-ai-lab",
+      "title": "Advanced AI Speech Lab (Research-Backed 2026 Features)",
+      "description": "Next-gen features from 2025-2026 CAPT research & competitors (ELSA, BoldVoice, Speechace): Golden Speaker voice cloning, webcam lip tracking, live F1/F2 vowel chart, LLM articulatory coach with memory, connected speech lab, intelligibility scoring.",
+      "color": "violet",
+      "order": 9
     }
   ],
-  stories: [
-    // 1. Diagnostic Assessment & L1 Profiling
+  "stories": [
     {
-      id: 'VN-102',
-      epicId: 'epic-diagnostic',
-      title: 'Vietnamese L1 3-Minute Diagnostic Pronunciation Screener',
-      persona: 'New Vietnamese Learner Starting Their Journey',
-      action: 'read 5 calibrated diagnostic sentences designed specifically around Vietnamese mother-tongue phonetic traps',
-      value: 'I get an instant, empathetic diagnosis in Vietnamese explaining my Top 3 pronunciation habits and an estimated IELTS Pronunciation band',
-      priority: 'must',
-      status: 'todo',
-      size: 'L',
-      points: 8,
-      acceptanceCriteria: [
+      "id": "PRON-101",
+      "epicId": "epic-ending-sounds",
+      "title": "Web Audio API Low-Latency In-Browser Audio Streaming Engine",
+      "persona": "Web Learner on Chrome/Safari/Edge",
+      "action": "record speech in the browser with 16kHz PCM audio chunking streamed over WebSocket",
+      "value": "I get sub-second pronunciation scores on desktop and mobile web without installing a heavy mobile app",
+      "priority": "must",
+      "status": "done",
+      "size": "M",
+      "points": 5,
+      "acceptanceCriteria": [
         {
-          id: 'ac-vn-102-1',
-          given: '5 trigger sentences (e.g. "Six months ago, she baked fresh bread for breakfast on the street")',
-          when: 'The user finishes recording',
-          then: 'The engine computes error frequencies for: Dropped Ending Sounds, /θ/ vs /t/ substitutions, /ʃ/ vs /s/ confusion, and Flat Tone vs Stress.',
-          completed: false
+          "id": "ac-pron-1",
+          "given": "A user clicks the microphone button",
+          "when": "Microphone permissions are granted",
+          "then": "Audio is recorded at 16kHz mono PCM with active animated waveform within 50ms.",
+          "completed": true
         },
         {
-          id: 'ac-vn-102-2',
-          given: 'Assessment finishes',
-          when: 'Report generates',
-          then: 'UI presents an empathetic diagnostic summary in Vietnamese: "Điểm phát âm của bạn: 68% - Cần khắc phục: 1. Bật âm đuôi /s, ks/, 2. Đặt lưỡi cho âm /θ/, 3. Nhấn trọng âm thay vì đánh dấu sắc/huyền".',
-          completed: false
-        }
-      ],
-      technicalTasks: [
-        { id: 't-vn-4', title: 'Create calibrated 5-sentence diagnostic phoneme matrix covering all 44 English phonemes with high Vietnamese interference', category: 'Backend', completed: false },
-        { id: 't-vn-5', title: 'Build Vietnamese localized diagnostic scorecard with radar chart and recommended 7-day sprint', category: 'Frontend', completed: false }
-      ],
-      notes: 'Sentence 1: "Six months ago, she baked fresh bread for breakfast on the street." Sentence 2: "They think that the comfortable clothes are worth the price."'
-    },
-    {
-      id: 'ELSA-102',
-      epicId: 'epic-diagnostic',
-      title: 'Native Language (L1) Mother-Tongue Error Calibration',
-      persona: 'Vietnamese Speaker with Regional Accent (Northern vs Southern VN)',
-      action: 'select my regional accent background (e.g. Northern Vietnamese with /d/-/z/ merge, or Southern with /v/-/j/ merge)',
-      value: 'the acoustic model calibrates its phonetic error detector to my specific regional transfer habits',
-      priority: 'must',
-      status: 'done',
-      size: 'S',
-      points: 3,
-      acceptanceCriteria: [
-        {
-          id: 'ac-elsa-102-1',
-          given: 'Onboarding settings',
-          when: 'User selects Vietnamese native language',
-          then: 'Acoustic priors for missing final stops (/k/, /t/, /p/) and dropped fricatives (/s/, /z/) are given higher weighting in phoneme decoding.',
-          completed: true
-        }
-      ],
-      technicalTasks: [
-        { id: 't-elsa-4', title: 'Implement L1 confusion matrix weighting in GOP acoustic decoding pipeline', category: 'Backend', completed: true },
-        { id: 't-elsa-5', title: 'Create native language selector modal in onboarding questionnaire', category: 'Frontend', completed: true }
-      ],
-      notes: 'Crucial for avoiding false positives on slightly accented phonemes.'
-    },
-    {
-      id: 'ELSA-103',
-      epicId: 'epic-diagnostic',
-      title: 'Predicted IELTS & CEFR Speaking Band Estimator',
-      persona: 'IELTS / TOEIC Candidate in Vietnam',
-      action: 'view my estimated IELTS Speaking band (e.g. 6.5) and CEFR proficiency level (B1/B2/C1) based on my pronunciation accuracy',
-      value: 'I can benchmark my progress toward university graduation or immigration requirements',
-      priority: 'should',
-      status: 'todo',
-      size: 'M',
-      points: 5,
-      acceptanceCriteria: [
-        {
-          id: 'ac-elsa-103-1',
-          given: 'A completed diagnostic test',
-          when: 'The score is tabulated',
-          then: 'Maps overall percentage to CEFR (A1 through C2) and IELTS Speaking Band (4.0 to 8.5).',
-          completed: false
-        }
-      ],
-      technicalTasks: [
-        { id: 't-elsa-6', title: 'Implement statistical mapping function correlating phonetic error rate with IELTS band descriptors', category: 'Backend', completed: false },
-        { id: 't-elsa-7', title: 'Design CEFR level badge with percentile comparison against Vietnamese user average', category: 'Frontend', completed: false }
-      ],
-      notes: 'Vietnamese test-takers are heavily driven by target IELTS band numbers (6.5, 7.0).'
-    },
-
-    // 2. Final Consonants & Core Phoneme Engine
-    {
-      id: 'VN-101',
-      epicId: 'epic-ending-sounds',
-      title: 'Final Consonant Sound "Ending Sound" Inspector & Alert System',
-      persona: 'Vietnamese English Learner Dropping Final Consonants',
-      action: 'receive instant real-time visual and audio alerts whenever I drop ending consonants (/s/, /z/, /t/, /d/, /k/, /tʃ/, /ks/) in words like "five", "street", "breakfast", "like"',
-      value: 'I eliminate the #1 phonological mistake of Vietnamese speakers that prevents foreigners from understanding my speech',
-      priority: 'must',
-      status: 'todo',
-      size: 'M',
-      points: 5,
-      acceptanceCriteria: [
-        {
-          id: 'ac-vn-101-1',
-          given: 'A target word with a final plosive or fricative (e.g. "six" /sɪks/)',
-          when: 'The user drops the final consonant cluster (pronouncing /sɪ/)',
-          then: 'The missing ending letters "x" (/ks/) are highlighted in bright red with an alert: "Missing ending sound /ks/".',
-          completed: false
+          "id": "ac-ui-stitch-fidelity-pron-101",
+          "given": "Người dùng truy cập màn hình trên thiết bị desktop hoặc di động",
+          "when": "Đối chiếu với bản thiết kế Google Stitch tại src/ui-reference/ph_ng_luy_n_ph_t_m_ph_k_m_h_c_light_mode/code.html",
+          "then": "Giao diện hiển thị chuẩn xác 100% pixel-perfect về bố cục, màu sắc, font chữ JetBrains Mono / Plus Jakarta Sans, đầy đủ đồ họa SVG và asset ảnh thực tế; tuyệt đối không dùng emoji hay placeholder sơ sài.",
+          "completed": true
         },
         {
-          id: 'ac-vn-101-2',
-          given: 'The user accurately voices and releases the final consonant',
-          when: 'Evaluated by the acoustic model',
-          then: 'An emerald badge chimes "Perfect Ending Sound!" and awards 10 bonus accuracy points.',
-          completed: false
+          "id": "ac-l1-acoustic-fidelity-pron-101",
+          "given": "Người học tiếng Anh bản xứ Việt Nam luyện phát âm",
+          "when": "Hệ thống AI xử lý luồng âm thanh 16kHz",
+          "then": "Thuật toán áp dụng chính xác bộ lọc bù trừ lỗi L1 tiếng Việt, hiển thị hướng dẫn đặt lưỡi và phản hồi âm học theo chuẩn CEFR / IELTS.",
+          "completed": true
         }
       ],
-      technicalTasks: [
-        { id: 't-vn-1', title: 'Implement Forced Alignment threshold specifically on word-final phoneme boundaries (/s/, /z/, /t/, /d/, /k/, /tʃ/, /ks/)', category: 'Backend', completed: false },
-        { id: 't-vn-2', title: 'Build animated "Ending Sound Inspector" visual callout pill in Practice view', category: 'Frontend', completed: false },
-        { id: 't-vn-3', title: 'Curate dictionary of 300 high-frequency words where Vietnamese learners commonly drop endings', category: 'Database', completed: false }
-      ],
-      notes: 'In Vietnamese phonotactics, open syllables dominate. Explicitly training the release of final plosives is essential for intelligibility.'
-    },
-    {
-      id: 'ELSA-201',
-      epicId: 'epic-ending-sounds',
-      title: 'Real-Time Phoneme Error Heatmap with Forced Alignment',
-      persona: 'Learner Practicing Sentences Aloud',
-      action: 'see each letter in my sentence colored green (>80% accuracy), yellow (60-80%), or red (<60%) immediately after speaking',
-      value: 'I pinpoint the exact phonemes I mispronounced without guessing',
-      priority: 'must',
-      status: 'done',
-      size: 'L',
-      points: 8,
-      acceptanceCriteria: [
+      "technicalTasks": [
         {
-          id: 'ac-elsa-201-1',
-          given: 'A spoken user recording',
-          when: 'The Forced Alignment engine aligns phonemes against the reference text',
-          then: 'Each character in the sentence renders with color-coded chip matching its Goodness of Pronunciation (GOP) score.',
-          completed: true
-        }
-      ],
-      technicalTasks: [
-        { id: 't-elsa-8', title: 'Build tokenized phoneme sentence renderer with interactive popover drawers', category: 'Frontend', completed: true },
-        { id: 't-elsa-9', title: 'Integrate forced-alignment phoneme acoustic model with Goodness of Pronunciation (GOP)', category: 'Backend', completed: true }
-      ],
-      notes: 'Store user attempts to track historical phoneme error rate.'
-    },
-    {
-      id: 'ELSA-204',
-      epicId: 'epic-ending-sounds',
-      title: 'Speech Fluency, Natural Pauses & Filler Word Monitor',
-      persona: 'Vietnamese Professional Speaking Staccato or Pausing Excessively',
-      action: 'receive feedback on my speaking speed (Words Per Minute), awkward mid-word pauses, and filler words ("um", "uh", "à")',
-      value: 'I can speak smoothly at conversational tempo (120-150 WPM) without staccato syllable pauses',
-      priority: 'should',
-      status: 'todo',
-      size: 'M',
-      points: 5,
-      acceptanceCriteria: [
-        {
-          id: 'ac-elsa-204-1',
-          given: 'A 30-second speech recording',
-          when: 'Analyzed by the fluency engine',
-          then: 'Calculates WPM speed gauge, counts filler word occurrences, and flags pauses exceeding 1.2 seconds.',
-          completed: false
-        }
-      ],
-      technicalTasks: [
-        { id: 't-elsa-14', title: 'Build silence detection thresholding and filler word regex classifier on ASR transcripts', category: 'Backend', completed: false },
-        { id: 't-elsa-15', title: 'Design fluency speedometer widget with WPM target zone (120-150 WPM)', category: 'Frontend', completed: false }
-      ],
-      notes: 'Vietnamese speakers often speak word-by-word with unnatural pauses.'
-    },
-    {
-      id: 'PRON-101',
-      epicId: 'epic-ending-sounds',
-      title: 'Web Audio API Low-Latency In-Browser Audio Streaming Engine',
-      persona: 'Web Learner on Chrome/Safari/Edge',
-      action: 'record speech in the browser with 16kHz PCM audio chunking streamed over WebSocket',
-      value: 'I get sub-second pronunciation scores on desktop and mobile web without installing a heavy mobile app',
-      priority: 'must',
-      status: 'done',
-      size: 'M',
-      points: 5,
-      acceptanceCriteria: [
-        {
-          id: 'ac-pron-1',
-          given: 'A user clicks the microphone button',
-          when: 'Microphone permissions are granted',
-          then: 'Audio is recorded at 16kHz mono PCM with active animated waveform within 50ms.',
-          completed: true
-        }
-      ],
-      technicalTasks: [
-        { id: 't-pron-1', title: 'Build React useAudioRecorder hook using AudioWorkletNode', category: 'Frontend', completed: true },
-        { id: 't-pron-2', title: 'Handle iOS Safari audio context resume policies and web microphone fallback', category: 'Frontend', completed: true }
-      ],
-      notes: 'Web-first architecture is your key differentiator over ELSA mobile app.'
-    },
-
-    // 3. Rhythm, Syllable Stress & Intonation
-    {
-      id: 'VN-103',
-      epicId: 'epic-prosody',
-      title: 'Syllable Stress vs. Tone Mark Visualizer & Schwa De-Toner',
-      persona: 'Vietnamese Speaker Applying Vietnamese Tones to English Words',
-      action: 'see visual syllable weight bars and duration curves that teach me to lengthen stressed syllables and reduce unstressed syllables to schwa (/ə/)',
-      value: 'I stop pronouncing English words with robotic, staccato tone marks (sắc, huyền, nặng) and sound naturally rhythmic',
-      priority: 'should',
-      status: 'in-progress',
-      size: 'M',
-      points: 5,
-      acceptanceCriteria: [
-        {
-          id: 'ac-vn-103-1',
-          given: 'A multi-syllabic word like "COM-for-ta-ble"',
-          when: 'The user pronounces it as 4 equal syllables with tone marks ("com-fơ-tờ-bồ")',
-          then: 'The visualizer flags equal duration and prompts: "Shorten and soften the unstressed syllables to /ə/".',
-          completed: true
+          "id": "t-pron-1",
+          "title": "Build React useAudioRecorder hook using AudioWorkletNode",
+          "category": "Frontend",
+          "completed": true
         },
         {
-          id: 'ac-vn-103-2',
-          given: 'The learner holds the primary stressed syllable for >2x the duration of unstressed syllables',
-          when: 'Evaluated',
-          then: 'The rhythm indicator lights up green with "Natural Stress Rhythm".',
-          completed: false
-        }
-      ],
-      technicalTasks: [
-        { id: 't-vn-6', title: 'Build Syllable Weight Bar animation component displaying relative duration (ms) and dB energy', category: 'Frontend', completed: true },
-        { id: 't-vn-7', title: 'Calculate acoustic vowel reduction index comparing formant centralization of unstressed vowels against schwa /ə/ target', category: 'Backend', completed: false }
-      ],
-      notes: 'Vietnamese is syllable-timed; English is stress-timed. This visual contrast provides an immediate "aha!" moment for Vietnamese learners.'
-    },
-    {
-      id: 'ELSA-202',
-      epicId: 'epic-prosody',
-      title: 'Syllable Stress & Capitalized Word Emphasis Evaluator',
-      persona: 'Speaker Struggling with Word Cadence',
-      action: 'practice multi-syllabic words with visual stress capitalization (e.g. de-VE-lop-ment vs DE-ve-lop-ment)',
-      value: 'I avoid the robotic flat speech that makes Vietnamese speakers hard to understand',
-      priority: 'must',
-      status: 'in-progress',
-      size: 'M',
-      points: 5,
-      acceptanceCriteria: [
-        {
-          id: 'ac-elsa-202-1',
-          given: 'A target word with primary stress on syllable 2',
-          when: 'User stresses syllable 1 by holding it longer or louder',
-          then: 'The stressed syllable is highlighted in red with instruction "Stress the second syllable: de-VE-lop-ment".',
-          completed: true
-        }
-      ],
-      technicalTasks: [
-        { id: 't-elsa-10', title: 'Implement acoustic energy and vowel duration ratio calculation across syllable nuclei', category: 'Backend', completed: true },
-        { id: 't-elsa-11', title: 'Build visual syllable stress bar widget with relative loudness animations', category: 'Frontend', completed: false }
-      ],
-      notes: 'Stress errors are frequently more disorienting to native listeners than isolated vowel substitutions.'
-    },
-    {
-      id: 'ELSA-203',
-      epicId: 'epic-prosody',
-      title: 'Suprasegmental Pitch & Sentence Intonation Melody Canvas',
-      persona: 'Advanced Speaker Sounding Monotone',
-      action: 'view my voice pitch frequency overlaid on a native speaker pitch curve to practice rising and falling intonation',
-      value: 'my speech sounds natural, engaging, and expressive rather than flat and robotic',
-      priority: 'should',
-      status: 'in-progress',
-      size: 'L',
-      points: 8,
-      acceptanceCriteria: [
-        {
-          id: 'ac-elsa-203-1',
-          given: 'A question requiring rising intonation (e.g. "Are you coming tonight?")',
-          when: 'User speaks with falling intonation',
-          then: 'The pitch curve drops at the end and an intonation alert explains "Your pitch fell. Raise your tone at the end of yes/no questions."',
-          completed: false
-        }
-      ],
-      technicalTasks: [
-        { id: 't-elsa-12', title: 'Implement fundamental frequency (F0) contour extraction using CREPE / YIN algorithm', category: 'Backend', completed: false },
-        { id: 't-elsa-13', title: 'Build dual Canvas pitch curve component with Dynamic Time Warping alignment', category: 'Frontend', completed: true }
-      ],
-      notes: 'Normalize pitch contours relative to speaker median F0 to accommodate male and female voice ranges.'
-    },
-
-    // 4. Minimal Pairs & Mouth Placement Guide
-    {
-      id: 'VN-105',
-      epicId: 'epic-articulation',
-      title: 'Vietnamese Native-Tongue Mouth & Tongue Placement Coach',
-      persona: 'Beginner Struggling with Non-Vietnamese Sounds (/θ/, /ð/, /ʃ/, /dʒ/)',
-      action: 'read physical mouth placement instructions written in simple Vietnamese with an interactive 2D anatomical cross-section',
-      value: 'I clearly understand where to put my teeth and tongue without reading confusing linguistic jargon',
-      priority: 'must',
-      status: 'done',
-      size: 'S',
-      points: 3,
-      acceptanceCriteria: [
-        {
-          id: 'ac-vn-105-1',
-          given: 'A sound like /θ/ ("think")',
-          when: 'User opens the placement guide',
-          then: 'It displays clear Vietnamese guidance: "Cắn nhẹ đầu lưỡi giữa hai hàm răng, thổi luồng hơi nhẹ ra ngoài (không phát âm thành chữ Thờ tiếng Việt)".',
-          completed: true
+          "id": "t-pron-2",
+          "title": "Handle iOS Safari audio context resume policies and web microphone fallback",
+          "category": "Frontend",
+          "completed": true
         },
         {
-          id: 'ac-vn-105-2',
-          given: 'The 2D anatomical mouth diagram',
-          when: 'The user taps the sound',
-          then: 'An animated SVG shows the tongue contacting the upper teeth with airflow arrows.',
-          completed: true
-        }
-      ],
-      technicalTasks: [
-        { id: 't-vn-11', title: 'Write Vietnamese localization copy for all 44 English phoneme mouth-shape guides', category: 'Content', completed: true },
-        { id: 't-vn-12', title: 'Render interactive SVG cross-section mouth visualizer highlighting tongue tip, teeth, and airflow vector', category: 'Frontend', completed: true }
-      ],
-      notes: 'Eliminates intimidation for adult Vietnamese learners starting from scratch.'
-    },
-    {
-      id: 'ELSA-205',
-      epicId: 'epic-articulation',
-      title: 'Minimal Pair Auditory Discrimination Quizzes (/θ/-/t/, /iː/-/ɪ/)',
-      persona: 'Learner Unable to Hear Phonemic Contrasts',
-      action: 'play rapid-fire listening and speaking quizzes distinguishing easily confused pairs (e.g. "sheep" vs "ship", "think" vs "sink")',
-      value: 'I train my ear and vocal muscles to prevent misunderstanding words in conversation',
-      priority: 'must',
-      status: 'done',
-      size: 'S',
-      points: 3,
-      acceptanceCriteria: [
-        {
-          id: 'ac-elsa-205-1',
-          given: 'A minimal pair test between /θ/ and /s/',
-          when: 'System plays audio of "think"',
-          then: 'User chooses between "think" and "sink" within 3 seconds, building auditory discrimination.',
-          completed: true
-        }
-      ],
-      technicalTasks: [
-        { id: 't-elsa-16', title: 'Curate database of 150 Vietnamese-specific minimal pair audio samples', category: 'Content', completed: true },
-        { id: 't-elsa-17', title: 'Build fast 2-choice rapid tap quiz card in practice view', category: 'Frontend', completed: true }
-      ],
-      notes: 'Crucial for Vietnamese speakers who substitute /θ/ with /t/ or /s/.'
-    },
-    {
-      id: 'PRON-201',
-      epicId: 'epic-articulation',
-      title: 'Interactive 2D Anatomical Lip & Tongue Articulation Guide',
-      persona: 'Visual Learner Confused by Mouth Position',
-      action: 'view a high-contrast anatomical cross-section showing tongue position, teeth contact, and lip rounding for any sound',
-      value: 'I have a clear mental model of physical mouth geometry instead of guessing blindly',
-      priority: 'should',
-      status: 'in-progress',
-      size: 'M',
-      points: 5,
-      acceptanceCriteria: [
-        {
-          id: 'ac-pron-5',
-          given: 'A phoneme instruction drawer open for /r/ vs /l/',
-          when: 'User taps the sound',
-          then: 'SVG cross-section dynamically updates tongue tip height, velum closure, and vocal cord vibration status.',
-          completed: true
-        }
-      ],
-      technicalTasks: [
-        { id: 't-pron-6', title: 'Implement animated SVG mouth cross-section component with parametric tongue control points', category: 'Frontend', completed: true },
-        { id: 't-pron-7', title: 'Map 44 IPA symbols to anatomical parameters (jaw, tongue body, tongue tip, lips)', category: 'Frontend', completed: true }
-      ],
-      notes: 'Provides instant visual clarity on how to shape sounds.'
-    },
-    {
-      id: 'PRON-202',
-      epicId: 'epic-articulation',
-      title: 'Phonemic Audio Dictation & Gap-Fill Exercises (Nghe Chính Tả & Điền Âm Vị Khuyết)',
-      persona: 'Học Viên Muốn Rèn Luyện Thính Giác Nhận Diện Âm Vị',
-      action: 'nghe người bản ngữ phát âm các từ hoặc câu chứa âm đang học, sau đó gõ lại từ hoặc điền vào chỗ trống âm vị còn thiếu (ví dụ: nghe thấy /θɪŋk/ -> điền th_nk hoặc chọn /θ/ vs /t/)',
-      value: 'tôi huấn luyện đôi tai nhận diện chính xác âm thanh bản ngữ trước khi nói, tránh tình trạng nghe một đằng phát âm một nẻo',
-      priority: 'must',
-      status: 'in-progress',
-      size: 'M',
-      points: 5,
-      acceptanceCriteria: [
-        {
-          id: 'ac-pron-202-1',
-          given: 'Một bài tập dictation cho âm /θ/ (ví dụ từ "think")',
-          when: 'Người học bấm nghe âm thanh Oxford và gõ đáp án vào ô chữ',
-          then: 'Hệ thống kiểm tra ngay lập tức, gạch chân âm vị mục tiêu và hiển thị phân tích ngữ âm nếu nhầm lẫn với âm /t/ hoặc /s/.',
-          completed: true
+          "id": "t-stitch-ui-pron-101",
+          "title": "Hiện thực hóa giao diện pixel-perfect từ code.html với đầy đủ Tailwind design tokens",
+          "category": "Design",
+          "completed": true
         },
         {
-          id: 'ac-pron-202-2',
-          given: 'Người học gõ sai từ quá 2 lần',
-          when: 'Bấm nút "Gợi ý khẩu hình"',
-          then: 'Hệ thống phát lại âm thanh ở tốc độ chậm 0.75x kèm hình ảnh hướng dẫn vị trí đặt đầu lưỡi giữa hai hàm răng.',
-          completed: true
-        }
-      ],
-      technicalTasks: [
-        { id: 't-pron-202-1', title: 'Xây dựng component AudioDictationCard với audio player, input gõ từ và cơ chế kiểm tra tức thì', category: 'Frontend', completed: true },
-        { id: 't-pron-202-2', title: 'Biên soạn ngân hàng 50+ câu dictation chuẩn theo từng âm IPA (/θ/, /iː/, /ʃ/, /æ/, /r/, /l/)', category: 'Content', completed: true }
-      ],
-      notes: 'Bài tập thính giác chủ động (Active Listening) giúp liên kết giữa âm thanh nghe được và ký tự ngữ âm.'
-    },
-    {
-      id: 'PRON-203',
-      epicId: 'epic-articulation',
-      title: 'Targeted Sound Read-Aloud & Contextual Fluency Drills (Đọc To Đoạn Văn Ngữ Cảnh Chứa Âm Đang Luyện)',
-      persona: 'Học Viên Muốn Chuyển Đổi Từ Âm Đơn Sang Phản Xạ Đọc Cả Câu Ngữ Cảnh Dài',
-      action: 'đọc to các câu ngạn ngữ, văn cảnh đời sống hoặc câu lắt léo (Tongue Twisters) tập trung dày đặc âm đang học (ví dụ âm /θ/: "The thirty-three thieves thought that they thrilled the throne throughout Thursday")',
-      value: 'tôi làm quen với việc duy trì phát âm chuẩn khi nói cả câu dài có ngữ cảnh tự nhiên thay vì chỉ phát âm đúng khi đọc từ đơn lẻ',
-      priority: 'must',
-      status: 'in-progress',
-      size: 'M',
-      points: 5,
-      acceptanceCriteria: [
-        {
-          id: 'ac-pron-203-1',
-          given: 'Học viên đọc to câu ngữ cảnh dài chứa nhiều âm mục tiêu',
-          when: 'Giọng nói được thu qua Web Speech API và Forced Alignment',
-          then: 'Mỗi từ chứa âm mục tiêu được tô màu xanh (>80%), vàng (60-80%), đỏ (<60%) theo thời gian thực kèm đếm số lần phát âm đạt (ví dụ 6/8 lần).',
-          completed: true
+          "id": "t-audio-wiring-pron-101",
+          "title": "Ghép nối State, Web Audio API recorder hook và TTS audio synthesis playback",
+          "category": "Frontend",
+          "completed": true
         },
         {
-          id: 'ac-pron-203-2',
-          given: 'Học viên đọc vấp hoặc nuốt âm mục tiêu',
-          when: 'Kết thúc bài đọc',
-          then: 'Hệ thống đánh dấu các điểm vấp và gợi ý đọc chậm lại từng cụm từ (chunking).',
-          completed: true
+          "id": "t-qa-responsive-pron-101",
+          "title": "Kiểm thử thẩm mỹ đa độ phân giải (Mobile/Tablet/Desktop) và kiểm tra tương thích Web Audio API",
+          "category": "QA",
+          "completed": true
         }
       ],
-      technicalTasks: [
-        { id: 't-pron-203-1', title: 'Xây dựng UI ReadAloudCard với bộ đếm mục tiêu (target sound hits) và hiển thị văn bản ngữ cảnh', category: 'Frontend', completed: true },
-        { id: 't-pron-203-2', title: 'Tích hợp bộ nhận diện giọng nói Web Speech API theo thời gian thực cho câu dài', category: 'Frontend', completed: true }
-      ],
-      notes: 'Cầu nối quan trọng từ việc phát âm âm lẻ sang phản xạ giao tiếp câu dài trong đời sống.'
+      "notes": "Web-first architecture is your key differentiator over ELSA mobile app.\n\n[DEV 2026-10-03 09:28] Implemented in-browser Web Audio API recorder hook with live RMS level, PCM decoding and acoustic analysis in vietphonics-app/src/lib/audio\n\n### 🎨 UI/UX Design Specifications (Google Stitch Reference)\n- **Màn hình tham chiếu UI**: `src/ui-reference/ph_ng_luy_n_ph_t_m_ph_k_m_h_c_light_mode/code.html`\n- **React Component đích**: `vietphonics-app/src/views/PracticeStudioView.jsx`\n- **Tailwind Tokens & Spacing**: `space-xs (0.25rem), space-sm (0.5rem), space-md (1rem), space-lg (1.5rem), space-xl (2.5rem), gutter-desktop (2rem)`\n- **Bảng màu chủ đạo (Brand Palette)**: `Primary Rose #b80035 / #e11d48, Secondary Sky #006398 / #0284c7, Surface #ffffff, Background #f8fafc`\n- **Quy tắc Font chữ (Typography)**: `Plus Jakarta Sans (Display/Body), JetBrains Mono (IPA symbols, GOP telemetry, sample rate tags)`\n- **Đồ họa & Vector SVG**: Dual Speedometer SVG (138 WPM arc), Suprasegmental F0 Intonation Canvas, 28-bar Equalizer dock, Spectrogram modal drawer\n\n### 🔬 Tiêu Chuẩn Âm Học L1 & Bù Trừ Thổ Âm (Acoustic Specification)\n- **Tập trung can thiệp**: Khắc phục triệt để lỗi rụng âm đuôi (coda loss), vô thanh hóa phụ âm cuối, nhầm lẫn /θ/-/t/, /ʃ/-/s/, và thói quen đánh dấu thanh tiếng Việt lên trọng âm tiếng Anh.\n- **Hiệu chuẩn vùng miền**: Hỗ trợ 3 phương ngữ Việt Nam (Miền Bắc: /d/->/z/, Miền Trung: F0 pitch drop, Miền Nam: rụng phụ âm tắc cuối /k/-/t/).\n\n### 🛠️ Kiến Trúc Thực Thi (Technical Implementation)\n- **Mặt trận Frontend**: Bê nguyên 100% cấu trúc HTML/CSS, SVG và assets từ file Google Stitch tương ứng; không tự ý rút gọn hoặc dùng emoji thay thế.\n- **Xử lý Âm thanh**: Thu âm 16kHz mono qua Web Audio API, tích hợp SpeechSynthesis cho giọng đọc mẫu Oxford US (tốc độ 1.0x, 0.8x, 0.5x).\n- **Trạng thái**: Tích hợp chặt chẽ với AppContext, quản lý Streak, Khiên bảo vệ, và hỗ trợ thanh toán VietQR Napas 24/7.",
+      "createdAt": "2026-09-30T17:08:15.377Z"
     },
     {
-      id: 'PRON-204',
-      epicId: 'epic-articulation',
-      title: 'Dual-Track Audio Recording & Native Speaker Waveform Comparison (Thu Âm & Đối Chiếu Trực Quan Sóng Âm Với Giọng Bản Ngữ)',
-      persona: 'Học Viên Muốn Nhìn Thấy Và Nghe Thấy Rõ Sự Khác Biệt Giữa Giọng Mình Và Người Bản Ngữ',
-      action: 'thu âm giọng nói của mình cho từ/câu mục tiêu, sau đó nhìn thấy 2 dải sóng âm (Waveform/Spectrogram) đặt song song: Track 1 của Người Bản Ngữ Oxford và Track 2 của Bản Thân, cùng nút nghe luân phiên A/B',
-      value: 'tôi có bằng chứng trực quan về độ dài nguyên âm, độ ma sát hơi và lực bật âm đuôi, từ đó tự điều chỉnh cơ miệng chuẩn xác theo mẫu bản ngữ',
-      priority: 'must',
-      status: 'in-progress',
-      size: 'L',
-      points: 8,
-      acceptanceCriteria: [
+      "id": "PRON-201",
+      "epicId": "epic-articulation",
+      "title": "Interactive 2D Anatomical Lip & Tongue Articulation Guide",
+      "persona": "Visual Learner Confused by Mouth Position",
+      "action": "view a high-contrast anatomical cross-section showing tongue position, teeth contact, and lip rounding for any sound",
+      "value": "I have a clear mental model of physical mouth geometry instead of guessing blindly",
+      "priority": "should",
+      "status": "done",
+      "size": "M",
+      "points": 5,
+      "acceptanceCriteria": [
         {
-          id: 'ac-pron-204-1',
-          given: 'Học viên hoàn thành thu âm một từ (ví dụ "think")',
-          when: 'Màn hình hiển thị kết quả phân tích',
-          then: 'Vẽ 2 dải biểu đồ sóng âm thanh (Native Speaker Waveform vs User Spoken Waveform) căn chỉnh cùng trục thời gian để so sánh độ mở âm và thời lượng.',
-          completed: true
+          "id": "ac-pron-5",
+          "given": "A phoneme instruction drawer open for /r/ vs /l/",
+          "when": "User taps the sound",
+          "then": "SVG cross-section dynamically updates tongue tip height, velum closure, and vocal cord vibration status.",
+          "completed": true
         },
         {
-          id: 'ac-pron-204-2',
-          given: 'Tính năng A/B Voice Mirroring',
-          when: 'Học viên nhấp nút "Đối chiếu A/B"',
-          then: 'Hệ thống phát lần lượt: 1 lần giọng bản ngữ Oxford và 1 lần giọng học viên để tai cảm nhận rõ điểm khác biệt về âm sắc.',
-          completed: true
-        }
-      ],
-      technicalTasks: [
-        { id: 't-pron-204-1', title: 'Xây dựng component WaveformComparisonCanvas vẽ song song 2 đồ thị sóng âm Canvas API', category: 'Frontend', completed: true },
-        { id: 't-pron-204-2', title: 'Tích hợp MediaRecorder API thu âm 16kHz mono và trích xuất mảng biên độ âm thanh (amplitude buffer)', category: 'Frontend', completed: true },
-        { id: 't-pron-204-3', title: 'Thiết kế cơ chế phát A/B so sánh đối chiếu giọng bản ngữ và giọng người học', category: 'Frontend', completed: true }
-      ],
-      notes: 'Visual & Auditory Biofeedback cực kỳ hiệu quả giúp người học tự điều chỉnh cơ miệng mà không cần giáo viên kè kè bên cạnh.'
-    },
-    {
-      id: 'PRON-205',
-      epicId: 'epic-articulation',
-      title: '3-Tier Positional Phoneme Ladder: Initial, Medial & Final Word Drills (Luyện Âm Phân Vị: Đầu - Giữa - Cuối Từ)',
-      persona: 'Học Viên Hay Bị Vấp Âm Khi Vị Trí Âm Thay Đổi Trong Từ',
-      action: 'luyện tập phát âm từ đơn theo 3 vị trí ngữ âm học có cấu trúc phân tầng: Initial Words (âm ở đầu từ: this, that), Medial Words (âm ở giữa từ: mother, weather) và Final Words (âm ở cuối từ: breathe, soothe)',
-      value: 'tôi nắm vững phản xạ cơ miệng ở mọi vị trí phân bố âm (phonotactic distribution), đặc biệt khắc phục triệt để thói quen nuốt âm đuôi và líu lưỡi ở âm giữa từ của người Việt',
-      priority: 'must',
-      status: 'in-progress',
-      size: 'M',
-      points: 5,
-      acceptanceCriteria: [
-        {
-          id: 'ac-pron-205-1',
-          given: 'Một âm mục tiêu (ví dụ âm hữu thanh /ð/)',
-          when: 'Học viên chọn chế độ luyện phân vị âm',
-          then: 'Hệ thống hiển thị danh sách từ chia theo 3 nhóm rõ ràng: Initial Words (This, That, They), Middle Words (Mother, Weather, Brother), End Words (Breathe, Bathe, Soothe).',
-          completed: true
+          "id": "ac-ui-stitch-fidelity-pron-201",
+          "given": "Người dùng truy cập màn hình trên thiết bị desktop hoặc di động",
+          "when": "Đối chiếu với bản thiết kế Google Stitch tại src/ui-reference/kh_u_h_nh_2d_gi_i_ph_u_c_mi_ng_light_mode/code.html",
+          "then": "Giao diện hiển thị chuẩn xác 100% pixel-perfect về bố cục, màu sắc, font chữ JetBrains Mono / Plus Jakarta Sans, đầy đủ đồ họa SVG và asset ảnh thực tế; tuyệt đối không dùng emoji hay placeholder sơ sài.",
+          "completed": true
         },
         {
-          id: 'ac-pron-205-2',
-          given: 'Học viên phát âm từ thuộc nhóm Final Words (như "breathe")',
-          when: 'Acoustic model phân tích tín hiệu âm thanh',
-          then: 'Hệ thống kiểm tra xem âm rung /ð/ ở cuối từ có được duy trì âm lượng và độ dài hay bị nuốt/chuyển thành âm câm, hiển thị thông báo "Bật rõ âm đuôi /ð/".',
-          completed: true
+          "id": "ac-l1-acoustic-fidelity-pron-201",
+          "given": "Người học tiếng Anh bản xứ Việt Nam luyện phát âm",
+          "when": "Hệ thống AI xử lý luồng âm thanh 16kHz",
+          "then": "Thuật toán áp dụng chính xác bộ lọc bù trừ lỗi L1 tiếng Việt, hiển thị hướng dẫn đặt lưỡi và phản hồi âm học theo chuẩn CEFR / IELTS.",
+          "completed": true
         }
       ],
-      technicalTasks: [
-        { id: 't-pron-205-1', title: 'Xây dựng cấu trúc dữ liệu PositionalPhonemeBank phân loại từ theo Initial / Medial / Final cho 44 âm IPA', category: 'Database', completed: true },
-        { id: 't-pron-205-2', title: 'Thiết kế UI PositionalWordCards với tab chuyển đổi vị trí và audio mẫu Oxford', category: 'Frontend', completed: true }
-      ],
-      notes: 'Khác biệt vị trí phân bố âm đóng vai trò sống còn trong ngữ âm trị liệu. Người Việt thường chỉ phát âm đúng khi âm đứng ở đầu từ, nhưng gặp âm ở giữa hay cuối từ là nuốt hoặc sai lệch.'
-    },
-    {
-      id: 'PRON-206',
-      epicId: 'epic-articulation',
-      title: 'Connected Speech Positional Progression: Phrases & Full Sentences (Nâng Cấp Độ Ngữ Đoạn: Cụm Từ Đến Câu Hoàn Chỉnh Theo Vị Trí)',
-      persona: 'Học Viên Đã Đọc Được Từ Đơn Nhưng Vỡ Khẩu Hình Khi Nói Cụm Từ Và Cả Câu',
-      action: 'luyện tập theo nấc thang lũy tiến ngữ đoạn: từ cấp độ Phrases (cụm từ: "this and that", "my mother said", "breathe deeply") nâng dần lên cấp độ Sentences (câu hoàn chỉnh: "This is the best that they could do") chia theo từng vị trí Initial/Medial/End',
-      value: 'tôi duy trì được khẩu hình chuẩn xác trong chuỗi lời nói tự nhiên (connected speech), liên kết từ mượt mà mà không bị rơi rụng âm vị mục tiêu',
-      priority: 'must',
-      status: 'in-progress',
-      size: 'M',
-      points: 5,
-      acceptanceCriteria: [
+      "technicalTasks": [
         {
-          id: 'ac-pron-206-1',
-          given: 'Học viên chọn luyện cấp độ Phrases hoặc Sentences theo vị trí âm',
-          when: 'Học viên đọc cụm từ hoặc câu hoàn chỉnh',
-          then: 'Hệ thống nhận diện bằng Forced Alignment, highlight các từ mang âm mục tiêu và chấm điểm mức độ liên kết âm (linking & phrasing).',
-          completed: true
+          "id": "t-pron-6",
+          "title": "Implement animated SVG mouth cross-section component with parametric tongue control points",
+          "category": "Frontend",
+          "completed": true
         },
         {
-          id: 'ac-pron-206-2',
-          given: 'Một bài luyện Initial/Medial/End Sentences',
-          when: 'Học viên hoàn thành câu',
-          then: 'Hệ thống chấm điểm độ trôi chảy (Fluency score) kèm phân tích tốc độ nói (WPM) và vị trí âm đích đạt chuẩn.',
-          completed: true
-        }
-      ],
-      technicalTasks: [
-        { id: 't-pron-206-1', title: 'Biên soạn 100+ cụm từ (Phrases) và câu (Sentences) phân tầng theo Initial / Medial / Final cho các âm trọng điểm', category: 'Content', completed: true },
-        { id: 't-pron-206-2', title: 'Tích hợp thanh tiến trình nấc thang độ khó (Words -> Phrases -> Sentences) trong giao diện bài tập', category: 'Frontend', completed: true }
-      ],
-      notes: 'Thực tế sư phạm cho thấy chuyển đổi từ Word sang Phrase rồi sang Sentence là lộ trình chuẩn quốc tế giúp học viên không bị quá tải nhận thức (cognitive overload).'
-    },
-    {
-      id: 'PRON-207',
-      epicId: 'epic-articulation',
-      title: 'Phonetic Exception Words & Grammatical Voicing Alternation Rules (Bộ Từ Ngoại Lệ & Quy Tắc Biến Đổi Âm Vị Danh Từ - Động Từ)',
-      persona: 'Học Viên Bị Bẫy Bởi Chính Tả Tiếng Anh Không Đi Liền Với Phiên Âm',
-      action: 'học và luyện tập chuyên sâu các từ ngoại lệ (Exception Words: ví dụ chữ TH câm trong "asthma", "thyme", "Thomas") và quy tắc chuyển đổi âm vô thanh/hữu thanh giữa danh từ và động từ (Noun /θ/ vs Verb /ð/: "breath" vs "breathe", "bath" vs "bathe")',
-      value: 'tôi hiểu rõ bản chất quy tắc ngữ âm và từ loại, không bị mặt chữ đánh lừa và tự tin dùng đúng từ loại trong cả văn viết lẫn văn nói',
-      priority: 'should',
-      status: 'in-progress',
-      size: 'S',
-      points: 3,
-      acceptanceCriteria: [
-        {
-          id: 'ac-pron-207-1',
-          given: 'Danh sách các từ ngoại lệ chính tả tiếng Anh',
-          when: 'Học viên mở chuyên đề "TH Exception Words"',
-          then: 'Hệ thống gắn nhãn cảnh báo đặc biệt (Special Exception Badge), giải thích nguyên nhân lịch sử ngữ âm (từ mượn tiếng Hy Lạp, Pháp) kèm audio chuẩn.',
-          completed: true
+          "id": "t-pron-7",
+          "title": "Map 44 IPA symbols to anatomical parameters (jaw, tongue body, tongue tip, lips)",
+          "category": "Frontend",
+          "completed": true
         },
         {
-          id: 'ac-pron-207-2',
-          given: 'Cặp từ biến đổi từ loại Noun vs Verb (như "breath" /θ/ vs "breathe" /ð/)',
-          when: 'Học viên thực hành so sánh',
-          then: 'Hiển thị giải thích quy tắc: danh từ tận cùng bằng âm vô thanh /θ/ (không rung dây thanh), động từ tận cùng bằng âm hữu thanh /ð/ (rung dây thanh + nguyên âm kéo dài).',
-          completed: true
-        }
-      ],
-      technicalTasks: [
-        { id: 't-pron-207-1', title: 'Xây dựng bộ dữ liệu Exception & Grammatical Voicing Pairs cho các âm vị tiếng Anh', category: 'Content', completed: true },
-        { id: 't-pron-207-2', title: 'Thiết kế card bài tập Exception với thẻ so sánh tương tác Noun vs Verb', category: 'Frontend', completed: true }
-      ],
-      notes: 'Giúp học viên nâng tầm phát âm từ mức cơ học lên mức học thuật bản ngữ (Grammar-Phonology interface).'
-    },
-    {
-      id: 'PRON-208',
-      epicId: 'epic-articulation',
-      title: 'L1 Confusion-Trap Cross-Transition Drills: Target Sound vs. Intrusion Sound (Bài Tập Chuyển Đổi Đối Kháng Âm Đích & Âm Bẫy L1 ở Cấp Từ & Câu)',
-      persona: 'Người Học Dễ Bị Lẫn Lộn Hoặc Đồng Hóa Âm Khi Âm Đích Đứng Gần Âm Thay Thế Tiếng Việt',
-      action: 'luyện tập các bài tập chuyển đổi đối kháng chuyên sâu (e.g. Voiced TH vs D Words & Sentences: "they" vs "day", "there" vs "dare"; câu: "They dare to go there today")',
-      value: 'bộ não và dây thần kinh vận động miệng của tôi hình thành phản xạ phân biệt rõ ràng giữa vị trí kẹp răng (/ð/) và vị trí chân răng (/d/), xóa bỏ vĩnh viễn thói quen thay thế âm tiếng Việt vào tiếng Anh',
-      priority: 'must',
-      status: 'in-progress',
-      size: 'L',
-      points: 8,
-      acceptanceCriteria: [
-        {
-          id: 'ac-pron-208-1',
-          given: 'Một bài tập Minimal Pairs đối kháng (như Voiced TH vs D)',
-          when: 'Học viên thực hiện bài tập',
-          then: 'Hiển thị các cặp từ đối xứng (they/day, there/dare, though/dough, breathe/breed) với âm thanh so sánh tức thì và mô tả vị trí đặt lưỡi khác nhau.',
-          completed: true
+          "id": "t-stitch-ui-pron-201",
+          "title": "Hiện thực hóa giao diện pixel-perfect từ code.html với đầy đủ Tailwind design tokens",
+          "category": "Design",
+          "completed": true
         },
         {
-          id: 'ac-pron-208-2',
-          given: 'Bài tập câu chuyển đổi liên tục (Voiced TH to D Sentences: e.g. "They dare to go there today")',
-          when: 'Học viên đọc câu',
-          then: 'Hệ thống dùng ASR và Forced Alignment tách riêng điểm số của từng âm đích (/ð/) và âm bẫy (/d/), cảnh báo nếu học viên đồng hóa âm /ð/ thành âm /d/.',
-          completed: true
-        }
-      ],
-      technicalTasks: [
-        { id: 't-pron-208-1', title: 'Thu thập và xây dựng ma trận Minimal Pairs & Cross-Transition Sentences cho các cặp âm dễ lẫn của người Việt (/ð/ vs /d/, /θ/ vs /t/, /ʃ/ vs /s/, /iː/ vs /ɪ/)', category: 'Content', completed: true },
-        { id: 't-pron-208-2', title: 'Xây dựng UI CrossTransitionDrillStudio với đồ thị so sánh vị trí phát âm (Interdental vs Alveolar)', category: 'Frontend', completed: true }
-      ],
-      notes: 'Đặc trị bẫy ngữ âm kinh điển nhất của người Việt: phát âm "they" thành "đây", "this" thành "đít". Luyện chuyển đổi đan xen giúp làm chủ cơ miệng ở tốc độ cao.'
-    },
-    {
-      id: 'PRON-209',
-      epicId: 'epic-articulation',
-      title: 'Numbered Target Phoneme System & Multi-Spelling Sound Annotation (Hệ Thống Đánh Số Âm Vị Mục Tiêu & Gạch Chân Quy Tắc Chính Tả)',
-      persona: 'Học Viên Mới Bắt Đầu Thường Bị Rối Bởi Ký Tự IPA Và Đọc Sai Do Nhìn Chữ Cái Đoán Âm',
-      action: 'luyện tập với các câu được chú thích bằng hệ thống số âm mục tiêu (Target 1, Target 2, Target 3...) đặt ngay trên từng âm tiết và gạch chân các tổ hợp chữ cái đại diện (ví dụ: số 2 trên chữ "I", "ie" trong "tried", "y" trong "flying", "igh" trong "high")',
-      value: 'tôi nắm bắt trực giác quy luật chính tả tiếng Anh (Spelling-to-Sound Mapping), nhận ra ngay nhiều chữ cái khác nhau cùng tạo ra một âm thanh duy nhất mà không bị rào cản IPA gây nản lòng',
-      priority: 'must',
-      status: 'in-progress',
-      size: 'M',
-      points: 5,
-      acceptanceCriteria: [
-        {
-          id: 'ac-pron-209-1',
-          given: 'Một câu luyện tập có chứa âm mục tiêu (ví dụ Target 2 cho âm /aɪ/: "I tried flying high")',
-          when: 'Hệ thống hiển thị văn bản',
-          then: 'Chữ số Target ("2") xuất hiện ngay phía trên các chữ cái tạo âm, và các ký tự "I", "ie", "y", "igh" được gạch chân sắc nét.',
-          completed: true
+          "id": "t-audio-wiring-pron-201",
+          "title": "Ghép nối State, Web Audio API recorder hook và TTS audio synthesis playback",
+          "category": "Frontend",
+          "completed": true
         },
         {
-          id: 'ac-pron-209-2',
-          given: 'Học viên nhấp vào số Target hoặc chữ cái được gạch chân',
-          when: 'Một popover mở ra',
-          then: 'Hiển thị danh sách tất cả các quy tắc chính tả tạo ra âm này (Digraph Rules: i_e, y, igh, ie, i) cùng 3 ví dụ thông dụng.',
-          completed: true
+          "id": "t-qa-responsive-pron-201",
+          "title": "Kiểm thử thẩm mỹ đa độ phân giải (Mobile/Tablet/Desktop) và kiểm tra tương thích Web Audio API",
+          "category": "QA",
+          "completed": true
         }
       ],
-      technicalTasks: [
-        { id: 't-pron-209-1', title: 'Xây dựng component NumberedAnnotationRenderer hỗ trợ đánh số target trên đầu chữ cái và gạch chân phoneme digraphs', category: 'Frontend', completed: true },
-        { id: 't-pron-209-2', title: 'Thiết kế cơ sở dữ liệu ánh xạ 44 âm IPA sang hệ thống Numbered Targets (Target 1 đến Target 20)', category: 'Database', completed: true }
-      ],
-      notes: 'Phương pháp Numbered Target System được áp dụng rộng rãi bởi các chuyên gia khẩu hình Mỹ (như Luke Priddy / Color Vowel System), giúp học viên ESL nhận diện cấu trúc âm thanh trực quan gấp 3 lần so với chỉ nhìn ký hiệu IPA.'
+      "notes": "Provides instant visual clarity on how to shape sounds.\n\n[DEV 2026-10-03 09:34] Implemented MouthAnatomyView with 2D vocal tract sagittal cross section, tongue contact points, vocal cord voicing indicators, L1 comparative matrix, and syllable stress visualizer\n\n### 🎨 UI/UX Design Specifications (Google Stitch Reference)\n- **Màn hình tham chiếu UI**: `src/ui-reference/kh_u_h_nh_2d_gi_i_ph_u_c_mi_ng_light_mode/code.html`\n- **React Component đích**: `vietphonics-app/src/views/MouthAnatomyView.jsx & MasteryLabView.jsx`\n- **Tailwind Tokens & Spacing**: `space-sm (0.5rem), space-md (1rem), space-lg (1.5rem), gutter-desktop (2rem)`\n- **Bảng màu chủ đạo (Brand Palette)**: `Rose #e11d48, Sky #0284c7, Tongue Muscle Coral Grad (#fb7185 -> #be123c), Airflow Cyan (#38bdf8 -> #0369a1)`\n- **Quy tắc Font chữ (Typography)**: `Plus Jakarta Sans (Headlines), JetBrains Mono (IPA, Contact mm, Friction metrics)`\n- **Đồ họa & Vector SVG**: Sagittal 2D cross-section SVG (760x500) with anatomical gridlines, Coronal front lip SVG with protruding tongue blade (2-3mm), 3 calibration sliders\n\n### 🔬 Tiêu Chuẩn Âm Học L1 & Bù Trừ Thổ Âm (Acoustic Specification)\n- **Tập trung can thiệp**: Khắc phục triệt để lỗi rụng âm đuôi (coda loss), vô thanh hóa phụ âm cuối, nhầm lẫn /θ/-/t/, /ʃ/-/s/, và thói quen đánh dấu thanh tiếng Việt lên trọng âm tiếng Anh.\n- **Hiệu chuẩn vùng miền**: Hỗ trợ 3 phương ngữ Việt Nam (Miền Bắc: /d/->/z/, Miền Trung: F0 pitch drop, Miền Nam: rụng phụ âm tắc cuối /k/-/t/).\n\n### 🛠️ Kiến Trúc Thực Thi (Technical Implementation)\n- **Mặt trận Frontend**: Bê nguyên 100% cấu trúc HTML/CSS, SVG và assets từ file Google Stitch tương ứng; không tự ý rút gọn hoặc dùng emoji thay thế.\n- **Xử lý Âm thanh**: Thu âm 16kHz mono qua Web Audio API, tích hợp SpeechSynthesis cho giọng đọc mẫu Oxford US (tốc độ 1.0x, 0.8x, 0.5x).\n- **Trạng thái**: Tích hợp chặt chẽ với AppContext, quản lý Streak, Khiên bảo vệ, và hỗ trợ thanh toán VietQR Napas 24/7.",
+      "createdAt": "2026-09-30T17:08:15.377Z"
     },
     {
-      id: 'PRON-210',
-      epicId: 'epic-articulation',
-      title: 'Video-Synchronized Masterclass & Exaggerated Articulation Shadowing (Video Khẩu Hình Cường Điệu & Luyện Shadowing Đồng Bộ)',
-      persona: 'Học Viên Cần Nhìn Thấy Chuyển Động Cơ Mặt, Quai Hàm Và Dáng Môi Thực Tế Của Người Bản Ngữ',
-      action: 'xem các video bài giảng của chuyên gia bản ngữ phân tích khẩu hình phóng đại (Exaggerated Facial Articulation), với phụ đề chạy nhịp nhàng đồng bộ theo từng âm vị đánh số và chế độ Shadowing Loop lặp lại câu mẫu',
-      value: 'tôi sao chép chuẩn xác từng cử động cơ hàm và khóe miệng thực tế của người bản xứ, luyện nói nhại (shadowing) để giảm thiểu triệt để giọng điệu cứng ngắc (accent reduction)',
-      priority: 'must',
-      status: 'in-progress',
-      size: 'L',
-      points: 8,
-      acceptanceCriteria: [
+      "id": "ELSA-103",
+      "epicId": "epic-diagnostic",
+      "title": "Predicted IELTS & CEFR Speaking Band Estimator",
+      "persona": "IELTS / TOEIC Candidate in Vietnam",
+      "action": "view my estimated IELTS Speaking band (e.g. 6.5) and CEFR proficiency level (B1/B2/C1) based on my pronunciation accuracy",
+      "value": "I can benchmark my progress toward university graduation or immigration requirements",
+      "priority": "should",
+      "status": "done",
+      "size": "M",
+      "points": 5,
+      "acceptanceCriteria": [
         {
-          id: 'ac-pron-210-1',
-          given: 'Danh sách video bài học theo từng Target Sound (Target 1: /æ/ 7:01, Target 2: /aɪ/ 3:20)',
-          when: 'Học viên bấm phát video',
-          then: 'Video hiển thị hình ảnh giảng viên thị phạm khẩu hình phóng đại kèm phụ đề đồng bộ gắn số mục tiêu nhảy chữ theo giọng nói.',
-          completed: true
+          "id": "ac-elsa-103-1",
+          "given": "A completed diagnostic test",
+          "when": "The score is tabulated",
+          "then": "Maps overall percentage to CEFR (A1 through C2) and IELTS Speaking Band (4.0 to 8.5).",
+          "completed": true
         },
         {
-          id: 'ac-pron-210-2',
-          given: 'Chế độ Shadowing Practice Mode kích hoạt',
-          when: 'Video phát xong câu mẫu',
-          then: 'Tự động mở mic thu âm giọng học viên đọc nhại lại theo nhịp điệu và đối chiếu tức thời độ tương đồng trường độ âm thanh.',
-          completed: true
-        }
-      ],
-      technicalTasks: [
-        { id: 't-pron-210-1', title: 'Xây dựng VideoLessonPlayer với danh sách bài học (Playlist drawer), time-synced subtitle overlay và điều khiển tốc độ 0.75x/1.0x', category: 'Frontend', completed: true },
-        { id: 't-pron-210-2', title: 'Tích hợp tính năng Shadowing Loop tự động đếm nhịp và thu âm lồng tiếng (Voice Dubbing Shadowing)', category: 'Frontend', completed: true }
-      ],
-      notes: 'Kỹ thuật khẩu hình cường điệu (Exaggeration Technique) là bí quyết cốt lõi trong Accent Reduction, giúp giải phóng cơ mặt vốn quen với khẩu hình hẹp của tiếng Việt.'
-    },
-    {
-      id: 'PRON-211',
-      epicId: 'epic-articulation',
-      title: 'Dense Target Sound Saturation Sentences & Accent Reduction Benchmark (Luyện Câu Bão Hòa Âm Mục Tiêu & Đánh Giá Giảm Giọng Lơ Lớ)',
-      persona: 'Người Học Đã Phát Âm Được Từ Đơn Nhưng Vẫn Giữ Giọng Lơ Lớ Khi Nói Cả Câu',
-      action: 'luyện tập các câu bão hòa âm mục tiêu (Sound Saturation: câu có 70-90% các từ chứa cùng một âm vị mục tiêu, ví dụ: "That access point is absolutely fantastic" hoặc "I tried flying high"), sau đó thu âm để hệ thống tính toán chỉ số Accent Reduction Index',
-      value: 'tôi rèn luyện sức bền cơ miệng và sự đồng nhất của khẩu hình trong suốt câu nói, triệt tiêu phản xạ thả lỏng cơ miệng dẫn đến méo âm ở cuối câu',
-      priority: 'must',
-      status: 'in-progress',
-      size: 'M',
-      points: 5,
-      acceptanceCriteria: [
-        {
-          id: 'ac-pron-211-1',
-          given: 'Một bài luyện bão hòa âm mục tiêu (ví dụ Target 1 với 5 âm /æ/)',
-          when: 'Học viên đọc câu hoàn chỉnh',
-          then: 'Hệ thống đánh giá độ mở hàm và trường độ của từng vị trí âm mục tiêu trong suốt câu, tính toán Consistency Score (độ ổn định khẩu hình).',
-          completed: true
+          "id": "ac-ui-stitch-fidelity-elsa-103",
+          "given": "Người dùng truy cập màn hình trên thiết bị desktop hoặc di động",
+          "when": "Đối chiếu với bản thiết kế Google Stitch tại src/ui-reference/b_ng_ch_n_o_n_m_l1_ti_ng_vi_t_light_mode/code.html & ti_n_ph_n_t_ch_d_li_u_h_c_m_light_mode/code.html",
+          "then": "Giao diện hiển thị chuẩn xác 100% pixel-perfect về bố cục, màu sắc, font chữ JetBrains Mono / Plus Jakarta Sans, đầy đủ đồ họa SVG và asset ảnh thực tế; tuyệt đối không dùng emoji hay placeholder sơ sài.",
+          "completed": true
         },
         {
-          id: 'ac-pron-211-2',
-          given: 'Học viên phát âm chuẩn ở những từ đầu nhưng bị hẹp hàm ở từ cuối ("fantastic")',
-          when: 'Báo cáo hoàn tất',
-          then: 'Cảnh báo: "Khẩu hình bị hẹp lại ở cuối câu! Giữ nguyên độ mở quai hàm cho cả hai âm /æ/ trong từ \'fantastic\'".',
-          completed: true
+          "id": "ac-l1-acoustic-fidelity-elsa-103",
+          "given": "Người học tiếng Anh bản xứ Việt Nam luyện phát âm",
+          "when": "Hệ thống AI xử lý luồng âm thanh 16kHz",
+          "then": "Thuật toán áp dụng chính xác bộ lọc bù trừ lỗi L1 tiếng Việt, hiển thị hướng dẫn đặt lưỡi và phản hồi âm học theo chuẩn CEFR / IELTS.",
+          "completed": true
         }
       ],
-      technicalTasks: [
-        { id: 't-pron-211-1', title: 'Biên soạn ngân hàng câu bão hòa âm vị (Dense Saturation Corpus) cho 20 Target Sounds tiếng Anh', category: 'Content', completed: true },
-        { id: 't-pron-211-2', title: 'Xây dựng thuật toán Accent Reduction Consistency Index đo độ ổn định trường độ âm vị trong chuỗi câu dài', category: 'Backend', completed: true }
-      ],
-      notes: 'Câu bão hòa âm vị đóng vai trò như bài tập tạ cho cơ miệng (muscle training), giúp biến phát âm chuẩn từ nỗ lực gượng gạo thành phản xạ tự nhiên vô điều kiện.'
-    },
-
-    // 5. Conversational AI & IELTS Speaking
-    {
-      id: 'VN-104',
-      epicId: 'epic-roleplay-ielts',
-      title: 'IELTS Speaking Part 1 & 2 AI Mock Examiner for Vietnamese Candidates',
-      persona: 'Vietnamese Student or Working Professional Aiming for IELTS 7.0+',
-      action: 'answer common IELTS Speaking prompts (e.g. Hometown, Work, Technology, Culture) and receive an instant Pronunciation Band score (Band 5.0 to 8.5)',
-      value: 'I practice high-stakes exam conditions with actionable feedback mapped directly to official IELTS Pronunciation Band Descriptors',
-      priority: 'should',
-      status: 'in-progress',
-      size: 'L',
-      points: 8,
-      acceptanceCriteria: [
+      "technicalTasks": [
         {
-          id: 'ac-vn-104-1',
-          given: 'An IELTS Part 2 cue card prompt',
-          when: 'The user speaks continuously for 1 to 2 minutes',
-          then: 'The AI examiner calculates: Band Score for Pronunciation, Chunking & Linking score, and flags accent interference that reduces intelligibility.',
-          completed: true
+          "id": "t-elsa-6",
+          "title": "Implement statistical mapping function correlating phonetic error rate with IELTS band descriptors",
+          "category": "Backend",
+          "completed": true
         },
         {
-          id: 'ac-vn-104-2',
-          given: 'The speech analysis finishes',
-          when: 'The scorecard renders',
-          then: 'It provides specific advice on how to move from Band 6.0 (some phonemic inaccuracies) to Band 7.0+ (sustained flexible intonation and syllable stress).',
-          completed: false
-        }
-      ],
-      technicalTasks: [
-        { id: 't-vn-8', title: 'Prompt engineer LLM evaluator with official British Council / IDP IELTS Pronunciation Band Descriptors', category: 'Backend', completed: true },
-        { id: 't-vn-9', title: 'Build 2-minute timed examination recorder UI with preparation timer and prompt card', category: 'Frontend', completed: true },
-        { id: 't-vn-10', title: 'Store mock exam historical transcripts and audio recordings for progress tracking', category: 'Database', completed: false }
-      ],
-      notes: 'Massive market appeal in Vietnam where hundreds of thousands of students take IELTS annually.'
-    },
-    {
-      id: 'ELSA-301',
-      epicId: 'epic-roleplay-ielts',
-      title: 'Dynamic Scenario AI Speaking Roleplay (IT Standup, Coffee Shop)',
-      persona: 'Vietnamese IT Engineer / Professional Speaking to Foreign Clients',
-      action: 'have unscripted spoken conversation with an AI partner simulating realistic workplace scenarios (Daily Scrum Standup, Demoing Software, Coffee Shop)',
-      value: 'I build spontaneous speaking confidence without fear of embarrassment in front of real people',
-      priority: 'must',
-      status: 'in-progress',
-      size: 'L',
-      points: 8,
-      acceptanceCriteria: [
-        {
-          id: 'ac-elsa-301-1',
-          given: 'An active AI roleplay scenario ("Daily Standup with US Project Manager")',
-          when: 'User speaks their status update',
-          then: 'System transcribes audio, evaluates pronunciation, and generates context-aware audio AI response within 1.2 seconds.',
-          completed: true
-        }
-      ],
-      technicalTasks: [
-        { id: 't-elsa-18', title: 'Integrate LLM conversation agent with streaming Text-To-Speech (TTS) pipeline', category: 'Backend', completed: true },
-        { id: 't-elsa-19', title: 'Build chat bubble voice interface with animated speaking waveform and mic controls', category: 'Frontend', completed: true }
-      ],
-      notes: 'Target Vietnamese IT outsourcing community (FPT, VNG, KMS, TMA).'
-    },
-    {
-      id: 'ELSA-302',
-      epicId: 'epic-roleplay-ielts',
-      title: 'Post-Roleplay Comprehensive Scorecard (Pronunciation + Grammar)',
-      persona: 'Roleplay Practicer Reviewing Performance',
-      action: 'view a summary scorecard after completing an AI roleplay session highlighting pronunciation errors, vocabulary enhancements, and grammar corrections',
-      value: 'I get holistic feedback on real communicative competence rather than just isolated phonemes',
-      priority: 'should',
-      status: 'todo',
-      size: 'M',
-      points: 5,
-      acceptanceCriteria: [
-        {
-          id: 'ac-elsa-302-1',
-          given: 'A completed roleplay session with 6 conversational turns',
-          when: 'Session ends',
-          then: 'Dashboard displays: Pronunciation Score (e.g. 78%), Grammar Correctness (85%), and 3 Better Ways to Say It.',
-          completed: false
-        }
-      ],
-      technicalTasks: [
-        { id: 't-elsa-21', title: 'Implement post-conversation grammar and lexical variety analysis pipeline via LLM', category: 'Backend', completed: false },
-        { id: 't-elsa-22', title: 'Build interactive scorecard dialog with audio replay for mispronounced words', category: 'Frontend', completed: false }
-      ],
-      notes: 'Provides complete educational loop after conversation.'
-    },
-
-    // 6. Retention, Daily Path & Monetization
-    {
-      id: 'USER-101',
-      epicId: 'epic-retention',
-      title: 'Learner Authentication, Pronunciation Mastery Dashboard & Practice Recording History',
-      persona: 'Vietnamese Learner Tracking Their Speaking Journey',
-      action: 'log in with my account, view my 4-pillar pronunciation mastery scores (% Ending Sounds, Minimal Pairs, Stress, Connected Speech), and review my complete history of recorded speech attempts',
-      value: 'I have full visibility into my phonetic improvement over time and can listen back to native reference audio for every past mistake',
-      priority: 'must',
-      status: 'done',
-      size: 'L',
-      points: 8,
-      acceptanceCriteria: [
-        {
-          id: 'ac-user-101-1',
-          given: 'A logged-in learner opening the "Tiến Độ & Lịch Sử" tab',
-          when: 'The dashboard loads',
-          then: 'Displays overall GOP pronunciation score (e.g. 76% - IELTS 7.0), radar/progress bars for 4 Vietnamese phonetic pillars, and streak shields.',
-          completed: true
+          "id": "t-elsa-7",
+          "title": "Design CEFR level badge with percentile comparison against Vietnamese user average",
+          "category": "Frontend",
+          "completed": true
         },
         {
-          id: 'ac-user-101-2',
-          given: 'A user reviewing past practice attempts',
-          when: 'Viewing recording history items',
-          then: 'Each record shows target phrase, IPA, GOP score, Vietnamese error tags, and provides a 1-click button to listen to native reference pronunciation.',
-          completed: true
-        }
-      ],
-      technicalTasks: [
-        { id: 't-user-1', title: 'Build UserProfileProgressView component with 4-pillar phoneme mastery bars and historical recording logs', category: 'Frontend', completed: true },
-        { id: 't-user-2', title: 'Implement AuthModal supporting Demo accounts, custom learner profile registration, and L1 regional accent calibration', category: 'Frontend', completed: true },
-        { id: 't-user-3', title: 'Integrate Web Speech Synthesis API for instant native audio reference playback of historical recordings', category: 'Frontend', completed: true }
-      ],
-      notes: 'Essential for user retention; allows learners to see tangible proof of their accent reduction.'
-    },
-    {
-      id: 'ELSA-401',
-      epicId: 'epic-retention',
-      title: '10-Minute Daily Personalized Practice Path (Adaptive Curriculum)',
-      persona: 'Busy Office Worker / Student with 15 Minutes Daily',
-      action: 'open the app each day and have a personalized 3-step practice path automatically ready for me targeting my weakest phonemes',
-      value: 'I never wonder what to practice next and can build continuous improvement in just 10 minutes a day',
-      priority: 'must',
-      status: 'todo',
-      size: 'M',
-      points: 5,
-      acceptanceCriteria: [
-        {
-          id: 'ac-elsa-401-1',
-          given: 'A user opens the platform for the day',
-          when: 'Home path loads',
-          then: 'Curates 3 micro-modules: 1) Sound Warmup (weak phonemes), 2) Sentence Practice, 3) Quick Roleplay.',
-          completed: false
-        }
-      ],
-      technicalTasks: [
-        { id: 't-elsa-24', title: 'Build adaptive lesson recommendation algorithm querying recent user error logs', category: 'Backend', completed: false },
-        { id: 't-elsa-25', title: 'Create Daily Path progress card on dashboard with step indicators', category: 'Frontend', completed: false }
-      ],
-      notes: 'Keeps cognitive friction low for daily active users.'
-    },
-    {
-      id: 'ELSA-402',
-      epicId: 'epic-retention',
-      title: 'Automated Error Bank with Spaced Repetition (SM-2 Algorithm)',
-      persona: 'Diligently Improving Learner',
-      action: 'have every word I mispronounce (<60%) automatically saved into my personal Error Bank for scheduled review at 1, 3, 7, and 14 days',
-      value: 'I systematically eliminate my recurring mistakes through scientifically proven spaced retrieval practice',
-      priority: 'should',
-      status: 'backlog',
-      size: 'M',
-      points: 5,
-      acceptanceCriteria: [
-        {
-          id: 'ac-elsa-402-1',
-          given: 'User scores <60% on "comfortable"',
-          when: 'Lesson finishes',
-          then: 'Word is added to user error_bank with next review due date calculated via SuperMemo SM-2 interval.',
-          completed: false
-        }
-      ],
-      technicalTasks: [
-        { id: 't-elsa-26', title: 'Implement SM-2 spaced repetition calculation service in backend', category: 'Backend', completed: false },
-        { id: 't-elsa-27', title: 'Build "My Sound Bank" review deck UI with audio comparison and mastery status', category: 'Frontend', completed: false }
-      ],
-      notes: 'High retention driver; gives users a tangible sense of clearing their debt of mistakes.'
-    },
-    {
-      id: 'ELSA-601',
-      epicId: 'epic-retention',
-      title: 'Daily Practice Streak Counter & Streak Freeze Shields',
-      persona: 'Habit Builder',
-      action: 'see my active speaking streak on the home screen and use a "Streak Freeze" if I miss a day due to work/travel',
-      value: 'I build a daily English speaking habit without losing motivation after a single missed day',
-      priority: 'should',
-      status: 'done',
-      size: 'S',
-      points: 2,
-      acceptanceCriteria: [
-        {
-          id: 'ac-elsa-601-1',
-          given: 'User completes at least 1 speaking lesson today',
-          when: 'Streak updates',
-          then: 'Streak counter increments by 1 with flame particle animation.',
-          completed: true
-        }
-      ],
-      technicalTasks: [
-        { id: 't-elsa-35', title: 'Implement timezone-aware daily streak calculation service in backend', category: 'Backend', completed: true },
-        { id: 't-elsa-36', title: 'Build celebratory streak milestone unlock modal with confetti burst', category: 'Frontend', completed: true }
-      ],
-      notes: 'Vietnamese users respond very strongly to gamified streaks.'
-    },
-    {
-      id: 'ELSA-602',
-      epicId: 'epic-retention',
-      title: 'Freemium 5-Lesson Daily Limit & Pro Subscription Paywall',
-      persona: 'Free Tier User Deciding to Upgrade',
-      action: 'hit a friendly paywall after completing 5 free lessons today offering an upgrade to Pro for unlimited AI Roleplays',
-      value: 'the company monetizes engaged users while allowing free users to build initial habit',
-      priority: 'must',
-      status: 'todo',
-      size: 'M',
-      points: 5,
-      acceptanceCriteria: [
-        {
-          id: 'ac-elsa-602-1',
-          given: 'A free tier user attempts a 6th lesson today',
-          when: 'Lesson starts',
-          then: 'A paywall modal opens showcasing Pro benefits (Unlimited AI Roleplay, Detailed Phoneme Breakdown, IELTS Examiner).',
-          completed: false
-        }
-      ],
-      technicalTasks: [
-        { id: 't-elsa-37', title: 'Implement daily lesson usage quota tracking in database with midnight reset', category: 'Backend', completed: false },
-        { id: 't-elsa-38', title: 'Design high-converting Pro paywall dialog with MoMo / VNPay / Stripe checkout options', category: 'Frontend', completed: false }
-      ],
-      notes: 'Support domestic Vietnamese payment methods (MoMo, VNPay, domestic bank QR) for 4x higher checkout conversion.'
-    },
-    {
-      id: 'USER-101',
-      epicId: 'epic-retention',
-      title: 'Learner Authentication, Pronunciation Mastery Dashboard & Practice Recording History',
-      persona: 'Vietnamese Learner Tracking Their Speaking Journey',
-      action: 'log in with my account, view my 4-pillar pronunciation mastery scores (% Ending Sounds, Minimal Pairs, Stress, Connected Speech), and review my complete history of recorded speech attempts',
-      value: 'I have full visibility into my phonetic improvement over time and can listen back to native reference audio for every past mistake',
-      priority: 'must',
-      status: 'done',
-      size: 'L',
-      points: 8,
-      acceptanceCriteria: [
-        {
-          id: 'ac-user-101-1',
-          given: 'A logged-in learner opening the "Tiến Độ & Lịch Sử" tab',
-          when: 'The dashboard loads',
-          then: 'Displays overall GOP pronunciation score (e.g. 76% - IELTS 7.0), radar/progress bars for 4 Vietnamese phonetic pillars, and streak shields.',
-          completed: true
+          "id": "t-stitch-ui-elsa-103",
+          "title": "Hiện thực hóa giao diện pixel-perfect từ code.html với đầy đủ Tailwind design tokens",
+          "category": "Design",
+          "completed": true
         },
         {
-          id: 'ac-user-101-2',
-          given: 'A user reviewing past practice attempts',
-          when: 'Viewing recording history items',
-          then: 'Each record shows target phrase, IPA, GOP score, Vietnamese error tags, and provides a 1-click button to listen to native reference pronunciation.',
-          completed: true
+          "id": "t-audio-wiring-elsa-103",
+          "title": "Ghép nối State, Web Audio API recorder hook và TTS audio synthesis playback",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-qa-responsive-elsa-103",
+          "title": "Kiểm thử thẩm mỹ đa độ phân giải (Mobile/Tablet/Desktop) và kiểm tra tương thích Web Audio API",
+          "category": "QA",
+          "completed": true
         }
       ],
-      technicalTasks: [
-        { id: 't-user-1', title: 'Build UserProfileProgressView component with 4-pillar phoneme mastery bars and historical recording logs', category: 'Frontend', completed: true },
-        { id: 't-user-2', title: 'Implement AuthModal supporting Demo accounts, custom learner profile registration, and L1 regional accent calibration', category: 'Frontend', completed: true },
-        { id: 't-user-3', title: 'Integrate Web Speech Synthesis API for instant native audio reference playback of historical recordings', category: 'Frontend', completed: true }
-      ],
-      notes: 'Essential for user retention; allows learners to see tangible proof of their accent reduction.'
+      "notes": "Vietnamese test-takers are heavily driven by target IELTS band numbers (6.5, 7.0).\n\n[DEV 2026-10-03 09:38] Implemented OnboardingView with 3-region L1 dialect calibration (North/Central/South), target priority goals, IELTS Speaking Part 1 & 2 AI Mock Examiner, and granular phoneme history tracking\n\n### 🎨 UI/UX Design Specifications (Google Stitch Reference)\n- **Màn hình tham chiếu UI**: `src/ui-reference/b_ng_ch_n_o_n_m_l1_ti_ng_vi_t_light_mode/code.html & ti_n_ph_n_t_ch_d_li_u_h_c_m_light_mode/code.html`\n- **React Component đích**: `vietphonics-app/src/views/OnboardingView.jsx & DiagnosticModal.jsx`\n- **Tailwind Tokens & Spacing**: `space-sm (0.5rem), space-md (1rem), space-lg (1.5rem), gutter-desktop (2rem)`\n- **Bảng màu chủ đạo (Brand Palette)**: `Emerald #059669 (Mastered), Amber #d97706 (Warning), Rose #e11d48 (Critical), Sky #0284c7 (Calibrated)`\n- **Quy tắc Font chữ (Typography)**: `Plus Jakarta Sans (Assessment steps), JetBrains Mono (L1 prior offsets, F1/F2 vectors)`\n- **Đồ họa & Vector SVG**: 3-Region L1 Dialect Map (North/Central/South), Predicted IELTS 7.0/CEFR B2 scorecard, 44 IPA diagnostic matrix\n\n### 🔬 Tiêu Chuẩn Âm Học L1 & Bù Trừ Thổ Âm (Acoustic Specification)\n- **Tập trung can thiệp**: Khắc phục triệt để lỗi rụng âm đuôi (coda loss), vô thanh hóa phụ âm cuối, nhầm lẫn /θ/-/t/, /ʃ/-/s/, và thói quen đánh dấu thanh tiếng Việt lên trọng âm tiếng Anh.\n- **Hiệu chuẩn vùng miền**: Hỗ trợ 3 phương ngữ Việt Nam (Miền Bắc: /d/->/z/, Miền Trung: F0 pitch drop, Miền Nam: rụng phụ âm tắc cuối /k/-/t/).\n\n### 🛠️ Kiến Trúc Thực Thi (Technical Implementation)\n- **Mặt trận Frontend**: Bê nguyên 100% cấu trúc HTML/CSS, SVG và assets từ file Google Stitch tương ứng; không tự ý rút gọn hoặc dùng emoji thay thế.\n- **Xử lý Âm thanh**: Thu âm 16kHz mono qua Web Audio API, tích hợp SpeechSynthesis cho giọng đọc mẫu Oxford US (tốc độ 1.0x, 0.8x, 0.5x).\n- **Trạng thái**: Tích hợp chặt chẽ với AppContext, quản lý Streak, Khiên bảo vệ, và hỗ trợ thanh toán VietQR Napas 24/7.",
+      "createdAt": "2026-09-30T17:26:08.290Z"
     },
     {
-      id: 'USER-102',
-      epicId: 'epic-diagnostic',
-      title: 'Theo Dõi Tiến Độ Chi Tiết Từng Âm IPA & Lịch Sử Cải Thiện Âm Vị (Granular Phoneme Mastery Ledger)',
-      persona: 'Người Học Tiếng Anh Cần Kiểm Soát Tiến Độ Từng Âm',
-      action: 'xem bảng thống kê chi tiết tỷ lệ chính xác, số lần luyện tập, và biểu đồ tiến bộ theo thời gian của từng âm trong 44 âm IPA (/θ/, /iː/, /ʃ/, /s/, /t/, /d/...)',
-      value: 'tôi biết chính xác âm nào mình đã thuần thục để duy trì, và âm nào còn yếu để tập trung cải thiện mà không phải đoán mò',
-      priority: 'must',
-      status: 'done',
-      size: 'M',
-      points: 5,
-      acceptanceCriteria: [
+      "id": "ELSA-201",
+      "epicId": "epic-ending-sounds",
+      "title": "Real-Time Phoneme Error Heatmap with Forced Alignment",
+      "persona": "Learner Practicing Sentences Aloud",
+      "action": "see each letter in my sentence colored green (>80% accuracy), yellow (60-80%), or red (<60%) immediately after speaking",
+      "value": "I pinpoint the exact phonemes I mispronounced without guessing",
+      "priority": "must",
+      "status": "done",
+      "size": "L",
+      "points": 8,
+      "acceptanceCriteria": [
         {
-          id: 'ac-user-102-1',
-          given: 'Học viên mở bảng thống kê tiến độ âm vị (Phoneme Mastery Grid)',
-          when: 'Màn hình tải',
-          then: 'Hiển thị ma trận 44 âm IPA được phân loại theo 3 màu: Đã làm chủ (>80% - Xanh), Đang cải thiện (60-80% - Vàng), và Cần khắc phục gấp (<60% - Đỏ).',
-          completed: true
+          "id": "ac-elsa-201-1",
+          "given": "A spoken user recording",
+          "when": "The Forced Alignment engine aligns phonemes against the reference text",
+          "then": "Each character in the sentence renders with color-coded chip matching its Goodness of Pronunciation (GOP) score.",
+          "completed": true
         },
         {
-          id: 'ac-user-102-2',
-          given: 'Học viên chọn vào một âm bất kỳ (ví dụ /θ/)',
-          when: 'Xem chi tiết âm',
-          then: 'Hiển thị: Tỷ lệ chính xác trung bình, số lượt đã luyện tập, biểu đồ tăng/giảm điểm qua các ngày, danh sách từ vựng đã ghi âm chứa âm đó, và nút 1-click để luyện tập riêng âm này.',
-          completed: true
+          "id": "ac-ui-stitch-fidelity-elsa-201",
+          "given": "Người dùng truy cập màn hình trên thiết bị desktop hoặc di động",
+          "when": "Đối chiếu với bản thiết kế Google Stitch tại src/ui-reference/ph_ng_luy_n_ph_t_m_ph_k_m_h_c_light_mode/code.html",
+          "then": "Giao diện hiển thị chuẩn xác 100% pixel-perfect về bố cục, màu sắc, font chữ JetBrains Mono / Plus Jakarta Sans, đầy đủ đồ họa SVG và asset ảnh thực tế; tuyệt đối không dùng emoji hay placeholder sơ sài.",
+          "completed": true
+        },
+        {
+          "id": "ac-l1-acoustic-fidelity-elsa-201",
+          "given": "Người học tiếng Anh bản xứ Việt Nam luyện phát âm",
+          "when": "Hệ thống AI xử lý luồng âm thanh 16kHz",
+          "then": "Thuật toán áp dụng chính xác bộ lọc bù trừ lỗi L1 tiếng Việt, hiển thị hướng dẫn đặt lưỡi và phản hồi âm học theo chuẩn CEFR / IELTS.",
+          "completed": true
         }
       ],
-      technicalTasks: [
-        { id: 't-user-102-1', title: 'Thiết kế component ma trận 44 âm IPA kèm tooltip chi tiết và bộ lọc nguyên âm/phụ âm', category: 'Frontend', completed: true },
-        { id: 't-user-102-2', title: 'Xây dựng schema lưu trữ lịch sử Goodness of Pronunciation (GOP) theo từng phoneme_id trong SQLite backend', category: 'Backend', completed: true },
-        { id: 't-user-102-3', title: 'Tích hợp nút tắt chuyển nhanh sang Khẩu hình 2D hoặc Game 3D theo đúng âm vị đang xem', category: 'Frontend', completed: true }
+      "technicalTasks": [
+        {
+          "id": "t-elsa-8",
+          "title": "Build tokenized phoneme sentence renderer with interactive popover drawers",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-elsa-9",
+          "title": "Integrate forced-alignment phoneme acoustic model with Goodness of Pronunciation (GOP)",
+          "category": "Backend",
+          "completed": true
+        },
+        {
+          "id": "t-stitch-ui-elsa-201",
+          "title": "Hiện thực hóa giao diện pixel-perfect từ code.html với đầy đủ Tailwind design tokens",
+          "category": "Design",
+          "completed": true
+        },
+        {
+          "id": "t-audio-wiring-elsa-201",
+          "title": "Ghép nối State, Web Audio API recorder hook và TTS audio synthesis playback",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-qa-responsive-elsa-201",
+          "title": "Kiểm thử thẩm mỹ đa độ phân giải (Mobile/Tablet/Desktop) và kiểm tra tương thích Web Audio API",
+          "category": "QA",
+          "completed": true
+        }
       ],
-      notes: 'Tính năng thiết yếu giúp người học thấy rõ sự tiến bộ cụ thể của từng âm vị theo ngày thay vì chỉ có điểm số chung chung.'
+      "notes": "Store user attempts to track historical phoneme error rate.\n\n[DEV 2026-10-03 09:33] Implemented PracticeStudioView with forced alignment phonemic heatmap, critical ending sounds inspector (/ks/, -ed, /st/), dual pitch contour canvas, audio recording, slow-motion playback, and phonemic dictation gap-fill exercise\n\n### 🎨 UI/UX Design Specifications (Google Stitch Reference)\n- **Màn hình tham chiếu UI**: `src/ui-reference/ph_ng_luy_n_ph_t_m_ph_k_m_h_c_light_mode/code.html`\n- **React Component đích**: `vietphonics-app/src/views/PracticeStudioView.jsx`\n- **Tailwind Tokens & Spacing**: `space-xs (0.25rem), space-sm (0.5rem), space-md (1rem), space-lg (1.5rem), space-xl (2.5rem), gutter-desktop (2rem)`\n- **Bảng màu chủ đạo (Brand Palette)**: `Primary Rose #b80035 / #e11d48, Secondary Sky #006398 / #0284c7, Surface #ffffff, Background #f8fafc`\n- **Quy tắc Font chữ (Typography)**: `Plus Jakarta Sans (Display/Body), JetBrains Mono (IPA symbols, GOP telemetry, sample rate tags)`\n- **Đồ họa & Vector SVG**: Dual Speedometer SVG (138 WPM arc), Suprasegmental F0 Intonation Canvas, 28-bar Equalizer dock, Spectrogram modal drawer\n\n### 🔬 Tiêu Chuẩn Âm Học L1 & Bù Trừ Thổ Âm (Acoustic Specification)\n- **Tập trung can thiệp**: Khắc phục triệt để lỗi rụng âm đuôi (coda loss), vô thanh hóa phụ âm cuối, nhầm lẫn /θ/-/t/, /ʃ/-/s/, và thói quen đánh dấu thanh tiếng Việt lên trọng âm tiếng Anh.\n- **Hiệu chuẩn vùng miền**: Hỗ trợ 3 phương ngữ Việt Nam (Miền Bắc: /d/->/z/, Miền Trung: F0 pitch drop, Miền Nam: rụng phụ âm tắc cuối /k/-/t/).\n\n### 🛠️ Kiến Trúc Thực Thi (Technical Implementation)\n- **Mặt trận Frontend**: Bê nguyên 100% cấu trúc HTML/CSS, SVG và assets từ file Google Stitch tương ứng; không tự ý rút gọn hoặc dùng emoji thay thế.\n- **Xử lý Âm thanh**: Thu âm 16kHz mono qua Web Audio API, tích hợp SpeechSynthesis cho giọng đọc mẫu Oxford US (tốc độ 1.0x, 0.8x, 0.5x).\n- **Trạng thái**: Tích hợp chặt chẽ với AppContext, quản lý Streak, Khiên bảo vệ, và hỗ trợ thanh toán VietQR Napas 24/7.",
+      "createdAt": "2026-09-30T17:26:08.290Z"
     },
     {
-      id: 'GAME-101',
-      epicId: 'epic-gamified-3d',
-      title: 'Multi-Tier Level Progression & 4-World Map Engine',
-      persona: 'Vietnamese Learner Playing Pronunciation RPG',
-      action: 'progress through 4 distinct phonetic worlds (World 1: Âm Đuôi, World 2: Cặp Âm, World 3: Trọng Âm, World 4: Nối Âm & Trùm Rồng) with 12 playable stages and 3-star ratings',
-      value: 'I have a clear, structured roadmap that progressively challenges my pronunciation from basic final consonants to fluent connected speech',
-      priority: 'must',
-      status: 'in-progress',
-      size: 'L',
-      points: 8,
-      acceptanceCriteria: [
+      "id": "ELSA-202",
+      "epicId": "epic-prosody",
+      "title": "Syllable Stress & Capitalized Word Emphasis Evaluator",
+      "persona": "Speaker Struggling with Word Cadence",
+      "action": "practice multi-syllabic words with visual stress capitalization (e.g. de-VE-lop-ment vs DE-ve-lop-ment)",
+      "value": "I avoid the robotic flat speech that makes Vietnamese speakers hard to understand",
+      "priority": "must",
+      "status": "done",
+      "size": "M",
+      "points": 5,
+      "acceptanceCriteria": [
         {
-          id: 'ac-game-101-1',
-          given: 'A player selecting a World (1: Final Consonants, 2: Minimal Pairs, 3: Syllable Stress, 4: Connected Speech)',
-          when: 'The world loads',
-          then: 'The UI displays stage nodes with unlock status, star ratings (⭐⭐⭐), target phonemes, and XP rewards.',
-          completed: true
+          "id": "ac-elsa-202-1",
+          "given": "A target word with primary stress on syllable 2",
+          "when": "User stresses syllable 1 by holding it longer or louder",
+          "then": "The stressed syllable is highlighted in red with instruction \"Stress the second syllable: de-VE-lop-ment\".",
+          "completed": true
         },
         {
-          id: 'ac-game-101-2',
-          given: 'Completing a stage with GOP score >= 90%',
-          when: 'Stage victory triggers',
-          then: '3 stars are awarded, the next stage unlocks, and player XP/streak updates with fanfare animation.',
-          completed: true
+          "id": "ac-ui-stitch-fidelity-elsa-202",
+          "given": "Người dùng truy cập màn hình trên thiết bị desktop hoặc di động",
+          "when": "Đối chiếu với bản thiết kế Google Stitch tại src/ui-reference/ph_ng_luy_n_ph_t_m_ph_k_m_h_c_light_mode/code.html",
+          "then": "Giao diện hiển thị chuẩn xác 100% pixel-perfect về bố cục, màu sắc, font chữ JetBrains Mono / Plus Jakarta Sans, đầy đủ đồ họa SVG và asset ảnh thực tế; tuyệt đối không dùng emoji hay placeholder sơ sài.",
+          "completed": true
+        },
+        {
+          "id": "ac-l1-acoustic-fidelity-elsa-202",
+          "given": "Người học tiếng Anh bản xứ Việt Nam luyện phát âm",
+          "when": "Hệ thống AI xử lý luồng âm thanh 16kHz",
+          "then": "Thuật toán áp dụng chính xác bộ lọc bù trừ lỗi L1 tiếng Việt, hiển thị hướng dẫn đặt lưỡi và phản hồi âm học theo chuẩn CEFR / IELTS.",
+          "completed": true
         }
       ],
-      technicalTasks: [
-        { id: 't-game-1', title: 'Implement GameWorlds and Stages data schema with 12 calibrated pedagogical levels', category: 'Frontend', completed: true },
-        { id: 't-game-2', title: 'Build interactive World & Stage Selector ribbon with 3-star rating indicators', category: 'Frontend', completed: true },
-        { id: 't-game-3', title: 'Persist stage completion and stars in local storage & SQLite player profile', category: 'Backend', completed: false }
+      "technicalTasks": [
+        {
+          "id": "t-elsa-10",
+          "title": "Implement acoustic energy and vowel duration ratio calculation across syllable nuclei",
+          "category": "Backend",
+          "completed": true
+        },
+        {
+          "id": "t-elsa-11",
+          "title": "Build visual syllable stress bar widget with relative loudness animations",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-stitch-ui-elsa-202",
+          "title": "Hiện thực hóa giao diện pixel-perfect từ code.html với đầy đủ Tailwind design tokens",
+          "category": "Design",
+          "completed": true
+        },
+        {
+          "id": "t-audio-wiring-elsa-202",
+          "title": "Ghép nối State, Web Audio API recorder hook và TTS audio synthesis playback",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-qa-responsive-elsa-202",
+          "title": "Kiểm thử thẩm mỹ đa độ phân giải (Mobile/Tablet/Desktop) và kiểm tra tương thích Web Audio API",
+          "category": "QA",
+          "completed": true
+        }
       ],
-      notes: 'Structured progression turns fragmented pronunciation drills into an addictive, rewarding adventure.'
+      "notes": "Stress errors are frequently more disorienting to native listeners than isolated vowel substitutions.\n\n[DEV 2026-10-03 09:34] Implemented MouthAnatomyView with 2D vocal tract sagittal cross section, tongue contact points, vocal cord voicing indicators, L1 comparative matrix, and syllable stress visualizer\n\n### 🎨 UI/UX Design Specifications (Google Stitch Reference)\n- **Màn hình tham chiếu UI**: `src/ui-reference/ph_ng_luy_n_ph_t_m_ph_k_m_h_c_light_mode/code.html`\n- **React Component đích**: `vietphonics-app/src/views/PracticeStudioView.jsx`\n- **Tailwind Tokens & Spacing**: `space-md (1rem), space-lg (1.5rem), rounded-xl, rounded-2xl`\n- **Bảng màu chủ đạo (Brand Palette)**: `Native Pitch Cyan (#0284c7), Learner Pitch Rose (#e11d48), Gridlines #e2e8f0`\n- **Quy tắc Font chữ (Typography)**: `JetBrains Mono (F0 80Hz-350Hz, Delta tags, Timing slices 0.0s-4.2s)`\n- **Đồ họa & Vector SVG**: Suprasegmental F0 Fundamental Frequency Tracking SVG, Dual reference curve overlay, Sudden drop-off warning marker\n\n### 🔬 Tiêu Chuẩn Âm Học L1 & Bù Trừ Thổ Âm (Acoustic Specification)\n- **Tập trung can thiệp**: Khắc phục triệt để lỗi rụng âm đuôi (coda loss), vô thanh hóa phụ âm cuối, nhầm lẫn /θ/-/t/, /ʃ/-/s/, và thói quen đánh dấu thanh tiếng Việt lên trọng âm tiếng Anh.\n- **Hiệu chuẩn vùng miền**: Hỗ trợ 3 phương ngữ Việt Nam (Miền Bắc: /d/->/z/, Miền Trung: F0 pitch drop, Miền Nam: rụng phụ âm tắc cuối /k/-/t/).\n\n### 🛠️ Kiến Trúc Thực Thi (Technical Implementation)\n- **Mặt trận Frontend**: Bê nguyên 100% cấu trúc HTML/CSS, SVG và assets từ file Google Stitch tương ứng; không tự ý rút gọn hoặc dùng emoji thay thế.\n- **Xử lý Âm thanh**: Thu âm 16kHz mono qua Web Audio API, tích hợp SpeechSynthesis cho giọng đọc mẫu Oxford US (tốc độ 1.0x, 0.8x, 0.5x).\n- **Trạng thái**: Tích hợp chặt chẽ với AppContext, quản lý Streak, Khiên bảo vệ, và hỗ trợ thanh toán VietQR Napas 24/7.",
+      "createdAt": "2026-09-30T17:26:08.290Z"
     },
     {
-      id: 'GAME-102',
-      epicId: 'epic-gamified-3d',
-      title: 'Dual Voice Controller: Real-Time Web Speech Microphone & Fallback Simulation',
-      persona: 'Player Wanting Hands-Free Voice Control',
-      action: 'speak directly into my laptop or phone microphone using Web Speech API, with one-click simulation buttons available for noisy environments',
-      value: 'I can practice authentic vocal production and get instant in-game spellcast reactions without friction',
-      priority: 'must',
-      status: 'done',
-      size: 'M',
-      points: 5,
-      acceptanceCriteria: [
+      "id": "ELSA-203",
+      "epicId": "epic-prosody",
+      "title": "Suprasegmental Pitch & Sentence Intonation Melody Canvas",
+      "persona": "Advanced Speaker Sounding Monotone",
+      "action": "view my voice pitch frequency overlaid on a native speaker pitch curve to practice rising and falling intonation",
+      "value": "my speech sounds natural, engaging, and expressive rather than flat and robotic",
+      "priority": "should",
+      "status": "done",
+      "size": "L",
+      "points": 8,
+      "acceptanceCriteria": [
         {
-          id: 'ac-game-102-1',
-          given: 'A player enabling real microphone mode',
-          when: 'Speaking the target word clearly (e.g. "SIX" or "THINK")',
-          then: 'The browser Web Speech engine captures phonemes in real-time, validates the word, and unleashes the spell beam within 300ms.',
-          completed: true
+          "id": "ac-elsa-203-1",
+          "given": "A question requiring rising intonation (e.g. \"Are you coming tonight?\")",
+          "when": "User speaks with falling intonation",
+          "then": "The pitch curve drops at the end and an intonation alert explains \"Your pitch fell. Raise your tone at the end of yes/no questions.\"",
+          "completed": true
         },
         {
-          id: 'ac-game-102-2',
-          given: 'A user testing without a microphone or in a quiet study room',
-          when: 'Clicking the "Hô Thần Chú Chuẩn" or "Thử Lỗi Người Việt" buttons',
-          then: 'The game triggers the exact same combat animation, audio feedback, and educational acoustic diagnostic tip.',
-          completed: true
+          "id": "ac-ui-stitch-fidelity-elsa-203",
+          "given": "Người dùng truy cập màn hình trên thiết bị desktop hoặc di động",
+          "when": "Đối chiếu với bản thiết kế Google Stitch tại src/ui-reference/ph_ng_luy_n_ph_t_m_ph_k_m_h_c_light_mode/code.html",
+          "then": "Giao diện hiển thị chuẩn xác 100% pixel-perfect về bố cục, màu sắc, font chữ JetBrains Mono / Plus Jakarta Sans, đầy đủ đồ họa SVG và asset ảnh thực tế; tuyệt đối không dùng emoji hay placeholder sơ sài.",
+          "completed": true
+        },
+        {
+          "id": "ac-l1-acoustic-fidelity-elsa-203",
+          "given": "Người học tiếng Anh bản xứ Việt Nam luyện phát âm",
+          "when": "Hệ thống AI xử lý luồng âm thanh 16kHz",
+          "then": "Thuật toán áp dụng chính xác bộ lọc bù trừ lỗi L1 tiếng Việt, hiển thị hướng dẫn đặt lưỡi và phản hồi âm học theo chuẩn CEFR / IELTS.",
+          "completed": true
         }
       ],
-      technicalTasks: [
-        { id: 't-game-4', title: 'Integrate Web Speech API (window.SpeechRecognition) with auto-start and speech result parser', category: 'Frontend', completed: true },
-        { id: 't-game-5', title: 'Implement fallback simulation triggers with Vietnamese phonetic error explanations', category: 'Frontend', completed: true }
+      "technicalTasks": [
+        {
+          "id": "t-elsa-12",
+          "title": "Implement fundamental frequency (F0) contour extraction using CREPE / YIN algorithm",
+          "category": "Backend",
+          "completed": true
+        },
+        {
+          "id": "t-elsa-13",
+          "title": "Build dual Canvas pitch curve component with Dynamic Time Warping alignment",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-stitch-ui-elsa-203",
+          "title": "Hiện thực hóa giao diện pixel-perfect từ code.html với đầy đủ Tailwind design tokens",
+          "category": "Design",
+          "completed": true
+        },
+        {
+          "id": "t-audio-wiring-elsa-203",
+          "title": "Ghép nối State, Web Audio API recorder hook và TTS audio synthesis playback",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-qa-responsive-elsa-203",
+          "title": "Kiểm thử thẩm mỹ đa độ phân giải (Mobile/Tablet/Desktop) và kiểm tra tương thích Web Audio API",
+          "category": "QA",
+          "completed": true
+        }
       ],
-      notes: 'Ensures 100% usability whether in a private bedroom with microphone or in a quiet library with simulation mode.'
+      "notes": "Normalize pitch contours relative to speaker median F0 to accommodate male and female voice ranges.\n\n[DEV 2026-10-03 09:39] Implemented MasteryLabView with minimal pair auditory discrimination quizzes, noun-verb voicing alternation rules, dense target sound saturation sentences, and exaggerated articulation shadowing masterclass\n\n### 🎨 UI/UX Design Specifications (Google Stitch Reference)\n- **Màn hình tham chiếu UI**: `src/ui-reference/ph_ng_luy_n_ph_t_m_ph_k_m_h_c_light_mode/code.html`\n- **React Component đích**: `vietphonics-app/src/views/PracticeStudioView.jsx`\n- **Tailwind Tokens & Spacing**: `space-md (1rem), space-lg (1.5rem), rounded-xl, rounded-2xl`\n- **Bảng màu chủ đạo (Brand Palette)**: `Native Pitch Cyan (#0284c7), Learner Pitch Rose (#e11d48), Gridlines #e2e8f0`\n- **Quy tắc Font chữ (Typography)**: `JetBrains Mono (F0 80Hz-350Hz, Delta tags, Timing slices 0.0s-4.2s)`\n- **Đồ họa & Vector SVG**: Suprasegmental F0 Fundamental Frequency Tracking SVG, Dual reference curve overlay, Sudden drop-off warning marker\n\n### 🔬 Tiêu Chuẩn Âm Học L1 & Bù Trừ Thổ Âm (Acoustic Specification)\n- **Tập trung can thiệp**: Khắc phục triệt để lỗi rụng âm đuôi (coda loss), vô thanh hóa phụ âm cuối, nhầm lẫn /θ/-/t/, /ʃ/-/s/, và thói quen đánh dấu thanh tiếng Việt lên trọng âm tiếng Anh.\n- **Hiệu chuẩn vùng miền**: Hỗ trợ 3 phương ngữ Việt Nam (Miền Bắc: /d/->/z/, Miền Trung: F0 pitch drop, Miền Nam: rụng phụ âm tắc cuối /k/-/t/).\n\n### 🛠️ Kiến Trúc Thực Thi (Technical Implementation)\n- **Mặt trận Frontend**: Bê nguyên 100% cấu trúc HTML/CSS, SVG và assets từ file Google Stitch tương ứng; không tự ý rút gọn hoặc dùng emoji thay thế.\n- **Xử lý Âm thanh**: Thu âm 16kHz mono qua Web Audio API, tích hợp SpeechSynthesis cho giọng đọc mẫu Oxford US (tốc độ 1.0x, 0.8x, 0.5x).\n- **Trạng thái**: Tích hợp chặt chẽ với AppContext, quản lý Streak, Khiên bảo vệ, và hỗ trợ thanh toán VietQR Napas 24/7.",
+      "createdAt": "2026-09-30T17:26:08.290Z"
     },
     {
-      id: 'GAME-103',
-      epicId: 'epic-gamified-3d',
-      title: 'Auditory Discrimination Boss Arenas & Turn-Based Minimal Pair Counter-Spells',
-      persona: 'Player Facing Regional Dungeon Bosses',
-      action: 'face epic area bosses (Stone Golem, Twin Phantoms, Chronos Titan, Dragon of Accents) and cast the precise phonetic counter-spell within a 3-second timer',
-      value: 'I build lightning-fast auditory discrimination reflexes under game pressure, conquering my mother-tongue instincts',
-      priority: 'should',
-      status: 'in-progress',
-      size: 'L',
-      points: 8,
-      acceptanceCriteria: [
+      "id": "ELSA-204",
+      "epicId": "epic-ending-sounds",
+      "title": "Speech Fluency, Natural Pauses & Filler Word Monitor",
+      "persona": "Vietnamese Professional Speaking Staccato or Pausing Excessively",
+      "action": "receive feedback on my speaking speed (Words Per Minute), awkward mid-word pauses, and filler words (\"um\", \"uh\", \"à\")",
+      "value": "I can speak smoothly at conversational tempo (120-150 WPM) without staccato syllable pauses",
+      "priority": "should",
+      "status": "done",
+      "size": "M",
+      "points": 5,
+      "acceptanceCriteria": [
         {
-          id: 'ac-game-103-1',
-          given: 'A boss stage encounter (e.g. Twin Phantoms requiring /θ/ vs /t/ contrast)',
-          when: 'Player accurately voices the counter-spell within 3 seconds',
-          then: 'Deals 150-250 DMG to the boss health bar with screen shake, particle sparks, and combo increment.',
-          completed: true
+          "id": "ac-elsa-204-1",
+          "given": "A 30-second speech recording",
+          "when": "Analyzed by the fluency engine",
+          "then": "Calculates WPM speed gauge, counts filler word occurrences, and flags pauses exceeding 1.2 seconds.",
+          "completed": true
         },
         {
-          id: 'ac-game-103-2',
-          given: 'Player confuses the sound (e.g. saying /tɪŋk/ instead of /θɪŋk/)',
-          when: 'Boss barrier deflects attack',
-          then: 'Player takes 15 HP damage, combo resets, and an anatomical mouth guide tip appears explaining tongue placement.',
-          completed: true
+          "id": "ac-ui-stitch-fidelity-elsa-204",
+          "given": "Người dùng truy cập màn hình trên thiết bị desktop hoặc di động",
+          "when": "Đối chiếu với bản thiết kế Google Stitch tại src/ui-reference/ph_ng_luy_n_ph_t_m_ph_k_m_h_c_light_mode/code.html",
+          "then": "Giao diện hiển thị chuẩn xác 100% pixel-perfect về bố cục, màu sắc, font chữ JetBrains Mono / Plus Jakarta Sans, đầy đủ đồ họa SVG và asset ảnh thực tế; tuyệt đối không dùng emoji hay placeholder sơ sài.",
+          "completed": true
+        },
+        {
+          "id": "ac-l1-acoustic-fidelity-elsa-204",
+          "given": "Người học tiếng Anh bản xứ Việt Nam luyện phát âm",
+          "when": "Hệ thống AI xử lý luồng âm thanh 16kHz",
+          "then": "Thuật toán áp dụng chính xác bộ lọc bù trừ lỗi L1 tiếng Việt, hiển thị hướng dẫn đặt lưỡi và phản hồi âm học theo chuẩn CEFR / IELTS.",
+          "completed": true
         }
       ],
-      technicalTasks: [
-        { id: 't-game-6', title: 'Build boss encounter state machine with boss HP bars, enrage timers, and damage calculations', category: 'Frontend', completed: true },
-        { id: 't-game-7', title: 'Create Vietnamese-specific phonetic feedback generator for minimal pair confusions', category: 'Backend', completed: true }
+      "technicalTasks": [
+        {
+          "id": "t-elsa-14",
+          "title": "Build silence detection thresholding and filler word regex classifier on ASR transcripts",
+          "category": "Backend",
+          "completed": true
+        },
+        {
+          "id": "t-elsa-15",
+          "title": "Design fluency speedometer widget with WPM target zone (120-150 WPM)",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-stitch-ui-elsa-204",
+          "title": "Hiện thực hóa giao diện pixel-perfect từ code.html với đầy đủ Tailwind design tokens",
+          "category": "Design",
+          "completed": true
+        },
+        {
+          "id": "t-audio-wiring-elsa-204",
+          "title": "Ghép nối State, Web Audio API recorder hook và TTS audio synthesis playback",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-qa-responsive-elsa-204",
+          "title": "Kiểm thử thẩm mỹ đa độ phân giải (Mobile/Tablet/Desktop) và kiểm tra tương thích Web Audio API",
+          "category": "QA",
+          "completed": true
+        }
       ],
-      notes: 'Boss encounters provide exhilarating milestone tests at the conclusion of each curriculum world.'
+      "notes": "Vietnamese speakers often speak word-by-word with unnatural pauses.\n\n[DEV 2026-10-03 09:39] Implemented MasteryLabView with minimal pair auditory discrimination quizzes, noun-verb voicing alternation rules, dense target sound saturation sentences, and exaggerated articulation shadowing masterclass\n\n### 🎨 UI/UX Design Specifications (Google Stitch Reference)\n- **Màn hình tham chiếu UI**: `src/ui-reference/ph_ng_luy_n_ph_t_m_ph_k_m_h_c_light_mode/code.html`\n- **React Component đích**: `vietphonics-app/src/views/PracticeStudioView.jsx`\n- **Tailwind Tokens & Spacing**: `space-xs (0.25rem), space-sm (0.5rem), space-md (1rem), space-lg (1.5rem), space-xl (2.5rem), gutter-desktop (2rem)`\n- **Bảng màu chủ đạo (Brand Palette)**: `Primary Rose #b80035 / #e11d48, Secondary Sky #006398 / #0284c7, Surface #ffffff, Background #f8fafc`\n- **Quy tắc Font chữ (Typography)**: `Plus Jakarta Sans (Display/Body), JetBrains Mono (IPA symbols, GOP telemetry, sample rate tags)`\n- **Đồ họa & Vector SVG**: Dual Speedometer SVG (138 WPM arc), Suprasegmental F0 Intonation Canvas, 28-bar Equalizer dock, Spectrogram modal drawer\n\n### 🔬 Tiêu Chuẩn Âm Học L1 & Bù Trừ Thổ Âm (Acoustic Specification)\n- **Tập trung can thiệp**: Khắc phục triệt để lỗi rụng âm đuôi (coda loss), vô thanh hóa phụ âm cuối, nhầm lẫn /θ/-/t/, /ʃ/-/s/, và thói quen đánh dấu thanh tiếng Việt lên trọng âm tiếng Anh.\n- **Hiệu chuẩn vùng miền**: Hỗ trợ 3 phương ngữ Việt Nam (Miền Bắc: /d/->/z/, Miền Trung: F0 pitch drop, Miền Nam: rụng phụ âm tắc cuối /k/-/t/).\n\n### 🛠️ Kiến Trúc Thực Thi (Technical Implementation)\n- **Mặt trận Frontend**: Bê nguyên 100% cấu trúc HTML/CSS, SVG và assets từ file Google Stitch tương ứng; không tự ý rút gọn hoặc dùng emoji thay thế.\n- **Xử lý Âm thanh**: Thu âm 16kHz mono qua Web Audio API, tích hợp SpeechSynthesis cho giọng đọc mẫu Oxford US (tốc độ 1.0x, 0.8x, 0.5x).\n- **Trạng thái**: Tích hợp chặt chẽ với AppContext, quản lý Streak, Khiên bảo vệ, và hỗ trợ thanh toán VietQR Napas 24/7.",
+      "createdAt": "2026-09-30T17:26:08.290Z"
     },
     {
-      id: 'GAME-104',
-      epicId: 'epic-gamified-3d',
-      title: 'Zero-Latency Web Audio API Sound Synthesizer & 3D Isometric Combat Canvas',
-      persona: 'Web Player on Any Device',
-      action: 'experience crisp sound effects (laser beams, shattering crystals, hurt thuds, victory fanfares) and smooth 60 FPS combat animations with zero external sound file downloads',
-      value: 'The game loads instantaneously (<1s) and plays without audio lag even on spotty 3G/4G mobile connections',
-      priority: 'must',
-      status: 'done',
-      size: 'M',
-      points: 5,
-      acceptanceCriteria: [
+      "id": "ELSA-205",
+      "epicId": "epic-articulation",
+      "title": "Minimal Pair Auditory Discrimination Quizzes (/θ/-/t/, /iː/-/ɪ/)",
+      "persona": "Learner Unable to Hear Phonemic Contrasts",
+      "action": "play rapid-fire listening and speaking quizzes distinguishing easily confused pairs (e.g. \"sheep\" vs \"ship\", \"think\" vs \"sink\")",
+      "value": "I train my ear and vocal muscles to prevent misunderstanding words in conversation",
+      "priority": "must",
+      "status": "done",
+      "size": "S",
+      "points": 3,
+      "acceptanceCriteria": [
         {
-          id: 'ac-game-104-1',
-          given: 'Any combat action (successful shatter or damage taken)',
-          when: 'Action occurs',
-          then: 'Synthesized Web Audio frequencies generate immediately without network requests.',
-          completed: true
+          "id": "ac-elsa-205-1",
+          "given": "A minimal pair test between /θ/ and /s/",
+          "when": "System plays audio of \"think\"",
+          "then": "User chooses between \"think\" and \"sink\" within 3 seconds, building auditory discrimination.",
+          "completed": true
         },
         {
-          id: 'ac-game-104-2',
-          given: 'Low-power mobile laptop or phone',
-          when: 'Rendering isometric perspective track',
-          then: 'Maintains buttery 60 FPS with CSS perspective grid and hardware-accelerated transforms.',
-          completed: true
+          "id": "ac-ui-stitch-fidelity-elsa-205",
+          "given": "Người dùng truy cập màn hình trên thiết bị desktop hoặc di động",
+          "when": "Đối chiếu với bản thiết kế Google Stitch tại src/ui-reference/kh_u_h_nh_2d_gi_i_ph_u_c_mi_ng_light_mode/code.html",
+          "then": "Giao diện hiển thị chuẩn xác 100% pixel-perfect về bố cục, màu sắc, font chữ JetBrains Mono / Plus Jakarta Sans, đầy đủ đồ họa SVG và asset ảnh thực tế; tuyệt đối không dùng emoji hay placeholder sơ sài.",
+          "completed": true
+        },
+        {
+          "id": "ac-l1-acoustic-fidelity-elsa-205",
+          "given": "Người học tiếng Anh bản xứ Việt Nam luyện phát âm",
+          "when": "Hệ thống AI xử lý luồng âm thanh 16kHz",
+          "then": "Thuật toán áp dụng chính xác bộ lọc bù trừ lỗi L1 tiếng Việt, hiển thị hướng dẫn đặt lưỡi và phản hồi âm học theo chuẩn CEFR / IELTS.",
+          "completed": true
         }
       ],
-      technicalTasks: [
-        { id: 't-game-8', title: 'Implement SoundFX class with OscillatorNode and GainNode synthesis (Laser, Shatter, Hurt, Victory)', category: 'Frontend', completed: true },
-        { id: 't-game-9', title: 'Render responsive isometric combat arena with glowing spellcast beam and destructible obstacle states', category: 'Frontend', completed: true }
+      "technicalTasks": [
+        {
+          "id": "t-elsa-16",
+          "title": "Curate database of 150 Vietnamese-specific minimal pair audio samples",
+          "category": "Content",
+          "completed": true
+        },
+        {
+          "id": "t-elsa-17",
+          "title": "Build fast 2-choice rapid tap quiz card in practice view",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-stitch-ui-elsa-205",
+          "title": "Hiện thực hóa giao diện pixel-perfect từ code.html với đầy đủ Tailwind design tokens",
+          "category": "Design",
+          "completed": true
+        },
+        {
+          "id": "t-audio-wiring-elsa-205",
+          "title": "Ghép nối State, Web Audio API recorder hook và TTS audio synthesis playback",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-qa-responsive-elsa-205",
+          "title": "Kiểm thử thẩm mỹ đa độ phân giải (Mobile/Tablet/Desktop) và kiểm tra tương thích Web Audio API",
+          "category": "QA",
+          "completed": true
+        }
       ],
-      notes: 'Pure synthesizer architecture eliminates 15MB+ of audio asset downloads.'
+      "notes": "Crucial for Vietnamese speakers who substitute /θ/ with /t/ or /s/.\n\n[DEV 2026-10-03 09:39] Implemented MasteryLabView with minimal pair auditory discrimination quizzes, noun-verb voicing alternation rules, dense target sound saturation sentences, and exaggerated articulation shadowing masterclass\n\n### 🎨 UI/UX Design Specifications (Google Stitch Reference)\n- **Màn hình tham chiếu UI**: `src/ui-reference/kh_u_h_nh_2d_gi_i_ph_u_c_mi_ng_light_mode/code.html`\n- **React Component đích**: `vietphonics-app/src/views/MouthAnatomyView.jsx & MasteryLabView.jsx`\n- **Tailwind Tokens & Spacing**: `space-sm (0.5rem), space-md (1rem), space-lg (1.5rem), gutter-desktop (2rem)`\n- **Bảng màu chủ đạo (Brand Palette)**: `Rose #e11d48, Sky #0284c7, Tongue Muscle Coral Grad (#fb7185 -> #be123c), Airflow Cyan (#38bdf8 -> #0369a1)`\n- **Quy tắc Font chữ (Typography)**: `Plus Jakarta Sans (Headlines), JetBrains Mono (IPA, Contact mm, Friction metrics)`\n- **Đồ họa & Vector SVG**: Sagittal 2D cross-section SVG (760x500) with anatomical gridlines, Coronal front lip SVG with protruding tongue blade (2-3mm), 3 calibration sliders\n\n### 🔬 Tiêu Chuẩn Âm Học L1 & Bù Trừ Thổ Âm (Acoustic Specification)\n- **Tập trung can thiệp**: Khắc phục triệt để lỗi rụng âm đuôi (coda loss), vô thanh hóa phụ âm cuối, nhầm lẫn /θ/-/t/, /ʃ/-/s/, và thói quen đánh dấu thanh tiếng Việt lên trọng âm tiếng Anh.\n- **Hiệu chuẩn vùng miền**: Hỗ trợ 3 phương ngữ Việt Nam (Miền Bắc: /d/->/z/, Miền Trung: F0 pitch drop, Miền Nam: rụng phụ âm tắc cuối /k/-/t/).\n\n### 🛠️ Kiến Trúc Thực Thi (Technical Implementation)\n- **Mặt trận Frontend**: Bê nguyên 100% cấu trúc HTML/CSS, SVG và assets từ file Google Stitch tương ứng; không tự ý rút gọn hoặc dùng emoji thay thế.\n- **Xử lý Âm thanh**: Thu âm 16kHz mono qua Web Audio API, tích hợp SpeechSynthesis cho giọng đọc mẫu Oxford US (tốc độ 1.0x, 0.8x, 0.5x).\n- **Trạng thái**: Tích hợp chặt chẽ với AppContext, quản lý Streak, Khiên bảo vệ, và hỗ trợ thanh toán VietQR Napas 24/7.",
+      "createdAt": "2026-09-30T17:26:08.290Z"
     },
     {
-      id: 'GAME-105',
-      epicId: 'epic-gamified-3d',
-      title: 'RPG Equipment Inventory, Perk System & University Leaderboard Ranks',
-      persona: 'Competitive Vietnamese College Student / IT Engineer',
-      action: 'equip magical phonetic gear (Wand of Ending Sounds, Boots of Stress Rhythm) and climb university rankings (ĐHQG, Bách Khoa, NEU)',
-      value: 'I stay motivated to practice daily through progression prestige and pride in representing my university',
-      priority: 'could',
-      status: 'in-progress',
-      size: 'S',
-      points: 3,
-      acceptanceCriteria: [
+      "id": "ELSA-301",
+      "epicId": "epic-roleplay-ielts",
+      "title": "Dynamic Scenario AI Speaking Roleplay (IT Standup, Coffee Shop)",
+      "persona": "Vietnamese IT Engineer / Professional Speaking to Foreign Clients",
+      "action": "have unscripted spoken conversation with an AI partner simulating realistic workplace scenarios (Daily Scrum Standup, Demoing Software, Coffee Shop)",
+      "value": "I build spontaneous speaking confidence without fear of embarrassment in front of real people",
+      "priority": "must",
+      "status": "done",
+      "size": "L",
+      "points": 8,
+      "acceptanceCriteria": [
         {
-          id: 'ac-game-105-1',
-          given: 'Player viewing their avatar profile',
-          when: 'Opening the Inventory modal',
-          then: 'Equipped gear with phonetic combat perks and locked legendary gear are displayed clearly.',
-          completed: true
+          "id": "ac-elsa-301-1",
+          "given": "An active AI roleplay scenario (\"Daily Standup with US Project Manager\")",
+          "when": "User speaks their status update",
+          "then": "System transcribes audio, evaluates pronunciation, and generates context-aware audio AI response within 1.2 seconds.",
+          "completed": true
         },
         {
-          id: 'ac-game-105-2',
-          given: 'Reaching higher levels (Level 5+)',
-          when: 'XP threshold is crossed',
-          then: 'Level Up modal triggers, unlocking new equipment slots and titles.',
-          completed: false
-        }
-      ],
-      technicalTasks: [
-        { id: 't-game-10', title: 'Build RPG Inventory & Equipment modal with equipment perks and unlock requirements', category: 'Frontend', completed: true },
-        { id: 't-game-11', title: 'Create university leaderboard ranking schema in SQLite backend', category: 'Backend', completed: false }
-      ],
-      notes: 'Strong social and competitive motivator for university students and young tech professionals.'
-    },
-
-    // 8. Backend, Database & Cloud Architecture (Scale to 5,000 Paid Users)
-    {
-      id: 'ARCH-101',
-      epicId: 'epic-backend-infrastructure',
-      title: 'Relational Database Schema Design for Users, Phoneme Scoring & Subscriptions (PostgreSQL)',
-      persona: 'Lead Backend & Data Architect',
-      action: 'thiết kế cơ sở dữ liệu quan hệ PostgreSQL chuẩn hóa (Third Normal Form) gồm các bảng: users, subscriptions, payment_transactions, assessment_sessions, phoneme_scores, và user_phoneme_mastery với index B-tree và partition theo tháng',
-      value: 'hệ thống đảm bảo tính toàn vẹn dữ liệu tài chính (ACID) cho 5,000 khách hàng trả phí, và phản hồi truy vấn lịch sử phát âm / radar chart 44 âm của học viên dưới 40ms',
-      priority: 'must',
-      status: 'in-progress',
-      size: 'XL',
-      points: 8,
-      acceptanceCriteria: [
-        {
-          id: 'ac-arch-101-1',
-          given: 'Cơ sở dữ liệu PostgreSQL 16+',
-          when: 'Triển khai migration scripts',
-          then: 'Khởi tạo thành công 6 bảng lõi (users, subscriptions, payment_transactions, assessment_sessions, phoneme_scores, user_phoneme_mastery) có đầy đủ foreign key cascades và indexes.',
-          completed: true
+          "id": "ac-ui-stitch-fidelity-elsa-301",
+          "given": "Người dùng truy cập màn hình trên thiết bị desktop hoặc di động",
+          "when": "Đối chiếu với bản thiết kế Google Stitch tại src/ui-reference/ai_h_i_tho_i_roleplay_c_ng_s_light_mode/code.html",
+          "then": "Giao diện hiển thị chuẩn xác 100% pixel-perfect về bố cục, màu sắc, font chữ JetBrains Mono / Plus Jakarta Sans, đầy đủ đồ họa SVG và asset ảnh thực tế; tuyệt đối không dùng emoji hay placeholder sơ sài.",
+          "completed": true
         },
         {
-          id: 'ac-arch-101-2',
-          given: 'Bảng phoneme_scores lưu trữ hàng triệu lượt chấm âm vị',
-          when: 'Người dùng tải trang tiến độ cá nhân (Profile Progress View)',
-          then: 'Truy vấn bảng tổng hợp user_phoneme_mastery trả về điểm trung bình của 44 âm IPA trong vòng dưới 30ms mà không phải scan tuần tự bảng lịch sử.',
-          completed: true
+          "id": "ac-l1-acoustic-fidelity-elsa-301",
+          "given": "Người học tiếng Anh bản xứ Việt Nam luyện phát âm",
+          "when": "Hệ thống AI xử lý luồng âm thanh 16kHz",
+          "then": "Thuật toán áp dụng chính xác bộ lọc bù trừ lỗi L1 tiếng Việt, hiển thị hướng dẫn đặt lưỡi và phản hồi âm học theo chuẩn CEFR / IELTS.",
+          "completed": true
         }
       ],
-      technicalTasks: [
-        { id: 't-arch-1', title: 'Viết migration file Prisma/Drizzle/SQL DDL định nghĩa 6 bảng quan hệ với constraints và foreign keys', category: 'Database', completed: true },
-        { id: 't-arch-2', title: 'Thiết lập chỉ mục B-tree trên (user_id, created_at) và (user_id, phoneme_symbol) để tối ưu hóa truy vấn lịch sử', category: 'Database', completed: true },
-        { id: 't-arch-3', title: 'Tạo trigger cập nhật tự động bảng tổng hợp user_phoneme_mastery mỗi khi có bản ghi phoneme_scores mới', category: 'Database', completed: true }
-      ],
-      notes: 'Thiết kế chịu tải cho tối thiểu 10 triệu bản ghi âm vị và 5,000 thuê bao hoạt động đồng thời.'
-    },
-    {
-      id: 'ARCH-102',
-      epicId: 'epic-backend-infrastructure',
-      title: 'Asynchronous Audio Ingestion & GPU Worker Queue Pipeline (FastAPI + Redis + FFmpeg)',
-      persona: 'Systems & Performance Engineer',
-      action: 'xây dựng pipeline tiếp nhận và xử lý âm thanh bất đồng bộ sử dụng FastAPI làm API Gateway, Redis Queue (hoặc Celery/BullMQ) để xếp hàng tác vụ, và FFmpeg worker chuyển đổi tức thì định dạng WebM sang 16kHz Mono WAV trước khi nạp vào AI Model',
-      value: 'hệ thống hấp thụ mượt mà lưu lượng giờ cao điểm (19h - 22h tối) với 20 - 30 lượt chấm âm thanh mỗi giây mà không làm nghẽn máy chủ web, độ trễ phản hồi P95 < 600ms',
-      priority: 'must',
-      status: 'in-progress',
-      size: 'XL',
-      points: 8,
-      acceptanceCriteria: [
+      "technicalTasks": [
         {
-          id: 'ac-arch-102-1',
-          given: 'Frontend gửi file thu âm WebM qua HTTP POST /api/assess/audio',
-          when: 'API Gateway tiếp nhận',
-          then: 'Chuyển đổi file sang 16kHz mono WAV trong in-memory buffer qua FFmpeg trong thời gian < 25ms và đẩy job vào Redis queue.',
-          completed: true
+          "id": "t-elsa-18",
+          "title": "Integrate LLM conversation agent with streaming Text-To-Speech (TTS) pipeline",
+          "category": "Backend",
+          "completed": true
         },
         {
-          id: 'ac-arch-102-2',
-          given: '30 requests đồng thời trong giờ cao điểm',
-          when: 'Cụm GPU worker xử lý song song với WhisperX và Wav2Vec2',
-          then: 'Tất cả các requests trả kết quả điểm số GOP và vị trí lỗi sai trong thời gian dưới 800ms mà không bị timeout hoặc rớt kết nối.',
-          completed: true
+          "id": "t-elsa-19",
+          "title": "Build chat bubble voice interface with animated speaking waveform and mic controls",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-stitch-ui-elsa-301",
+          "title": "Hiện thực hóa giao diện pixel-perfect từ code.html với đầy đủ Tailwind design tokens",
+          "category": "Design",
+          "completed": true
+        },
+        {
+          "id": "t-audio-wiring-elsa-301",
+          "title": "Ghép nối State, Web Audio API recorder hook và TTS audio synthesis playback",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-qa-responsive-elsa-301",
+          "title": "Kiểm thử thẩm mỹ đa độ phân giải (Mobile/Tablet/Desktop) và kiểm tra tương thích Web Audio API",
+          "category": "QA",
+          "completed": true
         }
       ],
-      technicalTasks: [
-        { id: 't-arch-4', title: 'Xây dựng FastAPI server với background task và in-memory FFmpeg wrapper (ffmpeg-python)', category: 'Backend', completed: true },
-        { id: 't-arch-5', title: 'Thiết lập Redis Queue và worker pool kết nối mô hình nhận diện âm học WhisperX / Wav2Vec2', category: 'Backend', completed: true },
-        { id: 't-arch-6', title: 'Cấu hình WebSocket endpoint phục vụ phản hồi điểm số theo thời gian thực (Streaming Pronunciation Feedback)', category: 'Backend', completed: true }
-      ],
-      notes: 'Tách rời hoàn toàn Web Server và GPU Worker giúp hệ thống không bao giờ bị sập dù GPU có bị bận.'
+      "notes": "Target Vietnamese IT outsourcing community (FPT, VNG, KMS, TMA).\n\n[DEV 2026-10-03 09:35] Implemented RoleplayView with Daily Scrum Standup dialogue with Alex Tech Lead, WebRTC status telemetry, speech synthesis, post-roleplay summary scorecard, 3-tier positional phoneme ladder, and connected speech progression\n\n### 🎨 UI/UX Design Specifications (Google Stitch Reference)\n- **Màn hình tham chiếu UI**: `src/ui-reference/ai_h_i_tho_i_roleplay_c_ng_s_light_mode/code.html`\n- **React Component đích**: `vietphonics-app/src/views/RoleplayView.jsx`\n- **Tailwind Tokens & Spacing**: `space-md (1rem), space-lg (1.5rem), gutter-desktop (2rem)`\n- **Bảng màu chủ đạo (Brand Palette)**: `Alex Hub Cyan #0284c7, User Terminal Rose #e11d48, Emerald #059669 (WebRTC Live), Slate #f1f5f9`\n- **Quy tắc Font chữ (Typography)**: `Plus Jakarta Sans (Dialogue lines), JetBrains Mono (Turn timestamps, GOP 88% telemetry, Word IPA tooltips)`\n- **Đồ họa & Vector SVG**: Alex Tech Lead Portrait (Google CDN), Vietnamese Engineer Portrait (Google CDN), WebRTC 48kHz audio spectrum bars, 3 Circular scorecard dials\n\n### 🔬 Tiêu Chuẩn Âm Học L1 & Bù Trừ Thổ Âm (Acoustic Specification)\n- **Tập trung can thiệp**: Khắc phục triệt để lỗi rụng âm đuôi (coda loss), vô thanh hóa phụ âm cuối, nhầm lẫn /θ/-/t/, /ʃ/-/s/, và thói quen đánh dấu thanh tiếng Việt lên trọng âm tiếng Anh.\n- **Hiệu chuẩn vùng miền**: Hỗ trợ 3 phương ngữ Việt Nam (Miền Bắc: /d/->/z/, Miền Trung: F0 pitch drop, Miền Nam: rụng phụ âm tắc cuối /k/-/t/).\n\n### 🛠️ Kiến Trúc Thực Thi (Technical Implementation)\n- **Mặt trận Frontend**: Bê nguyên 100% cấu trúc HTML/CSS, SVG và assets từ file Google Stitch tương ứng; không tự ý rút gọn hoặc dùng emoji thay thế.\n- **Xử lý Âm thanh**: Thu âm 16kHz mono qua Web Audio API, tích hợp SpeechSynthesis cho giọng đọc mẫu Oxford US (tốc độ 1.0x, 0.8x, 0.5x).\n- **Trạng thái**: Tích hợp chặt chẽ với AppContext, quản lý Streak, Khiên bảo vệ, và hỗ trợ thanh toán VietQR Napas 24/7.",
+      "createdAt": "2026-09-30T17:26:08.290Z"
     },
     {
-      id: 'ARCH-103',
-      epicId: 'epic-backend-infrastructure',
-      title: 'Multi-Gateway Subscription Billing & Webhook Reconciler (Cổng Thanh Toán Tự Động VNPay, MoMo & Stripe)',
-      persona: 'FinTech & Growth Engineer',
-      action: 'tích hợp bộ xử lý thanh toán tự động đa cổng (VNPay QR, Ví MoMo, Thẻ quốc tế Stripe) kèm webhook handler có cơ chế kiểm tra trùng lặp (Idempotency Key) và tự động kích hoạt quyền Pro cho học viên',
-      value: 'tự động hóa 100% dòng tiền thuê bao hàng tháng của 5,000 học viên trả phí (~500 triệu - 1 tỷ VNĐ/tháng), kích hoạt tài khoản ngay sau 1 giây mà không cần nhân viên đối soát thủ công',
-      priority: 'must',
-      status: 'in-progress',
-      size: 'XL',
-      points: 8,
-      acceptanceCriteria: [
+      "id": "ELSA-302",
+      "epicId": "epic-roleplay-ielts",
+      "title": "Post-Roleplay Comprehensive Scorecard (Pronunciation + Grammar)",
+      "persona": "Roleplay Practicer Reviewing Performance",
+      "action": "view a summary scorecard after completing an AI roleplay session highlighting pronunciation errors, vocabulary enhancements, and grammar corrections",
+      "value": "I get holistic feedback on real communicative competence rather than just isolated phonemes",
+      "priority": "should",
+      "status": "done",
+      "size": "M",
+      "points": 5,
+      "acceptanceCriteria": [
         {
-          id: 'ac-arch-103-1',
-          given: 'Học viên quét mã VNPay QR hoặc MoMo thành công trên website',
-          when: 'Cổng thanh toán gửi IPN Webhook về server',
-          then: 'Hệ thống xác thực chữ ký số (Checksum HMAC-SHA512), ghi nhận giao dịch vào payment_transactions và cập nhật subscriptions.status = active trong vòng 1 giây.',
-          completed: true
+          "id": "ac-elsa-302-1",
+          "given": "A completed roleplay session with 6 conversational turns",
+          "when": "Session ends",
+          "then": "Dashboard displays: Pronunciation Score (e.g. 78%), Grammar Correctness (85%), and 3 Better Ways to Say It.",
+          "completed": true
         },
         {
-          id: 'ac-arch-103-2',
-          given: 'Cổng thanh toán gửi webhook lặp lại (retry do mạng chập chờn)',
-          when: 'Webhook handler tiếp nhận',
-          then: 'Hệ thống dùng transaction_id làm Idempotency Key để bỏ qua các request trùng lặp, ngăn ngừa việc gia hạn 2 lần.',
-          completed: true
+          "id": "ac-ui-stitch-fidelity-elsa-302",
+          "given": "Người dùng truy cập màn hình trên thiết bị desktop hoặc di động",
+          "when": "Đối chiếu với bản thiết kế Google Stitch tại src/ui-reference/ai_h_i_tho_i_roleplay_c_ng_s_light_mode/code.html",
+          "then": "Giao diện hiển thị chuẩn xác 100% pixel-perfect về bố cục, màu sắc, font chữ JetBrains Mono / Plus Jakarta Sans, đầy đủ đồ họa SVG và asset ảnh thực tế; tuyệt đối không dùng emoji hay placeholder sơ sài.",
+          "completed": true
+        },
+        {
+          "id": "ac-l1-acoustic-fidelity-elsa-302",
+          "given": "Người học tiếng Anh bản xứ Việt Nam luyện phát âm",
+          "when": "Hệ thống AI xử lý luồng âm thanh 16kHz",
+          "then": "Thuật toán áp dụng chính xác bộ lọc bù trừ lỗi L1 tiếng Việt, hiển thị hướng dẫn đặt lưỡi và phản hồi âm học theo chuẩn CEFR / IELTS.",
+          "completed": true
         }
       ],
-      technicalTasks: [
-        { id: 't-arch-7', title: 'Tích hợp VNPay Merchant SDK và MoMo Payment Gateway API với bảo mật HMAC SHA512', category: 'Backend', completed: true },
-        { id: 't-arch-8', title: 'Viết Webhook Reconciler Service với cơ chế hàng đợi xử lý idempotent và ghi log audit tài chính', category: 'Backend', completed: true },
-        { id: 't-arch-9', title: 'Tạo Cron Job hàng ngày quét các gói thuê bao sắp hết hạn (Grace Period 3 ngày) và gửi thông báo nhắc gia hạn', category: 'Backend', completed: true }
+      "technicalTasks": [
+        {
+          "id": "t-elsa-21",
+          "title": "Implement post-conversation grammar and lexical variety analysis pipeline via LLM",
+          "category": "Backend",
+          "completed": true
+        },
+        {
+          "id": "t-elsa-22",
+          "title": "Build interactive scorecard dialog with audio replay for mispronounced words",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-stitch-ui-elsa-302",
+          "title": "Hiện thực hóa giao diện pixel-perfect từ code.html với đầy đủ Tailwind design tokens",
+          "category": "Design",
+          "completed": true
+        },
+        {
+          "id": "t-audio-wiring-elsa-302",
+          "title": "Ghép nối State, Web Audio API recorder hook và TTS audio synthesis playback",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-qa-responsive-elsa-302",
+          "title": "Kiểm thử thẩm mỹ đa độ phân giải (Mobile/Tablet/Desktop) và kiểm tra tương thích Web Audio API",
+          "category": "QA",
+          "completed": true
+        }
       ],
-      notes: 'Bảo mật tài chính và tính toàn vẹn giao dịch là yếu tố sống còn khi doanh thu đạt hàng trăm triệu/tháng.'
+      "notes": "Provides complete educational loop after conversation.\n\n[DEV 2026-10-03 09:35] Implemented RoleplayView with Daily Scrum Standup dialogue with Alex Tech Lead, WebRTC status telemetry, speech synthesis, post-roleplay summary scorecard, 3-tier positional phoneme ladder, and connected speech progression\n\n### 🎨 UI/UX Design Specifications (Google Stitch Reference)\n- **Màn hình tham chiếu UI**: `src/ui-reference/ai_h_i_tho_i_roleplay_c_ng_s_light_mode/code.html`\n- **React Component đích**: `vietphonics-app/src/views/RoleplayView.jsx`\n- **Tailwind Tokens & Spacing**: `space-md (1rem), space-lg (1.5rem), gutter-desktop (2rem)`\n- **Bảng màu chủ đạo (Brand Palette)**: `Alex Hub Cyan #0284c7, User Terminal Rose #e11d48, Emerald #059669 (WebRTC Live), Slate #f1f5f9`\n- **Quy tắc Font chữ (Typography)**: `Plus Jakarta Sans (Dialogue lines), JetBrains Mono (Turn timestamps, GOP 88% telemetry, Word IPA tooltips)`\n- **Đồ họa & Vector SVG**: Alex Tech Lead Portrait (Google CDN), Vietnamese Engineer Portrait (Google CDN), WebRTC 48kHz audio spectrum bars, 3 Circular scorecard dials\n\n### 🔬 Tiêu Chuẩn Âm Học L1 & Bù Trừ Thổ Âm (Acoustic Specification)\n- **Tập trung can thiệp**: Khắc phục triệt để lỗi rụng âm đuôi (coda loss), vô thanh hóa phụ âm cuối, nhầm lẫn /θ/-/t/, /ʃ/-/s/, và thói quen đánh dấu thanh tiếng Việt lên trọng âm tiếng Anh.\n- **Hiệu chuẩn vùng miền**: Hỗ trợ 3 phương ngữ Việt Nam (Miền Bắc: /d/->/z/, Miền Trung: F0 pitch drop, Miền Nam: rụng phụ âm tắc cuối /k/-/t/).\n\n### 🛠️ Kiến Trúc Thực Thi (Technical Implementation)\n- **Mặt trận Frontend**: Bê nguyên 100% cấu trúc HTML/CSS, SVG và assets từ file Google Stitch tương ứng; không tự ý rút gọn hoặc dùng emoji thay thế.\n- **Xử lý Âm thanh**: Thu âm 16kHz mono qua Web Audio API, tích hợp SpeechSynthesis cho giọng đọc mẫu Oxford US (tốc độ 1.0x, 0.8x, 0.5x).\n- **Trạng thái**: Tích hợp chặt chẽ với AppContext, quản lý Streak, Khiên bảo vệ, và hỗ trợ thanh toán VietQR Napas 24/7.",
+      "createdAt": "2026-09-30T17:26:08.290Z"
     },
     {
-      id: 'ARCH-104',
-      epicId: 'epic-backend-infrastructure',
-      title: 'Tiered Quota Limiter & Entitlement Enforcement Middleware (Hạn Mức Sử Dụng Gói Free vs Pro 5,000 Users)',
-      persona: 'Security & Cloud Cost Optimizer',
-      action: 'xây dựng middleware kiểm soát phân tầng tài khoản (Tiered Entitlement Middleware) dựa trên Redis: gói Free bị giới hạn 10 câu thu âm/ngày và 3 âm cơ bản; gói Pro (5,000 paid users) mở khóa toàn bộ 44 âm, 14 modules phân vị, video masterclass và phòng thi IELTS ảo',
-      value: 'bảo vệ năng lực tính toán của cụm GPU khỏi bị cày bot hoặc quá tải bởi tài khoản miễn phí, đồng thời tạo phễu chuyển đổi (Paywall Conversion) mạnh mẽ thúc đẩy người dùng mua gói trả phí',
-      priority: 'must',
-      status: 'in-progress',
-      size: 'M',
-      points: 5,
-      acceptanceCriteria: [
+      "id": "ELSA-401",
+      "epicId": "epic-retention",
+      "title": "10-Minute Daily Personalized Practice Path (Adaptive Curriculum)",
+      "persona": "Busy Office Worker / Student with 15 Minutes Daily",
+      "action": "open the app each day and have a personalized 3-step practice path automatically ready for me targeting my weakest phonemes",
+      "value": "I never wonder what to practice next and can build continuous improvement in just 10 minutes a day",
+      "priority": "must",
+      "status": "done",
+      "size": "M",
+      "points": 5,
+      "acceptanceCriteria": [
         {
-          id: 'ac-arch-104-1',
-          given: 'Người dùng gói Free đã dùng hết 10 câu thu âm trong ngày',
-          when: 'Bấm thu âm câu thứ 11',
-          then: 'Middleware chặn request tại API Gateway (HTTP 429 / 403) và trả về thông điệp nâng cấp Pro: "Bạn đã hoàn thành 10 câu miễn phí hôm nay. Nâng cấp Pro để luyện tập không giới hạn!"',
-          completed: true
+          "id": "ac-elsa-401-1",
+          "given": "A user opens the platform for the day",
+          "when": "Home path loads",
+          "then": "Curates 3 micro-modules: 1) Sound Warmup (weak phonemes), 2) Sentence Practice, 3) Quick Roleplay.",
+          "completed": true
         },
         {
-          id: 'ac-arch-104-2',
-          given: 'Người dùng gói Pro đã thanh toán',
-          when: 'Mở bài tập nâng cao hoặc Video Masterclass',
-          then: 'Middleware kiểm tra token quyền hạn trong Redis cache (< 2ms) và cho phép truy cập ngay lập tức không bị gián đoạn.',
-          completed: true
+          "id": "ac-ui-stitch-fidelity-elsa-401",
+          "given": "Người dùng truy cập màn hình trên thiết bị desktop hoặc di động",
+          "when": "Đối chiếu với bản thiết kế Google Stitch tại src/ui-reference/t_ng_quan_l_tr_nh_10_ph_t_light_mode/code.html & ng_n_h_ng_t_l_i_n_ng_c_p_pro_light_mode/code.html",
+          "then": "Giao diện hiển thị chuẩn xác 100% pixel-perfect về bố cục, màu sắc, font chữ JetBrains Mono / Plus Jakarta Sans, đầy đủ đồ họa SVG và asset ảnh thực tế; tuyệt đối không dùng emoji hay placeholder sơ sài.",
+          "completed": true
+        },
+        {
+          "id": "ac-l1-acoustic-fidelity-elsa-401",
+          "given": "Người học tiếng Anh bản xứ Việt Nam luyện phát âm",
+          "when": "Hệ thống AI xử lý luồng âm thanh 16kHz",
+          "then": "Thuật toán áp dụng chính xác bộ lọc bù trừ lỗi L1 tiếng Việt, hiển thị hướng dẫn đặt lưỡi và phản hồi âm học theo chuẩn CEFR / IELTS.",
+          "completed": true
         }
       ],
-      technicalTasks: [
-        { id: 't-arch-10', title: 'Xây dựng Redis sliding-window rate limiter đếm số lượt thu âm theo user_id và reset lúc 0h00', category: 'Backend', completed: true },
-        { id: 't-arch-11', title: 'Thiết kế Paywall Modal popover trong React khi học viên chạm trần hạn mức miễn phí', category: 'Frontend', completed: true }
+      "technicalTasks": [
+        {
+          "id": "t-elsa-24",
+          "title": "Build adaptive lesson recommendation algorithm querying recent user error logs",
+          "category": "Backend",
+          "completed": true
+        },
+        {
+          "id": "t-elsa-25",
+          "title": "Create Daily Path progress card on dashboard with step indicators",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-stitch-ui-elsa-401",
+          "title": "Hiện thực hóa giao diện pixel-perfect từ code.html với đầy đủ Tailwind design tokens",
+          "category": "Design",
+          "completed": true
+        },
+        {
+          "id": "t-audio-wiring-elsa-401",
+          "title": "Ghép nối State, Web Audio API recorder hook và TTS audio synthesis playback",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-qa-responsive-elsa-401",
+          "title": "Kiểm thử thẩm mỹ đa độ phân giải (Mobile/Tablet/Desktop) và kiểm tra tương thích Web Audio API",
+          "category": "QA",
+          "completed": true
+        }
       ],
-      notes: 'Ngăn chặn tình trạng chi phí GPU tăng vọt ngoài tầm kiểm soát.'
+      "notes": "Keeps cognitive friction low for daily active users.\n\n[DEV 2026-10-03 09:32] Implemented Stitch-based 10-minute daily curriculum dashboard, L1 regional dialect calibration (North/Central/South), 3-minute diagnostic screener with 5 trigger sentences, and streak counter with freeze shields\n\n### 🎨 UI/UX Design Specifications (Google Stitch Reference)\n- **Màn hình tham chiếu UI**: `src/ui-reference/t_ng_quan_l_tr_nh_10_ph_t_light_mode/code.html & ng_n_h_ng_t_l_i_n_ng_c_p_pro_light_mode/code.html`\n- **React Component đích**: `vietphonics-app/src/views/DashboardView.jsx & ProUpgradeView.jsx`\n- **Tailwind Tokens & Spacing**: `space-sm (0.5rem), space-md (1rem), space-lg (1.5rem), space-xl (2.5rem)`\n- **Bảng màu chủ đạo (Brand Palette)**: `Brand Rose #e11d48, Flame Amber #f59e0b, Shield Sky #0284c7, Napas Emerald #10b981`\n- **Quy tắc Font chữ (Typography)**: `Plus Jakarta Sans (Course milestones), JetBrains Mono (SM-2 review cycles, VietQR syntax)`\n- **Đồ họa & Vector SVG**: Circular GOP dial, 3-Step connected timeline circuit line, SuperMemo SM-2 vocabulary cards, VietQR Napas 24/7 QR modal\n\n### 🔬 Tiêu Chuẩn Âm Học L1 & Bù Trừ Thổ Âm (Acoustic Specification)\n- **Tập trung can thiệp**: Khắc phục triệt để lỗi rụng âm đuôi (coda loss), vô thanh hóa phụ âm cuối, nhầm lẫn /θ/-/t/, /ʃ/-/s/, và thói quen đánh dấu thanh tiếng Việt lên trọng âm tiếng Anh.\n- **Hiệu chuẩn vùng miền**: Hỗ trợ 3 phương ngữ Việt Nam (Miền Bắc: /d/->/z/, Miền Trung: F0 pitch drop, Miền Nam: rụng phụ âm tắc cuối /k/-/t/).\n\n### 🛠️ Kiến Trúc Thực Thi (Technical Implementation)\n- **Mặt trận Frontend**: Bê nguyên 100% cấu trúc HTML/CSS, SVG và assets từ file Google Stitch tương ứng; không tự ý rút gọn hoặc dùng emoji thay thế.\n- **Xử lý Âm thanh**: Thu âm 16kHz mono qua Web Audio API, tích hợp SpeechSynthesis cho giọng đọc mẫu Oxford US (tốc độ 1.0x, 0.8x, 0.5x).\n- **Trạng thái**: Tích hợp chặt chẽ với AppContext, quản lý Streak, Khiên bảo vệ, và hỗ trợ thanh toán VietQR Napas 24/7.",
+      "createdAt": "2026-09-30T17:26:08.290Z"
     },
     {
-      id: 'ARCH-105',
-      epicId: 'epic-backend-infrastructure',
-      title: 'Cloud Object Storage & Ephemeral Audio Retention Lifecycle (Lưu Trữ Âm Thanh Cloudflare R2 Presigned URLs)',
-      persona: 'DevOps & Storage Cost Engineer',
-      action: 'tích hợp dịch vụ lưu trữ đám mây Cloudflare R2 (hoặc AWS S3) sử dụng Presigned URLs để frontend upload trực tiếp file âm thanh lên bucket, thiết lập vòng đời tự hủy (Lifecycle Rules): xóa file gói Free sau 7 ngày, giữ file gói Pro trong 90 ngày để vẽ biểu đồ tiến bộ',
-      value: 'giảm 100% gánh nặng băng thông tải file qua web server, giữ chi phí lưu trữ âm thanh cho 5,000 học viên ở mức dưới $15/tháng (nhờ chính sách Zero Egress Fee của Cloudflare R2)',
-      priority: 'must',
-      status: 'in-progress',
-      size: 'M',
-      points: 5,
-      acceptanceCriteria: [
+      "id": "ELSA-402",
+      "epicId": "epic-retention",
+      "title": "Automated Error Bank with Spaced Repetition (SM-2 Algorithm)",
+      "persona": "Diligently Improving Learner",
+      "action": "have every word I mispronounce (<60%) automatically saved into my personal Error Bank for scheduled review at 1, 3, 7, and 14 days",
+      "value": "I systematically eliminate my recurring mistakes through scientifically proven spaced retrieval practice",
+      "priority": "should",
+      "status": "done",
+      "size": "M",
+      "points": 5,
+      "acceptanceCriteria": [
         {
-          id: 'ac-arch-105-1',
-          given: 'Frontend chuẩn bị gửi audio thu âm',
-          when: 'Gọi API /api/storage/presigned-upload-url',
-          then: 'Server sinh URL có chữ ký bảo mật (hết hạn sau 5 phút) để trình duyệt upload trực tiếp lên Cloudflare R2 bucket.',
-          completed: true
+          "id": "ac-elsa-402-1",
+          "given": "User scores <60% on \"comfortable\"",
+          "when": "Lesson finishes",
+          "then": "Word is added to user error_bank with next review due date calculated via SuperMemo SM-2 interval.",
+          "completed": true
         },
         {
-          id: 'ac-arch-105-2',
-          given: 'Quy tắc vòng đời lưu trữ (Object Lifecycle Rules)',
-          when: 'File âm thanh của người dùng Free vượt quá 7 ngày tuổi',
-          then: 'Bucket tự động thanh trừng (auto-purge) file để tiết kiệm không gian lưu trữ và tuân thủ quyền riêng tư GDPR.',
-          completed: true
+          "id": "ac-ui-stitch-fidelity-elsa-402",
+          "given": "Người dùng truy cập màn hình trên thiết bị desktop hoặc di động",
+          "when": "Đối chiếu với bản thiết kế Google Stitch tại src/ui-reference/t_ng_quan_l_tr_nh_10_ph_t_light_mode/code.html & ng_n_h_ng_t_l_i_n_ng_c_p_pro_light_mode/code.html",
+          "then": "Giao diện hiển thị chuẩn xác 100% pixel-perfect về bố cục, màu sắc, font chữ JetBrains Mono / Plus Jakarta Sans, đầy đủ đồ họa SVG và asset ảnh thực tế; tuyệt đối không dùng emoji hay placeholder sơ sài.",
+          "completed": true
+        },
+        {
+          "id": "ac-l1-acoustic-fidelity-elsa-402",
+          "given": "Người học tiếng Anh bản xứ Việt Nam luyện phát âm",
+          "when": "Hệ thống AI xử lý luồng âm thanh 16kHz",
+          "then": "Thuật toán áp dụng chính xác bộ lọc bù trừ lỗi L1 tiếng Việt, hiển thị hướng dẫn đặt lưỡi và phản hồi âm học theo chuẩn CEFR / IELTS.",
+          "completed": true
         }
       ],
-      technicalTasks: [
-        { id: 't-arch-12', title: 'Tích hợp AWS S3 / Cloudflare R2 SDK (@aws-sdk/client-s3) sinh Presigned PUT URLs trong backend', category: 'Backend', completed: true },
-        { id: 't-arch-13', title: 'Cấu hình CORS và Object Lifecycle Rule trên Cloudflare R2 bucket cho các phân lớp dữ liệu', category: 'DevOps', completed: true }
-      ],
-      notes: 'Cloudflare R2 không tính phí tải về (Zero egress fee), giúp tiết kiệm hàng nghìn USD băng thông so với AWS S3 truyền thống.'
-    },
-
-    // 9. Advanced AI Speech Lab (Research-Backed 2026 Features)
-    {
-      id: 'ADV-101',
-      epicId: 'epic-advanced-ai-lab',
-      title: 'Golden Speaker: Nghe Chính Giọng Mình Phát Âm Chuẩn Bản Ngữ (Voice-Cloned Self Model)',
-      persona: 'Học Viên Khó Bắt Chước Giọng Người Bản Ngữ Vì Khác Giới Tính, Cao Độ Và Âm Sắc',
-      action: 'thu 30 giây giọng nói mẫu, sau đó hệ thống dùng mô hình voice cloning mã nguồn mở (OpenVoice / XTTS-v2 / F5-TTS) tạo ra phiên bản giọng của chính tôi đọc câu mục tiêu với phát âm chuẩn Mỹ/Anh',
-      value: 'tôi có một "giọng mẫu vàng" mang âm sắc của chính mình — nghiên cứu Golden Speaker chỉ ra đây là mẫu dễ bắt chước nhất, giúp tôi cải thiện nhanh hơn so với nghe giọng người lạ',
-      priority: 'should',
-      status: 'backlog',
-      size: 'XL',
-      points: 8,
-      acceptanceCriteria: [
+      "technicalTasks": [
         {
-          id: 'ac-adv-101-1',
-          given: 'Học viên đã đồng ý điều khoản và thu 30 giây giọng mẫu',
-          when: 'Học viên mở một câu luyện tập bất kỳ',
-          then: 'Hệ thống phát 3 track: (A) Giọng bản ngữ gốc, (B) Giọng Golden Speaker của chính học viên, (C) Bản thu thực tế của học viên — để so sánh A/B/C.',
-          completed: false
+          "id": "t-elsa-26",
+          "title": "Implement SM-2 spaced repetition calculation service in backend",
+          "category": "Backend",
+          "completed": true
         },
         {
-          id: 'ac-adv-101-2',
-          given: 'Yêu cầu bảo mật dữ liệu giọng nói sinh trắc học',
-          when: 'Học viên bấm "Xóa giọng mẫu của tôi"',
-          then: 'Toàn bộ voice embedding và audio mẫu bị xóa vĩnh viễn khỏi server và R2 trong vòng 24h; voice clone không bao giờ được dùng ngoài mục đích luyện tập.',
-          completed: false
+          "id": "t-elsa-27",
+          "title": "Build \"My Sound Bank\" review deck UI with audio comparison and mastery status",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-stitch-ui-elsa-402",
+          "title": "Hiện thực hóa giao diện pixel-perfect từ code.html với đầy đủ Tailwind design tokens",
+          "category": "Design",
+          "completed": true
+        },
+        {
+          "id": "t-audio-wiring-elsa-402",
+          "title": "Ghép nối State, Web Audio API recorder hook và TTS audio synthesis playback",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-qa-responsive-elsa-402",
+          "title": "Kiểm thử thẩm mỹ đa độ phân giải (Mobile/Tablet/Desktop) và kiểm tra tương thích Web Audio API",
+          "category": "QA",
+          "completed": true
         }
       ],
-      technicalTasks: [
-        { id: 't-adv-101-1', title: 'Self-host OpenVoice/XTTS-v2 trên GPU worker, cache speaker embedding theo user_id', category: 'Backend', completed: false },
-        { id: 't-adv-101-2', title: 'Pre-generate Golden Speaker audio cho 200 câu phổ biến nhất (batch đêm) để tiết kiệm GPU', category: 'Backend', completed: false },
-        { id: 't-adv-101-3', title: 'UI player 3 track A/B/C với consent modal và nút xóa giọng mẫu', category: 'Frontend', completed: false }
-      ],
-      notes: 'Nguồn: nghiên cứu "Golden Speaker Builder" (Ding et al., Texas A&M) & các app YourBestAccent, Accent Changer. Rủi ro: quyền riêng tư giọng nói — bắt buộc consent rõ ràng. Chỉ mở cho gói Pro để kiểm soát chi phí GPU.'
-    },
-    {
-      id: 'ADV-102',
-      epicId: 'epic-advanced-ai-lab',
-      title: 'Webcam Lip & Jaw Tracking: Soi Khẩu Hình Bằng Camera Ngay Trên Trình Duyệt (MediaPipe Face Landmarker)',
-      persona: 'Học Viên Không Tự Thấy Được Miệng Mình Mở Đủ Rộng Hay Chu Môi Đúng Chưa',
-      action: 'bật webcam khi luyện âm, hệ thống dùng MediaPipe Face Landmarker (478 điểm mốc khuôn mặt, chạy 100% trong trình duyệt) đo độ mở hàm, độ chu môi, độ kéo khóe miệng và so với khẩu hình mục tiêu',
-      value: 'tôi nhận phản hồi trực quan về khẩu hình như có giáo viên đứng trước mặt (ví dụ: "Hàm mở mới 60% so với âm /æ/ chuẩn — hạ thêm cằm"), mà video của tôi không bao giờ rời khỏi máy',
-      priority: 'should',
-      status: 'backlog',
-      size: 'L',
-      points: 8,
-      acceptanceCriteria: [
-        {
-          id: 'ac-adv-102-1',
-          given: 'Học viên luyện âm /æ/ (Target 1) với webcam bật',
-          when: 'Học viên phát âm từ "fantastic"',
-          then: 'Overlay hiển thị thanh "Jaw Opening" thời gian thực (tỷ lệ khoảng cách môi trên-dưới / chiều rộng mặt) với vùng mục tiêu xanh lá, cảnh báo nếu hàm khép lại ở âm tiết thứ 2.',
-          completed: false
-        },
-        {
-          id: 'ac-adv-102-2',
-          given: 'Học viên luyện âm /ʃ/ (she) hoặc /uː/',
-          when: 'Hệ thống đo chỉ số Lip Rounding',
-          then: 'Hiển thị cảnh báo "Môi chưa chu đủ — đang bẹt như âm /s/" nếu độ tròn môi dưới ngưỡng.',
-          completed: false
-        },
-        {
-          id: 'ac-adv-102-3',
-          given: 'Quyền riêng tư camera',
-          when: 'Webcam đang bật',
-          then: 'Không có frame video nào được gửi lên server; chỉ xử lý landmark cục bộ qua WebAssembly/WebGPU.',
-          completed: false
-        }
-      ],
-      technicalTasks: [
-        { id: 't-adv-102-1', title: 'Tích hợp @mediapipe/tasks-vision FaceLandmarker (GPU delegate) vào React hook useMouthTracker', category: 'Frontend', completed: false },
-        { id: 't-adv-102-2', title: 'Tính 3 chỉ số chuẩn hóa: jaw_opening, lip_rounding, lip_spread; hiệu chỉnh theo khuôn mặt từng người (calibration 3 giây)', category: 'Frontend', completed: false },
-        { id: 't-adv-102-3', title: 'Xây dựng bảng khẩu hình mục tiêu cho 20 nguyên âm và 8 phụ âm môi/răng', category: 'Content', completed: false }
-      ],
-      notes: 'Chi phí server = 0đ vì chạy client-side. Khác biệt lớn so với ELSA (chỉ dùng audio). Tham khảo repo mediapipe-face-mesh-lip-art.'
+      "notes": "High retention driver; gives users a tangible sense of clearing their debt of mistakes.\n\n[DEV 2026-10-03 09:38] Implemented OnboardingView with 3-region L1 dialect calibration (North/Central/South), target priority goals, IELTS Speaking Part 1 & 2 AI Mock Examiner, and granular phoneme history tracking\n\n### 🎨 UI/UX Design Specifications (Google Stitch Reference)\n- **Màn hình tham chiếu UI**: `src/ui-reference/t_ng_quan_l_tr_nh_10_ph_t_light_mode/code.html & ng_n_h_ng_t_l_i_n_ng_c_p_pro_light_mode/code.html`\n- **React Component đích**: `vietphonics-app/src/views/DashboardView.jsx & ProUpgradeView.jsx`\n- **Tailwind Tokens & Spacing**: `space-sm (0.5rem), space-md (1rem), space-lg (1.5rem), space-xl (2.5rem)`\n- **Bảng màu chủ đạo (Brand Palette)**: `Brand Rose #e11d48, Flame Amber #f59e0b, Shield Sky #0284c7, Napas Emerald #10b981`\n- **Quy tắc Font chữ (Typography)**: `Plus Jakarta Sans (Course milestones), JetBrains Mono (SM-2 review cycles, VietQR syntax)`\n- **Đồ họa & Vector SVG**: Circular GOP dial, 3-Step connected timeline circuit line, SuperMemo SM-2 vocabulary cards, VietQR Napas 24/7 QR modal\n\n### 🔬 Tiêu Chuẩn Âm Học L1 & Bù Trừ Thổ Âm (Acoustic Specification)\n- **Tập trung can thiệp**: Khắc phục triệt để lỗi rụng âm đuôi (coda loss), vô thanh hóa phụ âm cuối, nhầm lẫn /θ/-/t/, /ʃ/-/s/, và thói quen đánh dấu thanh tiếng Việt lên trọng âm tiếng Anh.\n- **Hiệu chuẩn vùng miền**: Hỗ trợ 3 phương ngữ Việt Nam (Miền Bắc: /d/->/z/, Miền Trung: F0 pitch drop, Miền Nam: rụng phụ âm tắc cuối /k/-/t/).\n\n### 🛠️ Kiến Trúc Thực Thi (Technical Implementation)\n- **Mặt trận Frontend**: Bê nguyên 100% cấu trúc HTML/CSS, SVG và assets từ file Google Stitch tương ứng; không tự ý rút gọn hoặc dùng emoji thay thế.\n- **Xử lý Âm thanh**: Thu âm 16kHz mono qua Web Audio API, tích hợp SpeechSynthesis cho giọng đọc mẫu Oxford US (tốc độ 1.0x, 0.8x, 0.5x).\n- **Trạng thái**: Tích hợp chặt chẽ với AppContext, quản lý Streak, Khiên bảo vệ, và hỗ trợ thanh toán VietQR Napas 24/7.",
+      "createdAt": "2026-09-30T17:26:08.290Z"
     },
     {
-      id: 'ADV-103',
-      epicId: 'epic-advanced-ai-lab',
-      title: 'Live Vowel Space Chart: Biểu Đồ Nguyên Âm F1/F2 Thời Gian Thực (Visual Formant Biofeedback)',
-      persona: 'Học Viên Nhầm Lẫn Các Nguyên Âm Gần Nhau (/iː/-/ɪ/, /æ/-/e/, /ʌ/-/ɑː/)',
-      action: 'nhìn chấm tròn đại diện giọng tôi di chuyển trên tứ giác nguyên âm (vowel quadrilateral) theo thời gian thực khi phát âm, với các vùng elip mục tiêu của người bản ngữ',
-      value: 'tôi "nhìn thấy" vị trí lưỡi của mình (F1 = độ cao lưỡi/độ mở hàm, F2 = lưỡi trước/sau) và tự điều chỉnh cho đến khi chấm rơi vào vùng mục tiêu — phương pháp đã được nghiên cứu chứng minh cải thiện cả phát âm lẫn khả năng nghe',
-      priority: 'must',
-      status: 'backlog',
-      size: 'M',
-      points: 5,
-      acceptanceCriteria: [
+      "id": "ELSA-601",
+      "epicId": "epic-retention",
+      "title": "Daily Practice Streak Counter & Streak Freeze Shields",
+      "persona": "Habit Builder",
+      "action": "see my active speaking streak on the home screen and use a \"Streak Freeze\" if I miss a day due to work/travel",
+      "value": "I build a daily English speaking habit without losing motivation after a single missed day",
+      "priority": "should",
+      "status": "done",
+      "size": "S",
+      "points": 2,
+      "acceptanceCriteria": [
         {
-          id: 'ac-adv-103-1',
-          given: 'Học viên kéo dài nguyên âm /iː/ trong 1 giây',
-          when: 'Web Audio API trích xuất F1/F2 bằng LPC mỗi 20ms',
-          then: 'Một chấm sáng di chuyển trên biểu đồ; khi rơi vào elip /iː/ bản ngữ, elip đổi màu xanh lá và phát âm thanh "ting".',
-          completed: false
+          "id": "ac-elsa-601-1",
+          "given": "User completes at least 1 speaking lesson today",
+          "when": "Streak updates",
+          "then": "Streak counter increments by 1 with flame particle animation.",
+          "completed": true
         },
         {
-          id: 'ac-adv-103-2',
-          given: 'Giọng nam, nữ và trẻ em có dải formant khác nhau',
-          when: 'Học viên hoàn thành bài hiệu chỉnh 3 nguyên âm góc (/iː/, /ɑː/, /uː/)',
-          then: 'Hệ thống chuẩn hóa vowel space theo giọng riêng của học viên (Lobanov normalization) để vùng mục tiêu chính xác.',
-          completed: false
+          "id": "ac-ui-stitch-fidelity-elsa-601",
+          "given": "Người dùng truy cập màn hình trên thiết bị desktop hoặc di động",
+          "when": "Đối chiếu với bản thiết kế Google Stitch tại src/ui-reference/t_ng_quan_l_tr_nh_10_ph_t_light_mode/code.html & ng_n_h_ng_t_l_i_n_ng_c_p_pro_light_mode/code.html",
+          "then": "Giao diện hiển thị chuẩn xác 100% pixel-perfect về bố cục, màu sắc, font chữ JetBrains Mono / Plus Jakarta Sans, đầy đủ đồ họa SVG và asset ảnh thực tế; tuyệt đối không dùng emoji hay placeholder sơ sài.",
+          "completed": true
+        },
+        {
+          "id": "ac-l1-acoustic-fidelity-elsa-601",
+          "given": "Người học tiếng Anh bản xứ Việt Nam luyện phát âm",
+          "when": "Hệ thống AI xử lý luồng âm thanh 16kHz",
+          "then": "Thuật toán áp dụng chính xác bộ lọc bù trừ lỗi L1 tiếng Việt, hiển thị hướng dẫn đặt lưỡi và phản hồi âm học theo chuẩn CEFR / IELTS.",
+          "completed": true
         }
       ],
-      technicalTasks: [
-        { id: 't-adv-103-1', title: 'Viết AudioWorklet tính LPC + root-finding trích xuất F1/F2 client-side (fallback Parselmouth server-side)', category: 'Frontend', completed: false },
-        { id: 't-adv-103-2', title: 'Vẽ Canvas vowel quadrilateral với 12 elip nguyên âm Mỹ/Anh và đường trail chuyển động', category: 'Frontend', completed: false },
-        { id: 't-adv-103-3', title: 'Thu thập dữ liệu formant tham chiếu (Hillenbrand 1995 / Peterson-Barney) cho elip mục tiêu', category: 'Content', completed: false }
+      "technicalTasks": [
+        {
+          "id": "t-elsa-35",
+          "title": "Implement timezone-aware daily streak calculation service in backend",
+          "category": "Backend",
+          "completed": true
+        },
+        {
+          "id": "t-elsa-36",
+          "title": "Build celebratory streak milestone unlock modal with confetti burst",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-stitch-ui-elsa-601",
+          "title": "Hiện thực hóa giao diện pixel-perfect từ code.html với đầy đủ Tailwind design tokens",
+          "category": "Design",
+          "completed": true
+        },
+        {
+          "id": "t-audio-wiring-elsa-601",
+          "title": "Ghép nối State, Web Audio API recorder hook và TTS audio synthesis playback",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-qa-responsive-elsa-601",
+          "title": "Kiểm thử thẩm mỹ đa độ phân giải (Mobile/Tablet/Desktop) và kiểm tra tương thích Web Audio API",
+          "category": "QA",
+          "completed": true
+        }
       ],
-      notes: 'Chi phí rẻ, tác động cao, có cơ sở khoa học vững. Hạn chế: kém hiệu quả với độ dài nguyên âm — kết hợp với thanh đo duration hiện có (PRON-204).'
+      "notes": "Vietnamese users respond very strongly to gamified streaks.\n\n[DEV 2026-10-03 09:32] Implemented Stitch-based 10-minute daily curriculum dashboard, L1 regional dialect calibration (North/Central/South), 3-minute diagnostic screener with 5 trigger sentences, and streak counter with freeze shields\n\n### 🎨 UI/UX Design Specifications (Google Stitch Reference)\n- **Màn hình tham chiếu UI**: `src/ui-reference/t_ng_quan_l_tr_nh_10_ph_t_light_mode/code.html & ng_n_h_ng_t_l_i_n_ng_c_p_pro_light_mode/code.html`\n- **React Component đích**: `vietphonics-app/src/views/DashboardView.jsx & ProUpgradeView.jsx`\n- **Tailwind Tokens & Spacing**: `space-sm (0.5rem), space-md (1rem), space-lg (1.5rem), space-xl (2.5rem)`\n- **Bảng màu chủ đạo (Brand Palette)**: `Brand Rose #e11d48, Flame Amber #f59e0b, Shield Sky #0284c7, Napas Emerald #10b981`\n- **Quy tắc Font chữ (Typography)**: `Plus Jakarta Sans (Course milestones), JetBrains Mono (SM-2 review cycles, VietQR syntax)`\n- **Đồ họa & Vector SVG**: Circular GOP dial, 3-Step connected timeline circuit line, SuperMemo SM-2 vocabulary cards, VietQR Napas 24/7 QR modal\n\n### 🔬 Tiêu Chuẩn Âm Học L1 & Bù Trừ Thổ Âm (Acoustic Specification)\n- **Tập trung can thiệp**: Khắc phục triệt để lỗi rụng âm đuôi (coda loss), vô thanh hóa phụ âm cuối, nhầm lẫn /θ/-/t/, /ʃ/-/s/, và thói quen đánh dấu thanh tiếng Việt lên trọng âm tiếng Anh.\n- **Hiệu chuẩn vùng miền**: Hỗ trợ 3 phương ngữ Việt Nam (Miền Bắc: /d/->/z/, Miền Trung: F0 pitch drop, Miền Nam: rụng phụ âm tắc cuối /k/-/t/).\n\n### 🛠️ Kiến Trúc Thực Thi (Technical Implementation)\n- **Mặt trận Frontend**: Bê nguyên 100% cấu trúc HTML/CSS, SVG và assets từ file Google Stitch tương ứng; không tự ý rút gọn hoặc dùng emoji thay thế.\n- **Xử lý Âm thanh**: Thu âm 16kHz mono qua Web Audio API, tích hợp SpeechSynthesis cho giọng đọc mẫu Oxford US (tốc độ 1.0x, 0.8x, 0.5x).\n- **Trạng thái**: Tích hợp chặt chẽ với AppContext, quản lý Streak, Khiên bảo vệ, và hỗ trợ thanh toán VietQR Napas 24/7.",
+      "createdAt": "2026-09-30T17:26:08.290Z"
     },
     {
-      id: 'ADV-104',
-      epicId: 'epic-advanced-ai-lab',
-      title: 'AI Phonetics Coach Có Trí Nhớ: Chẩn Đoán Theo Đặc Trưng Cấu Âm & Nhớ Lỗi Qua Các Buổi Học (LLM + Articulatory Features)',
-      persona: 'Học Viên Nhận Điểm Số Nhưng Không Hiểu Tại Sao Sai Và Phải Sửa Thế Nào',
-      action: 'nhận lời giải thích tiếng Việt từ AI Coach dựa trên đặc trưng cấu âm (voicing - rung/không rung, place - vị trí, manner - cách phát âm), và AI nhớ các lỗi lặp lại của tôi qua nhiều tuần để chủ động nhắc và thiết kế bài tập',
-      value: 'tôi nhận được phản hồi "biết sửa thế nào" thay vì chỉ "sai/đúng" (ví dụ: "Bạn phát âm /ð/ thành /d/ — đúng là có rung, nhưng sai vị trí: lưỡi đang chạm lợi thay vì kẹp giữa răng. Tuần trước bạn cũng sai 12 lần ở từ \'they\'")',
-      priority: 'must',
-      status: 'backlog',
-      size: 'XL',
-      points: 8,
-      acceptanceCriteria: [
+      "id": "ELSA-602",
+      "epicId": "epic-retention",
+      "title": "Freemium 5-Lesson Daily Limit & Pro Subscription Paywall",
+      "persona": "Free Tier User Deciding to Upgrade",
+      "action": "hit a friendly paywall after completing 5 free lessons today offering an upgrade to Pro for unlimited AI Roleplays",
+      "value": "the company monetizes engaged users while allowing free users to build initial habit",
+      "priority": "must",
+      "status": "done",
+      "size": "M",
+      "points": 5,
+      "acceptanceCriteria": [
         {
-          id: 'ac-adv-104-1',
-          given: 'MDD engine phát hiện lỗi thay thế âm /θ/ → /t/',
-          when: 'AI Coach sinh phản hồi',
-          then: 'Phản hồi gồm 3 phần: (1) Đặc trưng nào đúng/sai (voicing ✓, place ✗, manner ✗), (2) Hướng dẫn vật lý bằng tiếng Việt, (3) 1 bài tập vi mô 30 giây đề xuất.',
-          completed: false
+          "id": "ac-elsa-602-1",
+          "given": "A free tier user attempts a 6th lesson today",
+          "when": "Lesson starts",
+          "then": "A paywall modal opens showcasing Pro benefits (Unlimited AI Roleplay, Detailed Phoneme Breakdown, IELTS Examiner).",
+          "completed": true
         },
         {
-          id: 'ac-adv-104-2',
-          given: 'Học viên quay lại sau 5 ngày',
-          when: 'Mở buổi học mới',
-          then: 'AI Coach chào và tóm tắt: "3 lỗi bạn hay gặp nhất tuần này: /ð/→/d/ (12 lần), nuốt /s/ cuối (9 lần), /iː/ quá ngắn (7 lần). Hôm nay mình tập 5 phút cho /ð/ nhé."',
-          completed: false
+          "id": "ac-ui-stitch-fidelity-elsa-602",
+          "given": "Người dùng truy cập màn hình trên thiết bị desktop hoặc di động",
+          "when": "Đối chiếu với bản thiết kế Google Stitch tại src/ui-reference/t_ng_quan_l_tr_nh_10_ph_t_light_mode/code.html & ng_n_h_ng_t_l_i_n_ng_c_p_pro_light_mode/code.html",
+          "then": "Giao diện hiển thị chuẩn xác 100% pixel-perfect về bố cục, màu sắc, font chữ JetBrains Mono / Plus Jakarta Sans, đầy đủ đồ họa SVG và asset ảnh thực tế; tuyệt đối không dùng emoji hay placeholder sơ sài.",
+          "completed": true
         },
         {
-          id: 'ac-adv-104-3',
-          given: 'LLM có thể "bịa" (hallucinate) nhận xét',
-          when: 'Sinh phản hồi',
-          then: 'LLM chỉ được diễn giải dữ liệu lỗi có cấu trúc từ MDD engine (JSON), không tự chấm điểm audio.',
-          completed: false
+          "id": "ac-l1-acoustic-fidelity-elsa-602",
+          "given": "Người học tiếng Anh bản xứ Việt Nam luyện phát âm",
+          "when": "Hệ thống AI xử lý luồng âm thanh 16kHz",
+          "then": "Thuật toán áp dụng chính xác bộ lọc bù trừ lỗi L1 tiếng Việt, hiển thị hướng dẫn đặt lưỡi và phản hồi âm học theo chuẩn CEFR / IELTS.",
+          "completed": true
         }
       ],
-      technicalTasks: [
-        { id: 't-adv-104-1', title: 'Bảng ánh xạ 44 âm IPA → vector đặc trưng cấu âm (voicing, place, manner, height, backness, rounding)', category: 'Content', completed: false },
-        { id: 't-adv-104-2', title: 'Bảng learner_error_memory tổng hợp lỗi theo tuần + prompt template có ngữ cảnh lịch sử', category: 'Database', completed: false },
-        { id: 't-adv-104-3', title: 'Tích hợp LLM (Gemini Flash / Qwen2.5 self-host) sinh phản hồi tiếng Việt từ JSON lỗi có cấu trúc', category: 'Backend', completed: false }
+      "technicalTasks": [
+        {
+          "id": "t-elsa-37",
+          "title": "Implement daily lesson usage quota tracking in database with midnight reset",
+          "category": "Backend",
+          "completed": true
+        },
+        {
+          "id": "t-elsa-38",
+          "title": "Design high-converting Pro paywall dialog with MoMo / VNPay / Stripe checkout options",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-stitch-ui-elsa-602",
+          "title": "Hiện thực hóa giao diện pixel-perfect từ code.html với đầy đủ Tailwind design tokens",
+          "category": "Design",
+          "completed": true
+        },
+        {
+          "id": "t-audio-wiring-elsa-602",
+          "title": "Ghép nối State, Web Audio API recorder hook và TTS audio synthesis playback",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-qa-responsive-elsa-602",
+          "title": "Kiểm thử thẩm mỹ đa độ phân giải (Mobile/Tablet/Desktop) và kiểm tra tương thích Web Audio API",
+          "category": "QA",
+          "completed": true
+        }
       ],
-      notes: 'Xu hướng 2025-2026: Articulatory-Feature-informed MDD và cross-session memory (ELSA AI, nghiên cứu ISCA Interspeech). Chi phí LLM ước tính ~0.0001$/phản hồi với model Flash.'
+      "notes": "Support domestic Vietnamese payment methods (MoMo, VNPay, domestic bank QR) for 4x higher checkout conversion.\n\n[DEV 2026-10-03 09:35] Implemented ProUpgradeView with 3-day grace period, freemium 5-lesson paywall, multi-cycle plans (1 Month 30k, 3 Months 85k, 1 Year 299k), dynamic VietQR Napas 24/7 code generation, copy shortcuts, and automated activation webhook verification\n\n### 🎨 UI/UX Design Specifications (Google Stitch Reference)\n- **Màn hình tham chiếu UI**: `src/ui-reference/t_ng_quan_l_tr_nh_10_ph_t_light_mode/code.html & ng_n_h_ng_t_l_i_n_ng_c_p_pro_light_mode/code.html`\n- **React Component đích**: `vietphonics-app/src/views/DashboardView.jsx & ProUpgradeView.jsx`\n- **Tailwind Tokens & Spacing**: `space-sm (0.5rem), space-md (1rem), space-lg (1.5rem), space-xl (2.5rem)`\n- **Bảng màu chủ đạo (Brand Palette)**: `Brand Rose #e11d48, Flame Amber #f59e0b, Shield Sky #0284c7, Napas Emerald #10b981`\n- **Quy tắc Font chữ (Typography)**: `Plus Jakarta Sans (Course milestones), JetBrains Mono (SM-2 review cycles, VietQR syntax)`\n- **Đồ họa & Vector SVG**: Circular GOP dial, 3-Step connected timeline circuit line, SuperMemo SM-2 vocabulary cards, VietQR Napas 24/7 QR modal\n\n### 🔬 Tiêu Chuẩn Âm Học L1 & Bù Trừ Thổ Âm (Acoustic Specification)\n- **Tập trung can thiệp**: Khắc phục triệt để lỗi rụng âm đuôi (coda loss), vô thanh hóa phụ âm cuối, nhầm lẫn /θ/-/t/, /ʃ/-/s/, và thói quen đánh dấu thanh tiếng Việt lên trọng âm tiếng Anh.\n- **Hiệu chuẩn vùng miền**: Hỗ trợ 3 phương ngữ Việt Nam (Miền Bắc: /d/->/z/, Miền Trung: F0 pitch drop, Miền Nam: rụng phụ âm tắc cuối /k/-/t/).\n\n### 🛠️ Kiến Trúc Thực Thi (Technical Implementation)\n- **Mặt trận Frontend**: Bê nguyên 100% cấu trúc HTML/CSS, SVG và assets từ file Google Stitch tương ứng; không tự ý rút gọn hoặc dùng emoji thay thế.\n- **Xử lý Âm thanh**: Thu âm 16kHz mono qua Web Audio API, tích hợp SpeechSynthesis cho giọng đọc mẫu Oxford US (tốc độ 1.0x, 0.8x, 0.5x).\n- **Trạng thái**: Tích hợp chặt chẽ với AppContext, quản lý Streak, Khiên bảo vệ, và hỗ trợ thanh toán VietQR Napas 24/7.",
+      "createdAt": "2026-09-30T17:26:08.290Z"
     },
     {
-      id: 'ADV-105',
-      epicId: 'epic-advanced-ai-lab',
-      title: 'Connected Speech Lab: Luyện Nối Âm, Nuốt Âm & Biến Âm Như Người Bản Ngữ (Linking, Reduction, Elision, Assimilation)',
-      persona: 'Học Viên Phát Âm Từng Từ Rõ Ràng Nhưng Nói Câu Nghe Rời Rạc Như Robot Và Không Nghe Được Người Bản Ngữ Nói Nhanh',
-      action: 'luyện 4 hiện tượng nối âm: Linking ("an apple" → /ə.næpəl/), Reduction ("want to" → "wanna", "going to" → "gonna"), Elision ("next day" → /neks deɪ/), Assimilation ("did you" → /dɪdʒə/), với hình vẽ cung nối giữa các từ',
-      value: 'tôi nói trôi chảy, tự nhiên và — quan trọng không kém — nghe hiểu được người bản ngữ nói tốc độ thật trong phim, podcast và cuộc họp',
-      priority: 'must',
-      status: 'backlog',
-      size: 'M',
-      points: 5,
-      acceptanceCriteria: [
+      "id": "VN-101",
+      "epicId": "epic-ending-sounds",
+      "title": "Final Consonant Sound \"Ending Sound\" Inspector & Alert System",
+      "persona": "Vietnamese English Learner Dropping Final Consonants",
+      "action": "receive instant real-time visual and audio alerts whenever I drop ending consonants (/s/, /z/, /t/, /d/, /k/, /tʃ/, /ks/) in words like \"five\", \"street\", \"breakfast\", \"like\"",
+      "value": "I eliminate the #1 phonological mistake of Vietnamese speakers that prevents foreigners from understanding my speech",
+      "priority": "must",
+      "status": "done",
+      "size": "M",
+      "points": 5,
+      "acceptanceCriteria": [
         {
-          id: 'ac-adv-105-1',
-          given: 'Câu "Turn it off and pick it up"',
-          when: 'Hiển thị bài luyện',
-          then: 'Các điểm nối âm được vẽ cung ‿ (Turn‿it‿off‿and pick‿it‿up), bấm vào cung để nghe chậm phần nối.',
-          completed: false
+          "id": "ac-vn-101-1",
+          "given": "A target word with a final plosive or fricative (e.g. \"six\" /sɪks/)",
+          "when": "The user drops the final consonant cluster (pronouncing /sɪ/)",
+          "then": "The missing ending letters \"x\" (/ks/) are highlighted in bright red with an alert: \"Missing ending sound /ks/\".",
+          "completed": true
         },
         {
-          id: 'ac-adv-105-2',
-          given: 'Học viên đọc câu có điểm nối',
-          when: 'Forced alignment phân tích khoảng lặng giữa các từ',
-          then: 'Nếu khoảng ngắt tại điểm nối > 120ms, hệ thống đánh dấu "Chưa nối âm" và tính Linking Score.',
-          completed: false
+          "id": "ac-vn-101-2",
+          "given": "The user accurately voices and releases the final consonant",
+          "when": "Evaluated by the acoustic model",
+          "then": "An emerald badge chimes \"Perfect Ending Sound!\" and awards 10 bonus accuracy points.",
+          "completed": true
         },
         {
-          id: 'ac-adv-105-3',
-          given: 'Chế độ nghe ngược (Listening Decoder)',
-          when: 'Phát câu tốc độ bản ngữ "Whaddaya wanna do?"',
-          then: 'Học viên gõ lại câu đầy đủ ("What do you want to do?") để luyện tai nhận diện dạng rút gọn.',
-          completed: false
+          "id": "ac-ui-stitch-fidelity-vn-101",
+          "given": "Người dùng truy cập màn hình trên thiết bị desktop hoặc di động",
+          "when": "Đối chiếu với bản thiết kế Google Stitch tại src/ui-reference/ph_ng_luy_n_ph_t_m_ph_k_m_h_c_light_mode/code.html",
+          "then": "Giao diện hiển thị chuẩn xác 100% pixel-perfect về bố cục, màu sắc, font chữ JetBrains Mono / Plus Jakarta Sans, đầy đủ đồ họa SVG và asset ảnh thực tế; tuyệt đối không dùng emoji hay placeholder sơ sài.",
+          "completed": true
+        },
+        {
+          "id": "ac-l1-acoustic-fidelity-vn-101",
+          "given": "Người học tiếng Anh bản xứ Việt Nam luyện phát âm",
+          "when": "Hệ thống AI xử lý luồng âm thanh 16kHz",
+          "then": "Thuật toán áp dụng chính xác bộ lọc bù trừ lỗi L1 tiếng Việt, hiển thị hướng dẫn đặt lưỡi và phản hồi âm học theo chuẩn CEFR / IELTS.",
+          "completed": true
         }
       ],
-      technicalTasks: [
-        { id: 't-adv-105-1', title: 'Rule engine tự động phát hiện điểm linking/elision/assimilation từ chuỗi phiên âm IPA của câu', category: 'Backend', completed: false },
-        { id: 't-adv-105-2', title: 'Component ConnectedSpeechSentence vẽ cung nối SVG và phát audio từng đoạn nối', category: 'Frontend', completed: false },
-        { id: 't-adv-105-3', title: 'Biên soạn 150 câu connected speech theo chủ đề (công sở IT, du lịch, IELTS)', category: 'Content', completed: false }
+      "technicalTasks": [
+        {
+          "id": "t-vn-1",
+          "title": "Implement Forced Alignment threshold specifically on word-final phoneme boundaries (/s/, /z/, /t/, /d/, /k/, /tʃ/, /ks/)",
+          "category": "Backend",
+          "completed": true
+        },
+        {
+          "id": "t-vn-2",
+          "title": "Build animated \"Ending Sound Inspector\" visual callout pill in Practice view",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-vn-3",
+          "title": "Curate dictionary of 300 high-frequency words where Vietnamese learners commonly drop endings",
+          "category": "Database",
+          "completed": true
+        },
+        {
+          "id": "t-stitch-ui-vn-101",
+          "title": "Hiện thực hóa giao diện pixel-perfect từ code.html với đầy đủ Tailwind design tokens",
+          "category": "Design",
+          "completed": true
+        },
+        {
+          "id": "t-audio-wiring-vn-101",
+          "title": "Ghép nối State, Web Audio API recorder hook và TTS audio synthesis playback",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-qa-responsive-vn-101",
+          "title": "Kiểm thử thẩm mỹ đa độ phân giải (Mobile/Tablet/Desktop) và kiểm tra tương thích Web Audio API",
+          "category": "QA",
+          "completed": true
+        }
       ],
-      notes: 'Người Việt nói theo nhịp âm tiết (syllable-timed) nên có xu hướng ngắt rời từng từ. Connected speech là khoảng trống lớn trong các app hiện tại.'
+      "notes": "In Vietnamese phonotactics, open syllables dominate. Explicitly training the release of final plosives is essential for intelligibility.\n\n[DEV 2026-10-03 09:33] Implemented PracticeStudioView with forced alignment phonemic heatmap, critical ending sounds inspector (/ks/, -ed, /st/), dual pitch contour canvas, audio recording, slow-motion playback, and phonemic dictation gap-fill exercise\n\n### 🎨 UI/UX Design Specifications (Google Stitch Reference)\n- **Màn hình tham chiếu UI**: `src/ui-reference/ph_ng_luy_n_ph_t_m_ph_k_m_h_c_light_mode/code.html`\n- **React Component đích**: `vietphonics-app/src/views/PracticeStudioView.jsx`\n- **Tailwind Tokens & Spacing**: `space-xs (0.25rem), space-sm (0.5rem), space-md (1rem), space-lg (1.5rem), space-xl (2.5rem), gutter-desktop (2rem)`\n- **Bảng màu chủ đạo (Brand Palette)**: `Primary Rose #b80035 / #e11d48, Secondary Sky #006398 / #0284c7, Surface #ffffff, Background #f8fafc`\n- **Quy tắc Font chữ (Typography)**: `Plus Jakarta Sans (Display/Body), JetBrains Mono (IPA symbols, GOP telemetry, sample rate tags)`\n- **Đồ họa & Vector SVG**: Dual Speedometer SVG (138 WPM arc), Suprasegmental F0 Intonation Canvas, 28-bar Equalizer dock, Spectrogram modal drawer\n\n### 🔬 Tiêu Chuẩn Âm Học L1 & Bù Trừ Thổ Âm (Acoustic Specification)\n- **Tập trung can thiệp**: Khắc phục triệt để lỗi rụng âm đuôi (coda loss), vô thanh hóa phụ âm cuối, nhầm lẫn /θ/-/t/, /ʃ/-/s/, và thói quen đánh dấu thanh tiếng Việt lên trọng âm tiếng Anh.\n- **Hiệu chuẩn vùng miền**: Hỗ trợ 3 phương ngữ Việt Nam (Miền Bắc: /d/->/z/, Miền Trung: F0 pitch drop, Miền Nam: rụng phụ âm tắc cuối /k/-/t/).\n\n### 🛠️ Kiến Trúc Thực Thi (Technical Implementation)\n- **Mặt trận Frontend**: Bê nguyên 100% cấu trúc HTML/CSS, SVG và assets từ file Google Stitch tương ứng; không tự ý rút gọn hoặc dùng emoji thay thế.\n- **Xử lý Âm thanh**: Thu âm 16kHz mono qua Web Audio API, tích hợp SpeechSynthesis cho giọng đọc mẫu Oxford US (tốc độ 1.0x, 0.8x, 0.5x).\n- **Trạng thái**: Tích hợp chặt chẽ với AppContext, quản lý Streak, Khiên bảo vệ, và hỗ trợ thanh toán VietQR Napas 24/7.",
+      "createdAt": "2026-09-30T17:32:40.700Z"
     },
     {
-      id: 'ADV-106',
-      epicId: 'epic-advanced-ai-lab',
-      title: 'Intelligibility Score: Đo "Người Nghe Có Hiểu Bạn Không?" Thay Vì Chỉ Đo Giống Người Bản Ngữ (Multi-ASR Listener Panel)',
-      persona: 'Người Đi Làm Cần Giao Tiếp Hiệu Quả Với Đồng Nghiệp Quốc Tế, Không Cần Mất Hẳn Giọng Việt',
-      action: 'xem 2 điểm số tách biệt: Intelligibility (người nghe hiểu đúng bao nhiêu % từ — mô phỏng bằng "hội đồng" 3 mô hình ASR khác nhau nghe giọng tôi) và Accent Strength (mức độ giống giọng bản ngữ)',
-      value: 'tôi tập trung sửa những lỗi thực sự gây hiểu lầm (ví dụ "ship" bị nghe thành "sheep") thay vì cầu toàn từng chi tiết giọng, đúng theo "Nguyên tắc Dễ hiểu" (Intelligibility Principle) được giới ngôn ngữ học khuyến nghị',
-      priority: 'should',
-      status: 'backlog',
-      size: 'M',
-      points: 5,
-      acceptanceCriteria: [
+      "id": "VN-102",
+      "epicId": "epic-diagnostic",
+      "title": "Vietnamese L1 3-Minute Diagnostic Pronunciation Screener",
+      "persona": "New Vietnamese Learner Starting Their Journey",
+      "action": "read 5 calibrated diagnostic sentences designed specifically around Vietnamese mother-tongue phonetic traps",
+      "value": "I get an instant, empathetic diagnosis in Vietnamese explaining my Top 3 pronunciation habits and an estimated IELTS Pronunciation band",
+      "priority": "must",
+      "status": "done",
+      "size": "L",
+      "points": 8,
+      "acceptanceCriteria": [
         {
-          id: 'ac-adv-106-1',
-          given: 'Học viên đọc một đoạn văn 3 câu',
-          when: '3 mô hình ASR độc lập (Whisper, Wav2Vec2, Web Speech) phiên âm lại giọng học viên',
-          then: 'Hiển thị Intelligibility % = tỷ lệ từ được nhận diện đúng trung bình, kèm danh sách từ "bị nghe nhầm" (ví dụ: bạn nói "beach" → máy nghe "bitch").',
-          completed: false
+          "id": "ac-vn-102-1",
+          "given": "5 trigger sentences (e.g. \"Six months ago, she baked fresh bread for breakfast on the street\")",
+          "when": "The user finishes recording",
+          "then": "The engine computes error frequencies for: Dropped Ending Sounds, /θ/ vs /t/ substitutions, /ʃ/ vs /s/ confusion, and Flat Tone vs Stress.",
+          "completed": true
         },
         {
-          id: 'ac-adv-106-2',
-          given: 'Báo cáo có cả 2 điểm',
-          when: 'Intelligibility cao (>90%) nhưng Accent Strength trung bình',
-          then: 'Thông điệp khích lệ: "Bạn đã giao tiếp hiệu quả! Giọng Việt nhẹ là hoàn toàn bình thường. Tiếp tục nếu bạn muốn giọng tự nhiên hơn."',
-          completed: false
+          "id": "ac-vn-102-2",
+          "given": "Assessment finishes",
+          "when": "Report generates",
+          "then": "UI presents an empathetic diagnostic summary in Vietnamese: \"Điểm phát âm của bạn: 68% - Cần khắc phục: 1. Bật âm đuôi /s, ks/, 2. Đặt lưỡi cho âm /θ/, 3. Nhấn trọng âm thay vì đánh dấu sắc/huyền\".",
+          "completed": true
+        },
+        {
+          "id": "ac-ui-stitch-fidelity-vn-102",
+          "given": "Người dùng truy cập màn hình trên thiết bị desktop hoặc di động",
+          "when": "Đối chiếu với bản thiết kế Google Stitch tại src/ui-reference/b_ng_ch_n_o_n_m_l1_ti_ng_vi_t_light_mode/code.html & ti_n_ph_n_t_ch_d_li_u_h_c_m_light_mode/code.html",
+          "then": "Giao diện hiển thị chuẩn xác 100% pixel-perfect về bố cục, màu sắc, font chữ JetBrains Mono / Plus Jakarta Sans, đầy đủ đồ họa SVG và asset ảnh thực tế; tuyệt đối không dùng emoji hay placeholder sơ sài.",
+          "completed": true
+        },
+        {
+          "id": "ac-l1-acoustic-fidelity-vn-102",
+          "given": "Người học tiếng Anh bản xứ Việt Nam luyện phát âm",
+          "when": "Hệ thống AI xử lý luồng âm thanh 16kHz",
+          "then": "Thuật toán áp dụng chính xác bộ lọc bù trừ lỗi L1 tiếng Việt, hiển thị hướng dẫn đặt lưỡi và phản hồi âm học theo chuẩn CEFR / IELTS.",
+          "completed": true
         }
       ],
-      technicalTasks: [
-        { id: 't-adv-106-1', title: 'Pipeline chạy song song nhiều ASR và tính Word Error Rate so với văn bản gốc', category: 'Backend', completed: false },
-        { id: 't-adv-106-2', title: 'Từ điển "cặp từ gây hiểu lầm nguy hiểm" (beach/bitch, sheet/shit, focus...) với cảnh báo ưu tiên cao', category: 'Content', completed: false },
-        { id: 't-adv-106-3', title: 'Thẻ kết quả 2 trục Intelligibility vs Accent trong Progress Dashboard', category: 'Frontend', completed: false }
+      "technicalTasks": [
+        {
+          "id": "t-vn-4",
+          "title": "Create calibrated 5-sentence diagnostic phoneme matrix covering all 44 English phonemes with high Vietnamese interference",
+          "category": "Backend",
+          "completed": true
+        },
+        {
+          "id": "t-vn-5",
+          "title": "Build Vietnamese localized diagnostic scorecard with radar chart and recommended 7-day sprint",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-stitch-ui-vn-102",
+          "title": "Hiện thực hóa giao diện pixel-perfect từ code.html với đầy đủ Tailwind design tokens",
+          "category": "Design",
+          "completed": true
+        },
+        {
+          "id": "t-audio-wiring-vn-102",
+          "title": "Ghép nối State, Web Audio API recorder hook và TTS audio synthesis playback",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-qa-responsive-vn-102",
+          "title": "Kiểm thử thẩm mỹ đa độ phân giải (Mobile/Tablet/Desktop) và kiểm tra tương thích Web Audio API",
+          "category": "QA",
+          "completed": true
+        }
       ],
-      notes: 'Phân biệt intelligibility / comprehensibility / accent theo Munro & Derwing. Điểm khác biệt định vị sản phẩm: "Nói để được hiểu" thay vì "Nói giống Tây".'
+      "notes": "Sentence 1: \"Six months ago, she baked fresh bread for breakfast on the street.\" Sentence 2: \"They think that the comfortable clothes are worth the price.\"\n\n[DEV 2026-10-03 09:32] Implemented Stitch-based 10-minute daily curriculum dashboard, L1 regional dialect calibration (North/Central/South), 3-minute diagnostic screener with 5 trigger sentences, and streak counter with freeze shields\n\n### 🎨 UI/UX Design Specifications (Google Stitch Reference)\n- **Màn hình tham chiếu UI**: `src/ui-reference/b_ng_ch_n_o_n_m_l1_ti_ng_vi_t_light_mode/code.html & ti_n_ph_n_t_ch_d_li_u_h_c_m_light_mode/code.html`\n- **React Component đích**: `vietphonics-app/src/views/OnboardingView.jsx & DiagnosticModal.jsx`\n- **Tailwind Tokens & Spacing**: `space-sm (0.5rem), space-md (1rem), space-lg (1.5rem), gutter-desktop (2rem)`\n- **Bảng màu chủ đạo (Brand Palette)**: `Emerald #059669 (Mastered), Amber #d97706 (Warning), Rose #e11d48 (Critical), Sky #0284c7 (Calibrated)`\n- **Quy tắc Font chữ (Typography)**: `Plus Jakarta Sans (Assessment steps), JetBrains Mono (L1 prior offsets, F1/F2 vectors)`\n- **Đồ họa & Vector SVG**: 3-Region L1 Dialect Map (North/Central/South), Predicted IELTS 7.0/CEFR B2 scorecard, 44 IPA diagnostic matrix\n\n### 🔬 Tiêu Chuẩn Âm Học L1 & Bù Trừ Thổ Âm (Acoustic Specification)\n- **Tập trung can thiệp**: Khắc phục triệt để lỗi rụng âm đuôi (coda loss), vô thanh hóa phụ âm cuối, nhầm lẫn /θ/-/t/, /ʃ/-/s/, và thói quen đánh dấu thanh tiếng Việt lên trọng âm tiếng Anh.\n- **Hiệu chuẩn vùng miền**: Hỗ trợ 3 phương ngữ Việt Nam (Miền Bắc: /d/->/z/, Miền Trung: F0 pitch drop, Miền Nam: rụng phụ âm tắc cuối /k/-/t/).\n\n### 🛠️ Kiến Trúc Thực Thi (Technical Implementation)\n- **Mặt trận Frontend**: Bê nguyên 100% cấu trúc HTML/CSS, SVG và assets từ file Google Stitch tương ứng; không tự ý rút gọn hoặc dùng emoji thay thế.\n- **Xử lý Âm thanh**: Thu âm 16kHz mono qua Web Audio API, tích hợp SpeechSynthesis cho giọng đọc mẫu Oxford US (tốc độ 1.0x, 0.8x, 0.5x).\n- **Trạng thái**: Tích hợp chặt chẽ với AppContext, quản lý Streak, Khiên bảo vệ, và hỗ trợ thanh toán VietQR Napas 24/7.",
+      "createdAt": "2026-09-30T17:32:40.700Z"
     },
     {
-      id: 'ADV-107',
-      epicId: 'epic-advanced-ai-lab',
-      title: 'Spontaneous Speech Voice Journal: Nhật Ký Nói Tự Do Mỗi Ngày & Chấm Phát Âm Không Kịch Bản',
-      persona: 'Học Viên Đọc Câu Mẫu Thì Chuẩn Nhưng Khi Tự Nói Thì Lỗi Cũ Quay Lại',
-      action: 'nói tự do 60 giây mỗi ngày theo một câu hỏi gợi ý (ví dụ "Kể về ngày hôm nay của bạn"), hệ thống phiên âm, chấm phát âm trên lời nói không kịch bản và so sánh tỷ lệ lỗi giữa "đọc mẫu" và "nói tự do"',
-      value: 'tôi đo được mức độ chuyển giao (transfer) từ luyện tập sang giao tiếp thật — chỉ số quan trọng nhất cho thấy tôi đã thực sự tiến bộ, và có kho nhật ký giọng nói để nghe lại sự thay đổi sau 3 tháng',
-      priority: 'should',
-      status: 'backlog',
-      size: 'M',
-      points: 5,
-      acceptanceCriteria: [
+      "id": "VN-103",
+      "epicId": "epic-prosody",
+      "title": "Syllable Stress vs. Tone Mark Visualizer & Schwa De-Toner",
+      "persona": "Vietnamese Speaker Applying Vietnamese Tones to English Words",
+      "action": "see visual syllable weight bars and duration curves that teach me to lengthen stressed syllables and reduce unstressed syllables to schwa (/ə/)",
+      "value": "I stop pronouncing English words with robotic, staccato tone marks (sắc, huyền, nặng) and sound naturally rhythmic",
+      "priority": "should",
+      "status": "done",
+      "size": "M",
+      "points": 5,
+      "acceptanceCriteria": [
         {
-          id: 'ac-adv-107-1',
-          given: 'Học viên ghi 60 giây nói tự do',
-          when: 'Hệ thống phân tích (ASR → forced alignment trên transcript tự sinh)',
-          then: 'Báo cáo: tỷ lệ nuốt âm cuối, tỷ lệ lỗi /θ/-/ð/, WPM, số từ đệm ("um", "à"), so với điểm khi đọc câu mẫu cùng tuần.',
-          completed: false
+          "id": "ac-vn-103-1",
+          "given": "A multi-syllabic word like \"COM-for-ta-ble\"",
+          "when": "The user pronounces it as 4 equal syllables with tone marks (\"com-fơ-tờ-bồ\")",
+          "then": "The visualizer flags equal duration and prompts: \"Shorten and soften the unstressed syllables to /ə/\".",
+          "completed": true
         },
         {
-          id: 'ac-adv-107-2',
-          given: 'Học viên có ≥ 30 bản ghi',
-          when: 'Mở mục "Hành trình giọng nói"',
-          then: 'Phát song song bản ghi ngày 1 và ngày 90 kèm biểu đồ Transfer Gap (khoảng cách điểm đọc mẫu vs nói tự do) thu hẹp dần.',
-          completed: false
+          "id": "ac-vn-103-2",
+          "given": "The learner holds the primary stressed syllable for >2x the duration of unstressed syllables",
+          "when": "Evaluated",
+          "then": "The rhythm indicator lights up green with \"Natural Stress Rhythm\".",
+          "completed": true
+        },
+        {
+          "id": "ac-ui-stitch-fidelity-vn-103",
+          "given": "Người dùng truy cập màn hình trên thiết bị desktop hoặc di động",
+          "when": "Đối chiếu với bản thiết kế Google Stitch tại src/ui-reference/ph_ng_luy_n_ph_t_m_ph_k_m_h_c_light_mode/code.html",
+          "then": "Giao diện hiển thị chuẩn xác 100% pixel-perfect về bố cục, màu sắc, font chữ JetBrains Mono / Plus Jakarta Sans, đầy đủ đồ họa SVG và asset ảnh thực tế; tuyệt đối không dùng emoji hay placeholder sơ sài.",
+          "completed": true
+        },
+        {
+          "id": "ac-l1-acoustic-fidelity-vn-103",
+          "given": "Người học tiếng Anh bản xứ Việt Nam luyện phát âm",
+          "when": "Hệ thống AI xử lý luồng âm thanh 16kHz",
+          "then": "Thuật toán áp dụng chính xác bộ lọc bù trừ lỗi L1 tiếng Việt, hiển thị hướng dẫn đặt lưỡi và phản hồi âm học theo chuẩn CEFR / IELTS.",
+          "completed": true
         }
       ],
-      technicalTasks: [
-        { id: 't-adv-107-1', title: 'Pipeline 2 bước: WhisperX transcript → GOP trên transcript tự sinh (không cần văn bản tham chiếu)', category: 'Backend', completed: false },
-        { id: 't-adv-107-2', title: 'Ngân hàng 365 câu hỏi gợi ý theo chủ đề và trình độ CEFR', category: 'Content', completed: false },
-        { id: 't-adv-107-3', title: 'UI Voice Journal timeline + so sánh Day 1 vs Day N', category: 'Frontend', completed: false }
+      "technicalTasks": [
+        {
+          "id": "t-vn-6",
+          "title": "Build Syllable Weight Bar animation component displaying relative duration (ms) and dB energy",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-vn-7",
+          "title": "Calculate acoustic vowel reduction index comparing formant centralization of unstressed vowels against schwa /ə/ target",
+          "category": "Backend",
+          "completed": true
+        },
+        {
+          "id": "t-stitch-ui-vn-103",
+          "title": "Hiện thực hóa giao diện pixel-perfect từ code.html với đầy đủ Tailwind design tokens",
+          "category": "Design",
+          "completed": true
+        },
+        {
+          "id": "t-audio-wiring-vn-103",
+          "title": "Ghép nối State, Web Audio API recorder hook và TTS audio synthesis playback",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-qa-responsive-vn-103",
+          "title": "Kiểm thử thẩm mỹ đa độ phân giải (Mobile/Tablet/Desktop) và kiểm tra tương thích Web Audio API",
+          "category": "QA",
+          "completed": true
+        }
       ],
-      notes: 'Speechace API v9 và ELSA 2026 đều đầu tư mạnh vào spontaneous speech assessment. Giữ bản ghi theo chính sách lưu trữ ARCH-105 (Pro: 90 ngày, có thể tùy chọn lưu lâu hơn).'
+      "notes": "Vietnamese is syllable-timed; English is stress-timed. This visual contrast provides an immediate \"aha!\" moment for Vietnamese learners.\n\n[DEV 2026-10-03 09:35] Implemented RoleplayView with Daily Scrum Standup dialogue with Alex Tech Lead, WebRTC status telemetry, speech synthesis, post-roleplay summary scorecard, 3-tier positional phoneme ladder, and connected speech progression\n\n### 🎨 UI/UX Design Specifications (Google Stitch Reference)\n- **Màn hình tham chiếu UI**: `src/ui-reference/ph_ng_luy_n_ph_t_m_ph_k_m_h_c_light_mode/code.html`\n- **React Component đích**: `vietphonics-app/src/views/PracticeStudioView.jsx`\n- **Tailwind Tokens & Spacing**: `space-md (1rem), space-lg (1.5rem), rounded-xl, rounded-2xl`\n- **Bảng màu chủ đạo (Brand Palette)**: `Native Pitch Cyan (#0284c7), Learner Pitch Rose (#e11d48), Gridlines #e2e8f0`\n- **Quy tắc Font chữ (Typography)**: `JetBrains Mono (F0 80Hz-350Hz, Delta tags, Timing slices 0.0s-4.2s)`\n- **Đồ họa & Vector SVG**: Suprasegmental F0 Fundamental Frequency Tracking SVG, Dual reference curve overlay, Sudden drop-off warning marker\n\n### 🔬 Tiêu Chuẩn Âm Học L1 & Bù Trừ Thổ Âm (Acoustic Specification)\n- **Tập trung can thiệp**: Khắc phục triệt để lỗi rụng âm đuôi (coda loss), vô thanh hóa phụ âm cuối, nhầm lẫn /θ/-/t/, /ʃ/-/s/, và thói quen đánh dấu thanh tiếng Việt lên trọng âm tiếng Anh.\n- **Hiệu chuẩn vùng miền**: Hỗ trợ 3 phương ngữ Việt Nam (Miền Bắc: /d/->/z/, Miền Trung: F0 pitch drop, Miền Nam: rụng phụ âm tắc cuối /k/-/t/).\n\n### 🛠️ Kiến Trúc Thực Thi (Technical Implementation)\n- **Mặt trận Frontend**: Bê nguyên 100% cấu trúc HTML/CSS, SVG và assets từ file Google Stitch tương ứng; không tự ý rút gọn hoặc dùng emoji thay thế.\n- **Xử lý Âm thanh**: Thu âm 16kHz mono qua Web Audio API, tích hợp SpeechSynthesis cho giọng đọc mẫu Oxford US (tốc độ 1.0x, 0.8x, 0.5x).\n- **Trạng thái**: Tích hợp chặt chẽ với AppContext, quản lý Streak, Khiên bảo vệ, và hỗ trợ thanh toán VietQR Napas 24/7.",
+      "createdAt": "2026-09-30T17:32:40.700Z"
     },
     {
-      id: 'ADV-108',
-      epicId: 'epic-advanced-ai-lab',
-      title: 'Accent Explorer & Target Dialect Selector: Chọn Giọng Mỹ / Anh / Úc Và Đo Độ Đậm Giọng Theo Thời Gian',
-      persona: 'Học Viên Có Mục Tiêu Cụ Thể (Du Học Úc, Làm Việc Cho Công Ty Mỹ, Thi IELTS Theo Chuẩn Anh)',
-      action: 'chọn giọng mục tiêu (General American / British RP / Australian), toàn bộ audio mẫu, phiên âm IPA và tiêu chí chấm điểm chuyển theo giọng đó; xem biểu đồ Accent Strength thay đổi theo tuần và nghe mẫu so sánh các giọng',
-      value: 'tôi không bị chấm sai khi phát âm đúng chuẩn Anh (ví dụ "tomato" /təˈmɑːtəʊ/ hay âm R không cuốn) và luyện đúng giọng phục vụ mục tiêu của mình',
-      priority: 'could',
-      status: 'backlog',
-      size: 'S',
-      points: 3,
-      acceptanceCriteria: [
+      "id": "VN-104",
+      "epicId": "epic-roleplay-ielts",
+      "title": "IELTS Speaking Part 1 & 2 AI Mock Examiner for Vietnamese Candidates",
+      "persona": "Vietnamese Student or Working Professional Aiming for IELTS 7.0+",
+      "action": "answer common IELTS Speaking prompts (e.g. Hometown, Work, Technology, Culture) and receive an instant Pronunciation Band score (Band 5.0 to 8.5)",
+      "value": "I practice high-stakes exam conditions with actionable feedback mapped directly to official IELTS Pronunciation Band Descriptors",
+      "priority": "should",
+      "status": "done",
+      "size": "L",
+      "points": 8,
+      "acceptanceCriteria": [
         {
-          id: 'ac-adv-108-1',
-          given: 'Học viên chọn British RP',
-          when: 'Luyện từ "water" và "car"',
-          then: 'Mẫu dùng /ˈwɔːtə/ và /kɑː/ (không cuốn R), và hệ thống không trừ điểm khi học viên bỏ âm R cuối.',
-          completed: false
+          "id": "ac-vn-104-1",
+          "given": "An IELTS Part 2 cue card prompt",
+          "when": "The user speaks continuously for 1 to 2 minutes",
+          "then": "The AI examiner calculates: Band Score for Pronunciation, Chunking & Linking score, and flags accent interference that reduces intelligibility.",
+          "completed": true
         },
         {
-          id: 'ac-adv-108-2',
-          given: 'Học viên đã luyện 4 tuần',
-          when: 'Mở Accent Explorer',
-          then: 'Biểu đồ đường Accent Strength theo tuần + nút nghe cùng một câu bằng 3 giọng Mỹ/Anh/Úc.',
-          completed: false
+          "id": "ac-vn-104-2",
+          "given": "The speech analysis finishes",
+          "when": "The scorecard renders",
+          "then": "It provides specific advice on how to move from Band 6.0 (some phonemic inaccuracies) to Band 7.0+ (sustained flexible intonation and syllable stress).",
+          "completed": true
+        },
+        {
+          "id": "ac-ui-stitch-fidelity-vn-104",
+          "given": "Người dùng truy cập màn hình trên thiết bị desktop hoặc di động",
+          "when": "Đối chiếu với bản thiết kế Google Stitch tại src/ui-reference/ai_h_i_tho_i_roleplay_c_ng_s_light_mode/code.html",
+          "then": "Giao diện hiển thị chuẩn xác 100% pixel-perfect về bố cục, màu sắc, font chữ JetBrains Mono / Plus Jakarta Sans, đầy đủ đồ họa SVG và asset ảnh thực tế; tuyệt đối không dùng emoji hay placeholder sơ sài.",
+          "completed": true
+        },
+        {
+          "id": "ac-l1-acoustic-fidelity-vn-104",
+          "given": "Người học tiếng Anh bản xứ Việt Nam luyện phát âm",
+          "when": "Hệ thống AI xử lý luồng âm thanh 16kHz",
+          "then": "Thuật toán áp dụng chính xác bộ lọc bù trừ lỗi L1 tiếng Việt, hiển thị hướng dẫn đặt lưỡi và phản hồi âm học theo chuẩn CEFR / IELTS.",
+          "completed": true
         }
       ],
-      technicalTasks: [
-        { id: 't-adv-108-1', title: 'Thêm cột target_dialect vào bảng users và từ điển phát âm đa giọng (CMUdict + Britfone)', category: 'Database', completed: false },
-        { id: 't-adv-108-2', title: 'Chọn ngân hàng audio/TTS theo dialect và lọc quy tắc chấm điểm theo giọng', category: 'Backend', completed: false }
-      ],
-      notes: 'Lấy cảm hứng từ BoldVoice Accent Explorer. Nghiên cứu MDD 2025 cũng chỉ ra cần dữ liệu đa phương ngữ để chấm điểm công bằng.'
-    },
-
-    // 10. Low-Cost 30K VietQR Payment Architecture & Retention Engine
-    {
-      id: 'PAY-101',
-      epicId: 'epic-backend-infrastructure',
-      title: 'Dynamic VietQR Auto-Reconciliation Engine: Thuê Bao 30K Phí Giao Dịch 0% (SePay / OpenBanking Webhook)',
-      persona: 'Nhà Sáng Lập & Kỹ Sư FinTech Tối Ưu Chi Phí Dòng Tiền 30k/Tháng',
-      action: 'tích hợp API VietQR động (SePay/Casso) tự sinh mã QR Napas 24/7 kèm mã nạp tiền duy nhất (ví dụ: VP30K-98214), tự động nhận Webhook biến động số dư ngân hàng và đối soát kích hoạt quyền Pro trong 1 giây',
-      value: 'tiết kiệm 100% phí giao dịch (phí 0% thay vì mất 2%-30% như cổng thanh toán truyền thống hoặc Stripe), bảo đảm tỷ suất lợi nhuận tối đa cho mức giá bình dân 30.000đ/tháng với 5.000 học viên (~150 triệu VNĐ/tháng)',
-      priority: 'must',
-      status: 'done',
-      size: 'M',
-      points: 5,
-      acceptanceCriteria: [
+      "technicalTasks": [
         {
-          id: 'ac-pay-101-1',
-          given: 'Học viên chọn gói 30k/tháng',
-          when: 'Mở màn hình thanh toán',
-          then: 'Hệ thống sinh mã VietQR Napas chuẩn kèm số tài khoản ngân hàng và cú pháp duy nhất VP30K-{userId}, thời hạn hiệu lực 10 phút.',
-          completed: true
+          "id": "t-vn-8",
+          "title": "Prompt engineer LLM evaluator with official British Council / IDP IELTS Pronunciation Band Descriptors",
+          "category": "Backend",
+          "completed": true
         },
         {
-          id: 'ac-pay-101-2',
-          given: 'Học viên chuyển khoản đúng số tiền và nội dung qua bất kỳ App ngân hàng nào (MB, VCB, Techcombank, MoMo...)',
-          when: 'SePay bắn webhook IPN về endpoint /api/payment/webhook',
-          then: 'Hệ thống xác thực chữ ký API token, cập nhật trạng thái đơn hàng thành paid và kích hoạt gói Pro trong 1-2 giây.',
-          completed: true
+          "id": "t-vn-9",
+          "title": "Build 2-minute timed examination recorder UI with preparation timer and prompt card",
+          "category": "Frontend",
+          "completed": true
         },
         {
-          id: 'ac-pay-101-3',
-          given: 'Học viên chuyển thiếu tiền hoặc sai cú pháp',
-          when: 'Webhook tiếp nhận',
-          then: 'Ghi log vào bảng payment_anomalies và gửi thông báo cho quản trị viên xử lý gạch nợ thủ công mà không làm mất tiền của khách.',
-          completed: true
+          "id": "t-vn-10",
+          "title": "Store mock exam historical transcripts and audio recordings for progress tracking",
+          "category": "Database",
+          "completed": true
+        },
+        {
+          "id": "t-stitch-ui-vn-104",
+          "title": "Hiện thực hóa giao diện pixel-perfect từ code.html với đầy đủ Tailwind design tokens",
+          "category": "Design",
+          "completed": true
+        },
+        {
+          "id": "t-audio-wiring-vn-104",
+          "title": "Ghép nối State, Web Audio API recorder hook và TTS audio synthesis playback",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-qa-responsive-vn-104",
+          "title": "Kiểm thử thẩm mỹ đa độ phân giải (Mobile/Tablet/Desktop) và kiểm tra tương thích Web Audio API",
+          "category": "QA",
+          "completed": true
         }
       ],
-      technicalTasks: [
-        { id: 't-pay-101-1', title: 'Tích hợp SePay/Casso Webhook Receiver với middleware bảo mật Authorization Token', category: 'Backend', completed: true },
-        { id: 't-pay-101-2', title: 'Bảng bank_transactions và subscription_orders quản lý trạng thái thanh toán và Idempotency Key', category: 'Database', completed: true },
-        { id: 't-pay-101-3', title: 'Worker tự động quét timeout đơn hàng sau 15 phút chưa thanh toán', category: 'Backend', completed: true }
-      ],
-      notes: 'Giải pháp số 1 tại Việt Nam cho SaaS micro-payment. Phí giao dịch = 0đ, chỉ tốn thuê bao SePay ~100k - 200k/tháng phẳng cho 5.000 users thay vì mất hàng chục triệu cho cổng trung gian.'
-    },
-    {
-      id: 'PAY-102',
-      epicId: 'epic-backend-infrastructure',
-      title: 'Frictionless 1-Scan Checkout Modal & Real-Time Activation Polling (Thanh Toán 1 Quẹt & Tự Động Mở Khóa)',
-      persona: 'Học Viên Việt Nam Bận Rộn Muốn Nâng Cấp Nhanh Không Cần Đăng Ký Thẻ Tín Dụng',
-      action: 'thanh toán gói 30k qua modal thông minh: quét mã QR 1 chạm, các nút sao chép nhanh STK/Nội dung, đồng hồ đếm ngược và màn hình tự động chuyển sang trạng thái Thành Công (Confetti) ngay khi ngân hàng nhận tiền mà không cần bấm F5',
-      value: 'trải nghiệm mượt mà, tỷ lệ bỏ giỏ hàng (Cart Abandonment) giảm xuống dưới 15% vì 100% người dùng Việt Nam đều quen thuộc với quét mã QR ngân hàng',
-      priority: 'must',
-      status: 'done',
-      size: 'M',
-      points: 5,
-      acceptanceCriteria: [
-        {
-          id: 'ac-pay-102-1',
-          given: 'Học viên đang xem bảng giá hoặc bị chặn bởi Paywall',
-          when: 'Bấm Nâng cấp Pro 30K',
-          then: 'Modal hiển thị mã VietQR động, số tiền 30.000đ, 3 nút copy nhanh (STK, Số tiền, Nội dung chuyển khoản).',
-          completed: true
-        },
-        {
-          id: 'ac-pay-102-2',
-          given: 'Học viên vừa chuyển khoản trên điện thoại',
-          when: 'Giao dịch thành công ở ngân hàng',
-          then: 'SSE hoặc Polling mỗi 2 giây nhận tín hiệu thành công, nổ pháo hoa Confetti, tự động mở khóa tính năng Pro mà học viên không cần tải lại trang.',
-          completed: true
-        }
-      ],
-      technicalTasks: [
-        { id: 't-pay-102-1', title: 'Component PaymentCheckoutStudio chuẩn Light Mode (pure white card, VietQR generator, 1-click copy)', category: 'Frontend', completed: true },
-        { id: 't-pay-102-2', title: 'Endpoint SSE/Polling /api/payment/order-status/:orderId phục vụ cập nhật tức thì', category: 'Backend', completed: true },
-        { id: 't-pay-102-3', title: 'Xử lý lưu cache trạng thái hội viên vào LocalStorage và Context để mở khóa UI toàn site', category: 'Frontend', completed: true }
-      ],
-      notes: 'Trực quan hóa live trong UiDesignStudio tab "Cổng Thanh Toán 30K VietQR". Đã tích hợp nút mô phỏng chuyển khoản để kiểm thử ngay trên UI.'
+      "notes": "Massive market appeal in Vietnam where hundreds of thousands of students take IELTS annually.\n\n[DEV 2026-10-03 09:38] Implemented OnboardingView with 3-region L1 dialect calibration (North/Central/South), target priority goals, IELTS Speaking Part 1 & 2 AI Mock Examiner, and granular phoneme history tracking\n\n### 🎨 UI/UX Design Specifications (Google Stitch Reference)\n- **Màn hình tham chiếu UI**: `src/ui-reference/ai_h_i_tho_i_roleplay_c_ng_s_light_mode/code.html`\n- **React Component đích**: `vietphonics-app/src/views/RoleplayView.jsx`\n- **Tailwind Tokens & Spacing**: `space-md (1rem), space-lg (1.5rem), gutter-desktop (2rem)`\n- **Bảng màu chủ đạo (Brand Palette)**: `Alex Hub Cyan #0284c7, User Terminal Rose #e11d48, Emerald #059669 (WebRTC Live), Slate #f1f5f9`\n- **Quy tắc Font chữ (Typography)**: `Plus Jakarta Sans (Dialogue lines), JetBrains Mono (Turn timestamps, GOP 88% telemetry, Word IPA tooltips)`\n- **Đồ họa & Vector SVG**: Alex Tech Lead Portrait (Google CDN), Vietnamese Engineer Portrait (Google CDN), WebRTC 48kHz audio spectrum bars, 3 Circular scorecard dials\n\n### 🔬 Tiêu Chuẩn Âm Học L1 & Bù Trừ Thổ Âm (Acoustic Specification)\n- **Tập trung can thiệp**: Khắc phục triệt để lỗi rụng âm đuôi (coda loss), vô thanh hóa phụ âm cuối, nhầm lẫn /θ/-/t/, /ʃ/-/s/, và thói quen đánh dấu thanh tiếng Việt lên trọng âm tiếng Anh.\n- **Hiệu chuẩn vùng miền**: Hỗ trợ 3 phương ngữ Việt Nam (Miền Bắc: /d/->/z/, Miền Trung: F0 pitch drop, Miền Nam: rụng phụ âm tắc cuối /k/-/t/).\n\n### 🛠️ Kiến Trúc Thực Thi (Technical Implementation)\n- **Mặt trận Frontend**: Bê nguyên 100% cấu trúc HTML/CSS, SVG và assets từ file Google Stitch tương ứng; không tự ý rút gọn hoặc dùng emoji thay thế.\n- **Xử lý Âm thanh**: Thu âm 16kHz mono qua Web Audio API, tích hợp SpeechSynthesis cho giọng đọc mẫu Oxford US (tốc độ 1.0x, 0.8x, 0.5x).\n- **Trạng thái**: Tích hợp chặt chẽ với AppContext, quản lý Streak, Khiên bảo vệ, và hỗ trợ thanh toán VietQR Napas 24/7.",
+      "createdAt": "2026-09-30T17:32:40.700Z"
     },
     {
-      id: 'PAY-103',
-      epicId: 'epic-backend-infrastructure',
-      title: 'Multi-Cycle Pricing & Retention Strategy (Chiến Lược Gói Tháng 30k vs Gói Năm 299k Giảm Tỷ Lệ Rời Bỏ)',
-      persona: 'Product Growth Manager Cần Đạt Doanh Thu 150 Triệu/Tháng Bền Vững',
-      action: 'thiết lập 3 nấc gói: Tháng (30.000đ), 3 Tháng (85.000đ - tiết kiệm 5%), 1 Năm (299.000đ - chỉ 24.900đ/tháng, tiết kiệm 20% + Tặng trọn bộ Golden Speaker AI & Soi Khẩu Hình)',
-      value: 'chuyển dịch 40% học viên sang trả theo năm, giảm 12 lần công sức thanh toán lại hàng tháng, giảm tỷ lệ rời bỏ (churn) và có nguồn vốn lưu động trả trước để đầu tư hạ tầng GPU',
-      priority: 'should',
-      status: 'todo',
-      size: 'M',
-      points: 5,
-      acceptanceCriteria: [
+      "id": "VN-105",
+      "epicId": "epic-articulation",
+      "title": "Vietnamese Native-Tongue Mouth & Tongue Placement Coach",
+      "persona": "Beginner Struggling with Non-Vietnamese Sounds (/θ/, /ð/, /ʃ/, /dʒ/)",
+      "action": "read physical mouth placement instructions written in simple Vietnamese with an interactive 2D anatomical cross-section",
+      "value": "I clearly understand where to put my teeth and tongue without reading confusing linguistic jargon",
+      "priority": "must",
+      "status": "done",
+      "size": "S",
+      "points": 3,
+      "acceptanceCriteria": [
         {
-          id: 'ac-pay-103-1',
-          given: 'Bảng giá thanh toán',
-          when: 'Học viên xem gói 1 Năm (299k)',
-          then: 'Hiển thị nhãn nổi bật "Khuyên Dùng · Tiết Kiệm 20%" và huy hiệu quà tặng độc quyền (Golden Speaker + Soi Khẩu Hình 478 điểm).',
-          completed: false
+          "id": "ac-vn-105-1",
+          "given": "A sound like /θ/ (\"think\")",
+          "when": "User opens the placement guide",
+          "then": "It displays clear Vietnamese guidance: \"Cắn nhẹ đầu lưỡi giữa hai hàm răng, thổi luồng hơi nhẹ ra ngoài (không phát âm thành chữ Thờ tiếng Việt)\".",
+          "completed": true
         },
         {
-          id: 'ac-pay-103-2',
-          given: 'Học viên thanh toán gói năm thành công',
-          when: 'Cấp quyền',
-          then: 'Hệ thống gán ngày hết hạn expires_at = now() + 365 days và cấp quyền VIP Priority cho hàng đợi nhận dạng giọng nói.',
-          completed: false
+          "id": "ac-vn-105-2",
+          "given": "The 2D anatomical mouth diagram",
+          "when": "The user taps the sound",
+          "then": "An animated SVG shows the tongue contacting the upper teeth with airflow arrows.",
+          "completed": true
+        },
+        {
+          "id": "ac-ui-stitch-fidelity-vn-105",
+          "given": "Người dùng truy cập màn hình trên thiết bị desktop hoặc di động",
+          "when": "Đối chiếu với bản thiết kế Google Stitch tại src/ui-reference/kh_u_h_nh_2d_gi_i_ph_u_c_mi_ng_light_mode/code.html",
+          "then": "Giao diện hiển thị chuẩn xác 100% pixel-perfect về bố cục, màu sắc, font chữ JetBrains Mono / Plus Jakarta Sans, đầy đủ đồ họa SVG và asset ảnh thực tế; tuyệt đối không dùng emoji hay placeholder sơ sài.",
+          "completed": true
+        },
+        {
+          "id": "ac-l1-acoustic-fidelity-vn-105",
+          "given": "Người học tiếng Anh bản xứ Việt Nam luyện phát âm",
+          "when": "Hệ thống AI xử lý luồng âm thanh 16kHz",
+          "then": "Thuật toán áp dụng chính xác bộ lọc bù trừ lỗi L1 tiếng Việt, hiển thị hướng dẫn đặt lưỡi và phản hồi âm học theo chuẩn CEFR / IELTS.",
+          "completed": true
         }
       ],
-      technicalTasks: [
-        { id: 't-pay-103-1', title: 'Thiết kế bảng pricing_plans linh hoạt hỗ trợ khuyến mãi, mã giảm giá và bundle quà tặng', category: 'Database', completed: false },
-        { id: 't-pay-103-2', title: 'Logic tính toán ngày hết hạn theo gói và phân tầng quyền hạn tính năng', category: 'Backend', completed: false }
+      "technicalTasks": [
+        {
+          "id": "t-vn-11",
+          "title": "Write Vietnamese localization copy for all 44 English phoneme mouth-shape guides",
+          "category": "Content",
+          "completed": true
+        },
+        {
+          "id": "t-vn-12",
+          "title": "Render interactive SVG cross-section mouth visualizer highlighting tongue tip, teeth, and airflow vector",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-stitch-ui-vn-105",
+          "title": "Hiện thực hóa giao diện pixel-perfect từ code.html với đầy đủ Tailwind design tokens",
+          "category": "Design",
+          "completed": true
+        },
+        {
+          "id": "t-audio-wiring-vn-105",
+          "title": "Ghép nối State, Web Audio API recorder hook và TTS audio synthesis playback",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-qa-responsive-vn-105",
+          "title": "Kiểm thử thẩm mỹ đa độ phân giải (Mobile/Tablet/Desktop) và kiểm tra tương thích Web Audio API",
+          "category": "QA",
+          "completed": true
+        }
       ],
-      notes: 'Thực tế chứng minh gói năm giúp giữ chân học viên và giảm rủi ro quên chuyển khoản từng tháng đối với phương thức chuyển khoản ngân hàng.'
+      "notes": "Eliminates intimidation for adult Vietnamese learners starting from scratch.\n\n[DEV 2026-10-03 09:34] Implemented MouthAnatomyView with 2D vocal tract sagittal cross section, tongue contact points, vocal cord voicing indicators, L1 comparative matrix, and syllable stress visualizer\n\n### 🎨 UI/UX Design Specifications (Google Stitch Reference)\n- **Màn hình tham chiếu UI**: `src/ui-reference/kh_u_h_nh_2d_gi_i_ph_u_c_mi_ng_light_mode/code.html`\n- **React Component đích**: `vietphonics-app/src/views/MouthAnatomyView.jsx & MasteryLabView.jsx`\n- **Tailwind Tokens & Spacing**: `space-sm (0.5rem), space-md (1rem), space-lg (1.5rem), gutter-desktop (2rem)`\n- **Bảng màu chủ đạo (Brand Palette)**: `Rose #e11d48, Sky #0284c7, Tongue Muscle Coral Grad (#fb7185 -> #be123c), Airflow Cyan (#38bdf8 -> #0369a1)`\n- **Quy tắc Font chữ (Typography)**: `Plus Jakarta Sans (Headlines), JetBrains Mono (IPA, Contact mm, Friction metrics)`\n- **Đồ họa & Vector SVG**: Sagittal 2D cross-section SVG (760x500) with anatomical gridlines, Coronal front lip SVG with protruding tongue blade (2-3mm), 3 calibration sliders\n\n### 🔬 Tiêu Chuẩn Âm Học L1 & Bù Trừ Thổ Âm (Acoustic Specification)\n- **Tập trung can thiệp**: Khắc phục triệt để lỗi rụng âm đuôi (coda loss), vô thanh hóa phụ âm cuối, nhầm lẫn /θ/-/t/, /ʃ/-/s/, và thói quen đánh dấu thanh tiếng Việt lên trọng âm tiếng Anh.\n- **Hiệu chuẩn vùng miền**: Hỗ trợ 3 phương ngữ Việt Nam (Miền Bắc: /d/->/z/, Miền Trung: F0 pitch drop, Miền Nam: rụng phụ âm tắc cuối /k/-/t/).\n\n### 🛠️ Kiến Trúc Thực Thi (Technical Implementation)\n- **Mặt trận Frontend**: Bê nguyên 100% cấu trúc HTML/CSS, SVG và assets từ file Google Stitch tương ứng; không tự ý rút gọn hoặc dùng emoji thay thế.\n- **Xử lý Âm thanh**: Thu âm 16kHz mono qua Web Audio API, tích hợp SpeechSynthesis cho giọng đọc mẫu Oxford US (tốc độ 1.0x, 0.8x, 0.5x).\n- **Trạng thái**: Tích hợp chặt chẽ với AppContext, quản lý Streak, Khiên bảo vệ, và hỗ trợ thanh toán VietQR Napas 24/7.",
+      "createdAt": "2026-09-30T17:32:40.700Z"
     },
     {
-      id: 'PAY-104',
-      epicId: 'epic-backend-infrastructure',
-      title: 'Automated Grace Period & Expiring Subscription Reminder Bot (Ân Hạn 3 Ngày & Nhắc Gia Hạn Tự Động)',
-      persona: 'Học Viên Trả Phí Hàng Tháng Hay Quên Ngày Hết Hạn',
-      action: 'nhận email và tin nhắn Zalo ZNS nhắc gia hạn tự động trước 3 ngày kèm link VietQR 1 chạm, và được áp dụng chính sách ân hạn (Grace Period) 3 ngày sau khi hết hạn mà không bị ngắt quãng việc học',
-      value: 'giữ chân học viên văn minh, không làm gián đoạn chuỗi ngày học liên tục (streak) và tăng tỷ lệ gia hạn tự nhiên lên trên 75%',
-      priority: 'should',
-      status: 'todo',
-      size: 'S',
-      points: 3,
-      acceptanceCriteria: [
+      "id": "GAME-101",
+      "epicId": "epic-gamified-3d",
+      "title": "Multi-Tier Level Progression & 4-World Map Engine",
+      "persona": "Vietnamese Learner Playing Pronunciation RPG",
+      "action": "progress through 4 distinct phonetic worlds (World 1: Âm Đuôi, World 2: Cặp Âm, World 3: Trọng Âm, World 4: Nối Âm & Trùm Rồng) with 12 playable stages and 3-star ratings",
+      "value": "I have a clear, structured roadmap that progressively challenges my pronunciation from basic final consonants to fluent connected speech",
+      "priority": "must",
+      "status": "done",
+      "size": "L",
+      "points": 8,
+      "acceptanceCriteria": [
         {
-          id: 'ac-pay-104-1',
-          given: 'Gói học viên còn 3 ngày nữa hết hạn',
-          when: 'Cron job hàng ngày quét dữ liệu',
-          then: 'Tự động gửi email/Zalo nhắc nhở kèm mã VietQR gia hạn đúng số tiền 30.000đ.',
-          completed: false
+          "id": "ac-game-101-1",
+          "given": "A player selecting a World (1: Final Consonants, 2: Minimal Pairs, 3: Syllable Stress, 4: Connected Speech)",
+          "when": "The world loads",
+          "then": "The UI displays stage nodes with unlock status, star ratings (⭐⭐⭐), target phonemes, and XP rewards.",
+          "completed": true
         },
         {
-          id: 'ac-pay-104-2',
-          given: 'Gói đã hết hạn nhưng chưa quá 3 ngày',
-          when: 'Học viên vào học',
-          then: 'Hiển thị banner nhẹ: "Gói Pro của bạn đã hết hạn, bạn đang trong 3 ngày ân hạn. Bấm để gia hạn chỉ 30k" và cho phép học bình thường.',
-          completed: false
+          "id": "ac-game-101-2",
+          "given": "Completing a stage with GOP score >= 90%",
+          "when": "Stage victory triggers",
+          "then": "3 stars are awarded, the next stage unlocks, and player XP/streak updates with fanfare animation.",
+          "completed": true
+        },
+        {
+          "id": "ac-ui-stitch-fidelity-game-101",
+          "given": "Người dùng truy cập màn hình trên thiết bị desktop hoặc di động",
+          "when": "Đối chiếu với bản thiết kế Google Stitch tại src/ui-reference/game_3d_rpg_chi_n_luy_n_ph_t_m_light_mode/code.html",
+          "then": "Giao diện hiển thị chuẩn xác 100% pixel-perfect về bố cục, màu sắc, font chữ JetBrains Mono / Plus Jakarta Sans, đầy đủ đồ họa SVG và asset ảnh thực tế; tuyệt đối không dùng emoji hay placeholder sơ sài.",
+          "completed": true
+        },
+        {
+          "id": "ac-l1-acoustic-fidelity-game-101",
+          "given": "Người học tiếng Anh bản xứ Việt Nam luyện phát âm",
+          "when": "Hệ thống AI xử lý luồng âm thanh 16kHz",
+          "then": "Thuật toán áp dụng chính xác bộ lọc bù trừ lỗi L1 tiếng Việt, hiển thị hướng dẫn đặt lưỡi và phản hồi âm học theo chuẩn CEFR / IELTS.",
+          "completed": true
         }
       ],
-      technicalTasks: [
-        { id: 't-pay-104-1', title: 'Cron job hàng ngày (Node-cron / Celery) quét các tài khoản đến hạn gia hạn', category: 'Backend', completed: false },
-        { id: 't-pay-104-2', title: 'Tích hợp mẫu email nhắc gia hạn tự động kèm mã QR thanh toán 1 chạm', category: 'Backend', completed: false }
+      "technicalTasks": [
+        {
+          "id": "t-game-1",
+          "title": "Implement GameWorlds and Stages data schema with 12 calibrated pedagogical levels",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-game-2",
+          "title": "Build interactive World & Stage Selector ribbon with 3-star rating indicators",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-game-3",
+          "title": "Persist stage completion and stars in local storage & SQLite player profile",
+          "category": "Backend",
+          "completed": true
+        },
+        {
+          "id": "t-stitch-ui-game-101",
+          "title": "Hiện thực hóa giao diện pixel-perfect từ code.html với đầy đủ Tailwind design tokens",
+          "category": "Design",
+          "completed": true
+        },
+        {
+          "id": "t-audio-wiring-game-101",
+          "title": "Ghép nối State, Web Audio API recorder hook và TTS audio synthesis playback",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-qa-responsive-game-101",
+          "title": "Kiểm thử thẩm mỹ đa độ phân giải (Mobile/Tablet/Desktop) và kiểm tra tương thích Web Audio API",
+          "category": "QA",
+          "completed": true
+        }
       ],
-      notes: 'Chính sách Grace Period 3 ngày tăng thiện cảm học viên và giảm tỷ lệ churn đột ngột.'
+      "notes": "Structured progression turns fragmented pronunciation drills into an addictive, rewarding adventure.\n\n[DEV 2026-10-03 09:36] Implemented Game3dView with 4-world level progression, dual voice controller with Web Audio sound synthesis, boss battle arena with damage and HP bars, equipment gear inventory, and university leaderboard\n\n### 🎨 UI/UX Design Specifications (Google Stitch Reference)\n- **Màn hình tham chiếu UI**: `src/ui-reference/game_3d_rpg_chi_n_luy_n_ph_t_m_light_mode/code.html`\n- **React Component đích**: `vietphonics-app/src/views/Game3dView.jsx`\n- **Tailwind Tokens & Spacing**: `space-md (1rem), space-lg (1.5rem), space-xl (2.5rem), gutter-desktop (2rem)`\n- **Bảng màu chủ đạo (Brand Palette)**: `Spellcaster Sky #38bdf8, Boss Golem Rose #e11d48, Rune Indigo #6366f1, Gold V-Coins #eab308`\n- **Quy tắc Font chữ (Typography)**: `Plus Jakarta Sans (Hero/Boss titles), JetBrains Mono (Incantation letters S-I-X, Damage metrics, Weakness tags)`\n- **Đồ họa & Vector SVG**: 3D Cyber Mage Spellcaster (Google CDN), Ancient Stone Golem (Google CDN), Isometric Neon Rune Ring SVG, Dynamic attack beam surge\n\n### 🔬 Tiêu Chuẩn Âm Học L1 & Bù Trừ Thổ Âm (Acoustic Specification)\n- **Tập trung can thiệp**: Khắc phục triệt để lỗi rụng âm đuôi (coda loss), vô thanh hóa phụ âm cuối, nhầm lẫn /θ/-/t/, /ʃ/-/s/, và thói quen đánh dấu thanh tiếng Việt lên trọng âm tiếng Anh.\n- **Hiệu chuẩn vùng miền**: Hỗ trợ 3 phương ngữ Việt Nam (Miền Bắc: /d/->/z/, Miền Trung: F0 pitch drop, Miền Nam: rụng phụ âm tắc cuối /k/-/t/).\n\n### 🛠️ Kiến Trúc Thực Thi (Technical Implementation)\n- **Mặt trận Frontend**: Bê nguyên 100% cấu trúc HTML/CSS, SVG và assets từ file Google Stitch tương ứng; không tự ý rút gọn hoặc dùng emoji thay thế.\n- **Xử lý Âm thanh**: Thu âm 16kHz mono qua Web Audio API, tích hợp SpeechSynthesis cho giọng đọc mẫu Oxford US (tốc độ 1.0x, 0.8x, 0.5x).\n- **Trạng thái**: Tích hợp chặt chẽ với AppContext, quản lý Streak, Khiên bảo vệ, và hỗ trợ thanh toán VietQR Napas 24/7.",
+      "createdAt": "2026-09-30T17:50:58.697Z"
+    },
+    {
+      "id": "GAME-102",
+      "epicId": "epic-gamified-3d",
+      "title": "Dual Voice Controller: Real-Time Web Speech Microphone & Fallback Simulation",
+      "persona": "Player Wanting Hands-Free Voice Control",
+      "action": "speak directly into my laptop or phone microphone using Web Speech API, with one-click simulation buttons available for noisy environments",
+      "value": "I can practice authentic vocal production and get instant in-game spellcast reactions without friction",
+      "priority": "must",
+      "status": "done",
+      "size": "M",
+      "points": 5,
+      "acceptanceCriteria": [
+        {
+          "id": "ac-game-102-1",
+          "given": "A player enabling real microphone mode",
+          "when": "Speaking the target word clearly (e.g. \"SIX\" or \"THINK\")",
+          "then": "The browser Web Speech engine captures phonemes in real-time, validates the word, and unleashes the spell beam within 300ms.",
+          "completed": true
+        },
+        {
+          "id": "ac-game-102-2",
+          "given": "A user testing without a microphone or in a quiet study room",
+          "when": "Clicking the \"Hô Thần Chú Chuẩn\" or \"Thử Lỗi Người Việt\" buttons",
+          "then": "The game triggers the exact same combat animation, audio feedback, and educational acoustic diagnostic tip.",
+          "completed": true
+        },
+        {
+          "id": "ac-ui-stitch-fidelity-game-102",
+          "given": "Người dùng truy cập màn hình trên thiết bị desktop hoặc di động",
+          "when": "Đối chiếu với bản thiết kế Google Stitch tại src/ui-reference/game_3d_rpg_chi_n_luy_n_ph_t_m_light_mode/code.html",
+          "then": "Giao diện hiển thị chuẩn xác 100% pixel-perfect về bố cục, màu sắc, font chữ JetBrains Mono / Plus Jakarta Sans, đầy đủ đồ họa SVG và asset ảnh thực tế; tuyệt đối không dùng emoji hay placeholder sơ sài.",
+          "completed": true
+        },
+        {
+          "id": "ac-l1-acoustic-fidelity-game-102",
+          "given": "Người học tiếng Anh bản xứ Việt Nam luyện phát âm",
+          "when": "Hệ thống AI xử lý luồng âm thanh 16kHz",
+          "then": "Thuật toán áp dụng chính xác bộ lọc bù trừ lỗi L1 tiếng Việt, hiển thị hướng dẫn đặt lưỡi và phản hồi âm học theo chuẩn CEFR / IELTS.",
+          "completed": true
+        }
+      ],
+      "technicalTasks": [
+        {
+          "id": "t-game-4",
+          "title": "Integrate Web Speech API (window.SpeechRecognition) with auto-start and speech result parser",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-game-5",
+          "title": "Implement fallback simulation triggers with Vietnamese phonetic error explanations",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-stitch-ui-game-102",
+          "title": "Hiện thực hóa giao diện pixel-perfect từ code.html với đầy đủ Tailwind design tokens",
+          "category": "Design",
+          "completed": true
+        },
+        {
+          "id": "t-audio-wiring-game-102",
+          "title": "Ghép nối State, Web Audio API recorder hook và TTS audio synthesis playback",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-qa-responsive-game-102",
+          "title": "Kiểm thử thẩm mỹ đa độ phân giải (Mobile/Tablet/Desktop) và kiểm tra tương thích Web Audio API",
+          "category": "QA",
+          "completed": true
+        }
+      ],
+      "notes": "Ensures 100% usability whether in a private bedroom with microphone or in a quiet library with simulation mode.\n\n[DEV 2026-10-03 09:36] Implemented Game3dView with 4-world level progression, dual voice controller with Web Audio sound synthesis, boss battle arena with damage and HP bars, equipment gear inventory, and university leaderboard\n\n### 🎨 UI/UX Design Specifications (Google Stitch Reference)\n- **Màn hình tham chiếu UI**: `src/ui-reference/game_3d_rpg_chi_n_luy_n_ph_t_m_light_mode/code.html`\n- **React Component đích**: `vietphonics-app/src/views/Game3dView.jsx`\n- **Tailwind Tokens & Spacing**: `space-md (1rem), space-lg (1.5rem), space-xl (2.5rem), gutter-desktop (2rem)`\n- **Bảng màu chủ đạo (Brand Palette)**: `Spellcaster Sky #38bdf8, Boss Golem Rose #e11d48, Rune Indigo #6366f1, Gold V-Coins #eab308`\n- **Quy tắc Font chữ (Typography)**: `Plus Jakarta Sans (Hero/Boss titles), JetBrains Mono (Incantation letters S-I-X, Damage metrics, Weakness tags)`\n- **Đồ họa & Vector SVG**: 3D Cyber Mage Spellcaster (Google CDN), Ancient Stone Golem (Google CDN), Isometric Neon Rune Ring SVG, Dynamic attack beam surge\n\n### 🔬 Tiêu Chuẩn Âm Học L1 & Bù Trừ Thổ Âm (Acoustic Specification)\n- **Tập trung can thiệp**: Khắc phục triệt để lỗi rụng âm đuôi (coda loss), vô thanh hóa phụ âm cuối, nhầm lẫn /θ/-/t/, /ʃ/-/s/, và thói quen đánh dấu thanh tiếng Việt lên trọng âm tiếng Anh.\n- **Hiệu chuẩn vùng miền**: Hỗ trợ 3 phương ngữ Việt Nam (Miền Bắc: /d/->/z/, Miền Trung: F0 pitch drop, Miền Nam: rụng phụ âm tắc cuối /k/-/t/).\n\n### 🛠️ Kiến Trúc Thực Thi (Technical Implementation)\n- **Mặt trận Frontend**: Bê nguyên 100% cấu trúc HTML/CSS, SVG và assets từ file Google Stitch tương ứng; không tự ý rút gọn hoặc dùng emoji thay thế.\n- **Xử lý Âm thanh**: Thu âm 16kHz mono qua Web Audio API, tích hợp SpeechSynthesis cho giọng đọc mẫu Oxford US (tốc độ 1.0x, 0.8x, 0.5x).\n- **Trạng thái**: Tích hợp chặt chẽ với AppContext, quản lý Streak, Khiên bảo vệ, và hỗ trợ thanh toán VietQR Napas 24/7.",
+      "createdAt": "2026-09-30T17:50:58.697Z"
+    },
+    {
+      "id": "GAME-103",
+      "epicId": "epic-gamified-3d",
+      "title": "Auditory Discrimination Boss Arenas & Turn-Based Minimal Pair Counter-Spells",
+      "persona": "Player Facing Regional Dungeon Bosses",
+      "action": "face epic area bosses (Stone Golem, Twin Phantoms, Chronos Titan, Dragon of Accents) and cast the precise phonetic counter-spell within a 3-second timer",
+      "value": "I build lightning-fast auditory discrimination reflexes under game pressure, conquering my mother-tongue instincts",
+      "priority": "should",
+      "status": "done",
+      "size": "L",
+      "points": 8,
+      "acceptanceCriteria": [
+        {
+          "id": "ac-game-103-1",
+          "given": "A boss stage encounter (e.g. Twin Phantoms requiring /θ/ vs /t/ contrast)",
+          "when": "Player accurately voices the counter-spell within 3 seconds",
+          "then": "Deals 150-250 DMG to the boss health bar with screen shake, particle sparks, and combo increment.",
+          "completed": true
+        },
+        {
+          "id": "ac-game-103-2",
+          "given": "Player confuses the sound (e.g. saying /tɪŋk/ instead of /θɪŋk/)",
+          "when": "Boss barrier deflects attack",
+          "then": "Player takes 15 HP damage, combo resets, and an anatomical mouth guide tip appears explaining tongue placement.",
+          "completed": true
+        },
+        {
+          "id": "ac-ui-stitch-fidelity-game-103",
+          "given": "Người dùng truy cập màn hình trên thiết bị desktop hoặc di động",
+          "when": "Đối chiếu với bản thiết kế Google Stitch tại src/ui-reference/game_3d_rpg_chi_n_luy_n_ph_t_m_light_mode/code.html",
+          "then": "Giao diện hiển thị chuẩn xác 100% pixel-perfect về bố cục, màu sắc, font chữ JetBrains Mono / Plus Jakarta Sans, đầy đủ đồ họa SVG và asset ảnh thực tế; tuyệt đối không dùng emoji hay placeholder sơ sài.",
+          "completed": true
+        },
+        {
+          "id": "ac-l1-acoustic-fidelity-game-103",
+          "given": "Người học tiếng Anh bản xứ Việt Nam luyện phát âm",
+          "when": "Hệ thống AI xử lý luồng âm thanh 16kHz",
+          "then": "Thuật toán áp dụng chính xác bộ lọc bù trừ lỗi L1 tiếng Việt, hiển thị hướng dẫn đặt lưỡi và phản hồi âm học theo chuẩn CEFR / IELTS.",
+          "completed": true
+        }
+      ],
+      "technicalTasks": [
+        {
+          "id": "t-game-6",
+          "title": "Build boss encounter state machine with boss HP bars, enrage timers, and damage calculations",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-game-7",
+          "title": "Create Vietnamese-specific phonetic feedback generator for minimal pair confusions",
+          "category": "Backend",
+          "completed": true
+        },
+        {
+          "id": "t-stitch-ui-game-103",
+          "title": "Hiện thực hóa giao diện pixel-perfect từ code.html với đầy đủ Tailwind design tokens",
+          "category": "Design",
+          "completed": true
+        },
+        {
+          "id": "t-audio-wiring-game-103",
+          "title": "Ghép nối State, Web Audio API recorder hook và TTS audio synthesis playback",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-qa-responsive-game-103",
+          "title": "Kiểm thử thẩm mỹ đa độ phân giải (Mobile/Tablet/Desktop) và kiểm tra tương thích Web Audio API",
+          "category": "QA",
+          "completed": true
+        }
+      ],
+      "notes": "Boss encounters provide exhilarating milestone tests at the conclusion of each curriculum world.\n\n[DEV 2026-10-03 09:36] Implemented Game3dView with 4-world level progression, dual voice controller with Web Audio sound synthesis, boss battle arena with damage and HP bars, equipment gear inventory, and university leaderboard\n\n### 🎨 UI/UX Design Specifications (Google Stitch Reference)\n- **Màn hình tham chiếu UI**: `src/ui-reference/game_3d_rpg_chi_n_luy_n_ph_t_m_light_mode/code.html`\n- **React Component đích**: `vietphonics-app/src/views/Game3dView.jsx`\n- **Tailwind Tokens & Spacing**: `space-md (1rem), space-lg (1.5rem), space-xl (2.5rem), gutter-desktop (2rem)`\n- **Bảng màu chủ đạo (Brand Palette)**: `Spellcaster Sky #38bdf8, Boss Golem Rose #e11d48, Rune Indigo #6366f1, Gold V-Coins #eab308`\n- **Quy tắc Font chữ (Typography)**: `Plus Jakarta Sans (Hero/Boss titles), JetBrains Mono (Incantation letters S-I-X, Damage metrics, Weakness tags)`\n- **Đồ họa & Vector SVG**: 3D Cyber Mage Spellcaster (Google CDN), Ancient Stone Golem (Google CDN), Isometric Neon Rune Ring SVG, Dynamic attack beam surge\n\n### 🔬 Tiêu Chuẩn Âm Học L1 & Bù Trừ Thổ Âm (Acoustic Specification)\n- **Tập trung can thiệp**: Khắc phục triệt để lỗi rụng âm đuôi (coda loss), vô thanh hóa phụ âm cuối, nhầm lẫn /θ/-/t/, /ʃ/-/s/, và thói quen đánh dấu thanh tiếng Việt lên trọng âm tiếng Anh.\n- **Hiệu chuẩn vùng miền**: Hỗ trợ 3 phương ngữ Việt Nam (Miền Bắc: /d/->/z/, Miền Trung: F0 pitch drop, Miền Nam: rụng phụ âm tắc cuối /k/-/t/).\n\n### 🛠️ Kiến Trúc Thực Thi (Technical Implementation)\n- **Mặt trận Frontend**: Bê nguyên 100% cấu trúc HTML/CSS, SVG và assets từ file Google Stitch tương ứng; không tự ý rút gọn hoặc dùng emoji thay thế.\n- **Xử lý Âm thanh**: Thu âm 16kHz mono qua Web Audio API, tích hợp SpeechSynthesis cho giọng đọc mẫu Oxford US (tốc độ 1.0x, 0.8x, 0.5x).\n- **Trạng thái**: Tích hợp chặt chẽ với AppContext, quản lý Streak, Khiên bảo vệ, và hỗ trợ thanh toán VietQR Napas 24/7.",
+      "createdAt": "2026-09-30T17:50:58.697Z"
+    },
+    {
+      "id": "GAME-104",
+      "epicId": "epic-gamified-3d",
+      "title": "Zero-Latency Web Audio API Sound Synthesizer & 3D Isometric Combat Canvas",
+      "persona": "Web Player on Any Device",
+      "action": "experience crisp sound effects (laser beams, shattering crystals, hurt thuds, victory fanfares) and smooth 60 FPS combat animations with zero external sound file downloads",
+      "value": "The game loads instantaneously (<1s) and plays without audio lag even on spotty 3G/4G mobile connections",
+      "priority": "must",
+      "status": "done",
+      "size": "M",
+      "points": 5,
+      "acceptanceCriteria": [
+        {
+          "id": "ac-game-104-1",
+          "given": "Any combat action (successful shatter or damage taken)",
+          "when": "Action occurs",
+          "then": "Synthesized Web Audio frequencies generate immediately without network requests.",
+          "completed": true
+        },
+        {
+          "id": "ac-game-104-2",
+          "given": "Low-power mobile laptop or phone",
+          "when": "Rendering isometric perspective track",
+          "then": "Maintains buttery 60 FPS with CSS perspective grid and hardware-accelerated transforms.",
+          "completed": true
+        },
+        {
+          "id": "ac-ui-stitch-fidelity-game-104",
+          "given": "Người dùng truy cập màn hình trên thiết bị desktop hoặc di động",
+          "when": "Đối chiếu với bản thiết kế Google Stitch tại src/ui-reference/game_3d_rpg_chi_n_luy_n_ph_t_m_light_mode/code.html",
+          "then": "Giao diện hiển thị chuẩn xác 100% pixel-perfect về bố cục, màu sắc, font chữ JetBrains Mono / Plus Jakarta Sans, đầy đủ đồ họa SVG và asset ảnh thực tế; tuyệt đối không dùng emoji hay placeholder sơ sài.",
+          "completed": true
+        },
+        {
+          "id": "ac-l1-acoustic-fidelity-game-104",
+          "given": "Người học tiếng Anh bản xứ Việt Nam luyện phát âm",
+          "when": "Hệ thống AI xử lý luồng âm thanh 16kHz",
+          "then": "Thuật toán áp dụng chính xác bộ lọc bù trừ lỗi L1 tiếng Việt, hiển thị hướng dẫn đặt lưỡi và phản hồi âm học theo chuẩn CEFR / IELTS.",
+          "completed": true
+        }
+      ],
+      "technicalTasks": [
+        {
+          "id": "t-game-8",
+          "title": "Implement SoundFX class with OscillatorNode and GainNode synthesis (Laser, Shatter, Hurt, Victory)",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-game-9",
+          "title": "Render responsive isometric combat arena with glowing spellcast beam and destructible obstacle states",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-stitch-ui-game-104",
+          "title": "Hiện thực hóa giao diện pixel-perfect từ code.html với đầy đủ Tailwind design tokens",
+          "category": "Design",
+          "completed": true
+        },
+        {
+          "id": "t-audio-wiring-game-104",
+          "title": "Ghép nối State, Web Audio API recorder hook và TTS audio synthesis playback",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-qa-responsive-game-104",
+          "title": "Kiểm thử thẩm mỹ đa độ phân giải (Mobile/Tablet/Desktop) và kiểm tra tương thích Web Audio API",
+          "category": "QA",
+          "completed": true
+        }
+      ],
+      "notes": "Pure synthesizer architecture eliminates 15MB+ of audio asset downloads.\n\n[DEV 2026-10-03 09:36] Implemented Game3dView with 4-world level progression, dual voice controller with Web Audio sound synthesis, boss battle arena with damage and HP bars, equipment gear inventory, and university leaderboard\n\n### 🎨 UI/UX Design Specifications (Google Stitch Reference)\n- **Màn hình tham chiếu UI**: `src/ui-reference/game_3d_rpg_chi_n_luy_n_ph_t_m_light_mode/code.html`\n- **React Component đích**: `vietphonics-app/src/views/Game3dView.jsx`\n- **Tailwind Tokens & Spacing**: `space-md (1rem), space-lg (1.5rem), space-xl (2.5rem), gutter-desktop (2rem)`\n- **Bảng màu chủ đạo (Brand Palette)**: `Spellcaster Sky #38bdf8, Boss Golem Rose #e11d48, Rune Indigo #6366f1, Gold V-Coins #eab308`\n- **Quy tắc Font chữ (Typography)**: `Plus Jakarta Sans (Hero/Boss titles), JetBrains Mono (Incantation letters S-I-X, Damage metrics, Weakness tags)`\n- **Đồ họa & Vector SVG**: 3D Cyber Mage Spellcaster (Google CDN), Ancient Stone Golem (Google CDN), Isometric Neon Rune Ring SVG, Dynamic attack beam surge\n\n### 🔬 Tiêu Chuẩn Âm Học L1 & Bù Trừ Thổ Âm (Acoustic Specification)\n- **Tập trung can thiệp**: Khắc phục triệt để lỗi rụng âm đuôi (coda loss), vô thanh hóa phụ âm cuối, nhầm lẫn /θ/-/t/, /ʃ/-/s/, và thói quen đánh dấu thanh tiếng Việt lên trọng âm tiếng Anh.\n- **Hiệu chuẩn vùng miền**: Hỗ trợ 3 phương ngữ Việt Nam (Miền Bắc: /d/->/z/, Miền Trung: F0 pitch drop, Miền Nam: rụng phụ âm tắc cuối /k/-/t/).\n\n### 🛠️ Kiến Trúc Thực Thi (Technical Implementation)\n- **Mặt trận Frontend**: Bê nguyên 100% cấu trúc HTML/CSS, SVG và assets từ file Google Stitch tương ứng; không tự ý rút gọn hoặc dùng emoji thay thế.\n- **Xử lý Âm thanh**: Thu âm 16kHz mono qua Web Audio API, tích hợp SpeechSynthesis cho giọng đọc mẫu Oxford US (tốc độ 1.0x, 0.8x, 0.5x).\n- **Trạng thái**: Tích hợp chặt chẽ với AppContext, quản lý Streak, Khiên bảo vệ, và hỗ trợ thanh toán VietQR Napas 24/7.",
+      "createdAt": "2026-09-30T17:50:58.697Z"
+    },
+    {
+      "id": "GAME-105",
+      "epicId": "epic-gamified-3d",
+      "title": "RPG Equipment Inventory, Perk System & University Leaderboard Ranks",
+      "persona": "Competitive Vietnamese College Student / IT Engineer",
+      "action": "equip magical phonetic gear (Wand of Ending Sounds, Boots of Stress Rhythm) and climb university rankings (ĐHQG, Bách Khoa, NEU)",
+      "value": "I stay motivated to practice daily through progression prestige and pride in representing my university",
+      "priority": "could",
+      "status": "done",
+      "size": "S",
+      "points": 3,
+      "acceptanceCriteria": [
+        {
+          "id": "ac-game-105-1",
+          "given": "Player viewing their avatar profile",
+          "when": "Opening the Inventory modal",
+          "then": "Equipped gear with phonetic combat perks and locked legendary gear are displayed clearly.",
+          "completed": true
+        },
+        {
+          "id": "ac-game-105-2",
+          "given": "Reaching higher levels (Level 5+)",
+          "when": "XP threshold is crossed",
+          "then": "Level Up modal triggers, unlocking new equipment slots and titles.",
+          "completed": true
+        },
+        {
+          "id": "ac-ui-stitch-fidelity-game-105",
+          "given": "Người dùng truy cập màn hình trên thiết bị desktop hoặc di động",
+          "when": "Đối chiếu với bản thiết kế Google Stitch tại src/ui-reference/game_3d_rpg_chi_n_luy_n_ph_t_m_light_mode/code.html",
+          "then": "Giao diện hiển thị chuẩn xác 100% pixel-perfect về bố cục, màu sắc, font chữ JetBrains Mono / Plus Jakarta Sans, đầy đủ đồ họa SVG và asset ảnh thực tế; tuyệt đối không dùng emoji hay placeholder sơ sài.",
+          "completed": true
+        },
+        {
+          "id": "ac-l1-acoustic-fidelity-game-105",
+          "given": "Người học tiếng Anh bản xứ Việt Nam luyện phát âm",
+          "when": "Hệ thống AI xử lý luồng âm thanh 16kHz",
+          "then": "Thuật toán áp dụng chính xác bộ lọc bù trừ lỗi L1 tiếng Việt, hiển thị hướng dẫn đặt lưỡi và phản hồi âm học theo chuẩn CEFR / IELTS.",
+          "completed": true
+        }
+      ],
+      "technicalTasks": [
+        {
+          "id": "t-game-10",
+          "title": "Build RPG Inventory & Equipment modal with equipment perks and unlock requirements",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-game-11",
+          "title": "Create university leaderboard ranking schema in SQLite backend",
+          "category": "Backend",
+          "completed": true
+        },
+        {
+          "id": "t-stitch-ui-game-105",
+          "title": "Hiện thực hóa giao diện pixel-perfect từ code.html với đầy đủ Tailwind design tokens",
+          "category": "Design",
+          "completed": true
+        },
+        {
+          "id": "t-audio-wiring-game-105",
+          "title": "Ghép nối State, Web Audio API recorder hook và TTS audio synthesis playback",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-qa-responsive-game-105",
+          "title": "Kiểm thử thẩm mỹ đa độ phân giải (Mobile/Tablet/Desktop) và kiểm tra tương thích Web Audio API",
+          "category": "QA",
+          "completed": true
+        }
+      ],
+      "notes": "Strong social and competitive motivator for university students and young tech professionals.\n\n[DEV 2026-10-03 09:36] Implemented Game3dView with 4-world level progression, dual voice controller with Web Audio sound synthesis, boss battle arena with damage and HP bars, equipment gear inventory, and university leaderboard\n\n### 🎨 UI/UX Design Specifications (Google Stitch Reference)\n- **Màn hình tham chiếu UI**: `src/ui-reference/game_3d_rpg_chi_n_luy_n_ph_t_m_light_mode/code.html`\n- **React Component đích**: `vietphonics-app/src/views/Game3dView.jsx`\n- **Tailwind Tokens & Spacing**: `space-md (1rem), space-lg (1.5rem), space-xl (2.5rem), gutter-desktop (2rem)`\n- **Bảng màu chủ đạo (Brand Palette)**: `Spellcaster Sky #38bdf8, Boss Golem Rose #e11d48, Rune Indigo #6366f1, Gold V-Coins #eab308`\n- **Quy tắc Font chữ (Typography)**: `Plus Jakarta Sans (Hero/Boss titles), JetBrains Mono (Incantation letters S-I-X, Damage metrics, Weakness tags)`\n- **Đồ họa & Vector SVG**: 3D Cyber Mage Spellcaster (Google CDN), Ancient Stone Golem (Google CDN), Isometric Neon Rune Ring SVG, Dynamic attack beam surge\n\n### 🔬 Tiêu Chuẩn Âm Học L1 & Bù Trừ Thổ Âm (Acoustic Specification)\n- **Tập trung can thiệp**: Khắc phục triệt để lỗi rụng âm đuôi (coda loss), vô thanh hóa phụ âm cuối, nhầm lẫn /θ/-/t/, /ʃ/-/s/, và thói quen đánh dấu thanh tiếng Việt lên trọng âm tiếng Anh.\n- **Hiệu chuẩn vùng miền**: Hỗ trợ 3 phương ngữ Việt Nam (Miền Bắc: /d/->/z/, Miền Trung: F0 pitch drop, Miền Nam: rụng phụ âm tắc cuối /k/-/t/).\n\n### 🛠️ Kiến Trúc Thực Thi (Technical Implementation)\n- **Mặt trận Frontend**: Bê nguyên 100% cấu trúc HTML/CSS, SVG và assets từ file Google Stitch tương ứng; không tự ý rút gọn hoặc dùng emoji thay thế.\n- **Xử lý Âm thanh**: Thu âm 16kHz mono qua Web Audio API, tích hợp SpeechSynthesis cho giọng đọc mẫu Oxford US (tốc độ 1.0x, 0.8x, 0.5x).\n- **Trạng thái**: Tích hợp chặt chẽ với AppContext, quản lý Streak, Khiên bảo vệ, và hỗ trợ thanh toán VietQR Napas 24/7.",
+      "createdAt": "2026-09-30T17:50:58.697Z"
+    },
+    {
+      "id": "ELSA-102",
+      "epicId": "epic-diagnostic",
+      "title": "Native Language (L1) Mother-Tongue Error Calibration",
+      "persona": "Vietnamese Speaker with Regional Accent (Northern vs Southern VN)",
+      "action": "select my regional accent background (e.g. Northern Vietnamese with /d/-/z/ merge, or Southern with /v/-/j/ merge)",
+      "value": "the acoustic model calibrates its phonetic error detector to my specific regional transfer habits",
+      "priority": "must",
+      "status": "done",
+      "size": "S",
+      "points": 3,
+      "acceptanceCriteria": [
+        {
+          "id": "ac-elsa-102-1",
+          "given": "Onboarding settings",
+          "when": "User selects Vietnamese native language",
+          "then": "Acoustic priors for missing final stops (/k/, /t/, /p/) and dropped fricatives (/s/, /z/) are given higher weighting in phoneme decoding.",
+          "completed": true
+        },
+        {
+          "id": "ac-ui-stitch-fidelity-elsa-102",
+          "given": "Người dùng truy cập màn hình trên thiết bị desktop hoặc di động",
+          "when": "Đối chiếu với bản thiết kế Google Stitch tại src/ui-reference/b_ng_ch_n_o_n_m_l1_ti_ng_vi_t_light_mode/code.html & ti_n_ph_n_t_ch_d_li_u_h_c_m_light_mode/code.html",
+          "then": "Giao diện hiển thị chuẩn xác 100% pixel-perfect về bố cục, màu sắc, font chữ JetBrains Mono / Plus Jakarta Sans, đầy đủ đồ họa SVG và asset ảnh thực tế; tuyệt đối không dùng emoji hay placeholder sơ sài.",
+          "completed": true
+        },
+        {
+          "id": "ac-l1-acoustic-fidelity-elsa-102",
+          "given": "Người học tiếng Anh bản xứ Việt Nam luyện phát âm",
+          "when": "Hệ thống AI xử lý luồng âm thanh 16kHz",
+          "then": "Thuật toán áp dụng chính xác bộ lọc bù trừ lỗi L1 tiếng Việt, hiển thị hướng dẫn đặt lưỡi và phản hồi âm học theo chuẩn CEFR / IELTS.",
+          "completed": true
+        }
+      ],
+      "technicalTasks": [
+        {
+          "id": "t-elsa-4",
+          "title": "Implement L1 confusion matrix weighting in GOP acoustic decoding pipeline",
+          "category": "Backend",
+          "completed": true
+        },
+        {
+          "id": "t-elsa-5",
+          "title": "Create native language selector modal in onboarding questionnaire",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-stitch-ui-elsa-102",
+          "title": "Hiện thực hóa giao diện pixel-perfect từ code.html với đầy đủ Tailwind design tokens",
+          "category": "Design",
+          "completed": true
+        },
+        {
+          "id": "t-audio-wiring-elsa-102",
+          "title": "Ghép nối State, Web Audio API recorder hook và TTS audio synthesis playback",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-qa-responsive-elsa-102",
+          "title": "Kiểm thử thẩm mỹ đa độ phân giải (Mobile/Tablet/Desktop) và kiểm tra tương thích Web Audio API",
+          "category": "QA",
+          "completed": true
+        }
+      ],
+      "notes": "Crucial for avoiding false positives on slightly accented phonemes.\n\n[DEV 2026-10-03 09:32] Implemented Stitch-based 10-minute daily curriculum dashboard, L1 regional dialect calibration (North/Central/South), 3-minute diagnostic screener with 5 trigger sentences, and streak counter with freeze shields\n\n### 🎨 UI/UX Design Specifications (Google Stitch Reference)\n- **Màn hình tham chiếu UI**: `src/ui-reference/b_ng_ch_n_o_n_m_l1_ti_ng_vi_t_light_mode/code.html & ti_n_ph_n_t_ch_d_li_u_h_c_m_light_mode/code.html`\n- **React Component đích**: `vietphonics-app/src/views/OnboardingView.jsx & DiagnosticModal.jsx`\n- **Tailwind Tokens & Spacing**: `space-sm (0.5rem), space-md (1rem), space-lg (1.5rem), gutter-desktop (2rem)`\n- **Bảng màu chủ đạo (Brand Palette)**: `Emerald #059669 (Mastered), Amber #d97706 (Warning), Rose #e11d48 (Critical), Sky #0284c7 (Calibrated)`\n- **Quy tắc Font chữ (Typography)**: `Plus Jakarta Sans (Assessment steps), JetBrains Mono (L1 prior offsets, F1/F2 vectors)`\n- **Đồ họa & Vector SVG**: 3-Region L1 Dialect Map (North/Central/South), Predicted IELTS 7.0/CEFR B2 scorecard, 44 IPA diagnostic matrix\n\n### 🔬 Tiêu Chuẩn Âm Học L1 & Bù Trừ Thổ Âm (Acoustic Specification)\n- **Tập trung can thiệp**: Khắc phục triệt để lỗi rụng âm đuôi (coda loss), vô thanh hóa phụ âm cuối, nhầm lẫn /θ/-/t/, /ʃ/-/s/, và thói quen đánh dấu thanh tiếng Việt lên trọng âm tiếng Anh.\n- **Hiệu chuẩn vùng miền**: Hỗ trợ 3 phương ngữ Việt Nam (Miền Bắc: /d/->/z/, Miền Trung: F0 pitch drop, Miền Nam: rụng phụ âm tắc cuối /k/-/t/).\n\n### 🛠️ Kiến Trúc Thực Thi (Technical Implementation)\n- **Mặt trận Frontend**: Bê nguyên 100% cấu trúc HTML/CSS, SVG và assets từ file Google Stitch tương ứng; không tự ý rút gọn hoặc dùng emoji thay thế.\n- **Xử lý Âm thanh**: Thu âm 16kHz mono qua Web Audio API, tích hợp SpeechSynthesis cho giọng đọc mẫu Oxford US (tốc độ 1.0x, 0.8x, 0.5x).\n- **Trạng thái**: Tích hợp chặt chẽ với AppContext, quản lý Streak, Khiên bảo vệ, và hỗ trợ thanh toán VietQR Napas 24/7.",
+      "createdAt": "2026-10-01T16:22:31.743Z"
+    },
+    {
+      "id": "USER-101",
+      "epicId": "epic-retention",
+      "title": "Learner Authentication, Pronunciation Mastery Dashboard & Practice Recording History",
+      "persona": "Vietnamese Learner Tracking Their Speaking Journey",
+      "action": "log in with my account, view my 4-pillar pronunciation mastery scores (% Ending Sounds, Minimal Pairs, Stress, Connected Speech), and review my complete history of recorded speech attempts",
+      "value": "I have full visibility into my phonetic improvement over time and can listen back to native reference audio for every past mistake",
+      "priority": "must",
+      "status": "done",
+      "size": "L",
+      "points": 8,
+      "acceptanceCriteria": [
+        {
+          "id": "ac-user-101-1",
+          "given": "A logged-in learner opening the \"Tiến Độ & Lịch Sử\" tab",
+          "when": "The dashboard loads",
+          "then": "Displays overall GOP pronunciation score (e.g. 76% - IELTS 7.0), radar/progress bars for 4 Vietnamese phonetic pillars, and streak shields.",
+          "completed": true
+        },
+        {
+          "id": "ac-user-101-2",
+          "given": "A user reviewing past practice attempts",
+          "when": "Viewing recording history items",
+          "then": "Each record shows target phrase, IPA, GOP score, Vietnamese error tags, and provides a 1-click button to listen to native reference pronunciation.",
+          "completed": true
+        },
+        {
+          "id": "ac-ui-stitch-fidelity-user-101",
+          "given": "Người dùng truy cập màn hình trên thiết bị desktop hoặc di động",
+          "when": "Đối chiếu với bản thiết kế Google Stitch tại src/ui-reference/t_ng_quan_l_tr_nh_10_ph_t_light_mode/code.html & ng_n_h_ng_t_l_i_n_ng_c_p_pro_light_mode/code.html",
+          "then": "Giao diện hiển thị chuẩn xác 100% pixel-perfect về bố cục, màu sắc, font chữ JetBrains Mono / Plus Jakarta Sans, đầy đủ đồ họa SVG và asset ảnh thực tế; tuyệt đối không dùng emoji hay placeholder sơ sài.",
+          "completed": true
+        },
+        {
+          "id": "ac-l1-acoustic-fidelity-user-101",
+          "given": "Người học tiếng Anh bản xứ Việt Nam luyện phát âm",
+          "when": "Hệ thống AI xử lý luồng âm thanh 16kHz",
+          "then": "Thuật toán áp dụng chính xác bộ lọc bù trừ lỗi L1 tiếng Việt, hiển thị hướng dẫn đặt lưỡi và phản hồi âm học theo chuẩn CEFR / IELTS.",
+          "completed": true
+        }
+      ],
+      "technicalTasks": [
+        {
+          "id": "t-user-1",
+          "title": "Build UserProfileProgressView component with 4-pillar phoneme mastery bars and historical recording logs",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-user-2",
+          "title": "Implement AuthModal supporting Demo accounts, custom learner profile registration, and L1 regional accent calibration",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-user-3",
+          "title": "Integrate Web Speech Synthesis API for instant native audio reference playback of historical recordings",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-stitch-ui-user-101",
+          "title": "Hiện thực hóa giao diện pixel-perfect từ code.html với đầy đủ Tailwind design tokens",
+          "category": "Design",
+          "completed": true
+        },
+        {
+          "id": "t-audio-wiring-user-101",
+          "title": "Ghép nối State, Web Audio API recorder hook và TTS audio synthesis playback",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-qa-responsive-user-101",
+          "title": "Kiểm thử thẩm mỹ đa độ phân giải (Mobile/Tablet/Desktop) và kiểm tra tương thích Web Audio API",
+          "category": "QA",
+          "completed": true
+        }
+      ],
+      "notes": "Essential for user retention; allows learners to see tangible proof of their accent reduction.\n\n[DEV 2026-10-03 09:38] Implemented OnboardingView with 3-region L1 dialect calibration (North/Central/South), target priority goals, IELTS Speaking Part 1 & 2 AI Mock Examiner, and granular phoneme history tracking\n\n### 🎨 UI/UX Design Specifications (Google Stitch Reference)\n- **Màn hình tham chiếu UI**: `src/ui-reference/t_ng_quan_l_tr_nh_10_ph_t_light_mode/code.html & ng_n_h_ng_t_l_i_n_ng_c_p_pro_light_mode/code.html`\n- **React Component đích**: `vietphonics-app/src/views/DashboardView.jsx & ProUpgradeView.jsx`\n- **Tailwind Tokens & Spacing**: `space-sm (0.5rem), space-md (1rem), space-lg (1.5rem), space-xl (2.5rem)`\n- **Bảng màu chủ đạo (Brand Palette)**: `Brand Rose #e11d48, Flame Amber #f59e0b, Shield Sky #0284c7, Napas Emerald #10b981`\n- **Quy tắc Font chữ (Typography)**: `Plus Jakarta Sans (Course milestones), JetBrains Mono (SM-2 review cycles, VietQR syntax)`\n- **Đồ họa & Vector SVG**: Circular GOP dial, 3-Step connected timeline circuit line, SuperMemo SM-2 vocabulary cards, VietQR Napas 24/7 QR modal\n\n### 🔬 Tiêu Chuẩn Âm Học L1 & Bù Trừ Thổ Âm (Acoustic Specification)\n- **Tập trung can thiệp**: Khắc phục triệt để lỗi rụng âm đuôi (coda loss), vô thanh hóa phụ âm cuối, nhầm lẫn /θ/-/t/, /ʃ/-/s/, và thói quen đánh dấu thanh tiếng Việt lên trọng âm tiếng Anh.\n- **Hiệu chuẩn vùng miền**: Hỗ trợ 3 phương ngữ Việt Nam (Miền Bắc: /d/->/z/, Miền Trung: F0 pitch drop, Miền Nam: rụng phụ âm tắc cuối /k/-/t/).\n\n### 🛠️ Kiến Trúc Thực Thi (Technical Implementation)\n- **Mặt trận Frontend**: Bê nguyên 100% cấu trúc HTML/CSS, SVG và assets từ file Google Stitch tương ứng; không tự ý rút gọn hoặc dùng emoji thay thế.\n- **Xử lý Âm thanh**: Thu âm 16kHz mono qua Web Audio API, tích hợp SpeechSynthesis cho giọng đọc mẫu Oxford US (tốc độ 1.0x, 0.8x, 0.5x).\n- **Trạng thái**: Tích hợp chặt chẽ với AppContext, quản lý Streak, Khiên bảo vệ, và hỗ trợ thanh toán VietQR Napas 24/7.",
+      "createdAt": "2026-10-01T16:36:47.318Z"
+    },
+    {
+      "id": "PRON-202",
+      "epicId": "epic-articulation",
+      "title": "Phonemic Audio Dictation & Gap-Fill Exercises (Nghe Chính Tả & Điền Âm Vị Khuyết)",
+      "persona": "Học Viên Muốn Rèn Luyện Thính Giác Nhận Diện Âm Vị",
+      "action": "nghe người bản ngữ phát âm các từ hoặc câu chứa âm đang học, sau đó gõ lại từ hoặc điền vào chỗ trống âm vị còn thiếu (ví dụ: nghe thấy /θɪŋk/ -> điền th_nk hoặc chọn /θ/ vs /t/)",
+      "value": "tôi huấn luyện đôi tai nhận diện chính xác âm thanh bản ngữ trước khi nói, tránh tình trạng nghe một đằng phát âm một nẻo",
+      "priority": "must",
+      "status": "done",
+      "size": "M",
+      "points": 5,
+      "acceptanceCriteria": [
+        {
+          "id": "ac-pron-202-1",
+          "given": "Một bài tập dictation cho âm /θ/ (ví dụ từ \"think\")",
+          "when": "Người học bấm nghe âm thanh Oxford và gõ đáp án vào ô chữ",
+          "then": "Hệ thống kiểm tra ngay lập tức, gạch chân âm vị mục tiêu và hiển thị phân tích ngữ âm nếu nhầm lẫn với âm /t/ hoặc /s/.",
+          "completed": true
+        },
+        {
+          "id": "ac-pron-202-2",
+          "given": "Người học gõ sai từ quá 2 lần",
+          "when": "Bấm nút \"Gợi ý khẩu hình\"",
+          "then": "Hệ thống phát lại âm thanh ở tốc độ chậm 0.75x kèm hình ảnh hướng dẫn vị trí đặt đầu lưỡi giữa hai hàm răng.",
+          "completed": true
+        },
+        {
+          "id": "ac-ui-stitch-fidelity-pron-202",
+          "given": "Người dùng truy cập màn hình trên thiết bị desktop hoặc di động",
+          "when": "Đối chiếu với bản thiết kế Google Stitch tại src/ui-reference/kh_u_h_nh_2d_gi_i_ph_u_c_mi_ng_light_mode/code.html",
+          "then": "Giao diện hiển thị chuẩn xác 100% pixel-perfect về bố cục, màu sắc, font chữ JetBrains Mono / Plus Jakarta Sans, đầy đủ đồ họa SVG và asset ảnh thực tế; tuyệt đối không dùng emoji hay placeholder sơ sài.",
+          "completed": true
+        },
+        {
+          "id": "ac-l1-acoustic-fidelity-pron-202",
+          "given": "Người học tiếng Anh bản xứ Việt Nam luyện phát âm",
+          "when": "Hệ thống AI xử lý luồng âm thanh 16kHz",
+          "then": "Thuật toán áp dụng chính xác bộ lọc bù trừ lỗi L1 tiếng Việt, hiển thị hướng dẫn đặt lưỡi và phản hồi âm học theo chuẩn CEFR / IELTS.",
+          "completed": true
+        }
+      ],
+      "technicalTasks": [
+        {
+          "id": "t-pron-202-1",
+          "title": "Xây dựng component AudioDictationCard với audio player, input gõ từ và cơ chế kiểm tra tức thì",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-pron-202-2",
+          "title": "Biên soạn ngân hàng 50+ câu dictation chuẩn theo từng âm IPA (/θ/, /iː/, /ʃ/, /æ/, /r/, /l/)",
+          "category": "Content",
+          "completed": true
+        },
+        {
+          "id": "t-stitch-ui-pron-202",
+          "title": "Hiện thực hóa giao diện pixel-perfect từ code.html với đầy đủ Tailwind design tokens",
+          "category": "Design",
+          "completed": true
+        },
+        {
+          "id": "t-audio-wiring-pron-202",
+          "title": "Ghép nối State, Web Audio API recorder hook và TTS audio synthesis playback",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-qa-responsive-pron-202",
+          "title": "Kiểm thử thẩm mỹ đa độ phân giải (Mobile/Tablet/Desktop) và kiểm tra tương thích Web Audio API",
+          "category": "QA",
+          "completed": true
+        }
+      ],
+      "notes": "Bài tập thính giác chủ động (Active Listening) giúp liên kết giữa âm thanh nghe được và ký tự ngữ âm.\n\n[DEV 2026-10-03 09:33] Implemented PracticeStudioView with forced alignment phonemic heatmap, critical ending sounds inspector (/ks/, -ed, /st/), dual pitch contour canvas, audio recording, slow-motion playback, and phonemic dictation gap-fill exercise\n\n### 🎨 UI/UX Design Specifications (Google Stitch Reference)\n- **Màn hình tham chiếu UI**: `src/ui-reference/kh_u_h_nh_2d_gi_i_ph_u_c_mi_ng_light_mode/code.html`\n- **React Component đích**: `vietphonics-app/src/views/MouthAnatomyView.jsx & MasteryLabView.jsx`\n- **Tailwind Tokens & Spacing**: `space-sm (0.5rem), space-md (1rem), space-lg (1.5rem), gutter-desktop (2rem)`\n- **Bảng màu chủ đạo (Brand Palette)**: `Rose #e11d48, Sky #0284c7, Tongue Muscle Coral Grad (#fb7185 -> #be123c), Airflow Cyan (#38bdf8 -> #0369a1)`\n- **Quy tắc Font chữ (Typography)**: `Plus Jakarta Sans (Headlines), JetBrains Mono (IPA, Contact mm, Friction metrics)`\n- **Đồ họa & Vector SVG**: Sagittal 2D cross-section SVG (760x500) with anatomical gridlines, Coronal front lip SVG with protruding tongue blade (2-3mm), 3 calibration sliders\n\n### 🔬 Tiêu Chuẩn Âm Học L1 & Bù Trừ Thổ Âm (Acoustic Specification)\n- **Tập trung can thiệp**: Khắc phục triệt để lỗi rụng âm đuôi (coda loss), vô thanh hóa phụ âm cuối, nhầm lẫn /θ/-/t/, /ʃ/-/s/, và thói quen đánh dấu thanh tiếng Việt lên trọng âm tiếng Anh.\n- **Hiệu chuẩn vùng miền**: Hỗ trợ 3 phương ngữ Việt Nam (Miền Bắc: /d/->/z/, Miền Trung: F0 pitch drop, Miền Nam: rụng phụ âm tắc cuối /k/-/t/).\n\n### 🛠️ Kiến Trúc Thực Thi (Technical Implementation)\n- **Mặt trận Frontend**: Bê nguyên 100% cấu trúc HTML/CSS, SVG và assets từ file Google Stitch tương ứng; không tự ý rút gọn hoặc dùng emoji thay thế.\n- **Xử lý Âm thanh**: Thu âm 16kHz mono qua Web Audio API, tích hợp SpeechSynthesis cho giọng đọc mẫu Oxford US (tốc độ 1.0x, 0.8x, 0.5x).\n- **Trạng thái**: Tích hợp chặt chẽ với AppContext, quản lý Streak, Khiên bảo vệ, và hỗ trợ thanh toán VietQR Napas 24/7.",
+      "createdAt": "2026-10-02T11:36:38.882Z"
+    },
+    {
+      "id": "PRON-203",
+      "epicId": "epic-articulation",
+      "title": "Targeted Sound Read-Aloud & Contextual Fluency Drills (Đọc To Đoạn Văn Ngữ Cảnh Chứa Âm Đang Luyện)",
+      "persona": "Học Viên Muốn Chuyển Đổi Từ Âm Đơn Sang Phản Xạ Đọc Cả Câu Ngữ Cảnh Dài",
+      "action": "đọc to các câu ngạn ngữ, văn cảnh đời sống hoặc câu lắt léo (Tongue Twisters) tập trung dày đặc âm đang học (ví dụ âm /θ/: \"The thirty-three thieves thought that they thrilled the throne throughout Thursday\")",
+      "value": "tôi làm quen với việc duy trì phát âm chuẩn khi nói cả câu dài có ngữ cảnh tự nhiên thay vì chỉ phát âm đúng khi đọc từ đơn lẻ",
+      "priority": "must",
+      "status": "done",
+      "size": "M",
+      "points": 5,
+      "acceptanceCriteria": [
+        {
+          "id": "ac-pron-203-1",
+          "given": "Học viên đọc to câu ngữ cảnh dài chứa nhiều âm mục tiêu",
+          "when": "Giọng nói được thu qua Web Speech API và Forced Alignment",
+          "then": "Mỗi từ chứa âm mục tiêu được tô màu xanh (>80%), vàng (60-80%), đỏ (<60%) theo thời gian thực kèm đếm số lần phát âm đạt (ví dụ 6/8 lần).",
+          "completed": true
+        },
+        {
+          "id": "ac-pron-203-2",
+          "given": "Học viên đọc vấp hoặc nuốt âm mục tiêu",
+          "when": "Kết thúc bài đọc",
+          "then": "Hệ thống đánh dấu các điểm vấp và gợi ý đọc chậm lại từng cụm từ (chunking).",
+          "completed": true
+        },
+        {
+          "id": "ac-ui-stitch-fidelity-pron-203",
+          "given": "Người dùng truy cập màn hình trên thiết bị desktop hoặc di động",
+          "when": "Đối chiếu với bản thiết kế Google Stitch tại src/ui-reference/kh_u_h_nh_2d_gi_i_ph_u_c_mi_ng_light_mode/code.html",
+          "then": "Giao diện hiển thị chuẩn xác 100% pixel-perfect về bố cục, màu sắc, font chữ JetBrains Mono / Plus Jakarta Sans, đầy đủ đồ họa SVG và asset ảnh thực tế; tuyệt đối không dùng emoji hay placeholder sơ sài.",
+          "completed": true
+        },
+        {
+          "id": "ac-l1-acoustic-fidelity-pron-203",
+          "given": "Người học tiếng Anh bản xứ Việt Nam luyện phát âm",
+          "when": "Hệ thống AI xử lý luồng âm thanh 16kHz",
+          "then": "Thuật toán áp dụng chính xác bộ lọc bù trừ lỗi L1 tiếng Việt, hiển thị hướng dẫn đặt lưỡi và phản hồi âm học theo chuẩn CEFR / IELTS.",
+          "completed": true
+        }
+      ],
+      "technicalTasks": [
+        {
+          "id": "t-pron-203-1",
+          "title": "Xây dựng UI ReadAloudCard với bộ đếm mục tiêu (target sound hits) và hiển thị văn bản ngữ cảnh",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-pron-203-2",
+          "title": "Tích hợp bộ nhận diện giọng nói Web Speech API theo thời gian thực cho câu dài",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-stitch-ui-pron-203",
+          "title": "Hiện thực hóa giao diện pixel-perfect từ code.html với đầy đủ Tailwind design tokens",
+          "category": "Design",
+          "completed": true
+        },
+        {
+          "id": "t-audio-wiring-pron-203",
+          "title": "Ghép nối State, Web Audio API recorder hook và TTS audio synthesis playback",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-qa-responsive-pron-203",
+          "title": "Kiểm thử thẩm mỹ đa độ phân giải (Mobile/Tablet/Desktop) và kiểm tra tương thích Web Audio API",
+          "category": "QA",
+          "completed": true
+        }
+      ],
+      "notes": "Cầu nối quan trọng từ việc phát âm âm lẻ sang phản xạ giao tiếp câu dài trong đời sống.\n\n[DEV 2026-10-03 09:33] Implemented PracticeStudioView with forced alignment phonemic heatmap, critical ending sounds inspector (/ks/, -ed, /st/), dual pitch contour canvas, audio recording, slow-motion playback, and phonemic dictation gap-fill exercise\n\n### 🎨 UI/UX Design Specifications (Google Stitch Reference)\n- **Màn hình tham chiếu UI**: `src/ui-reference/kh_u_h_nh_2d_gi_i_ph_u_c_mi_ng_light_mode/code.html`\n- **React Component đích**: `vietphonics-app/src/views/MouthAnatomyView.jsx & MasteryLabView.jsx`\n- **Tailwind Tokens & Spacing**: `space-sm (0.5rem), space-md (1rem), space-lg (1.5rem), gutter-desktop (2rem)`\n- **Bảng màu chủ đạo (Brand Palette)**: `Rose #e11d48, Sky #0284c7, Tongue Muscle Coral Grad (#fb7185 -> #be123c), Airflow Cyan (#38bdf8 -> #0369a1)`\n- **Quy tắc Font chữ (Typography)**: `Plus Jakarta Sans (Headlines), JetBrains Mono (IPA, Contact mm, Friction metrics)`\n- **Đồ họa & Vector SVG**: Sagittal 2D cross-section SVG (760x500) with anatomical gridlines, Coronal front lip SVG with protruding tongue blade (2-3mm), 3 calibration sliders\n\n### 🔬 Tiêu Chuẩn Âm Học L1 & Bù Trừ Thổ Âm (Acoustic Specification)\n- **Tập trung can thiệp**: Khắc phục triệt để lỗi rụng âm đuôi (coda loss), vô thanh hóa phụ âm cuối, nhầm lẫn /θ/-/t/, /ʃ/-/s/, và thói quen đánh dấu thanh tiếng Việt lên trọng âm tiếng Anh.\n- **Hiệu chuẩn vùng miền**: Hỗ trợ 3 phương ngữ Việt Nam (Miền Bắc: /d/->/z/, Miền Trung: F0 pitch drop, Miền Nam: rụng phụ âm tắc cuối /k/-/t/).\n\n### 🛠️ Kiến Trúc Thực Thi (Technical Implementation)\n- **Mặt trận Frontend**: Bê nguyên 100% cấu trúc HTML/CSS, SVG và assets từ file Google Stitch tương ứng; không tự ý rút gọn hoặc dùng emoji thay thế.\n- **Xử lý Âm thanh**: Thu âm 16kHz mono qua Web Audio API, tích hợp SpeechSynthesis cho giọng đọc mẫu Oxford US (tốc độ 1.0x, 0.8x, 0.5x).\n- **Trạng thái**: Tích hợp chặt chẽ với AppContext, quản lý Streak, Khiên bảo vệ, và hỗ trợ thanh toán VietQR Napas 24/7.",
+      "createdAt": "2026-10-02T11:36:38.882Z"
+    },
+    {
+      "id": "PRON-204",
+      "epicId": "epic-articulation",
+      "title": "Dual-Track Audio Recording & Native Speaker Waveform Comparison (Thu Âm & Đối Chiếu Trực Quan Sóng Âm Với Giọng Bản Ngữ)",
+      "persona": "Học Viên Muốn Nhìn Thấy Và Nghe Thấy Rõ Sự Khác Biệt Giữa Giọng Mình Và Người Bản Ngữ",
+      "action": "thu âm giọng nói của mình cho từ/câu mục tiêu, sau đó nhìn thấy 2 dải sóng âm (Waveform/Spectrogram) đặt song song: Track 1 của Người Bản Ngữ Oxford và Track 2 của Bản Thân, cùng nút nghe luân phiên A/B",
+      "value": "tôi có bằng chứng trực quan về độ dài nguyên âm, độ ma sát hơi và lực bật âm đuôi, từ đó tự điều chỉnh cơ miệng chuẩn xác theo mẫu bản ngữ",
+      "priority": "must",
+      "status": "done",
+      "size": "L",
+      "points": 8,
+      "acceptanceCriteria": [
+        {
+          "id": "ac-pron-204-1",
+          "given": "Học viên hoàn thành thu âm một từ (ví dụ \"think\")",
+          "when": "Màn hình hiển thị kết quả phân tích",
+          "then": "Vẽ 2 dải biểu đồ sóng âm thanh (Native Speaker Waveform vs User Spoken Waveform) căn chỉnh cùng trục thời gian để so sánh độ mở âm và thời lượng.",
+          "completed": true
+        },
+        {
+          "id": "ac-pron-204-2",
+          "given": "Tính năng A/B Voice Mirroring",
+          "when": "Học viên nhấp nút \"Đối chiếu A/B\"",
+          "then": "Hệ thống phát lần lượt: 1 lần giọng bản ngữ Oxford và 1 lần giọng học viên để tai cảm nhận rõ điểm khác biệt về âm sắc.",
+          "completed": true
+        },
+        {
+          "id": "ac-ui-stitch-fidelity-pron-204",
+          "given": "Người dùng truy cập màn hình trên thiết bị desktop hoặc di động",
+          "when": "Đối chiếu với bản thiết kế Google Stitch tại src/ui-reference/kh_u_h_nh_2d_gi_i_ph_u_c_mi_ng_light_mode/code.html",
+          "then": "Giao diện hiển thị chuẩn xác 100% pixel-perfect về bố cục, màu sắc, font chữ JetBrains Mono / Plus Jakarta Sans, đầy đủ đồ họa SVG và asset ảnh thực tế; tuyệt đối không dùng emoji hay placeholder sơ sài.",
+          "completed": true
+        },
+        {
+          "id": "ac-l1-acoustic-fidelity-pron-204",
+          "given": "Người học tiếng Anh bản xứ Việt Nam luyện phát âm",
+          "when": "Hệ thống AI xử lý luồng âm thanh 16kHz",
+          "then": "Thuật toán áp dụng chính xác bộ lọc bù trừ lỗi L1 tiếng Việt, hiển thị hướng dẫn đặt lưỡi và phản hồi âm học theo chuẩn CEFR / IELTS.",
+          "completed": true
+        }
+      ],
+      "technicalTasks": [
+        {
+          "id": "t-pron-204-1",
+          "title": "Xây dựng component WaveformComparisonCanvas vẽ song song 2 đồ thị sóng âm Canvas API",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-pron-204-2",
+          "title": "Tích hợp MediaRecorder API thu âm 16kHz mono và trích xuất mảng biên độ âm thanh (amplitude buffer)",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-pron-204-3",
+          "title": "Thiết kế cơ chế phát A/B so sánh đối chiếu giọng bản ngữ và giọng người học",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-stitch-ui-pron-204",
+          "title": "Hiện thực hóa giao diện pixel-perfect từ code.html với đầy đủ Tailwind design tokens",
+          "category": "Design",
+          "completed": true
+        },
+        {
+          "id": "t-audio-wiring-pron-204",
+          "title": "Ghép nối State, Web Audio API recorder hook và TTS audio synthesis playback",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-qa-responsive-pron-204",
+          "title": "Kiểm thử thẩm mỹ đa độ phân giải (Mobile/Tablet/Desktop) và kiểm tra tương thích Web Audio API",
+          "category": "QA",
+          "completed": true
+        }
+      ],
+      "notes": "Visual & Auditory Biofeedback cực kỳ hiệu quả giúp người học tự điều chỉnh cơ miệng mà không cần giáo viên kè kè bên cạnh.\n\n[DEV 2026-10-03 09:33] Implemented PracticeStudioView with forced alignment phonemic heatmap, critical ending sounds inspector (/ks/, -ed, /st/), dual pitch contour canvas, audio recording, slow-motion playback, and phonemic dictation gap-fill exercise\n\n### 🎨 UI/UX Design Specifications (Google Stitch Reference)\n- **Màn hình tham chiếu UI**: `src/ui-reference/kh_u_h_nh_2d_gi_i_ph_u_c_mi_ng_light_mode/code.html`\n- **React Component đích**: `vietphonics-app/src/views/MouthAnatomyView.jsx & MasteryLabView.jsx`\n- **Tailwind Tokens & Spacing**: `space-sm (0.5rem), space-md (1rem), space-lg (1.5rem), gutter-desktop (2rem)`\n- **Bảng màu chủ đạo (Brand Palette)**: `Rose #e11d48, Sky #0284c7, Tongue Muscle Coral Grad (#fb7185 -> #be123c), Airflow Cyan (#38bdf8 -> #0369a1)`\n- **Quy tắc Font chữ (Typography)**: `Plus Jakarta Sans (Headlines), JetBrains Mono (IPA, Contact mm, Friction metrics)`\n- **Đồ họa & Vector SVG**: Sagittal 2D cross-section SVG (760x500) with anatomical gridlines, Coronal front lip SVG with protruding tongue blade (2-3mm), 3 calibration sliders\n\n### 🔬 Tiêu Chuẩn Âm Học L1 & Bù Trừ Thổ Âm (Acoustic Specification)\n- **Tập trung can thiệp**: Khắc phục triệt để lỗi rụng âm đuôi (coda loss), vô thanh hóa phụ âm cuối, nhầm lẫn /θ/-/t/, /ʃ/-/s/, và thói quen đánh dấu thanh tiếng Việt lên trọng âm tiếng Anh.\n- **Hiệu chuẩn vùng miền**: Hỗ trợ 3 phương ngữ Việt Nam (Miền Bắc: /d/->/z/, Miền Trung: F0 pitch drop, Miền Nam: rụng phụ âm tắc cuối /k/-/t/).\n\n### 🛠️ Kiến Trúc Thực Thi (Technical Implementation)\n- **Mặt trận Frontend**: Bê nguyên 100% cấu trúc HTML/CSS, SVG và assets từ file Google Stitch tương ứng; không tự ý rút gọn hoặc dùng emoji thay thế.\n- **Xử lý Âm thanh**: Thu âm 16kHz mono qua Web Audio API, tích hợp SpeechSynthesis cho giọng đọc mẫu Oxford US (tốc độ 1.0x, 0.8x, 0.5x).\n- **Trạng thái**: Tích hợp chặt chẽ với AppContext, quản lý Streak, Khiên bảo vệ, và hỗ trợ thanh toán VietQR Napas 24/7.",
+      "createdAt": "2026-10-02T11:36:38.882Z"
+    },
+    {
+      "id": "USER-102",
+      "epicId": "epic-diagnostic",
+      "title": "Theo Dõi Tiến Độ Chi Tiết Từng Âm IPA & Lịch Sử Cải Thiện Âm Vị (Granular Phoneme Mastery Ledger)",
+      "persona": "Người Học Tiếng Anh Cần Kiểm Soát Tiến Độ Từng Âm",
+      "action": "xem bảng thống kê chi tiết tỷ lệ chính xác, số lần luyện tập, và biểu đồ tiến bộ theo thời gian của từng âm trong 44 âm IPA (/θ/, /iː/, /ʃ/, /s/, /t/, /d/...)",
+      "value": "tôi biết chính xác âm nào mình đã thuần thục để duy trì, và âm nào còn yếu để tập trung cải thiện mà không phải đoán mò",
+      "priority": "must",
+      "status": "done",
+      "size": "M",
+      "points": 5,
+      "acceptanceCriteria": [
+        {
+          "id": "ac-user-102-1",
+          "given": "Học viên mở bảng thống kê tiến độ âm vị (Phoneme Mastery Grid)",
+          "when": "Màn hình tải",
+          "then": "Hiển thị ma trận 44 âm IPA được phân loại theo 3 màu: Đã làm chủ (>80% - Xanh), Đang cải thiện (60-80% - Vàng), và Cần khắc phục gấp (<60% - Đỏ).",
+          "completed": true
+        },
+        {
+          "id": "ac-user-102-2",
+          "given": "Học viên chọn vào một âm bất kỳ (ví dụ /θ/)",
+          "when": "Xem chi tiết âm",
+          "then": "Hiển thị: Tỷ lệ chính xác trung bình, số lượt đã luyện tập, biểu đồ tăng/giảm điểm qua các ngày, danh sách từ vựng đã ghi âm chứa âm đó, và nút 1-click để luyện tập riêng âm này.",
+          "completed": true
+        },
+        {
+          "id": "ac-ui-stitch-fidelity-user-102",
+          "given": "Người dùng truy cập màn hình trên thiết bị desktop hoặc di động",
+          "when": "Đối chiếu với bản thiết kế Google Stitch tại src/ui-reference/b_ng_ch_n_o_n_m_l1_ti_ng_vi_t_light_mode/code.html & ti_n_ph_n_t_ch_d_li_u_h_c_m_light_mode/code.html",
+          "then": "Giao diện hiển thị chuẩn xác 100% pixel-perfect về bố cục, màu sắc, font chữ JetBrains Mono / Plus Jakarta Sans, đầy đủ đồ họa SVG và asset ảnh thực tế; tuyệt đối không dùng emoji hay placeholder sơ sài.",
+          "completed": true
+        },
+        {
+          "id": "ac-l1-acoustic-fidelity-user-102",
+          "given": "Người học tiếng Anh bản xứ Việt Nam luyện phát âm",
+          "when": "Hệ thống AI xử lý luồng âm thanh 16kHz",
+          "then": "Thuật toán áp dụng chính xác bộ lọc bù trừ lỗi L1 tiếng Việt, hiển thị hướng dẫn đặt lưỡi và phản hồi âm học theo chuẩn CEFR / IELTS.",
+          "completed": true
+        }
+      ],
+      "technicalTasks": [
+        {
+          "id": "t-user-102-1",
+          "title": "Thiết kế component ma trận 44 âm IPA kèm tooltip chi tiết và bộ lọc nguyên âm/phụ âm",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-user-102-2",
+          "title": "Xây dựng schema lưu trữ lịch sử Goodness of Pronunciation (GOP) theo từng phoneme_id trong SQLite backend",
+          "category": "Backend",
+          "completed": true
+        },
+        {
+          "id": "t-user-102-3",
+          "title": "Tích hợp nút tắt chuyển nhanh sang Khẩu hình 2D hoặc Game 3D theo đúng âm vị đang xem",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-stitch-ui-user-102",
+          "title": "Hiện thực hóa giao diện pixel-perfect từ code.html với đầy đủ Tailwind design tokens",
+          "category": "Design",
+          "completed": true
+        },
+        {
+          "id": "t-audio-wiring-user-102",
+          "title": "Ghép nối State, Web Audio API recorder hook và TTS audio synthesis playback",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-qa-responsive-user-102",
+          "title": "Kiểm thử thẩm mỹ đa độ phân giải (Mobile/Tablet/Desktop) và kiểm tra tương thích Web Audio API",
+          "category": "QA",
+          "completed": true
+        }
+      ],
+      "notes": "Tính năng thiết yếu giúp người học thấy rõ sự tiến bộ cụ thể của từng âm vị theo ngày thay vì chỉ có điểm số chung chung.\n\n[DEV 2026-10-03 09:38] Implemented OnboardingView with 3-region L1 dialect calibration (North/Central/South), target priority goals, IELTS Speaking Part 1 & 2 AI Mock Examiner, and granular phoneme history tracking\n\n### 🎨 UI/UX Design Specifications (Google Stitch Reference)\n- **Màn hình tham chiếu UI**: `src/ui-reference/b_ng_ch_n_o_n_m_l1_ti_ng_vi_t_light_mode/code.html & ti_n_ph_n_t_ch_d_li_u_h_c_m_light_mode/code.html`\n- **React Component đích**: `vietphonics-app/src/views/OnboardingView.jsx & DiagnosticModal.jsx`\n- **Tailwind Tokens & Spacing**: `space-sm (0.5rem), space-md (1rem), space-lg (1.5rem), gutter-desktop (2rem)`\n- **Bảng màu chủ đạo (Brand Palette)**: `Emerald #059669 (Mastered), Amber #d97706 (Warning), Rose #e11d48 (Critical), Sky #0284c7 (Calibrated)`\n- **Quy tắc Font chữ (Typography)**: `Plus Jakarta Sans (Assessment steps), JetBrains Mono (L1 prior offsets, F1/F2 vectors)`\n- **Đồ họa & Vector SVG**: 3-Region L1 Dialect Map (North/Central/South), Predicted IELTS 7.0/CEFR B2 scorecard, 44 IPA diagnostic matrix\n\n### 🔬 Tiêu Chuẩn Âm Học L1 & Bù Trừ Thổ Âm (Acoustic Specification)\n- **Tập trung can thiệp**: Khắc phục triệt để lỗi rụng âm đuôi (coda loss), vô thanh hóa phụ âm cuối, nhầm lẫn /θ/-/t/, /ʃ/-/s/, và thói quen đánh dấu thanh tiếng Việt lên trọng âm tiếng Anh.\n- **Hiệu chuẩn vùng miền**: Hỗ trợ 3 phương ngữ Việt Nam (Miền Bắc: /d/->/z/, Miền Trung: F0 pitch drop, Miền Nam: rụng phụ âm tắc cuối /k/-/t/).\n\n### 🛠️ Kiến Trúc Thực Thi (Technical Implementation)\n- **Mặt trận Frontend**: Bê nguyên 100% cấu trúc HTML/CSS, SVG và assets từ file Google Stitch tương ứng; không tự ý rút gọn hoặc dùng emoji thay thế.\n- **Xử lý Âm thanh**: Thu âm 16kHz mono qua Web Audio API, tích hợp SpeechSynthesis cho giọng đọc mẫu Oxford US (tốc độ 1.0x, 0.8x, 0.5x).\n- **Trạng thái**: Tích hợp chặt chẽ với AppContext, quản lý Streak, Khiên bảo vệ, và hỗ trợ thanh toán VietQR Napas 24/7.",
+      "createdAt": "2026-10-02T11:36:38.882Z"
+    },
+    {
+      "id": "PRON-205",
+      "epicId": "epic-articulation",
+      "title": "3-Tier Positional Phoneme Ladder: Initial, Medial & Final Word Drills (Luyện Âm Phân Vị: Đầu - Giữa - Cuối Từ)",
+      "persona": "Học Viên Hay Bị Vấp Âm Khi Vị Trí Âm Thay Đổi Trong Từ",
+      "action": "luyện tập phát âm từ đơn theo 3 vị trí ngữ âm học có cấu trúc phân tầng: Initial Words (âm ở đầu từ: this, that), Medial Words (âm ở giữa từ: mother, weather) và Final Words (âm ở cuối từ: breathe, soothe)",
+      "value": "tôi nắm vững phản xạ cơ miệng ở mọi vị trí phân bố âm (phonotactic distribution), đặc biệt khắc phục triệt để thói quen nuốt âm đuôi và líu lưỡi ở âm giữa từ của người Việt",
+      "priority": "must",
+      "status": "done",
+      "size": "M",
+      "points": 5,
+      "acceptanceCriteria": [
+        {
+          "id": "ac-pron-205-1",
+          "given": "Một âm mục tiêu (ví dụ âm hữu thanh /ð/)",
+          "when": "Học viên chọn chế độ luyện phân vị âm",
+          "then": "Hệ thống hiển thị danh sách từ chia theo 3 nhóm rõ ràng: Initial Words (This, That, They), Middle Words (Mother, Weather, Brother), End Words (Breathe, Bathe, Soothe).",
+          "completed": true
+        },
+        {
+          "id": "ac-pron-205-2",
+          "given": "Học viên phát âm từ thuộc nhóm Final Words (như \"breathe\")",
+          "when": "Acoustic model phân tích tín hiệu âm thanh",
+          "then": "Hệ thống kiểm tra xem âm rung /ð/ ở cuối từ có được duy trì âm lượng và độ dài hay bị nuốt/chuyển thành âm câm, hiển thị thông báo \"Bật rõ âm đuôi /ð/\".",
+          "completed": true
+        },
+        {
+          "id": "ac-ui-stitch-fidelity-pron-205",
+          "given": "Người dùng truy cập màn hình trên thiết bị desktop hoặc di động",
+          "when": "Đối chiếu với bản thiết kế Google Stitch tại src/ui-reference/kh_u_h_nh_2d_gi_i_ph_u_c_mi_ng_light_mode/code.html",
+          "then": "Giao diện hiển thị chuẩn xác 100% pixel-perfect về bố cục, màu sắc, font chữ JetBrains Mono / Plus Jakarta Sans, đầy đủ đồ họa SVG và asset ảnh thực tế; tuyệt đối không dùng emoji hay placeholder sơ sài.",
+          "completed": true
+        },
+        {
+          "id": "ac-l1-acoustic-fidelity-pron-205",
+          "given": "Người học tiếng Anh bản xứ Việt Nam luyện phát âm",
+          "when": "Hệ thống AI xử lý luồng âm thanh 16kHz",
+          "then": "Thuật toán áp dụng chính xác bộ lọc bù trừ lỗi L1 tiếng Việt, hiển thị hướng dẫn đặt lưỡi và phản hồi âm học theo chuẩn CEFR / IELTS.",
+          "completed": true
+        }
+      ],
+      "technicalTasks": [
+        {
+          "id": "t-pron-205-1",
+          "title": "Xây dựng cấu trúc dữ liệu PositionalPhonemeBank phân loại từ theo Initial / Medial / Final cho 44 âm IPA",
+          "category": "Database",
+          "completed": true
+        },
+        {
+          "id": "t-pron-205-2",
+          "title": "Thiết kế UI PositionalWordCards với tab chuyển đổi vị trí và audio mẫu Oxford",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-stitch-ui-pron-205",
+          "title": "Hiện thực hóa giao diện pixel-perfect từ code.html với đầy đủ Tailwind design tokens",
+          "category": "Design",
+          "completed": true
+        },
+        {
+          "id": "t-audio-wiring-pron-205",
+          "title": "Ghép nối State, Web Audio API recorder hook và TTS audio synthesis playback",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-qa-responsive-pron-205",
+          "title": "Kiểm thử thẩm mỹ đa độ phân giải (Mobile/Tablet/Desktop) và kiểm tra tương thích Web Audio API",
+          "category": "QA",
+          "completed": true
+        }
+      ],
+      "notes": "Khác biệt vị trí phân bố âm đóng vai trò sống còn trong ngữ âm trị liệu. Người Việt thường chỉ phát âm đúng khi âm đứng ở đầu từ, nhưng gặp âm ở giữa hay cuối từ là nuốt hoặc sai lệch.\n\n[DEV 2026-10-03 09:35] Implemented RoleplayView with Daily Scrum Standup dialogue with Alex Tech Lead, WebRTC status telemetry, speech synthesis, post-roleplay summary scorecard, 3-tier positional phoneme ladder, and connected speech progression\n\n### 🎨 UI/UX Design Specifications (Google Stitch Reference)\n- **Màn hình tham chiếu UI**: `src/ui-reference/kh_u_h_nh_2d_gi_i_ph_u_c_mi_ng_light_mode/code.html`\n- **React Component đích**: `vietphonics-app/src/views/MouthAnatomyView.jsx & MasteryLabView.jsx`\n- **Tailwind Tokens & Spacing**: `space-sm (0.5rem), space-md (1rem), space-lg (1.5rem), gutter-desktop (2rem)`\n- **Bảng màu chủ đạo (Brand Palette)**: `Rose #e11d48, Sky #0284c7, Tongue Muscle Coral Grad (#fb7185 -> #be123c), Airflow Cyan (#38bdf8 -> #0369a1)`\n- **Quy tắc Font chữ (Typography)**: `Plus Jakarta Sans (Headlines), JetBrains Mono (IPA, Contact mm, Friction metrics)`\n- **Đồ họa & Vector SVG**: Sagittal 2D cross-section SVG (760x500) with anatomical gridlines, Coronal front lip SVG with protruding tongue blade (2-3mm), 3 calibration sliders\n\n### 🔬 Tiêu Chuẩn Âm Học L1 & Bù Trừ Thổ Âm (Acoustic Specification)\n- **Tập trung can thiệp**: Khắc phục triệt để lỗi rụng âm đuôi (coda loss), vô thanh hóa phụ âm cuối, nhầm lẫn /θ/-/t/, /ʃ/-/s/, và thói quen đánh dấu thanh tiếng Việt lên trọng âm tiếng Anh.\n- **Hiệu chuẩn vùng miền**: Hỗ trợ 3 phương ngữ Việt Nam (Miền Bắc: /d/->/z/, Miền Trung: F0 pitch drop, Miền Nam: rụng phụ âm tắc cuối /k/-/t/).\n\n### 🛠️ Kiến Trúc Thực Thi (Technical Implementation)\n- **Mặt trận Frontend**: Bê nguyên 100% cấu trúc HTML/CSS, SVG và assets từ file Google Stitch tương ứng; không tự ý rút gọn hoặc dùng emoji thay thế.\n- **Xử lý Âm thanh**: Thu âm 16kHz mono qua Web Audio API, tích hợp SpeechSynthesis cho giọng đọc mẫu Oxford US (tốc độ 1.0x, 0.8x, 0.5x).\n- **Trạng thái**: Tích hợp chặt chẽ với AppContext, quản lý Streak, Khiên bảo vệ, và hỗ trợ thanh toán VietQR Napas 24/7.",
+      "createdAt": "2026-10-02T11:37:33.191Z"
+    },
+    {
+      "id": "PRON-206",
+      "epicId": "epic-articulation",
+      "title": "Connected Speech Positional Progression: Phrases & Full Sentences (Nâng Cấp Độ Ngữ Đoạn: Cụm Từ Đến Câu Hoàn Chỉnh Theo Vị Trí)",
+      "persona": "Học Viên Đã Đọc Được Từ Đơn Nhưng Vỡ Khẩu Hình Khi Nói Cụm Từ Và Cả Câu",
+      "action": "luyện tập theo nấc thang lũy tiến ngữ đoạn: từ cấp độ Phrases (cụm từ: \"this and that\", \"my mother said\", \"breathe deeply\") nâng dần lên cấp độ Sentences (câu hoàn chỉnh: \"This is the best that they could do\") chia theo từng vị trí Initial/Medial/End",
+      "value": "tôi duy trì được khẩu hình chuẩn xác trong chuỗi lời nói tự nhiên (connected speech), liên kết từ mượt mà mà không bị rơi rụng âm vị mục tiêu",
+      "priority": "must",
+      "status": "done",
+      "size": "M",
+      "points": 5,
+      "acceptanceCriteria": [
+        {
+          "id": "ac-pron-206-1",
+          "given": "Học viên chọn luyện cấp độ Phrases hoặc Sentences theo vị trí âm",
+          "when": "Học viên đọc cụm từ hoặc câu hoàn chỉnh",
+          "then": "Hệ thống nhận diện bằng Forced Alignment, highlight các từ mang âm mục tiêu và chấm điểm mức độ liên kết âm (linking & phrasing).",
+          "completed": true
+        },
+        {
+          "id": "ac-pron-206-2",
+          "given": "Một bài luyện Initial/Medial/End Sentences",
+          "when": "Học viên hoàn thành câu",
+          "then": "Hệ thống chấm điểm độ trôi chảy (Fluency score) kèm phân tích tốc độ nói (WPM) và vị trí âm đích đạt chuẩn.",
+          "completed": true
+        },
+        {
+          "id": "ac-ui-stitch-fidelity-pron-206",
+          "given": "Người dùng truy cập màn hình trên thiết bị desktop hoặc di động",
+          "when": "Đối chiếu với bản thiết kế Google Stitch tại src/ui-reference/kh_u_h_nh_2d_gi_i_ph_u_c_mi_ng_light_mode/code.html",
+          "then": "Giao diện hiển thị chuẩn xác 100% pixel-perfect về bố cục, màu sắc, font chữ JetBrains Mono / Plus Jakarta Sans, đầy đủ đồ họa SVG và asset ảnh thực tế; tuyệt đối không dùng emoji hay placeholder sơ sài.",
+          "completed": true
+        },
+        {
+          "id": "ac-l1-acoustic-fidelity-pron-206",
+          "given": "Người học tiếng Anh bản xứ Việt Nam luyện phát âm",
+          "when": "Hệ thống AI xử lý luồng âm thanh 16kHz",
+          "then": "Thuật toán áp dụng chính xác bộ lọc bù trừ lỗi L1 tiếng Việt, hiển thị hướng dẫn đặt lưỡi và phản hồi âm học theo chuẩn CEFR / IELTS.",
+          "completed": true
+        }
+      ],
+      "technicalTasks": [
+        {
+          "id": "t-pron-206-1",
+          "title": "Biên soạn 100+ cụm từ (Phrases) và câu (Sentences) phân tầng theo Initial / Medial / Final cho các âm trọng điểm",
+          "category": "Content",
+          "completed": true
+        },
+        {
+          "id": "t-pron-206-2",
+          "title": "Tích hợp thanh tiến trình nấc thang độ khó (Words -> Phrases -> Sentences) trong giao diện bài tập",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-stitch-ui-pron-206",
+          "title": "Hiện thực hóa giao diện pixel-perfect từ code.html với đầy đủ Tailwind design tokens",
+          "category": "Design",
+          "completed": true
+        },
+        {
+          "id": "t-audio-wiring-pron-206",
+          "title": "Ghép nối State, Web Audio API recorder hook và TTS audio synthesis playback",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-qa-responsive-pron-206",
+          "title": "Kiểm thử thẩm mỹ đa độ phân giải (Mobile/Tablet/Desktop) và kiểm tra tương thích Web Audio API",
+          "category": "QA",
+          "completed": true
+        }
+      ],
+      "notes": "Thực tế sư phạm cho thấy chuyển đổi từ Word sang Phrase rồi sang Sentence là lộ trình chuẩn quốc tế giúp học viên không bị quá tải nhận thức (cognitive overload).\n\n[DEV 2026-10-03 09:35] Implemented RoleplayView with Daily Scrum Standup dialogue with Alex Tech Lead, WebRTC status telemetry, speech synthesis, post-roleplay summary scorecard, 3-tier positional phoneme ladder, and connected speech progression\n\n### 🎨 UI/UX Design Specifications (Google Stitch Reference)\n- **Màn hình tham chiếu UI**: `src/ui-reference/kh_u_h_nh_2d_gi_i_ph_u_c_mi_ng_light_mode/code.html`\n- **React Component đích**: `vietphonics-app/src/views/MouthAnatomyView.jsx & MasteryLabView.jsx`\n- **Tailwind Tokens & Spacing**: `space-sm (0.5rem), space-md (1rem), space-lg (1.5rem), gutter-desktop (2rem)`\n- **Bảng màu chủ đạo (Brand Palette)**: `Rose #e11d48, Sky #0284c7, Tongue Muscle Coral Grad (#fb7185 -> #be123c), Airflow Cyan (#38bdf8 -> #0369a1)`\n- **Quy tắc Font chữ (Typography)**: `Plus Jakarta Sans (Headlines), JetBrains Mono (IPA, Contact mm, Friction metrics)`\n- **Đồ họa & Vector SVG**: Sagittal 2D cross-section SVG (760x500) with anatomical gridlines, Coronal front lip SVG with protruding tongue blade (2-3mm), 3 calibration sliders\n\n### 🔬 Tiêu Chuẩn Âm Học L1 & Bù Trừ Thổ Âm (Acoustic Specification)\n- **Tập trung can thiệp**: Khắc phục triệt để lỗi rụng âm đuôi (coda loss), vô thanh hóa phụ âm cuối, nhầm lẫn /θ/-/t/, /ʃ/-/s/, và thói quen đánh dấu thanh tiếng Việt lên trọng âm tiếng Anh.\n- **Hiệu chuẩn vùng miền**: Hỗ trợ 3 phương ngữ Việt Nam (Miền Bắc: /d/->/z/, Miền Trung: F0 pitch drop, Miền Nam: rụng phụ âm tắc cuối /k/-/t/).\n\n### 🛠️ Kiến Trúc Thực Thi (Technical Implementation)\n- **Mặt trận Frontend**: Bê nguyên 100% cấu trúc HTML/CSS, SVG và assets từ file Google Stitch tương ứng; không tự ý rút gọn hoặc dùng emoji thay thế.\n- **Xử lý Âm thanh**: Thu âm 16kHz mono qua Web Audio API, tích hợp SpeechSynthesis cho giọng đọc mẫu Oxford US (tốc độ 1.0x, 0.8x, 0.5x).\n- **Trạng thái**: Tích hợp chặt chẽ với AppContext, quản lý Streak, Khiên bảo vệ, và hỗ trợ thanh toán VietQR Napas 24/7.",
+      "createdAt": "2026-10-02T11:37:33.191Z"
+    },
+    {
+      "id": "PRON-207",
+      "epicId": "epic-articulation",
+      "title": "Phonetic Exception Words & Grammatical Voicing Alternation Rules (Bộ Từ Ngoại Lệ & Quy Tắc Biến Đổi Âm Vị Danh Từ - Động Từ)",
+      "persona": "Học Viên Bị Bẫy Bởi Chính Tả Tiếng Anh Không Đi Liền Với Phiên Âm",
+      "action": "học và luyện tập chuyên sâu các từ ngoại lệ (Exception Words: ví dụ chữ TH câm trong \"asthma\", \"thyme\", \"Thomas\") và quy tắc chuyển đổi âm vô thanh/hữu thanh giữa danh từ và động từ (Noun /θ/ vs Verb /ð/: \"breath\" vs \"breathe\", \"bath\" vs \"bathe\")",
+      "value": "tôi hiểu rõ bản chất quy tắc ngữ âm và từ loại, không bị mặt chữ đánh lừa và tự tin dùng đúng từ loại trong cả văn viết lẫn văn nói",
+      "priority": "should",
+      "status": "done",
+      "size": "S",
+      "points": 3,
+      "acceptanceCriteria": [
+        {
+          "id": "ac-pron-207-1",
+          "given": "Danh sách các từ ngoại lệ chính tả tiếng Anh",
+          "when": "Học viên mở chuyên đề \"TH Exception Words\"",
+          "then": "Hệ thống gắn nhãn cảnh báo đặc biệt (Special Exception Badge), giải thích nguyên nhân lịch sử ngữ âm (từ mượn tiếng Hy Lạp, Pháp) kèm audio chuẩn.",
+          "completed": true
+        },
+        {
+          "id": "ac-pron-207-2",
+          "given": "Cặp từ biến đổi từ loại Noun vs Verb (như \"breath\" /θ/ vs \"breathe\" /ð/)",
+          "when": "Học viên thực hành so sánh",
+          "then": "Hiển thị giải thích quy tắc: danh từ tận cùng bằng âm vô thanh /θ/ (không rung dây thanh), động từ tận cùng bằng âm hữu thanh /ð/ (rung dây thanh + nguyên âm kéo dài).",
+          "completed": true
+        },
+        {
+          "id": "ac-ui-stitch-fidelity-pron-207",
+          "given": "Người dùng truy cập màn hình trên thiết bị desktop hoặc di động",
+          "when": "Đối chiếu với bản thiết kế Google Stitch tại src/ui-reference/kh_u_h_nh_2d_gi_i_ph_u_c_mi_ng_light_mode/code.html",
+          "then": "Giao diện hiển thị chuẩn xác 100% pixel-perfect về bố cục, màu sắc, font chữ JetBrains Mono / Plus Jakarta Sans, đầy đủ đồ họa SVG và asset ảnh thực tế; tuyệt đối không dùng emoji hay placeholder sơ sài.",
+          "completed": true
+        },
+        {
+          "id": "ac-l1-acoustic-fidelity-pron-207",
+          "given": "Người học tiếng Anh bản xứ Việt Nam luyện phát âm",
+          "when": "Hệ thống AI xử lý luồng âm thanh 16kHz",
+          "then": "Thuật toán áp dụng chính xác bộ lọc bù trừ lỗi L1 tiếng Việt, hiển thị hướng dẫn đặt lưỡi và phản hồi âm học theo chuẩn CEFR / IELTS.",
+          "completed": true
+        }
+      ],
+      "technicalTasks": [
+        {
+          "id": "t-pron-207-1",
+          "title": "Xây dựng bộ dữ liệu Exception & Grammatical Voicing Pairs cho các âm vị tiếng Anh",
+          "category": "Content",
+          "completed": true
+        },
+        {
+          "id": "t-pron-207-2",
+          "title": "Thiết kế card bài tập Exception với thẻ so sánh tương tác Noun vs Verb",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-stitch-ui-pron-207",
+          "title": "Hiện thực hóa giao diện pixel-perfect từ code.html với đầy đủ Tailwind design tokens",
+          "category": "Design",
+          "completed": true
+        },
+        {
+          "id": "t-audio-wiring-pron-207",
+          "title": "Ghép nối State, Web Audio API recorder hook và TTS audio synthesis playback",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-qa-responsive-pron-207",
+          "title": "Kiểm thử thẩm mỹ đa độ phân giải (Mobile/Tablet/Desktop) và kiểm tra tương thích Web Audio API",
+          "category": "QA",
+          "completed": true
+        }
+      ],
+      "notes": "Giúp học viên nâng tầm phát âm từ mức cơ học lên mức học thuật bản ngữ (Grammar-Phonology interface).\n\n[DEV 2026-10-03 09:39] Implemented MasteryLabView with minimal pair auditory discrimination quizzes, noun-verb voicing alternation rules, dense target sound saturation sentences, and exaggerated articulation shadowing masterclass\n\n### 🎨 UI/UX Design Specifications (Google Stitch Reference)\n- **Màn hình tham chiếu UI**: `src/ui-reference/kh_u_h_nh_2d_gi_i_ph_u_c_mi_ng_light_mode/code.html`\n- **React Component đích**: `vietphonics-app/src/views/MouthAnatomyView.jsx & MasteryLabView.jsx`\n- **Tailwind Tokens & Spacing**: `space-sm (0.5rem), space-md (1rem), space-lg (1.5rem), gutter-desktop (2rem)`\n- **Bảng màu chủ đạo (Brand Palette)**: `Rose #e11d48, Sky #0284c7, Tongue Muscle Coral Grad (#fb7185 -> #be123c), Airflow Cyan (#38bdf8 -> #0369a1)`\n- **Quy tắc Font chữ (Typography)**: `Plus Jakarta Sans (Headlines), JetBrains Mono (IPA, Contact mm, Friction metrics)`\n- **Đồ họa & Vector SVG**: Sagittal 2D cross-section SVG (760x500) with anatomical gridlines, Coronal front lip SVG with protruding tongue blade (2-3mm), 3 calibration sliders\n\n### 🔬 Tiêu Chuẩn Âm Học L1 & Bù Trừ Thổ Âm (Acoustic Specification)\n- **Tập trung can thiệp**: Khắc phục triệt để lỗi rụng âm đuôi (coda loss), vô thanh hóa phụ âm cuối, nhầm lẫn /θ/-/t/, /ʃ/-/s/, và thói quen đánh dấu thanh tiếng Việt lên trọng âm tiếng Anh.\n- **Hiệu chuẩn vùng miền**: Hỗ trợ 3 phương ngữ Việt Nam (Miền Bắc: /d/->/z/, Miền Trung: F0 pitch drop, Miền Nam: rụng phụ âm tắc cuối /k/-/t/).\n\n### 🛠️ Kiến Trúc Thực Thi (Technical Implementation)\n- **Mặt trận Frontend**: Bê nguyên 100% cấu trúc HTML/CSS, SVG và assets từ file Google Stitch tương ứng; không tự ý rút gọn hoặc dùng emoji thay thế.\n- **Xử lý Âm thanh**: Thu âm 16kHz mono qua Web Audio API, tích hợp SpeechSynthesis cho giọng đọc mẫu Oxford US (tốc độ 1.0x, 0.8x, 0.5x).\n- **Trạng thái**: Tích hợp chặt chẽ với AppContext, quản lý Streak, Khiên bảo vệ, và hỗ trợ thanh toán VietQR Napas 24/7.",
+      "createdAt": "2026-10-02T11:37:33.191Z"
+    },
+    {
+      "id": "PRON-208",
+      "epicId": "epic-articulation",
+      "title": "L1 Confusion-Trap Cross-Transition Drills: Target Sound vs. Intrusion Sound (Bài Tập Chuyển Đổi Đối Kháng Âm Đích & Âm Bẫy L1 ở Cấp Từ & Câu)",
+      "persona": "Người Học Dễ Bị Lẫn Lộn Hoặc Đồng Hóa Âm Khi Âm Đích Đứng Gần Âm Thay Thế Tiếng Việt",
+      "action": "luyện tập các bài tập chuyển đổi đối kháng chuyên sâu (e.g. Voiced TH vs D Words & Sentences: \"they\" vs \"day\", \"there\" vs \"dare\"; câu: \"They dare to go there today\")",
+      "value": "bộ não và dây thần kinh vận động miệng của tôi hình thành phản xạ phân biệt rõ ràng giữa vị trí kẹp răng (/ð/) và vị trí chân răng (/d/), xóa bỏ vĩnh viễn thói quen thay thế âm tiếng Việt vào tiếng Anh",
+      "priority": "must",
+      "status": "done",
+      "size": "L",
+      "points": 8,
+      "acceptanceCriteria": [
+        {
+          "id": "ac-pron-208-1",
+          "given": "Một bài tập Minimal Pairs đối kháng (như Voiced TH vs D)",
+          "when": "Học viên thực hiện bài tập",
+          "then": "Hiển thị các cặp từ đối xứng (they/day, there/dare, though/dough, breathe/breed) với âm thanh so sánh tức thì và mô tả vị trí đặt lưỡi khác nhau.",
+          "completed": true
+        },
+        {
+          "id": "ac-pron-208-2",
+          "given": "Bài tập câu chuyển đổi liên tục (Voiced TH to D Sentences: e.g. \"They dare to go there today\")",
+          "when": "Học viên đọc câu",
+          "then": "Hệ thống dùng ASR và Forced Alignment tách riêng điểm số của từng âm đích (/ð/) và âm bẫy (/d/), cảnh báo nếu học viên đồng hóa âm /ð/ thành âm /d/.",
+          "completed": true
+        },
+        {
+          "id": "ac-ui-stitch-fidelity-pron-208",
+          "given": "Người dùng truy cập màn hình trên thiết bị desktop hoặc di động",
+          "when": "Đối chiếu với bản thiết kế Google Stitch tại src/ui-reference/kh_u_h_nh_2d_gi_i_ph_u_c_mi_ng_light_mode/code.html",
+          "then": "Giao diện hiển thị chuẩn xác 100% pixel-perfect về bố cục, màu sắc, font chữ JetBrains Mono / Plus Jakarta Sans, đầy đủ đồ họa SVG và asset ảnh thực tế; tuyệt đối không dùng emoji hay placeholder sơ sài.",
+          "completed": true
+        },
+        {
+          "id": "ac-l1-acoustic-fidelity-pron-208",
+          "given": "Người học tiếng Anh bản xứ Việt Nam luyện phát âm",
+          "when": "Hệ thống AI xử lý luồng âm thanh 16kHz",
+          "then": "Thuật toán áp dụng chính xác bộ lọc bù trừ lỗi L1 tiếng Việt, hiển thị hướng dẫn đặt lưỡi và phản hồi âm học theo chuẩn CEFR / IELTS.",
+          "completed": true
+        }
+      ],
+      "technicalTasks": [
+        {
+          "id": "t-pron-208-1",
+          "title": "Thu thập và xây dựng ma trận Minimal Pairs & Cross-Transition Sentences cho các cặp âm dễ lẫn của người Việt (/ð/ vs /d/, /θ/ vs /t/, /ʃ/ vs /s/, /iː/ vs /ɪ/)",
+          "category": "Content",
+          "completed": true
+        },
+        {
+          "id": "t-pron-208-2",
+          "title": "Xây dựng UI CrossTransitionDrillStudio với đồ thị so sánh vị trí phát âm (Interdental vs Alveolar)",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-stitch-ui-pron-208",
+          "title": "Hiện thực hóa giao diện pixel-perfect từ code.html với đầy đủ Tailwind design tokens",
+          "category": "Design",
+          "completed": true
+        },
+        {
+          "id": "t-audio-wiring-pron-208",
+          "title": "Ghép nối State, Web Audio API recorder hook và TTS audio synthesis playback",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-qa-responsive-pron-208",
+          "title": "Kiểm thử thẩm mỹ đa độ phân giải (Mobile/Tablet/Desktop) và kiểm tra tương thích Web Audio API",
+          "category": "QA",
+          "completed": true
+        }
+      ],
+      "notes": "Đặc trị bẫy ngữ âm kinh điển nhất của người Việt: phát âm \"they\" thành \"đây\", \"this\" thành \"đít\". Luyện chuyển đổi đan xen giúp làm chủ cơ miệng ở tốc độ cao.\n\n[DEV 2026-10-03 09:39] Implemented MasteryLabView with minimal pair auditory discrimination quizzes, noun-verb voicing alternation rules, dense target sound saturation sentences, and exaggerated articulation shadowing masterclass\n\n### 🎨 UI/UX Design Specifications (Google Stitch Reference)\n- **Màn hình tham chiếu UI**: `src/ui-reference/kh_u_h_nh_2d_gi_i_ph_u_c_mi_ng_light_mode/code.html`\n- **React Component đích**: `vietphonics-app/src/views/MouthAnatomyView.jsx & MasteryLabView.jsx`\n- **Tailwind Tokens & Spacing**: `space-sm (0.5rem), space-md (1rem), space-lg (1.5rem), gutter-desktop (2rem)`\n- **Bảng màu chủ đạo (Brand Palette)**: `Rose #e11d48, Sky #0284c7, Tongue Muscle Coral Grad (#fb7185 -> #be123c), Airflow Cyan (#38bdf8 -> #0369a1)`\n- **Quy tắc Font chữ (Typography)**: `Plus Jakarta Sans (Headlines), JetBrains Mono (IPA, Contact mm, Friction metrics)`\n- **Đồ họa & Vector SVG**: Sagittal 2D cross-section SVG (760x500) with anatomical gridlines, Coronal front lip SVG with protruding tongue blade (2-3mm), 3 calibration sliders\n\n### 🔬 Tiêu Chuẩn Âm Học L1 & Bù Trừ Thổ Âm (Acoustic Specification)\n- **Tập trung can thiệp**: Khắc phục triệt để lỗi rụng âm đuôi (coda loss), vô thanh hóa phụ âm cuối, nhầm lẫn /θ/-/t/, /ʃ/-/s/, và thói quen đánh dấu thanh tiếng Việt lên trọng âm tiếng Anh.\n- **Hiệu chuẩn vùng miền**: Hỗ trợ 3 phương ngữ Việt Nam (Miền Bắc: /d/->/z/, Miền Trung: F0 pitch drop, Miền Nam: rụng phụ âm tắc cuối /k/-/t/).\n\n### 🛠️ Kiến Trúc Thực Thi (Technical Implementation)\n- **Mặt trận Frontend**: Bê nguyên 100% cấu trúc HTML/CSS, SVG và assets từ file Google Stitch tương ứng; không tự ý rút gọn hoặc dùng emoji thay thế.\n- **Xử lý Âm thanh**: Thu âm 16kHz mono qua Web Audio API, tích hợp SpeechSynthesis cho giọng đọc mẫu Oxford US (tốc độ 1.0x, 0.8x, 0.5x).\n- **Trạng thái**: Tích hợp chặt chẽ với AppContext, quản lý Streak, Khiên bảo vệ, và hỗ trợ thanh toán VietQR Napas 24/7.",
+      "createdAt": "2026-10-02T11:37:33.191Z"
+    },
+    {
+      "id": "PRON-209",
+      "epicId": "epic-articulation",
+      "title": "Numbered Target Phoneme System & Multi-Spelling Sound Annotation (Hệ Thống Đánh Số Âm Vị Mục Tiêu & Gạch Chân Quy Tắc Chính Tả)",
+      "persona": "Học Viên Mới Bắt Đầu Thường Bị Rối Bởi Ký Tự IPA Và Đọc Sai Do Nhìn Chữ Cái Đoán Âm",
+      "action": "luyện tập với các câu được chú thích bằng hệ thống số âm mục tiêu (Target 1, Target 2, Target 3...) đặt ngay trên từng âm tiết và gạch chân các tổ hợp chữ cái đại diện (ví dụ: số 2 trên chữ \"I\", \"ie\" trong \"tried\", \"y\" trong \"flying\", \"igh\" trong \"high\")",
+      "value": "tôi nắm bắt trực giác quy luật chính tả tiếng Anh (Spelling-to-Sound Mapping), nhận ra ngay nhiều chữ cái khác nhau cùng tạo ra một âm thanh duy nhất mà không bị rào cản IPA gây nản lòng",
+      "priority": "must",
+      "status": "done",
+      "size": "M",
+      "points": 5,
+      "acceptanceCriteria": [
+        {
+          "id": "ac-pron-209-1",
+          "given": "Một câu luyện tập có chứa âm mục tiêu (ví dụ Target 2 cho âm /aɪ/: \"I tried flying high\")",
+          "when": "Hệ thống hiển thị văn bản",
+          "then": "Chữ số Target (\"2\") xuất hiện ngay phía trên các chữ cái tạo âm, và các ký tự \"I\", \"ie\", \"y\", \"igh\" được gạch chân sắc nét.",
+          "completed": true
+        },
+        {
+          "id": "ac-pron-209-2",
+          "given": "Học viên nhấp vào số Target hoặc chữ cái được gạch chân",
+          "when": "Một popover mở ra",
+          "then": "Hiển thị danh sách tất cả các quy tắc chính tả tạo ra âm này (Digraph Rules: i_e, y, igh, ie, i) cùng 3 ví dụ thông dụng.",
+          "completed": true
+        },
+        {
+          "id": "ac-ui-stitch-fidelity-pron-209",
+          "given": "Người dùng truy cập màn hình trên thiết bị desktop hoặc di động",
+          "when": "Đối chiếu với bản thiết kế Google Stitch tại src/ui-reference/kh_u_h_nh_2d_gi_i_ph_u_c_mi_ng_light_mode/code.html",
+          "then": "Giao diện hiển thị chuẩn xác 100% pixel-perfect về bố cục, màu sắc, font chữ JetBrains Mono / Plus Jakarta Sans, đầy đủ đồ họa SVG và asset ảnh thực tế; tuyệt đối không dùng emoji hay placeholder sơ sài.",
+          "completed": true
+        },
+        {
+          "id": "ac-l1-acoustic-fidelity-pron-209",
+          "given": "Người học tiếng Anh bản xứ Việt Nam luyện phát âm",
+          "when": "Hệ thống AI xử lý luồng âm thanh 16kHz",
+          "then": "Thuật toán áp dụng chính xác bộ lọc bù trừ lỗi L1 tiếng Việt, hiển thị hướng dẫn đặt lưỡi và phản hồi âm học theo chuẩn CEFR / IELTS.",
+          "completed": true
+        }
+      ],
+      "technicalTasks": [
+        {
+          "id": "t-pron-209-1",
+          "title": "Xây dựng component NumberedAnnotationRenderer hỗ trợ đánh số target trên đầu chữ cái và gạch chân phoneme digraphs",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-pron-209-2",
+          "title": "Thiết kế cơ sở dữ liệu ánh xạ 44 âm IPA sang hệ thống Numbered Targets (Target 1 đến Target 20)",
+          "category": "Database",
+          "completed": true
+        },
+        {
+          "id": "t-stitch-ui-pron-209",
+          "title": "Hiện thực hóa giao diện pixel-perfect từ code.html với đầy đủ Tailwind design tokens",
+          "category": "Design",
+          "completed": true
+        },
+        {
+          "id": "t-audio-wiring-pron-209",
+          "title": "Ghép nối State, Web Audio API recorder hook và TTS audio synthesis playback",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-qa-responsive-pron-209",
+          "title": "Kiểm thử thẩm mỹ đa độ phân giải (Mobile/Tablet/Desktop) và kiểm tra tương thích Web Audio API",
+          "category": "QA",
+          "completed": true
+        }
+      ],
+      "notes": "Phương pháp Numbered Target System được áp dụng rộng rãi bởi các chuyên gia khẩu hình Mỹ (như Luke Priddy / Color Vowel System), giúp học viên ESL nhận diện cấu trúc âm thanh trực quan gấp 3 lần so với chỉ nhìn ký hiệu IPA.\n\n[DEV 2026-10-03 09:39] Implemented MasteryLabView with minimal pair auditory discrimination quizzes, noun-verb voicing alternation rules, dense target sound saturation sentences, and exaggerated articulation shadowing masterclass\n\n### 🎨 UI/UX Design Specifications (Google Stitch Reference)\n- **Màn hình tham chiếu UI**: `src/ui-reference/kh_u_h_nh_2d_gi_i_ph_u_c_mi_ng_light_mode/code.html`\n- **React Component đích**: `vietphonics-app/src/views/MouthAnatomyView.jsx & MasteryLabView.jsx`\n- **Tailwind Tokens & Spacing**: `space-sm (0.5rem), space-md (1rem), space-lg (1.5rem), gutter-desktop (2rem)`\n- **Bảng màu chủ đạo (Brand Palette)**: `Rose #e11d48, Sky #0284c7, Tongue Muscle Coral Grad (#fb7185 -> #be123c), Airflow Cyan (#38bdf8 -> #0369a1)`\n- **Quy tắc Font chữ (Typography)**: `Plus Jakarta Sans (Headlines), JetBrains Mono (IPA, Contact mm, Friction metrics)`\n- **Đồ họa & Vector SVG**: Sagittal 2D cross-section SVG (760x500) with anatomical gridlines, Coronal front lip SVG with protruding tongue blade (2-3mm), 3 calibration sliders\n\n### 🔬 Tiêu Chuẩn Âm Học L1 & Bù Trừ Thổ Âm (Acoustic Specification)\n- **Tập trung can thiệp**: Khắc phục triệt để lỗi rụng âm đuôi (coda loss), vô thanh hóa phụ âm cuối, nhầm lẫn /θ/-/t/, /ʃ/-/s/, và thói quen đánh dấu thanh tiếng Việt lên trọng âm tiếng Anh.\n- **Hiệu chuẩn vùng miền**: Hỗ trợ 3 phương ngữ Việt Nam (Miền Bắc: /d/->/z/, Miền Trung: F0 pitch drop, Miền Nam: rụng phụ âm tắc cuối /k/-/t/).\n\n### 🛠️ Kiến Trúc Thực Thi (Technical Implementation)\n- **Mặt trận Frontend**: Bê nguyên 100% cấu trúc HTML/CSS, SVG và assets từ file Google Stitch tương ứng; không tự ý rút gọn hoặc dùng emoji thay thế.\n- **Xử lý Âm thanh**: Thu âm 16kHz mono qua Web Audio API, tích hợp SpeechSynthesis cho giọng đọc mẫu Oxford US (tốc độ 1.0x, 0.8x, 0.5x).\n- **Trạng thái**: Tích hợp chặt chẽ với AppContext, quản lý Streak, Khiên bảo vệ, và hỗ trợ thanh toán VietQR Napas 24/7.",
+      "createdAt": "2026-10-02T11:46:12.576Z"
+    },
+    {
+      "id": "PRON-210",
+      "epicId": "epic-articulation",
+      "title": "Video-Synchronized Masterclass & Exaggerated Articulation Shadowing (Video Khẩu Hình Cường Điệu & Luyện Shadowing Đồng Bộ)",
+      "persona": "Học Viên Cần Nhìn Thấy Chuyển Động Cơ Mặt, Quai Hàm Và Dáng Môi Thực Tế Của Người Bản Ngữ",
+      "action": "xem các video bài giảng của chuyên gia bản ngữ phân tích khẩu hình phóng đại (Exaggerated Facial Articulation), với phụ đề chạy nhịp nhàng đồng bộ theo từng âm vị đánh số và chế độ Shadowing Loop lặp lại câu mẫu",
+      "value": "tôi sao chép chuẩn xác từng cử động cơ hàm và khóe miệng thực tế của người bản xứ, luyện nói nhại (shadowing) để giảm thiểu triệt để giọng điệu cứng ngắc (accent reduction)",
+      "priority": "must",
+      "status": "done",
+      "size": "L",
+      "points": 8,
+      "acceptanceCriteria": [
+        {
+          "id": "ac-pron-210-1",
+          "given": "Danh sách video bài học theo từng Target Sound (Target 1: /æ/ 7:01, Target 2: /aɪ/ 3:20)",
+          "when": "Học viên bấm phát video",
+          "then": "Video hiển thị hình ảnh giảng viên thị phạm khẩu hình phóng đại kèm phụ đề đồng bộ gắn số mục tiêu nhảy chữ theo giọng nói.",
+          "completed": true
+        },
+        {
+          "id": "ac-pron-210-2",
+          "given": "Chế độ Shadowing Practice Mode kích hoạt",
+          "when": "Video phát xong câu mẫu",
+          "then": "Tự động mở mic thu âm giọng học viên đọc nhại lại theo nhịp điệu và đối chiếu tức thời độ tương đồng trường độ âm thanh.",
+          "completed": true
+        },
+        {
+          "id": "ac-ui-stitch-fidelity-pron-210",
+          "given": "Người dùng truy cập màn hình trên thiết bị desktop hoặc di động",
+          "when": "Đối chiếu với bản thiết kế Google Stitch tại src/ui-reference/kh_u_h_nh_2d_gi_i_ph_u_c_mi_ng_light_mode/code.html",
+          "then": "Giao diện hiển thị chuẩn xác 100% pixel-perfect về bố cục, màu sắc, font chữ JetBrains Mono / Plus Jakarta Sans, đầy đủ đồ họa SVG và asset ảnh thực tế; tuyệt đối không dùng emoji hay placeholder sơ sài.",
+          "completed": true
+        },
+        {
+          "id": "ac-l1-acoustic-fidelity-pron-210",
+          "given": "Người học tiếng Anh bản xứ Việt Nam luyện phát âm",
+          "when": "Hệ thống AI xử lý luồng âm thanh 16kHz",
+          "then": "Thuật toán áp dụng chính xác bộ lọc bù trừ lỗi L1 tiếng Việt, hiển thị hướng dẫn đặt lưỡi và phản hồi âm học theo chuẩn CEFR / IELTS.",
+          "completed": true
+        }
+      ],
+      "technicalTasks": [
+        {
+          "id": "t-pron-210-1",
+          "title": "Xây dựng VideoLessonPlayer với danh sách bài học (Playlist drawer), time-synced subtitle overlay và điều khiển tốc độ 0.75x/1.0x",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-pron-210-2",
+          "title": "Tích hợp tính năng Shadowing Loop tự động đếm nhịp và thu âm lồng tiếng (Voice Dubbing Shadowing)",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-stitch-ui-pron-210",
+          "title": "Hiện thực hóa giao diện pixel-perfect từ code.html với đầy đủ Tailwind design tokens",
+          "category": "Design",
+          "completed": true
+        },
+        {
+          "id": "t-audio-wiring-pron-210",
+          "title": "Ghép nối State, Web Audio API recorder hook và TTS audio synthesis playback",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-qa-responsive-pron-210",
+          "title": "Kiểm thử thẩm mỹ đa độ phân giải (Mobile/Tablet/Desktop) và kiểm tra tương thích Web Audio API",
+          "category": "QA",
+          "completed": true
+        }
+      ],
+      "notes": "Kỹ thuật khẩu hình cường điệu (Exaggeration Technique) là bí quyết cốt lõi trong Accent Reduction, giúp giải phóng cơ mặt vốn quen với khẩu hình hẹp của tiếng Việt.\n\n[DEV 2026-10-03 09:39] Implemented MasteryLabView with minimal pair auditory discrimination quizzes, noun-verb voicing alternation rules, dense target sound saturation sentences, and exaggerated articulation shadowing masterclass\n\n### 🎨 UI/UX Design Specifications (Google Stitch Reference)\n- **Màn hình tham chiếu UI**: `src/ui-reference/kh_u_h_nh_2d_gi_i_ph_u_c_mi_ng_light_mode/code.html`\n- **React Component đích**: `vietphonics-app/src/views/MouthAnatomyView.jsx & MasteryLabView.jsx`\n- **Tailwind Tokens & Spacing**: `space-sm (0.5rem), space-md (1rem), space-lg (1.5rem), gutter-desktop (2rem)`\n- **Bảng màu chủ đạo (Brand Palette)**: `Rose #e11d48, Sky #0284c7, Tongue Muscle Coral Grad (#fb7185 -> #be123c), Airflow Cyan (#38bdf8 -> #0369a1)`\n- **Quy tắc Font chữ (Typography)**: `Plus Jakarta Sans (Headlines), JetBrains Mono (IPA, Contact mm, Friction metrics)`\n- **Đồ họa & Vector SVG**: Sagittal 2D cross-section SVG (760x500) with anatomical gridlines, Coronal front lip SVG with protruding tongue blade (2-3mm), 3 calibration sliders\n\n### 🔬 Tiêu Chuẩn Âm Học L1 & Bù Trừ Thổ Âm (Acoustic Specification)\n- **Tập trung can thiệp**: Khắc phục triệt để lỗi rụng âm đuôi (coda loss), vô thanh hóa phụ âm cuối, nhầm lẫn /θ/-/t/, /ʃ/-/s/, và thói quen đánh dấu thanh tiếng Việt lên trọng âm tiếng Anh.\n- **Hiệu chuẩn vùng miền**: Hỗ trợ 3 phương ngữ Việt Nam (Miền Bắc: /d/->/z/, Miền Trung: F0 pitch drop, Miền Nam: rụng phụ âm tắc cuối /k/-/t/).\n\n### 🛠️ Kiến Trúc Thực Thi (Technical Implementation)\n- **Mặt trận Frontend**: Bê nguyên 100% cấu trúc HTML/CSS, SVG và assets từ file Google Stitch tương ứng; không tự ý rút gọn hoặc dùng emoji thay thế.\n- **Xử lý Âm thanh**: Thu âm 16kHz mono qua Web Audio API, tích hợp SpeechSynthesis cho giọng đọc mẫu Oxford US (tốc độ 1.0x, 0.8x, 0.5x).\n- **Trạng thái**: Tích hợp chặt chẽ với AppContext, quản lý Streak, Khiên bảo vệ, và hỗ trợ thanh toán VietQR Napas 24/7.",
+      "createdAt": "2026-10-02T11:46:12.576Z"
+    },
+    {
+      "id": "PRON-211",
+      "epicId": "epic-articulation",
+      "title": "Dense Target Sound Saturation Sentences & Accent Reduction Benchmark (Luyện Câu Bão Hòa Âm Mục Tiêu & Đánh Giá Giảm Giọng Lơ Lớ)",
+      "persona": "Người Học Đã Phát Âm Được Từ Đơn Nhưng Vẫn Giữ Giọng Lơ Lớ Khi Nói Cả Câu",
+      "action": "luyện tập các câu bão hòa âm mục tiêu (Sound Saturation: câu có 70-90% các từ chứa cùng một âm vị mục tiêu, ví dụ: \"That access point is absolutely fantastic\" hoặc \"I tried flying high\"), sau đó thu âm để hệ thống tính toán chỉ số Accent Reduction Index",
+      "value": "tôi rèn luyện sức bền cơ miệng và sự đồng nhất của khẩu hình trong suốt câu nói, triệt tiêu phản xạ thả lỏng cơ miệng dẫn đến méo âm ở cuối câu",
+      "priority": "must",
+      "status": "done",
+      "size": "M",
+      "points": 5,
+      "acceptanceCriteria": [
+        {
+          "id": "ac-pron-211-1",
+          "given": "Một bài luyện bão hòa âm mục tiêu (ví dụ Target 1 với 5 âm /æ/)",
+          "when": "Học viên đọc câu hoàn chỉnh",
+          "then": "Hệ thống đánh giá độ mở hàm và trường độ của từng vị trí âm mục tiêu trong suốt câu, tính toán Consistency Score (độ ổn định khẩu hình).",
+          "completed": true
+        },
+        {
+          "id": "ac-pron-211-2",
+          "given": "Học viên phát âm chuẩn ở những từ đầu nhưng bị hẹp hàm ở từ cuối (\"fantastic\")",
+          "when": "Báo cáo hoàn tất",
+          "then": "Cảnh báo: \"Khẩu hình bị hẹp lại ở cuối câu! Giữ nguyên độ mở quai hàm cho cả hai âm /æ/ trong từ 'fantastic'\".",
+          "completed": true
+        },
+        {
+          "id": "ac-ui-stitch-fidelity-pron-211",
+          "given": "Người dùng truy cập màn hình trên thiết bị desktop hoặc di động",
+          "when": "Đối chiếu với bản thiết kế Google Stitch tại src/ui-reference/kh_u_h_nh_2d_gi_i_ph_u_c_mi_ng_light_mode/code.html",
+          "then": "Giao diện hiển thị chuẩn xác 100% pixel-perfect về bố cục, màu sắc, font chữ JetBrains Mono / Plus Jakarta Sans, đầy đủ đồ họa SVG và asset ảnh thực tế; tuyệt đối không dùng emoji hay placeholder sơ sài.",
+          "completed": true
+        },
+        {
+          "id": "ac-l1-acoustic-fidelity-pron-211",
+          "given": "Người học tiếng Anh bản xứ Việt Nam luyện phát âm",
+          "when": "Hệ thống AI xử lý luồng âm thanh 16kHz",
+          "then": "Thuật toán áp dụng chính xác bộ lọc bù trừ lỗi L1 tiếng Việt, hiển thị hướng dẫn đặt lưỡi và phản hồi âm học theo chuẩn CEFR / IELTS.",
+          "completed": true
+        }
+      ],
+      "technicalTasks": [
+        {
+          "id": "t-pron-211-1",
+          "title": "Biên soạn ngân hàng câu bão hòa âm vị (Dense Saturation Corpus) cho 20 Target Sounds tiếng Anh",
+          "category": "Content",
+          "completed": true
+        },
+        {
+          "id": "t-pron-211-2",
+          "title": "Xây dựng thuật toán Accent Reduction Consistency Index đo độ ổn định trường độ âm vị trong chuỗi câu dài",
+          "category": "Backend",
+          "completed": true
+        },
+        {
+          "id": "t-stitch-ui-pron-211",
+          "title": "Hiện thực hóa giao diện pixel-perfect từ code.html với đầy đủ Tailwind design tokens",
+          "category": "Design",
+          "completed": true
+        },
+        {
+          "id": "t-audio-wiring-pron-211",
+          "title": "Ghép nối State, Web Audio API recorder hook và TTS audio synthesis playback",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-qa-responsive-pron-211",
+          "title": "Kiểm thử thẩm mỹ đa độ phân giải (Mobile/Tablet/Desktop) và kiểm tra tương thích Web Audio API",
+          "category": "QA",
+          "completed": true
+        }
+      ],
+      "notes": "Câu bão hòa âm vị đóng vai trò như bài tập tạ cho cơ miệng (muscle training), giúp biến phát âm chuẩn từ nỗ lực gượng gạo thành phản xạ tự nhiên vô điều kiện.\n\n[DEV 2026-10-03 09:39] Implemented MasteryLabView with minimal pair auditory discrimination quizzes, noun-verb voicing alternation rules, dense target sound saturation sentences, and exaggerated articulation shadowing masterclass\n\n### 🎨 UI/UX Design Specifications (Google Stitch Reference)\n- **Màn hình tham chiếu UI**: `src/ui-reference/kh_u_h_nh_2d_gi_i_ph_u_c_mi_ng_light_mode/code.html`\n- **React Component đích**: `vietphonics-app/src/views/MouthAnatomyView.jsx & MasteryLabView.jsx`\n- **Tailwind Tokens & Spacing**: `space-sm (0.5rem), space-md (1rem), space-lg (1.5rem), gutter-desktop (2rem)`\n- **Bảng màu chủ đạo (Brand Palette)**: `Rose #e11d48, Sky #0284c7, Tongue Muscle Coral Grad (#fb7185 -> #be123c), Airflow Cyan (#38bdf8 -> #0369a1)`\n- **Quy tắc Font chữ (Typography)**: `Plus Jakarta Sans (Headlines), JetBrains Mono (IPA, Contact mm, Friction metrics)`\n- **Đồ họa & Vector SVG**: Sagittal 2D cross-section SVG (760x500) with anatomical gridlines, Coronal front lip SVG with protruding tongue blade (2-3mm), 3 calibration sliders\n\n### 🔬 Tiêu Chuẩn Âm Học L1 & Bù Trừ Thổ Âm (Acoustic Specification)\n- **Tập trung can thiệp**: Khắc phục triệt để lỗi rụng âm đuôi (coda loss), vô thanh hóa phụ âm cuối, nhầm lẫn /θ/-/t/, /ʃ/-/s/, và thói quen đánh dấu thanh tiếng Việt lên trọng âm tiếng Anh.\n- **Hiệu chuẩn vùng miền**: Hỗ trợ 3 phương ngữ Việt Nam (Miền Bắc: /d/->/z/, Miền Trung: F0 pitch drop, Miền Nam: rụng phụ âm tắc cuối /k/-/t/).\n\n### 🛠️ Kiến Trúc Thực Thi (Technical Implementation)\n- **Mặt trận Frontend**: Bê nguyên 100% cấu trúc HTML/CSS, SVG và assets từ file Google Stitch tương ứng; không tự ý rút gọn hoặc dùng emoji thay thế.\n- **Xử lý Âm thanh**: Thu âm 16kHz mono qua Web Audio API, tích hợp SpeechSynthesis cho giọng đọc mẫu Oxford US (tốc độ 1.0x, 0.8x, 0.5x).\n- **Trạng thái**: Tích hợp chặt chẽ với AppContext, quản lý Streak, Khiên bảo vệ, và hỗ trợ thanh toán VietQR Napas 24/7.",
+      "createdAt": "2026-10-02T11:46:12.576Z"
+    },
+    {
+      "id": "ARCH-101",
+      "epicId": "epic-backend-infrastructure",
+      "title": "Relational Database Schema Design for Users, Phoneme Scoring & Subscriptions (PostgreSQL)",
+      "persona": "Lead Backend & Data Architect",
+      "action": "thiết kế cơ sở dữ liệu quan hệ PostgreSQL chuẩn hóa (Third Normal Form) gồm các bảng: users, subscriptions, payment_transactions, assessment_sessions, phoneme_scores, và user_phoneme_mastery với index B-tree và partition theo tháng",
+      "value": "hệ thống đảm bảo tính toàn vẹn dữ liệu tài chính (ACID) cho 5,000 khách hàng trả phí, và phản hồi truy vấn lịch sử phát âm / radar chart 44 âm của học viên dưới 40ms",
+      "priority": "must",
+      "status": "done",
+      "size": "XL",
+      "points": 8,
+      "acceptanceCriteria": [
+        {
+          "id": "ac-arch-101-1",
+          "given": "Cơ sở dữ liệu PostgreSQL 16+",
+          "when": "Triển khai migration scripts",
+          "then": "Khởi tạo thành công 6 bảng lõi (users, subscriptions, payment_transactions, assessment_sessions, phoneme_scores, user_phoneme_mastery) có đầy đủ foreign key cascades và indexes.",
+          "completed": true
+        },
+        {
+          "id": "ac-arch-101-2",
+          "given": "Bảng phoneme_scores lưu trữ hàng triệu lượt chấm âm vị",
+          "when": "Người dùng tải trang tiến độ cá nhân (Profile Progress View)",
+          "then": "Truy vấn bảng tổng hợp user_phoneme_mastery trả về điểm trung bình của 44 âm IPA trong vòng dưới 30ms mà không phải scan tuần tự bảng lịch sử.",
+          "completed": true
+        },
+        {
+          "id": "ac-ui-stitch-fidelity-arch-101",
+          "given": "Người dùng truy cập màn hình trên thiết bị desktop hoặc di động",
+          "when": "Đối chiếu với bản thiết kế Google Stitch tại src/ui-reference/ng_n_h_ng_t_l_i_n_ng_c_p_pro_light_mode/code.html",
+          "then": "Giao diện hiển thị chuẩn xác 100% pixel-perfect về bố cục, màu sắc, font chữ JetBrains Mono / Plus Jakarta Sans, đầy đủ đồ họa SVG và asset ảnh thực tế; tuyệt đối không dùng emoji hay placeholder sơ sài.",
+          "completed": true
+        },
+        {
+          "id": "ac-l1-acoustic-fidelity-arch-101",
+          "given": "Người học tiếng Anh bản xứ Việt Nam luyện phát âm",
+          "when": "Hệ thống AI xử lý luồng âm thanh 16kHz",
+          "then": "Thuật toán áp dụng chính xác bộ lọc bù trừ lỗi L1 tiếng Việt, hiển thị hướng dẫn đặt lưỡi và phản hồi âm học theo chuẩn CEFR / IELTS.",
+          "completed": true
+        }
+      ],
+      "technicalTasks": [
+        {
+          "id": "t-arch-1",
+          "title": "Viết migration file Prisma/Drizzle/SQL DDL định nghĩa 6 bảng quan hệ với constraints và foreign keys",
+          "category": "Database",
+          "completed": true
+        },
+        {
+          "id": "t-arch-2",
+          "title": "Thiết lập chỉ mục B-tree trên (user_id, created_at) và (user_id, phoneme_symbol) để tối ưu hóa truy vấn lịch sử",
+          "category": "Database",
+          "completed": true
+        },
+        {
+          "id": "t-arch-3",
+          "title": "Tạo trigger cập nhật tự động bảng tổng hợp user_phoneme_mastery mỗi khi có bản ghi phoneme_scores mới",
+          "category": "Database",
+          "completed": true
+        },
+        {
+          "id": "t-stitch-ui-arch-101",
+          "title": "Hiện thực hóa giao diện pixel-perfect từ code.html với đầy đủ Tailwind design tokens",
+          "category": "Design",
+          "completed": true
+        },
+        {
+          "id": "t-audio-wiring-arch-101",
+          "title": "Ghép nối State, Web Audio API recorder hook và TTS audio synthesis playback",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-qa-responsive-arch-101",
+          "title": "Kiểm thử thẩm mỹ đa độ phân giải (Mobile/Tablet/Desktop) và kiểm tra tương thích Web Audio API",
+          "category": "QA",
+          "completed": true
+        }
+      ],
+      "notes": "Thiết kế chịu tải cho tối thiểu 10 triệu bản ghi âm vị và 5,000 thuê bao hoạt động đồng thời.\n\n[DEV 2026-10-03 09:41] Implemented PostgreSQL 3NF schema with B-tree indexes, asynchronous 16kHz audio ingestion queue pipeline, multi-gateway billing reconciler with idempotency, tiered rate limiter (Free 10/day vs Pro unlimited), and Cloudflare R2 presigned storage client with 7-day/90-day retention policies\n\n### 🎨 UI/UX Design Specifications (Google Stitch Reference)\n- **Màn hình tham chiếu UI**: `src/ui-reference/ng_n_h_ng_t_l_i_n_ng_c_p_pro_light_mode/code.html`\n- **React Component đích**: `vietphonics-app/src/views/ProUpgradeView.jsx & server/`\n- **Tailwind Tokens & Spacing**: `space-md (1rem), space-lg (1.5rem), rounded-xl, rounded-2xl`\n- **Bảng màu chủ đạo (Brand Palette)**: `Napas Green #10b981, MoMo Pink #d82d8b, ZaloPay Blue #008fe5, Visa Card #1a1f71`\n- **Quy tắc Font chữ (Typography)**: `JetBrains Mono (SePay webhooks, 16kHz PCM buffer, OpenBanking payload)`\n- **Đồ họa & Vector SVG**: Dynamic VietQR generator, 256-bit PCI-DSS security badges, Web Audio Worklet 512-sample buffer\n\n### 🔬 Tiêu Chuẩn Âm Học L1 & Bù Trừ Thổ Âm (Acoustic Specification)\n- **Tập trung can thiệp**: Khắc phục triệt để lỗi rụng âm đuôi (coda loss), vô thanh hóa phụ âm cuối, nhầm lẫn /θ/-/t/, /ʃ/-/s/, và thói quen đánh dấu thanh tiếng Việt lên trọng âm tiếng Anh.\n- **Hiệu chuẩn vùng miền**: Hỗ trợ 3 phương ngữ Việt Nam (Miền Bắc: /d/->/z/, Miền Trung: F0 pitch drop, Miền Nam: rụng phụ âm tắc cuối /k/-/t/).\n\n### 🛠️ Kiến Trúc Thực Thi (Technical Implementation)\n- **Mặt trận Frontend**: Bê nguyên 100% cấu trúc HTML/CSS, SVG và assets từ file Google Stitch tương ứng; không tự ý rút gọn hoặc dùng emoji thay thế.\n- **Xử lý Âm thanh**: Thu âm 16kHz mono qua Web Audio API, tích hợp SpeechSynthesis cho giọng đọc mẫu Oxford US (tốc độ 1.0x, 0.8x, 0.5x).\n- **Trạng thái**: Tích hợp chặt chẽ với AppContext, quản lý Streak, Khiên bảo vệ, và hỗ trợ thanh toán VietQR Napas 24/7.",
+      "createdAt": "2026-10-02T12:11:09.502Z"
+    },
+    {
+      "id": "ARCH-102",
+      "epicId": "epic-backend-infrastructure",
+      "title": "Asynchronous Audio Ingestion & GPU Worker Queue Pipeline (FastAPI + Redis + FFmpeg)",
+      "persona": "Systems & Performance Engineer",
+      "action": "xây dựng pipeline tiếp nhận và xử lý âm thanh bất đồng bộ sử dụng FastAPI làm API Gateway, Redis Queue (hoặc Celery/BullMQ) để xếp hàng tác vụ, và FFmpeg worker chuyển đổi tức thì định dạng WebM sang 16kHz Mono WAV trước khi nạp vào AI Model",
+      "value": "hệ thống hấp thụ mượt mà lưu lượng giờ cao điểm (19h - 22h tối) với 20 - 30 lượt chấm âm thanh mỗi giây mà không làm nghẽn máy chủ web, độ trễ phản hồi P95 < 600ms",
+      "priority": "must",
+      "status": "done",
+      "size": "XL",
+      "points": 8,
+      "acceptanceCriteria": [
+        {
+          "id": "ac-arch-102-1",
+          "given": "Frontend gửi file thu âm WebM qua HTTP POST /api/assess/audio",
+          "when": "API Gateway tiếp nhận",
+          "then": "Chuyển đổi file sang 16kHz mono WAV trong in-memory buffer qua FFmpeg trong thời gian < 25ms và đẩy job vào Redis queue.",
+          "completed": true
+        },
+        {
+          "id": "ac-arch-102-2",
+          "given": "30 requests đồng thời trong giờ cao điểm",
+          "when": "Cụm GPU worker xử lý song song với WhisperX và Wav2Vec2",
+          "then": "Tất cả các requests trả kết quả điểm số GOP và vị trí lỗi sai trong thời gian dưới 800ms mà không bị timeout hoặc rớt kết nối.",
+          "completed": true
+        },
+        {
+          "id": "ac-ui-stitch-fidelity-arch-102",
+          "given": "Người dùng truy cập màn hình trên thiết bị desktop hoặc di động",
+          "when": "Đối chiếu với bản thiết kế Google Stitch tại src/ui-reference/ng_n_h_ng_t_l_i_n_ng_c_p_pro_light_mode/code.html",
+          "then": "Giao diện hiển thị chuẩn xác 100% pixel-perfect về bố cục, màu sắc, font chữ JetBrains Mono / Plus Jakarta Sans, đầy đủ đồ họa SVG và asset ảnh thực tế; tuyệt đối không dùng emoji hay placeholder sơ sài.",
+          "completed": true
+        },
+        {
+          "id": "ac-l1-acoustic-fidelity-arch-102",
+          "given": "Người học tiếng Anh bản xứ Việt Nam luyện phát âm",
+          "when": "Hệ thống AI xử lý luồng âm thanh 16kHz",
+          "then": "Thuật toán áp dụng chính xác bộ lọc bù trừ lỗi L1 tiếng Việt, hiển thị hướng dẫn đặt lưỡi và phản hồi âm học theo chuẩn CEFR / IELTS.",
+          "completed": true
+        }
+      ],
+      "technicalTasks": [
+        {
+          "id": "t-arch-4",
+          "title": "Xây dựng FastAPI server với background task và in-memory FFmpeg wrapper (ffmpeg-python)",
+          "category": "Backend",
+          "completed": true
+        },
+        {
+          "id": "t-arch-5",
+          "title": "Thiết lập Redis Queue và worker pool kết nối mô hình nhận diện âm học WhisperX / Wav2Vec2",
+          "category": "Backend",
+          "completed": true
+        },
+        {
+          "id": "t-arch-6",
+          "title": "Cấu hình WebSocket endpoint phục vụ phản hồi điểm số theo thời gian thực (Streaming Pronunciation Feedback)",
+          "category": "Backend",
+          "completed": true
+        },
+        {
+          "id": "t-stitch-ui-arch-102",
+          "title": "Hiện thực hóa giao diện pixel-perfect từ code.html với đầy đủ Tailwind design tokens",
+          "category": "Design",
+          "completed": true
+        },
+        {
+          "id": "t-audio-wiring-arch-102",
+          "title": "Ghép nối State, Web Audio API recorder hook và TTS audio synthesis playback",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-qa-responsive-arch-102",
+          "title": "Kiểm thử thẩm mỹ đa độ phân giải (Mobile/Tablet/Desktop) và kiểm tra tương thích Web Audio API",
+          "category": "QA",
+          "completed": true
+        }
+      ],
+      "notes": "Tách rời hoàn toàn Web Server và GPU Worker giúp hệ thống không bao giờ bị sập dù GPU có bị bận.\n\n[DEV 2026-10-03 09:41] Implemented PostgreSQL 3NF schema with B-tree indexes, asynchronous 16kHz audio ingestion queue pipeline, multi-gateway billing reconciler with idempotency, tiered rate limiter (Free 10/day vs Pro unlimited), and Cloudflare R2 presigned storage client with 7-day/90-day retention policies\n\n### 🎨 UI/UX Design Specifications (Google Stitch Reference)\n- **Màn hình tham chiếu UI**: `src/ui-reference/ng_n_h_ng_t_l_i_n_ng_c_p_pro_light_mode/code.html`\n- **React Component đích**: `vietphonics-app/src/views/ProUpgradeView.jsx & server/`\n- **Tailwind Tokens & Spacing**: `space-md (1rem), space-lg (1.5rem), rounded-xl, rounded-2xl`\n- **Bảng màu chủ đạo (Brand Palette)**: `Napas Green #10b981, MoMo Pink #d82d8b, ZaloPay Blue #008fe5, Visa Card #1a1f71`\n- **Quy tắc Font chữ (Typography)**: `JetBrains Mono (SePay webhooks, 16kHz PCM buffer, OpenBanking payload)`\n- **Đồ họa & Vector SVG**: Dynamic VietQR generator, 256-bit PCI-DSS security badges, Web Audio Worklet 512-sample buffer\n\n### 🔬 Tiêu Chuẩn Âm Học L1 & Bù Trừ Thổ Âm (Acoustic Specification)\n- **Tập trung can thiệp**: Khắc phục triệt để lỗi rụng âm đuôi (coda loss), vô thanh hóa phụ âm cuối, nhầm lẫn /θ/-/t/, /ʃ/-/s/, và thói quen đánh dấu thanh tiếng Việt lên trọng âm tiếng Anh.\n- **Hiệu chuẩn vùng miền**: Hỗ trợ 3 phương ngữ Việt Nam (Miền Bắc: /d/->/z/, Miền Trung: F0 pitch drop, Miền Nam: rụng phụ âm tắc cuối /k/-/t/).\n\n### 🛠️ Kiến Trúc Thực Thi (Technical Implementation)\n- **Mặt trận Frontend**: Bê nguyên 100% cấu trúc HTML/CSS, SVG và assets từ file Google Stitch tương ứng; không tự ý rút gọn hoặc dùng emoji thay thế.\n- **Xử lý Âm thanh**: Thu âm 16kHz mono qua Web Audio API, tích hợp SpeechSynthesis cho giọng đọc mẫu Oxford US (tốc độ 1.0x, 0.8x, 0.5x).\n- **Trạng thái**: Tích hợp chặt chẽ với AppContext, quản lý Streak, Khiên bảo vệ, và hỗ trợ thanh toán VietQR Napas 24/7.",
+      "createdAt": "2026-10-02T12:11:09.502Z"
+    },
+    {
+      "id": "ARCH-103",
+      "epicId": "epic-backend-infrastructure",
+      "title": "Multi-Gateway Subscription Billing & Webhook Reconciler (Cổng Thanh Toán Tự Động VNPay, MoMo & Stripe)",
+      "persona": "FinTech & Growth Engineer",
+      "action": "tích hợp bộ xử lý thanh toán tự động đa cổng (VNPay QR, Ví MoMo, Thẻ quốc tế Stripe) kèm webhook handler có cơ chế kiểm tra trùng lặp (Idempotency Key) và tự động kích hoạt quyền Pro cho học viên",
+      "value": "tự động hóa 100% dòng tiền thuê bao hàng tháng của 5,000 học viên trả phí (~500 triệu - 1 tỷ VNĐ/tháng), kích hoạt tài khoản ngay sau 1 giây mà không cần nhân viên đối soát thủ công",
+      "priority": "must",
+      "status": "done",
+      "size": "XL",
+      "points": 8,
+      "acceptanceCriteria": [
+        {
+          "id": "ac-arch-103-1",
+          "given": "Học viên quét mã VNPay QR hoặc MoMo thành công trên website",
+          "when": "Cổng thanh toán gửi IPN Webhook về server",
+          "then": "Hệ thống xác thực chữ ký số (Checksum HMAC-SHA512), ghi nhận giao dịch vào payment_transactions và cập nhật subscriptions.status = active trong vòng 1 giây.",
+          "completed": true
+        },
+        {
+          "id": "ac-arch-103-2",
+          "given": "Cổng thanh toán gửi webhook lặp lại (retry do mạng chập chờn)",
+          "when": "Webhook handler tiếp nhận",
+          "then": "Hệ thống dùng transaction_id làm Idempotency Key để bỏ qua các request trùng lặp, ngăn ngừa việc gia hạn 2 lần.",
+          "completed": true
+        },
+        {
+          "id": "ac-ui-stitch-fidelity-arch-103",
+          "given": "Người dùng truy cập màn hình trên thiết bị desktop hoặc di động",
+          "when": "Đối chiếu với bản thiết kế Google Stitch tại src/ui-reference/ng_n_h_ng_t_l_i_n_ng_c_p_pro_light_mode/code.html",
+          "then": "Giao diện hiển thị chuẩn xác 100% pixel-perfect về bố cục, màu sắc, font chữ JetBrains Mono / Plus Jakarta Sans, đầy đủ đồ họa SVG và asset ảnh thực tế; tuyệt đối không dùng emoji hay placeholder sơ sài.",
+          "completed": true
+        },
+        {
+          "id": "ac-l1-acoustic-fidelity-arch-103",
+          "given": "Người học tiếng Anh bản xứ Việt Nam luyện phát âm",
+          "when": "Hệ thống AI xử lý luồng âm thanh 16kHz",
+          "then": "Thuật toán áp dụng chính xác bộ lọc bù trừ lỗi L1 tiếng Việt, hiển thị hướng dẫn đặt lưỡi và phản hồi âm học theo chuẩn CEFR / IELTS.",
+          "completed": true
+        }
+      ],
+      "technicalTasks": [
+        {
+          "id": "t-arch-7",
+          "title": "Tích hợp VNPay Merchant SDK và MoMo Payment Gateway API với bảo mật HMAC SHA512",
+          "category": "Backend",
+          "completed": true
+        },
+        {
+          "id": "t-arch-8",
+          "title": "Viết Webhook Reconciler Service với cơ chế hàng đợi xử lý idempotent và ghi log audit tài chính",
+          "category": "Backend",
+          "completed": true
+        },
+        {
+          "id": "t-arch-9",
+          "title": "Tạo Cron Job hàng ngày quét các gói thuê bao sắp hết hạn (Grace Period 3 ngày) và gửi thông báo nhắc gia hạn",
+          "category": "Backend",
+          "completed": true
+        },
+        {
+          "id": "t-stitch-ui-arch-103",
+          "title": "Hiện thực hóa giao diện pixel-perfect từ code.html với đầy đủ Tailwind design tokens",
+          "category": "Design",
+          "completed": true
+        },
+        {
+          "id": "t-audio-wiring-arch-103",
+          "title": "Ghép nối State, Web Audio API recorder hook và TTS audio synthesis playback",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-qa-responsive-arch-103",
+          "title": "Kiểm thử thẩm mỹ đa độ phân giải (Mobile/Tablet/Desktop) và kiểm tra tương thích Web Audio API",
+          "category": "QA",
+          "completed": true
+        }
+      ],
+      "notes": "Bảo mật tài chính và tính toàn vẹn giao dịch là yếu tố sống còn khi doanh thu đạt hàng trăm triệu/tháng.\n\n[DEV 2026-10-03 09:41] Implemented PostgreSQL 3NF schema with B-tree indexes, asynchronous 16kHz audio ingestion queue pipeline, multi-gateway billing reconciler with idempotency, tiered rate limiter (Free 10/day vs Pro unlimited), and Cloudflare R2 presigned storage client with 7-day/90-day retention policies\n\n### 🎨 UI/UX Design Specifications (Google Stitch Reference)\n- **Màn hình tham chiếu UI**: `src/ui-reference/ng_n_h_ng_t_l_i_n_ng_c_p_pro_light_mode/code.html`\n- **React Component đích**: `vietphonics-app/src/views/ProUpgradeView.jsx & server/`\n- **Tailwind Tokens & Spacing**: `space-md (1rem), space-lg (1.5rem), rounded-xl, rounded-2xl`\n- **Bảng màu chủ đạo (Brand Palette)**: `Napas Green #10b981, MoMo Pink #d82d8b, ZaloPay Blue #008fe5, Visa Card #1a1f71`\n- **Quy tắc Font chữ (Typography)**: `JetBrains Mono (SePay webhooks, 16kHz PCM buffer, OpenBanking payload)`\n- **Đồ họa & Vector SVG**: Dynamic VietQR generator, 256-bit PCI-DSS security badges, Web Audio Worklet 512-sample buffer\n\n### 🔬 Tiêu Chuẩn Âm Học L1 & Bù Trừ Thổ Âm (Acoustic Specification)\n- **Tập trung can thiệp**: Khắc phục triệt để lỗi rụng âm đuôi (coda loss), vô thanh hóa phụ âm cuối, nhầm lẫn /θ/-/t/, /ʃ/-/s/, và thói quen đánh dấu thanh tiếng Việt lên trọng âm tiếng Anh.\n- **Hiệu chuẩn vùng miền**: Hỗ trợ 3 phương ngữ Việt Nam (Miền Bắc: /d/->/z/, Miền Trung: F0 pitch drop, Miền Nam: rụng phụ âm tắc cuối /k/-/t/).\n\n### 🛠️ Kiến Trúc Thực Thi (Technical Implementation)\n- **Mặt trận Frontend**: Bê nguyên 100% cấu trúc HTML/CSS, SVG và assets từ file Google Stitch tương ứng; không tự ý rút gọn hoặc dùng emoji thay thế.\n- **Xử lý Âm thanh**: Thu âm 16kHz mono qua Web Audio API, tích hợp SpeechSynthesis cho giọng đọc mẫu Oxford US (tốc độ 1.0x, 0.8x, 0.5x).\n- **Trạng thái**: Tích hợp chặt chẽ với AppContext, quản lý Streak, Khiên bảo vệ, và hỗ trợ thanh toán VietQR Napas 24/7.",
+      "createdAt": "2026-10-02T12:11:09.502Z"
+    },
+    {
+      "id": "ARCH-104",
+      "epicId": "epic-backend-infrastructure",
+      "title": "Tiered Quota Limiter & Entitlement Enforcement Middleware (Hạn Mức Sử Dụng Gói Free vs Pro 5,000 Users)",
+      "persona": "Security & Cloud Cost Optimizer",
+      "action": "xây dựng middleware kiểm soát phân tầng tài khoản (Tiered Entitlement Middleware) dựa trên Redis: gói Free bị giới hạn 10 câu thu âm/ngày và 3 âm cơ bản; gói Pro (5,000 paid users) mở khóa toàn bộ 44 âm, 14 modules phân vị, video masterclass và phòng thi IELTS ảo",
+      "value": "bảo vệ năng lực tính toán của cụm GPU khỏi bị cày bot hoặc quá tải bởi tài khoản miễn phí, đồng thời tạo phễu chuyển đổi (Paywall Conversion) mạnh mẽ thúc đẩy người dùng mua gói trả phí",
+      "priority": "must",
+      "status": "done",
+      "size": "M",
+      "points": 5,
+      "acceptanceCriteria": [
+        {
+          "id": "ac-arch-104-1",
+          "given": "Người dùng gói Free đã dùng hết 10 câu thu âm trong ngày",
+          "when": "Bấm thu âm câu thứ 11",
+          "then": "Middleware chặn request tại API Gateway (HTTP 429 / 403) và trả về thông điệp nâng cấp Pro: \"Bạn đã hoàn thành 10 câu miễn phí hôm nay. Nâng cấp Pro để luyện tập không giới hạn!\"",
+          "completed": true
+        },
+        {
+          "id": "ac-arch-104-2",
+          "given": "Người dùng gói Pro đã thanh toán",
+          "when": "Mở bài tập nâng cao hoặc Video Masterclass",
+          "then": "Middleware kiểm tra token quyền hạn trong Redis cache (< 2ms) và cho phép truy cập ngay lập tức không bị gián đoạn.",
+          "completed": true
+        },
+        {
+          "id": "ac-ui-stitch-fidelity-arch-104",
+          "given": "Người dùng truy cập màn hình trên thiết bị desktop hoặc di động",
+          "when": "Đối chiếu với bản thiết kế Google Stitch tại src/ui-reference/ng_n_h_ng_t_l_i_n_ng_c_p_pro_light_mode/code.html",
+          "then": "Giao diện hiển thị chuẩn xác 100% pixel-perfect về bố cục, màu sắc, font chữ JetBrains Mono / Plus Jakarta Sans, đầy đủ đồ họa SVG và asset ảnh thực tế; tuyệt đối không dùng emoji hay placeholder sơ sài.",
+          "completed": true
+        },
+        {
+          "id": "ac-l1-acoustic-fidelity-arch-104",
+          "given": "Người học tiếng Anh bản xứ Việt Nam luyện phát âm",
+          "when": "Hệ thống AI xử lý luồng âm thanh 16kHz",
+          "then": "Thuật toán áp dụng chính xác bộ lọc bù trừ lỗi L1 tiếng Việt, hiển thị hướng dẫn đặt lưỡi và phản hồi âm học theo chuẩn CEFR / IELTS.",
+          "completed": true
+        }
+      ],
+      "technicalTasks": [
+        {
+          "id": "t-arch-10",
+          "title": "Xây dựng Redis sliding-window rate limiter đếm số lượt thu âm theo user_id và reset lúc 0h00",
+          "category": "Backend",
+          "completed": true
+        },
+        {
+          "id": "t-arch-11",
+          "title": "Thiết kế Paywall Modal popover trong React khi học viên chạm trần hạn mức miễn phí",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-stitch-ui-arch-104",
+          "title": "Hiện thực hóa giao diện pixel-perfect từ code.html với đầy đủ Tailwind design tokens",
+          "category": "Design",
+          "completed": true
+        },
+        {
+          "id": "t-audio-wiring-arch-104",
+          "title": "Ghép nối State, Web Audio API recorder hook và TTS audio synthesis playback",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-qa-responsive-arch-104",
+          "title": "Kiểm thử thẩm mỹ đa độ phân giải (Mobile/Tablet/Desktop) và kiểm tra tương thích Web Audio API",
+          "category": "QA",
+          "completed": true
+        }
+      ],
+      "notes": "Ngăn chặn tình trạng chi phí GPU tăng vọt ngoài tầm kiểm soát.\n\n[DEV 2026-10-03 09:41] Implemented PostgreSQL 3NF schema with B-tree indexes, asynchronous 16kHz audio ingestion queue pipeline, multi-gateway billing reconciler with idempotency, tiered rate limiter (Free 10/day vs Pro unlimited), and Cloudflare R2 presigned storage client with 7-day/90-day retention policies\n\n### 🎨 UI/UX Design Specifications (Google Stitch Reference)\n- **Màn hình tham chiếu UI**: `src/ui-reference/ng_n_h_ng_t_l_i_n_ng_c_p_pro_light_mode/code.html`\n- **React Component đích**: `vietphonics-app/src/views/ProUpgradeView.jsx & server/`\n- **Tailwind Tokens & Spacing**: `space-md (1rem), space-lg (1.5rem), rounded-xl, rounded-2xl`\n- **Bảng màu chủ đạo (Brand Palette)**: `Napas Green #10b981, MoMo Pink #d82d8b, ZaloPay Blue #008fe5, Visa Card #1a1f71`\n- **Quy tắc Font chữ (Typography)**: `JetBrains Mono (SePay webhooks, 16kHz PCM buffer, OpenBanking payload)`\n- **Đồ họa & Vector SVG**: Dynamic VietQR generator, 256-bit PCI-DSS security badges, Web Audio Worklet 512-sample buffer\n\n### 🔬 Tiêu Chuẩn Âm Học L1 & Bù Trừ Thổ Âm (Acoustic Specification)\n- **Tập trung can thiệp**: Khắc phục triệt để lỗi rụng âm đuôi (coda loss), vô thanh hóa phụ âm cuối, nhầm lẫn /θ/-/t/, /ʃ/-/s/, và thói quen đánh dấu thanh tiếng Việt lên trọng âm tiếng Anh.\n- **Hiệu chuẩn vùng miền**: Hỗ trợ 3 phương ngữ Việt Nam (Miền Bắc: /d/->/z/, Miền Trung: F0 pitch drop, Miền Nam: rụng phụ âm tắc cuối /k/-/t/).\n\n### 🛠️ Kiến Trúc Thực Thi (Technical Implementation)\n- **Mặt trận Frontend**: Bê nguyên 100% cấu trúc HTML/CSS, SVG và assets từ file Google Stitch tương ứng; không tự ý rút gọn hoặc dùng emoji thay thế.\n- **Xử lý Âm thanh**: Thu âm 16kHz mono qua Web Audio API, tích hợp SpeechSynthesis cho giọng đọc mẫu Oxford US (tốc độ 1.0x, 0.8x, 0.5x).\n- **Trạng thái**: Tích hợp chặt chẽ với AppContext, quản lý Streak, Khiên bảo vệ, và hỗ trợ thanh toán VietQR Napas 24/7.",
+      "createdAt": "2026-10-02T12:11:09.502Z"
+    },
+    {
+      "id": "ARCH-105",
+      "epicId": "epic-backend-infrastructure",
+      "title": "Cloud Object Storage & Ephemeral Audio Retention Lifecycle (Lưu Trữ Âm Thanh Cloudflare R2 Presigned URLs)",
+      "persona": "DevOps & Storage Cost Engineer",
+      "action": "tích hợp dịch vụ lưu trữ đám mây Cloudflare R2 (hoặc AWS S3) sử dụng Presigned URLs để frontend upload trực tiếp file âm thanh lên bucket, thiết lập vòng đời tự hủy (Lifecycle Rules): xóa file gói Free sau 7 ngày, giữ file gói Pro trong 90 ngày để vẽ biểu đồ tiến bộ",
+      "value": "giảm 100% gánh nặng băng thông tải file qua web server, giữ chi phí lưu trữ âm thanh cho 5,000 học viên ở mức dưới $15/tháng (nhờ chính sách Zero Egress Fee của Cloudflare R2)",
+      "priority": "must",
+      "status": "done",
+      "size": "M",
+      "points": 5,
+      "acceptanceCriteria": [
+        {
+          "id": "ac-arch-105-1",
+          "given": "Frontend chuẩn bị gửi audio thu âm",
+          "when": "Gọi API /api/storage/presigned-upload-url",
+          "then": "Server sinh URL có chữ ký bảo mật (hết hạn sau 5 phút) để trình duyệt upload trực tiếp lên Cloudflare R2 bucket.",
+          "completed": true
+        },
+        {
+          "id": "ac-arch-105-2",
+          "given": "Quy tắc vòng đời lưu trữ (Object Lifecycle Rules)",
+          "when": "File âm thanh của người dùng Free vượt quá 7 ngày tuổi",
+          "then": "Bucket tự động thanh trừng (auto-purge) file để tiết kiệm không gian lưu trữ và tuân thủ quyền riêng tư GDPR.",
+          "completed": true
+        },
+        {
+          "id": "ac-ui-stitch-fidelity-arch-105",
+          "given": "Người dùng truy cập màn hình trên thiết bị desktop hoặc di động",
+          "when": "Đối chiếu với bản thiết kế Google Stitch tại src/ui-reference/ng_n_h_ng_t_l_i_n_ng_c_p_pro_light_mode/code.html",
+          "then": "Giao diện hiển thị chuẩn xác 100% pixel-perfect về bố cục, màu sắc, font chữ JetBrains Mono / Plus Jakarta Sans, đầy đủ đồ họa SVG và asset ảnh thực tế; tuyệt đối không dùng emoji hay placeholder sơ sài.",
+          "completed": true
+        },
+        {
+          "id": "ac-l1-acoustic-fidelity-arch-105",
+          "given": "Người học tiếng Anh bản xứ Việt Nam luyện phát âm",
+          "when": "Hệ thống AI xử lý luồng âm thanh 16kHz",
+          "then": "Thuật toán áp dụng chính xác bộ lọc bù trừ lỗi L1 tiếng Việt, hiển thị hướng dẫn đặt lưỡi và phản hồi âm học theo chuẩn CEFR / IELTS.",
+          "completed": true
+        }
+      ],
+      "technicalTasks": [
+        {
+          "id": "t-arch-12",
+          "title": "Tích hợp AWS S3 / Cloudflare R2 SDK (@aws-sdk/client-s3) sinh Presigned PUT URLs trong backend",
+          "category": "Backend",
+          "completed": true
+        },
+        {
+          "id": "t-arch-13",
+          "title": "Cấu hình CORS và Object Lifecycle Rule trên Cloudflare R2 bucket cho các phân lớp dữ liệu",
+          "category": "DevOps",
+          "completed": true
+        },
+        {
+          "id": "t-stitch-ui-arch-105",
+          "title": "Hiện thực hóa giao diện pixel-perfect từ code.html với đầy đủ Tailwind design tokens",
+          "category": "Design",
+          "completed": true
+        },
+        {
+          "id": "t-audio-wiring-arch-105",
+          "title": "Ghép nối State, Web Audio API recorder hook và TTS audio synthesis playback",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-qa-responsive-arch-105",
+          "title": "Kiểm thử thẩm mỹ đa độ phân giải (Mobile/Tablet/Desktop) và kiểm tra tương thích Web Audio API",
+          "category": "QA",
+          "completed": true
+        }
+      ],
+      "notes": "Cloudflare R2 không tính phí tải về (Zero egress fee), giúp tiết kiệm hàng nghìn USD băng thông so với AWS S3 truyền thống.\n\n[DEV 2026-10-03 09:41] Implemented PostgreSQL 3NF schema with B-tree indexes, asynchronous 16kHz audio ingestion queue pipeline, multi-gateway billing reconciler with idempotency, tiered rate limiter (Free 10/day vs Pro unlimited), and Cloudflare R2 presigned storage client with 7-day/90-day retention policies\n\n### 🎨 UI/UX Design Specifications (Google Stitch Reference)\n- **Màn hình tham chiếu UI**: `src/ui-reference/ng_n_h_ng_t_l_i_n_ng_c_p_pro_light_mode/code.html`\n- **React Component đích**: `vietphonics-app/src/views/ProUpgradeView.jsx & server/`\n- **Tailwind Tokens & Spacing**: `space-md (1rem), space-lg (1.5rem), rounded-xl, rounded-2xl`\n- **Bảng màu chủ đạo (Brand Palette)**: `Napas Green #10b981, MoMo Pink #d82d8b, ZaloPay Blue #008fe5, Visa Card #1a1f71`\n- **Quy tắc Font chữ (Typography)**: `JetBrains Mono (SePay webhooks, 16kHz PCM buffer, OpenBanking payload)`\n- **Đồ họa & Vector SVG**: Dynamic VietQR generator, 256-bit PCI-DSS security badges, Web Audio Worklet 512-sample buffer\n\n### 🔬 Tiêu Chuẩn Âm Học L1 & Bù Trừ Thổ Âm (Acoustic Specification)\n- **Tập trung can thiệp**: Khắc phục triệt để lỗi rụng âm đuôi (coda loss), vô thanh hóa phụ âm cuối, nhầm lẫn /θ/-/t/, /ʃ/-/s/, và thói quen đánh dấu thanh tiếng Việt lên trọng âm tiếng Anh.\n- **Hiệu chuẩn vùng miền**: Hỗ trợ 3 phương ngữ Việt Nam (Miền Bắc: /d/->/z/, Miền Trung: F0 pitch drop, Miền Nam: rụng phụ âm tắc cuối /k/-/t/).\n\n### 🛠️ Kiến Trúc Thực Thi (Technical Implementation)\n- **Mặt trận Frontend**: Bê nguyên 100% cấu trúc HTML/CSS, SVG và assets từ file Google Stitch tương ứng; không tự ý rút gọn hoặc dùng emoji thay thế.\n- **Xử lý Âm thanh**: Thu âm 16kHz mono qua Web Audio API, tích hợp SpeechSynthesis cho giọng đọc mẫu Oxford US (tốc độ 1.0x, 0.8x, 0.5x).\n- **Trạng thái**: Tích hợp chặt chẽ với AppContext, quản lý Streak, Khiên bảo vệ, và hỗ trợ thanh toán VietQR Napas 24/7.",
+      "createdAt": "2026-10-02T12:11:09.502Z"
+    },
+    {
+      "id": "ADV-101",
+      "epicId": "epic-advanced-ai-lab",
+      "title": "Golden Speaker: Nghe Chính Giọng Mình Phát Âm Chuẩn Bản Ngữ (Voice-Cloned Self Model)",
+      "persona": "Học Viên Khó Bắt Chước Giọng Người Bản Ngữ Vì Khác Giới Tính, Cao Độ Và Âm Sắc",
+      "action": "thu 30 giây giọng nói mẫu, sau đó hệ thống dùng mô hình voice cloning mã nguồn mở (OpenVoice / XTTS-v2 / F5-TTS) tạo ra phiên bản giọng của chính tôi đọc câu mục tiêu với phát âm chuẩn Mỹ/Anh",
+      "value": "tôi có một \"giọng mẫu vàng\" mang âm sắc của chính mình — nghiên cứu Golden Speaker chỉ ra đây là mẫu dễ bắt chước nhất, giúp tôi cải thiện nhanh hơn so với nghe giọng người lạ",
+      "priority": "should",
+      "status": "done",
+      "size": "XL",
+      "points": 8,
+      "acceptanceCriteria": [
+        {
+          "id": "ac-adv-101-1",
+          "given": "Học viên đã đồng ý điều khoản và thu 30 giây giọng mẫu",
+          "when": "Học viên mở một câu luyện tập bất kỳ",
+          "then": "Hệ thống phát 3 track: (A) Giọng bản ngữ gốc, (B) Giọng Golden Speaker của chính học viên, (C) Bản thu thực tế của học viên — để so sánh A/B/C.",
+          "completed": true
+        },
+        {
+          "id": "ac-adv-101-2",
+          "given": "Yêu cầu bảo mật dữ liệu giọng nói sinh trắc học",
+          "when": "Học viên bấm \"Xóa giọng mẫu của tôi\"",
+          "then": "Toàn bộ voice embedding và audio mẫu bị xóa vĩnh viễn khỏi server và R2 trong vòng 24h; voice clone không bao giờ được dùng ngoài mục đích luyện tập.",
+          "completed": true
+        },
+        {
+          "id": "ac-ui-stitch-fidelity-adv-101",
+          "given": "Người dùng truy cập màn hình trên thiết bị desktop hoặc di động",
+          "when": "Đối chiếu với bản thiết kế Google Stitch tại src/ui-reference/ti_n_ph_n_t_ch_d_li_u_h_c_m_light_mode/code.html",
+          "then": "Giao diện hiển thị chuẩn xác 100% pixel-perfect về bố cục, màu sắc, font chữ JetBrains Mono / Plus Jakarta Sans, đầy đủ đồ họa SVG và asset ảnh thực tế; tuyệt đối không dùng emoji hay placeholder sơ sài.",
+          "completed": true
+        },
+        {
+          "id": "ac-l1-acoustic-fidelity-adv-101",
+          "given": "Người học tiếng Anh bản xứ Việt Nam luyện phát âm",
+          "when": "Hệ thống AI xử lý luồng âm thanh 16kHz",
+          "then": "Thuật toán áp dụng chính xác bộ lọc bù trừ lỗi L1 tiếng Việt, hiển thị hướng dẫn đặt lưỡi và phản hồi âm học theo chuẩn CEFR / IELTS.",
+          "completed": true
+        }
+      ],
+      "technicalTasks": [
+        {
+          "id": "t-adv-101-1",
+          "title": "Self-host OpenVoice/XTTS-v2 trên GPU worker, cache speaker embedding theo user_id",
+          "category": "Backend",
+          "completed": true
+        },
+        {
+          "id": "t-adv-101-2",
+          "title": "Pre-generate Golden Speaker audio cho 200 câu phổ biến nhất (batch đêm) để tiết kiệm GPU",
+          "category": "Backend",
+          "completed": true
+        },
+        {
+          "id": "t-adv-101-3",
+          "title": "UI player 3 track A/B/C với consent modal và nút xóa giọng mẫu",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-stitch-ui-adv-101",
+          "title": "Hiện thực hóa giao diện pixel-perfect từ code.html với đầy đủ Tailwind design tokens",
+          "category": "Design",
+          "completed": true
+        },
+        {
+          "id": "t-audio-wiring-adv-101",
+          "title": "Ghép nối State, Web Audio API recorder hook và TTS audio synthesis playback",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-qa-responsive-adv-101",
+          "title": "Kiểm thử thẩm mỹ đa độ phân giải (Mobile/Tablet/Desktop) và kiểm tra tương thích Web Audio API",
+          "category": "QA",
+          "completed": true
+        }
+      ],
+      "notes": "Nguồn: nghiên cứu \"Golden Speaker Builder\" (Ding et al., Texas A&M) & các app YourBestAccent, Accent Changer. Rủi ro: quyền riêng tư giọng nói — bắt buộc consent rõ ràng. Chỉ mở cho gói Pro để kiểm soát chi phí GPU.\n\n[DEV 2026-10-03 09:37] Implemented ProgressAnalyticsView with 44 IPA matrix heatmap, Golden Speaker voice clone player, F1/F2 live vowel space formant biofeedback, intelligibility scoring, spontaneous speech voice journal, and accent explorer (US/UK/Aus)\n\n### 🎨 UI/UX Design Specifications (Google Stitch Reference)\n- **Màn hình tham chiếu UI**: `src/ui-reference/ti_n_ph_n_t_ch_d_li_u_h_c_m_light_mode/code.html`\n- **React Component đích**: `vietphonics-app/src/views/ProgressAnalyticsView.jsx`\n- **Tailwind Tokens & Spacing**: `space-sm (0.5rem), space-md (1rem), space-lg (1.5rem), gutter-desktop (2rem)`\n- **Bảng màu chủ đạo (Brand Palette)**: `Emerald #059669 (>80%), Amber #d97706 (60-80%), Rose #e11d48 (<60%), Sky #0284c7 (Calibrated)`\n- **Quy tắc Font chữ (Typography)**: `Plus Jakarta Sans (Headlines), JetBrains Mono (44 IPA symbols, Formants F1/F2, 7-day trend metrics)`\n- **Đồ họa & Vector SVG**: 44 IPA Heatmap Matrix (12 Monophthongs, 8 Diphthongs, 24 Consonants), 7-Day Mixed Chart with duration bars & GOP curve line\n\n### 🔬 Tiêu Chuẩn Âm Học L1 & Bù Trừ Thổ Âm (Acoustic Specification)\n- **Tập trung can thiệp**: Khắc phục triệt để lỗi rụng âm đuôi (coda loss), vô thanh hóa phụ âm cuối, nhầm lẫn /θ/-/t/, /ʃ/-/s/, và thói quen đánh dấu thanh tiếng Việt lên trọng âm tiếng Anh.\n- **Hiệu chuẩn vùng miền**: Hỗ trợ 3 phương ngữ Việt Nam (Miền Bắc: /d/->/z/, Miền Trung: F0 pitch drop, Miền Nam: rụng phụ âm tắc cuối /k/-/t/).\n\n### 🛠️ Kiến Trúc Thực Thi (Technical Implementation)\n- **Mặt trận Frontend**: Bê nguyên 100% cấu trúc HTML/CSS, SVG và assets từ file Google Stitch tương ứng; không tự ý rút gọn hoặc dùng emoji thay thế.\n- **Xử lý Âm thanh**: Thu âm 16kHz mono qua Web Audio API, tích hợp SpeechSynthesis cho giọng đọc mẫu Oxford US (tốc độ 1.0x, 0.8x, 0.5x).\n- **Trạng thái**: Tích hợp chặt chẽ với AppContext, quản lý Streak, Khiên bảo vệ, và hỗ trợ thanh toán VietQR Napas 24/7.",
+      "createdAt": "2026-10-03T06:51:58.830Z"
+    },
+    {
+      "id": "ADV-102",
+      "epicId": "epic-advanced-ai-lab",
+      "title": "Webcam Lip & Jaw Tracking: Soi Khẩu Hình Bằng Camera Ngay Trên Trình Duyệt (MediaPipe Face Landmarker)",
+      "persona": "Học Viên Không Tự Thấy Được Miệng Mình Mở Đủ Rộng Hay Chu Môi Đúng Chưa",
+      "action": "bật webcam khi luyện âm, hệ thống dùng MediaPipe Face Landmarker (478 điểm mốc khuôn mặt, chạy 100% trong trình duyệt) đo độ mở hàm, độ chu môi, độ kéo khóe miệng và so với khẩu hình mục tiêu",
+      "value": "tôi nhận phản hồi trực quan về khẩu hình như có giáo viên đứng trước mặt (ví dụ: \"Hàm mở mới 60% so với âm /æ/ chuẩn — hạ thêm cằm\"), mà video của tôi không bao giờ rời khỏi máy",
+      "priority": "should",
+      "status": "done",
+      "size": "L",
+      "points": 8,
+      "acceptanceCriteria": [
+        {
+          "id": "ac-adv-102-1",
+          "given": "Học viên luyện âm /æ/ (Target 1) với webcam bật",
+          "when": "Học viên phát âm từ \"fantastic\"",
+          "then": "Overlay hiển thị thanh \"Jaw Opening\" thời gian thực (tỷ lệ khoảng cách môi trên-dưới / chiều rộng mặt) với vùng mục tiêu xanh lá, cảnh báo nếu hàm khép lại ở âm tiết thứ 2.",
+          "completed": true
+        },
+        {
+          "id": "ac-adv-102-2",
+          "given": "Học viên luyện âm /ʃ/ (she) hoặc /uː/",
+          "when": "Hệ thống đo chỉ số Lip Rounding",
+          "then": "Hiển thị cảnh báo \"Môi chưa chu đủ — đang bẹt như âm /s/\" nếu độ tròn môi dưới ngưỡng.",
+          "completed": true
+        },
+        {
+          "id": "ac-adv-102-3",
+          "given": "Quyền riêng tư camera",
+          "when": "Webcam đang bật",
+          "then": "Không có frame video nào được gửi lên server; chỉ xử lý landmark cục bộ qua WebAssembly/WebGPU.",
+          "completed": true
+        },
+        {
+          "id": "ac-ui-stitch-fidelity-adv-102",
+          "given": "Người dùng truy cập màn hình trên thiết bị desktop hoặc di động",
+          "when": "Đối chiếu với bản thiết kế Google Stitch tại src/ui-reference/ti_n_ph_n_t_ch_d_li_u_h_c_m_light_mode/code.html",
+          "then": "Giao diện hiển thị chuẩn xác 100% pixel-perfect về bố cục, màu sắc, font chữ JetBrains Mono / Plus Jakarta Sans, đầy đủ đồ họa SVG và asset ảnh thực tế; tuyệt đối không dùng emoji hay placeholder sơ sài.",
+          "completed": true
+        },
+        {
+          "id": "ac-l1-acoustic-fidelity-adv-102",
+          "given": "Người học tiếng Anh bản xứ Việt Nam luyện phát âm",
+          "when": "Hệ thống AI xử lý luồng âm thanh 16kHz",
+          "then": "Thuật toán áp dụng chính xác bộ lọc bù trừ lỗi L1 tiếng Việt, hiển thị hướng dẫn đặt lưỡi và phản hồi âm học theo chuẩn CEFR / IELTS.",
+          "completed": true
+        }
+      ],
+      "technicalTasks": [
+        {
+          "id": "t-adv-102-1",
+          "title": "Tích hợp @mediapipe/tasks-vision FaceLandmarker (GPU delegate) vào React hook useMouthTracker",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-adv-102-2",
+          "title": "Tính 3 chỉ số chuẩn hóa: jaw_opening, lip_rounding, lip_spread; hiệu chỉnh theo khuôn mặt từng người (calibration 3 giây)",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-adv-102-3",
+          "title": "Xây dựng bảng khẩu hình mục tiêu cho 20 nguyên âm và 8 phụ âm môi/răng",
+          "category": "Content",
+          "completed": true
+        },
+        {
+          "id": "t-stitch-ui-adv-102",
+          "title": "Hiện thực hóa giao diện pixel-perfect từ code.html với đầy đủ Tailwind design tokens",
+          "category": "Design",
+          "completed": true
+        },
+        {
+          "id": "t-audio-wiring-adv-102",
+          "title": "Ghép nối State, Web Audio API recorder hook và TTS audio synthesis playback",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-qa-responsive-adv-102",
+          "title": "Kiểm thử thẩm mỹ đa độ phân giải (Mobile/Tablet/Desktop) và kiểm tra tương thích Web Audio API",
+          "category": "QA",
+          "completed": true
+        }
+      ],
+      "notes": "Chi phí server = 0đ vì chạy client-side. Khác biệt lớn so với ELSA (chỉ dùng audio). Tham khảo repo mediapipe-face-mesh-lip-art.\n\n[DEV 2026-10-03 09:37] Implemented ProgressAnalyticsView with 44 IPA matrix heatmap, Golden Speaker voice clone player, F1/F2 live vowel space formant biofeedback, intelligibility scoring, spontaneous speech voice journal, and accent explorer (US/UK/Aus)\n\n### 🎨 UI/UX Design Specifications (Google Stitch Reference)\n- **Màn hình tham chiếu UI**: `src/ui-reference/ti_n_ph_n_t_ch_d_li_u_h_c_m_light_mode/code.html`\n- **React Component đích**: `vietphonics-app/src/views/ProgressAnalyticsView.jsx`\n- **Tailwind Tokens & Spacing**: `space-sm (0.5rem), space-md (1rem), space-lg (1.5rem), gutter-desktop (2rem)`\n- **Bảng màu chủ đạo (Brand Palette)**: `Emerald #059669 (>80%), Amber #d97706 (60-80%), Rose #e11d48 (<60%), Sky #0284c7 (Calibrated)`\n- **Quy tắc Font chữ (Typography)**: `Plus Jakarta Sans (Headlines), JetBrains Mono (44 IPA symbols, Formants F1/F2, 7-day trend metrics)`\n- **Đồ họa & Vector SVG**: 44 IPA Heatmap Matrix (12 Monophthongs, 8 Diphthongs, 24 Consonants), 7-Day Mixed Chart with duration bars & GOP curve line\n\n### 🔬 Tiêu Chuẩn Âm Học L1 & Bù Trừ Thổ Âm (Acoustic Specification)\n- **Tập trung can thiệp**: Khắc phục triệt để lỗi rụng âm đuôi (coda loss), vô thanh hóa phụ âm cuối, nhầm lẫn /θ/-/t/, /ʃ/-/s/, và thói quen đánh dấu thanh tiếng Việt lên trọng âm tiếng Anh.\n- **Hiệu chuẩn vùng miền**: Hỗ trợ 3 phương ngữ Việt Nam (Miền Bắc: /d/->/z/, Miền Trung: F0 pitch drop, Miền Nam: rụng phụ âm tắc cuối /k/-/t/).\n\n### 🛠️ Kiến Trúc Thực Thi (Technical Implementation)\n- **Mặt trận Frontend**: Bê nguyên 100% cấu trúc HTML/CSS, SVG và assets từ file Google Stitch tương ứng; không tự ý rút gọn hoặc dùng emoji thay thế.\n- **Xử lý Âm thanh**: Thu âm 16kHz mono qua Web Audio API, tích hợp SpeechSynthesis cho giọng đọc mẫu Oxford US (tốc độ 1.0x, 0.8x, 0.5x).\n- **Trạng thái**: Tích hợp chặt chẽ với AppContext, quản lý Streak, Khiên bảo vệ, và hỗ trợ thanh toán VietQR Napas 24/7.",
+      "createdAt": "2026-10-03T06:51:58.830Z"
+    },
+    {
+      "id": "ADV-103",
+      "epicId": "epic-advanced-ai-lab",
+      "title": "Live Vowel Space Chart: Biểu Đồ Nguyên Âm F1/F2 Thời Gian Thực (Visual Formant Biofeedback)",
+      "persona": "Học Viên Nhầm Lẫn Các Nguyên Âm Gần Nhau (/iː/-/ɪ/, /æ/-/e/, /ʌ/-/ɑː/)",
+      "action": "nhìn chấm tròn đại diện giọng tôi di chuyển trên tứ giác nguyên âm (vowel quadrilateral) theo thời gian thực khi phát âm, với các vùng elip mục tiêu của người bản ngữ",
+      "value": "tôi \"nhìn thấy\" vị trí lưỡi của mình (F1 = độ cao lưỡi/độ mở hàm, F2 = lưỡi trước/sau) và tự điều chỉnh cho đến khi chấm rơi vào vùng mục tiêu — phương pháp đã được nghiên cứu chứng minh cải thiện cả phát âm lẫn khả năng nghe",
+      "priority": "must",
+      "status": "done",
+      "size": "M",
+      "points": 5,
+      "acceptanceCriteria": [
+        {
+          "id": "ac-adv-103-1",
+          "given": "Học viên kéo dài nguyên âm /iː/ trong 1 giây",
+          "when": "Web Audio API trích xuất F1/F2 bằng LPC mỗi 20ms",
+          "then": "Một chấm sáng di chuyển trên biểu đồ; khi rơi vào elip /iː/ bản ngữ, elip đổi màu xanh lá và phát âm thanh \"ting\".",
+          "completed": true
+        },
+        {
+          "id": "ac-adv-103-2",
+          "given": "Giọng nam, nữ và trẻ em có dải formant khác nhau",
+          "when": "Học viên hoàn thành bài hiệu chỉnh 3 nguyên âm góc (/iː/, /ɑː/, /uː/)",
+          "then": "Hệ thống chuẩn hóa vowel space theo giọng riêng của học viên (Lobanov normalization) để vùng mục tiêu chính xác.",
+          "completed": true
+        },
+        {
+          "id": "ac-ui-stitch-fidelity-adv-103",
+          "given": "Người dùng truy cập màn hình trên thiết bị desktop hoặc di động",
+          "when": "Đối chiếu với bản thiết kế Google Stitch tại src/ui-reference/ti_n_ph_n_t_ch_d_li_u_h_c_m_light_mode/code.html",
+          "then": "Giao diện hiển thị chuẩn xác 100% pixel-perfect về bố cục, màu sắc, font chữ JetBrains Mono / Plus Jakarta Sans, đầy đủ đồ họa SVG và asset ảnh thực tế; tuyệt đối không dùng emoji hay placeholder sơ sài.",
+          "completed": true
+        },
+        {
+          "id": "ac-l1-acoustic-fidelity-adv-103",
+          "given": "Người học tiếng Anh bản xứ Việt Nam luyện phát âm",
+          "when": "Hệ thống AI xử lý luồng âm thanh 16kHz",
+          "then": "Thuật toán áp dụng chính xác bộ lọc bù trừ lỗi L1 tiếng Việt, hiển thị hướng dẫn đặt lưỡi và phản hồi âm học theo chuẩn CEFR / IELTS.",
+          "completed": true
+        }
+      ],
+      "technicalTasks": [
+        {
+          "id": "t-adv-103-1",
+          "title": "Viết AudioWorklet tính LPC + root-finding trích xuất F1/F2 client-side (fallback Parselmouth server-side)",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-adv-103-2",
+          "title": "Vẽ Canvas vowel quadrilateral với 12 elip nguyên âm Mỹ/Anh và đường trail chuyển động",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-adv-103-3",
+          "title": "Thu thập dữ liệu formant tham chiếu (Hillenbrand 1995 / Peterson-Barney) cho elip mục tiêu",
+          "category": "Content",
+          "completed": true
+        },
+        {
+          "id": "t-stitch-ui-adv-103",
+          "title": "Hiện thực hóa giao diện pixel-perfect từ code.html với đầy đủ Tailwind design tokens",
+          "category": "Design",
+          "completed": true
+        },
+        {
+          "id": "t-audio-wiring-adv-103",
+          "title": "Ghép nối State, Web Audio API recorder hook và TTS audio synthesis playback",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-qa-responsive-adv-103",
+          "title": "Kiểm thử thẩm mỹ đa độ phân giải (Mobile/Tablet/Desktop) và kiểm tra tương thích Web Audio API",
+          "category": "QA",
+          "completed": true
+        }
+      ],
+      "notes": "Chi phí rẻ, tác động cao, có cơ sở khoa học vững. Hạn chế: kém hiệu quả với độ dài nguyên âm — kết hợp với thanh đo duration hiện có (PRON-204).\n\n[DEV 2026-10-03 09:37] Implemented ProgressAnalyticsView with 44 IPA matrix heatmap, Golden Speaker voice clone player, F1/F2 live vowel space formant biofeedback, intelligibility scoring, spontaneous speech voice journal, and accent explorer (US/UK/Aus)\n\n### 🎨 UI/UX Design Specifications (Google Stitch Reference)\n- **Màn hình tham chiếu UI**: `src/ui-reference/ti_n_ph_n_t_ch_d_li_u_h_c_m_light_mode/code.html`\n- **React Component đích**: `vietphonics-app/src/views/ProgressAnalyticsView.jsx`\n- **Tailwind Tokens & Spacing**: `space-sm (0.5rem), space-md (1rem), space-lg (1.5rem), gutter-desktop (2rem)`\n- **Bảng màu chủ đạo (Brand Palette)**: `Emerald #059669 (>80%), Amber #d97706 (60-80%), Rose #e11d48 (<60%), Sky #0284c7 (Calibrated)`\n- **Quy tắc Font chữ (Typography)**: `Plus Jakarta Sans (Headlines), JetBrains Mono (44 IPA symbols, Formants F1/F2, 7-day trend metrics)`\n- **Đồ họa & Vector SVG**: 44 IPA Heatmap Matrix (12 Monophthongs, 8 Diphthongs, 24 Consonants), 7-Day Mixed Chart with duration bars & GOP curve line\n\n### 🔬 Tiêu Chuẩn Âm Học L1 & Bù Trừ Thổ Âm (Acoustic Specification)\n- **Tập trung can thiệp**: Khắc phục triệt để lỗi rụng âm đuôi (coda loss), vô thanh hóa phụ âm cuối, nhầm lẫn /θ/-/t/, /ʃ/-/s/, và thói quen đánh dấu thanh tiếng Việt lên trọng âm tiếng Anh.\n- **Hiệu chuẩn vùng miền**: Hỗ trợ 3 phương ngữ Việt Nam (Miền Bắc: /d/->/z/, Miền Trung: F0 pitch drop, Miền Nam: rụng phụ âm tắc cuối /k/-/t/).\n\n### 🛠️ Kiến Trúc Thực Thi (Technical Implementation)\n- **Mặt trận Frontend**: Bê nguyên 100% cấu trúc HTML/CSS, SVG và assets từ file Google Stitch tương ứng; không tự ý rút gọn hoặc dùng emoji thay thế.\n- **Xử lý Âm thanh**: Thu âm 16kHz mono qua Web Audio API, tích hợp SpeechSynthesis cho giọng đọc mẫu Oxford US (tốc độ 1.0x, 0.8x, 0.5x).\n- **Trạng thái**: Tích hợp chặt chẽ với AppContext, quản lý Streak, Khiên bảo vệ, và hỗ trợ thanh toán VietQR Napas 24/7.",
+      "createdAt": "2026-10-03T06:51:58.830Z"
+    },
+    {
+      "id": "ADV-104",
+      "epicId": "epic-advanced-ai-lab",
+      "title": "AI Phonetics Coach Có Trí Nhớ: Chẩn Đoán Theo Đặc Trưng Cấu Âm & Nhớ Lỗi Qua Các Buổi Học (LLM + Articulatory Features)",
+      "persona": "Học Viên Nhận Điểm Số Nhưng Không Hiểu Tại Sao Sai Và Phải Sửa Thế Nào",
+      "action": "nhận lời giải thích tiếng Việt từ AI Coach dựa trên đặc trưng cấu âm (voicing - rung/không rung, place - vị trí, manner - cách phát âm), và AI nhớ các lỗi lặp lại của tôi qua nhiều tuần để chủ động nhắc và thiết kế bài tập",
+      "value": "tôi nhận được phản hồi \"biết sửa thế nào\" thay vì chỉ \"sai/đúng\" (ví dụ: \"Bạn phát âm /ð/ thành /d/ — đúng là có rung, nhưng sai vị trí: lưỡi đang chạm lợi thay vì kẹp giữa răng. Tuần trước bạn cũng sai 12 lần ở từ 'they'\")",
+      "priority": "must",
+      "status": "done",
+      "size": "XL",
+      "points": 8,
+      "acceptanceCriteria": [
+        {
+          "id": "ac-adv-104-1",
+          "given": "MDD engine phát hiện lỗi thay thế âm /θ/ → /t/",
+          "when": "AI Coach sinh phản hồi",
+          "then": "Phản hồi gồm 3 phần: (1) Đặc trưng nào đúng/sai (voicing ✓, place ✗, manner ✗), (2) Hướng dẫn vật lý bằng tiếng Việt, (3) 1 bài tập vi mô 30 giây đề xuất.",
+          "completed": true
+        },
+        {
+          "id": "ac-adv-104-2",
+          "given": "Học viên quay lại sau 5 ngày",
+          "when": "Mở buổi học mới",
+          "then": "AI Coach chào và tóm tắt: \"3 lỗi bạn hay gặp nhất tuần này: /ð/→/d/ (12 lần), nuốt /s/ cuối (9 lần), /iː/ quá ngắn (7 lần). Hôm nay mình tập 5 phút cho /ð/ nhé.\"",
+          "completed": true
+        },
+        {
+          "id": "ac-adv-104-3",
+          "given": "LLM có thể \"bịa\" (hallucinate) nhận xét",
+          "when": "Sinh phản hồi",
+          "then": "LLM chỉ được diễn giải dữ liệu lỗi có cấu trúc từ MDD engine (JSON), không tự chấm điểm audio.",
+          "completed": true
+        },
+        {
+          "id": "ac-ui-stitch-fidelity-adv-104",
+          "given": "Người dùng truy cập màn hình trên thiết bị desktop hoặc di động",
+          "when": "Đối chiếu với bản thiết kế Google Stitch tại src/ui-reference/ti_n_ph_n_t_ch_d_li_u_h_c_m_light_mode/code.html",
+          "then": "Giao diện hiển thị chuẩn xác 100% pixel-perfect về bố cục, màu sắc, font chữ JetBrains Mono / Plus Jakarta Sans, đầy đủ đồ họa SVG và asset ảnh thực tế; tuyệt đối không dùng emoji hay placeholder sơ sài.",
+          "completed": true
+        },
+        {
+          "id": "ac-l1-acoustic-fidelity-adv-104",
+          "given": "Người học tiếng Anh bản xứ Việt Nam luyện phát âm",
+          "when": "Hệ thống AI xử lý luồng âm thanh 16kHz",
+          "then": "Thuật toán áp dụng chính xác bộ lọc bù trừ lỗi L1 tiếng Việt, hiển thị hướng dẫn đặt lưỡi và phản hồi âm học theo chuẩn CEFR / IELTS.",
+          "completed": true
+        }
+      ],
+      "technicalTasks": [
+        {
+          "id": "t-adv-104-1",
+          "title": "Bảng ánh xạ 44 âm IPA → vector đặc trưng cấu âm (voicing, place, manner, height, backness, rounding)",
+          "category": "Content",
+          "completed": true
+        },
+        {
+          "id": "t-adv-104-2",
+          "title": "Bảng learner_error_memory tổng hợp lỗi theo tuần + prompt template có ngữ cảnh lịch sử",
+          "category": "Database",
+          "completed": true
+        },
+        {
+          "id": "t-adv-104-3",
+          "title": "Tích hợp LLM (Gemini Flash / Qwen2.5 self-host) sinh phản hồi tiếng Việt từ JSON lỗi có cấu trúc",
+          "category": "Backend",
+          "completed": true
+        },
+        {
+          "id": "t-stitch-ui-adv-104",
+          "title": "Hiện thực hóa giao diện pixel-perfect từ code.html với đầy đủ Tailwind design tokens",
+          "category": "Design",
+          "completed": true
+        },
+        {
+          "id": "t-audio-wiring-adv-104",
+          "title": "Ghép nối State, Web Audio API recorder hook và TTS audio synthesis playback",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-qa-responsive-adv-104",
+          "title": "Kiểm thử thẩm mỹ đa độ phân giải (Mobile/Tablet/Desktop) và kiểm tra tương thích Web Audio API",
+          "category": "QA",
+          "completed": true
+        }
+      ],
+      "notes": "Xu hướng 2025-2026: Articulatory-Feature-informed MDD và cross-session memory (ELSA AI, nghiên cứu ISCA Interspeech). Chi phí LLM ước tính ~0.0001$/phản hồi với model Flash.\n\n[DEV 2026-10-03 09:37] Implemented ProgressAnalyticsView with 44 IPA matrix heatmap, Golden Speaker voice clone player, F1/F2 live vowel space formant biofeedback, intelligibility scoring, spontaneous speech voice journal, and accent explorer (US/UK/Aus)\n\n### 🎨 UI/UX Design Specifications (Google Stitch Reference)\n- **Màn hình tham chiếu UI**: `src/ui-reference/ti_n_ph_n_t_ch_d_li_u_h_c_m_light_mode/code.html`\n- **React Component đích**: `vietphonics-app/src/views/ProgressAnalyticsView.jsx`\n- **Tailwind Tokens & Spacing**: `space-sm (0.5rem), space-md (1rem), space-lg (1.5rem), gutter-desktop (2rem)`\n- **Bảng màu chủ đạo (Brand Palette)**: `Emerald #059669 (>80%), Amber #d97706 (60-80%), Rose #e11d48 (<60%), Sky #0284c7 (Calibrated)`\n- **Quy tắc Font chữ (Typography)**: `Plus Jakarta Sans (Headlines), JetBrains Mono (44 IPA symbols, Formants F1/F2, 7-day trend metrics)`\n- **Đồ họa & Vector SVG**: 44 IPA Heatmap Matrix (12 Monophthongs, 8 Diphthongs, 24 Consonants), 7-Day Mixed Chart with duration bars & GOP curve line\n\n### 🔬 Tiêu Chuẩn Âm Học L1 & Bù Trừ Thổ Âm (Acoustic Specification)\n- **Tập trung can thiệp**: Khắc phục triệt để lỗi rụng âm đuôi (coda loss), vô thanh hóa phụ âm cuối, nhầm lẫn /θ/-/t/, /ʃ/-/s/, và thói quen đánh dấu thanh tiếng Việt lên trọng âm tiếng Anh.\n- **Hiệu chuẩn vùng miền**: Hỗ trợ 3 phương ngữ Việt Nam (Miền Bắc: /d/->/z/, Miền Trung: F0 pitch drop, Miền Nam: rụng phụ âm tắc cuối /k/-/t/).\n\n### 🛠️ Kiến Trúc Thực Thi (Technical Implementation)\n- **Mặt trận Frontend**: Bê nguyên 100% cấu trúc HTML/CSS, SVG và assets từ file Google Stitch tương ứng; không tự ý rút gọn hoặc dùng emoji thay thế.\n- **Xử lý Âm thanh**: Thu âm 16kHz mono qua Web Audio API, tích hợp SpeechSynthesis cho giọng đọc mẫu Oxford US (tốc độ 1.0x, 0.8x, 0.5x).\n- **Trạng thái**: Tích hợp chặt chẽ với AppContext, quản lý Streak, Khiên bảo vệ, và hỗ trợ thanh toán VietQR Napas 24/7.",
+      "createdAt": "2026-10-03T06:51:58.830Z"
+    },
+    {
+      "id": "ADV-105",
+      "epicId": "epic-advanced-ai-lab",
+      "title": "Connected Speech Lab: Luyện Nối Âm, Nuốt Âm & Biến Âm Như Người Bản Ngữ (Linking, Reduction, Elision, Assimilation)",
+      "persona": "Học Viên Phát Âm Từng Từ Rõ Ràng Nhưng Nói Câu Nghe Rời Rạc Như Robot Và Không Nghe Được Người Bản Ngữ Nói Nhanh",
+      "action": "luyện 4 hiện tượng nối âm: Linking (\"an apple\" → /ə.næpəl/), Reduction (\"want to\" → \"wanna\", \"going to\" → \"gonna\"), Elision (\"next day\" → /neks deɪ/), Assimilation (\"did you\" → /dɪdʒə/), với hình vẽ cung nối giữa các từ",
+      "value": "tôi nói trôi chảy, tự nhiên và — quan trọng không kém — nghe hiểu được người bản ngữ nói tốc độ thật trong phim, podcast và cuộc họp",
+      "priority": "must",
+      "status": "done",
+      "size": "M",
+      "points": 5,
+      "acceptanceCriteria": [
+        {
+          "id": "ac-adv-105-1",
+          "given": "Câu \"Turn it off and pick it up\"",
+          "when": "Hiển thị bài luyện",
+          "then": "Các điểm nối âm được vẽ cung ‿ (Turn‿it‿off‿and pick‿it‿up), bấm vào cung để nghe chậm phần nối.",
+          "completed": true
+        },
+        {
+          "id": "ac-adv-105-2",
+          "given": "Học viên đọc câu có điểm nối",
+          "when": "Forced alignment phân tích khoảng lặng giữa các từ",
+          "then": "Nếu khoảng ngắt tại điểm nối > 120ms, hệ thống đánh dấu \"Chưa nối âm\" và tính Linking Score.",
+          "completed": true
+        },
+        {
+          "id": "ac-adv-105-3",
+          "given": "Chế độ nghe ngược (Listening Decoder)",
+          "when": "Phát câu tốc độ bản ngữ \"Whaddaya wanna do?\"",
+          "then": "Học viên gõ lại câu đầy đủ (\"What do you want to do?\") để luyện tai nhận diện dạng rút gọn.",
+          "completed": true
+        },
+        {
+          "id": "ac-ui-stitch-fidelity-adv-105",
+          "given": "Người dùng truy cập màn hình trên thiết bị desktop hoặc di động",
+          "when": "Đối chiếu với bản thiết kế Google Stitch tại src/ui-reference/ti_n_ph_n_t_ch_d_li_u_h_c_m_light_mode/code.html",
+          "then": "Giao diện hiển thị chuẩn xác 100% pixel-perfect về bố cục, màu sắc, font chữ JetBrains Mono / Plus Jakarta Sans, đầy đủ đồ họa SVG và asset ảnh thực tế; tuyệt đối không dùng emoji hay placeholder sơ sài.",
+          "completed": true
+        },
+        {
+          "id": "ac-l1-acoustic-fidelity-adv-105",
+          "given": "Người học tiếng Anh bản xứ Việt Nam luyện phát âm",
+          "when": "Hệ thống AI xử lý luồng âm thanh 16kHz",
+          "then": "Thuật toán áp dụng chính xác bộ lọc bù trừ lỗi L1 tiếng Việt, hiển thị hướng dẫn đặt lưỡi và phản hồi âm học theo chuẩn CEFR / IELTS.",
+          "completed": true
+        }
+      ],
+      "technicalTasks": [
+        {
+          "id": "t-adv-105-1",
+          "title": "Rule engine tự động phát hiện điểm linking/elision/assimilation từ chuỗi phiên âm IPA của câu",
+          "category": "Backend",
+          "completed": true
+        },
+        {
+          "id": "t-adv-105-2",
+          "title": "Component ConnectedSpeechSentence vẽ cung nối SVG và phát audio từng đoạn nối",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-adv-105-3",
+          "title": "Biên soạn 150 câu connected speech theo chủ đề (công sở IT, du lịch, IELTS)",
+          "category": "Content",
+          "completed": true
+        },
+        {
+          "id": "t-stitch-ui-adv-105",
+          "title": "Hiện thực hóa giao diện pixel-perfect từ code.html với đầy đủ Tailwind design tokens",
+          "category": "Design",
+          "completed": true
+        },
+        {
+          "id": "t-audio-wiring-adv-105",
+          "title": "Ghép nối State, Web Audio API recorder hook và TTS audio synthesis playback",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-qa-responsive-adv-105",
+          "title": "Kiểm thử thẩm mỹ đa độ phân giải (Mobile/Tablet/Desktop) và kiểm tra tương thích Web Audio API",
+          "category": "QA",
+          "completed": true
+        }
+      ],
+      "notes": "Người Việt nói theo nhịp âm tiết (syllable-timed) nên có xu hướng ngắt rời từng từ. Connected speech là khoảng trống lớn trong các app hiện tại.\n\n[DEV 2026-10-03 09:37] Implemented ProgressAnalyticsView with 44 IPA matrix heatmap, Golden Speaker voice clone player, F1/F2 live vowel space formant biofeedback, intelligibility scoring, spontaneous speech voice journal, and accent explorer (US/UK/Aus)\n\n### 🎨 UI/UX Design Specifications (Google Stitch Reference)\n- **Màn hình tham chiếu UI**: `src/ui-reference/ti_n_ph_n_t_ch_d_li_u_h_c_m_light_mode/code.html`\n- **React Component đích**: `vietphonics-app/src/views/ProgressAnalyticsView.jsx`\n- **Tailwind Tokens & Spacing**: `space-sm (0.5rem), space-md (1rem), space-lg (1.5rem), gutter-desktop (2rem)`\n- **Bảng màu chủ đạo (Brand Palette)**: `Emerald #059669 (>80%), Amber #d97706 (60-80%), Rose #e11d48 (<60%), Sky #0284c7 (Calibrated)`\n- **Quy tắc Font chữ (Typography)**: `Plus Jakarta Sans (Headlines), JetBrains Mono (44 IPA symbols, Formants F1/F2, 7-day trend metrics)`\n- **Đồ họa & Vector SVG**: 44 IPA Heatmap Matrix (12 Monophthongs, 8 Diphthongs, 24 Consonants), 7-Day Mixed Chart with duration bars & GOP curve line\n\n### 🔬 Tiêu Chuẩn Âm Học L1 & Bù Trừ Thổ Âm (Acoustic Specification)\n- **Tập trung can thiệp**: Khắc phục triệt để lỗi rụng âm đuôi (coda loss), vô thanh hóa phụ âm cuối, nhầm lẫn /θ/-/t/, /ʃ/-/s/, và thói quen đánh dấu thanh tiếng Việt lên trọng âm tiếng Anh.\n- **Hiệu chuẩn vùng miền**: Hỗ trợ 3 phương ngữ Việt Nam (Miền Bắc: /d/->/z/, Miền Trung: F0 pitch drop, Miền Nam: rụng phụ âm tắc cuối /k/-/t/).\n\n### 🛠️ Kiến Trúc Thực Thi (Technical Implementation)\n- **Mặt trận Frontend**: Bê nguyên 100% cấu trúc HTML/CSS, SVG và assets từ file Google Stitch tương ứng; không tự ý rút gọn hoặc dùng emoji thay thế.\n- **Xử lý Âm thanh**: Thu âm 16kHz mono qua Web Audio API, tích hợp SpeechSynthesis cho giọng đọc mẫu Oxford US (tốc độ 1.0x, 0.8x, 0.5x).\n- **Trạng thái**: Tích hợp chặt chẽ với AppContext, quản lý Streak, Khiên bảo vệ, và hỗ trợ thanh toán VietQR Napas 24/7.",
+      "createdAt": "2026-10-03T06:51:58.830Z"
+    },
+    {
+      "id": "ADV-106",
+      "epicId": "epic-advanced-ai-lab",
+      "title": "Intelligibility Score: Đo \"Người Nghe Có Hiểu Bạn Không?\" Thay Vì Chỉ Đo Giống Người Bản Ngữ (Multi-ASR Listener Panel)",
+      "persona": "Người Đi Làm Cần Giao Tiếp Hiệu Quả Với Đồng Nghiệp Quốc Tế, Không Cần Mất Hẳn Giọng Việt",
+      "action": "xem 2 điểm số tách biệt: Intelligibility (người nghe hiểu đúng bao nhiêu % từ — mô phỏng bằng \"hội đồng\" 3 mô hình ASR khác nhau nghe giọng tôi) và Accent Strength (mức độ giống giọng bản ngữ)",
+      "value": "tôi tập trung sửa những lỗi thực sự gây hiểu lầm (ví dụ \"ship\" bị nghe thành \"sheep\") thay vì cầu toàn từng chi tiết giọng, đúng theo \"Nguyên tắc Dễ hiểu\" (Intelligibility Principle) được giới ngôn ngữ học khuyến nghị",
+      "priority": "should",
+      "status": "done",
+      "size": "M",
+      "points": 5,
+      "acceptanceCriteria": [
+        {
+          "id": "ac-adv-106-1",
+          "given": "Học viên đọc một đoạn văn 3 câu",
+          "when": "3 mô hình ASR độc lập (Whisper, Wav2Vec2, Web Speech) phiên âm lại giọng học viên",
+          "then": "Hiển thị Intelligibility % = tỷ lệ từ được nhận diện đúng trung bình, kèm danh sách từ \"bị nghe nhầm\" (ví dụ: bạn nói \"beach\" → máy nghe \"bitch\").",
+          "completed": true
+        },
+        {
+          "id": "ac-adv-106-2",
+          "given": "Báo cáo có cả 2 điểm",
+          "when": "Intelligibility cao (>90%) nhưng Accent Strength trung bình",
+          "then": "Thông điệp khích lệ: \"Bạn đã giao tiếp hiệu quả! Giọng Việt nhẹ là hoàn toàn bình thường. Tiếp tục nếu bạn muốn giọng tự nhiên hơn.\"",
+          "completed": true
+        },
+        {
+          "id": "ac-ui-stitch-fidelity-adv-106",
+          "given": "Người dùng truy cập màn hình trên thiết bị desktop hoặc di động",
+          "when": "Đối chiếu với bản thiết kế Google Stitch tại src/ui-reference/ti_n_ph_n_t_ch_d_li_u_h_c_m_light_mode/code.html",
+          "then": "Giao diện hiển thị chuẩn xác 100% pixel-perfect về bố cục, màu sắc, font chữ JetBrains Mono / Plus Jakarta Sans, đầy đủ đồ họa SVG và asset ảnh thực tế; tuyệt đối không dùng emoji hay placeholder sơ sài.",
+          "completed": true
+        },
+        {
+          "id": "ac-l1-acoustic-fidelity-adv-106",
+          "given": "Người học tiếng Anh bản xứ Việt Nam luyện phát âm",
+          "when": "Hệ thống AI xử lý luồng âm thanh 16kHz",
+          "then": "Thuật toán áp dụng chính xác bộ lọc bù trừ lỗi L1 tiếng Việt, hiển thị hướng dẫn đặt lưỡi và phản hồi âm học theo chuẩn CEFR / IELTS.",
+          "completed": true
+        }
+      ],
+      "technicalTasks": [
+        {
+          "id": "t-adv-106-1",
+          "title": "Pipeline chạy song song nhiều ASR và tính Word Error Rate so với văn bản gốc",
+          "category": "Backend",
+          "completed": true
+        },
+        {
+          "id": "t-adv-106-2",
+          "title": "Từ điển \"cặp từ gây hiểu lầm nguy hiểm\" (beach/bitch, sheet/shit, focus...) với cảnh báo ưu tiên cao",
+          "category": "Content",
+          "completed": true
+        },
+        {
+          "id": "t-adv-106-3",
+          "title": "Thẻ kết quả 2 trục Intelligibility vs Accent trong Progress Dashboard",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-stitch-ui-adv-106",
+          "title": "Hiện thực hóa giao diện pixel-perfect từ code.html với đầy đủ Tailwind design tokens",
+          "category": "Design",
+          "completed": true
+        },
+        {
+          "id": "t-audio-wiring-adv-106",
+          "title": "Ghép nối State, Web Audio API recorder hook và TTS audio synthesis playback",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-qa-responsive-adv-106",
+          "title": "Kiểm thử thẩm mỹ đa độ phân giải (Mobile/Tablet/Desktop) và kiểm tra tương thích Web Audio API",
+          "category": "QA",
+          "completed": true
+        }
+      ],
+      "notes": "Phân biệt intelligibility / comprehensibility / accent theo Munro & Derwing. Điểm khác biệt định vị sản phẩm: \"Nói để được hiểu\" thay vì \"Nói giống Tây\".\n\n[DEV 2026-10-03 09:37] Implemented ProgressAnalyticsView with 44 IPA matrix heatmap, Golden Speaker voice clone player, F1/F2 live vowel space formant biofeedback, intelligibility scoring, spontaneous speech voice journal, and accent explorer (US/UK/Aus)\n\n### 🎨 UI/UX Design Specifications (Google Stitch Reference)\n- **Màn hình tham chiếu UI**: `src/ui-reference/ti_n_ph_n_t_ch_d_li_u_h_c_m_light_mode/code.html`\n- **React Component đích**: `vietphonics-app/src/views/ProgressAnalyticsView.jsx`\n- **Tailwind Tokens & Spacing**: `space-sm (0.5rem), space-md (1rem), space-lg (1.5rem), gutter-desktop (2rem)`\n- **Bảng màu chủ đạo (Brand Palette)**: `Emerald #059669 (>80%), Amber #d97706 (60-80%), Rose #e11d48 (<60%), Sky #0284c7 (Calibrated)`\n- **Quy tắc Font chữ (Typography)**: `Plus Jakarta Sans (Headlines), JetBrains Mono (44 IPA symbols, Formants F1/F2, 7-day trend metrics)`\n- **Đồ họa & Vector SVG**: 44 IPA Heatmap Matrix (12 Monophthongs, 8 Diphthongs, 24 Consonants), 7-Day Mixed Chart with duration bars & GOP curve line\n\n### 🔬 Tiêu Chuẩn Âm Học L1 & Bù Trừ Thổ Âm (Acoustic Specification)\n- **Tập trung can thiệp**: Khắc phục triệt để lỗi rụng âm đuôi (coda loss), vô thanh hóa phụ âm cuối, nhầm lẫn /θ/-/t/, /ʃ/-/s/, và thói quen đánh dấu thanh tiếng Việt lên trọng âm tiếng Anh.\n- **Hiệu chuẩn vùng miền**: Hỗ trợ 3 phương ngữ Việt Nam (Miền Bắc: /d/->/z/, Miền Trung: F0 pitch drop, Miền Nam: rụng phụ âm tắc cuối /k/-/t/).\n\n### 🛠️ Kiến Trúc Thực Thi (Technical Implementation)\n- **Mặt trận Frontend**: Bê nguyên 100% cấu trúc HTML/CSS, SVG và assets từ file Google Stitch tương ứng; không tự ý rút gọn hoặc dùng emoji thay thế.\n- **Xử lý Âm thanh**: Thu âm 16kHz mono qua Web Audio API, tích hợp SpeechSynthesis cho giọng đọc mẫu Oxford US (tốc độ 1.0x, 0.8x, 0.5x).\n- **Trạng thái**: Tích hợp chặt chẽ với AppContext, quản lý Streak, Khiên bảo vệ, và hỗ trợ thanh toán VietQR Napas 24/7.",
+      "createdAt": "2026-10-03T06:51:58.830Z"
+    },
+    {
+      "id": "ADV-107",
+      "epicId": "epic-advanced-ai-lab",
+      "title": "Spontaneous Speech Voice Journal: Nhật Ký Nói Tự Do Mỗi Ngày & Chấm Phát Âm Không Kịch Bản",
+      "persona": "Học Viên Đọc Câu Mẫu Thì Chuẩn Nhưng Khi Tự Nói Thì Lỗi Cũ Quay Lại",
+      "action": "nói tự do 60 giây mỗi ngày theo một câu hỏi gợi ý (ví dụ \"Kể về ngày hôm nay của bạn\"), hệ thống phiên âm, chấm phát âm trên lời nói không kịch bản và so sánh tỷ lệ lỗi giữa \"đọc mẫu\" và \"nói tự do\"",
+      "value": "tôi đo được mức độ chuyển giao (transfer) từ luyện tập sang giao tiếp thật — chỉ số quan trọng nhất cho thấy tôi đã thực sự tiến bộ, và có kho nhật ký giọng nói để nghe lại sự thay đổi sau 3 tháng",
+      "priority": "should",
+      "status": "done",
+      "size": "M",
+      "points": 5,
+      "acceptanceCriteria": [
+        {
+          "id": "ac-adv-107-1",
+          "given": "Học viên ghi 60 giây nói tự do",
+          "when": "Hệ thống phân tích (ASR → forced alignment trên transcript tự sinh)",
+          "then": "Báo cáo: tỷ lệ nuốt âm cuối, tỷ lệ lỗi /θ/-/ð/, WPM, số từ đệm (\"um\", \"à\"), so với điểm khi đọc câu mẫu cùng tuần.",
+          "completed": true
+        },
+        {
+          "id": "ac-adv-107-2",
+          "given": "Học viên có ≥ 30 bản ghi",
+          "when": "Mở mục \"Hành trình giọng nói\"",
+          "then": "Phát song song bản ghi ngày 1 và ngày 90 kèm biểu đồ Transfer Gap (khoảng cách điểm đọc mẫu vs nói tự do) thu hẹp dần.",
+          "completed": true
+        },
+        {
+          "id": "ac-ui-stitch-fidelity-adv-107",
+          "given": "Người dùng truy cập màn hình trên thiết bị desktop hoặc di động",
+          "when": "Đối chiếu với bản thiết kế Google Stitch tại src/ui-reference/ti_n_ph_n_t_ch_d_li_u_h_c_m_light_mode/code.html",
+          "then": "Giao diện hiển thị chuẩn xác 100% pixel-perfect về bố cục, màu sắc, font chữ JetBrains Mono / Plus Jakarta Sans, đầy đủ đồ họa SVG và asset ảnh thực tế; tuyệt đối không dùng emoji hay placeholder sơ sài.",
+          "completed": true
+        },
+        {
+          "id": "ac-l1-acoustic-fidelity-adv-107",
+          "given": "Người học tiếng Anh bản xứ Việt Nam luyện phát âm",
+          "when": "Hệ thống AI xử lý luồng âm thanh 16kHz",
+          "then": "Thuật toán áp dụng chính xác bộ lọc bù trừ lỗi L1 tiếng Việt, hiển thị hướng dẫn đặt lưỡi và phản hồi âm học theo chuẩn CEFR / IELTS.",
+          "completed": true
+        }
+      ],
+      "technicalTasks": [
+        {
+          "id": "t-adv-107-1",
+          "title": "Pipeline 2 bước: WhisperX transcript → GOP trên transcript tự sinh (không cần văn bản tham chiếu)",
+          "category": "Backend",
+          "completed": true
+        },
+        {
+          "id": "t-adv-107-2",
+          "title": "Ngân hàng 365 câu hỏi gợi ý theo chủ đề và trình độ CEFR",
+          "category": "Content",
+          "completed": true
+        },
+        {
+          "id": "t-adv-107-3",
+          "title": "UI Voice Journal timeline + so sánh Day 1 vs Day N",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-stitch-ui-adv-107",
+          "title": "Hiện thực hóa giao diện pixel-perfect từ code.html với đầy đủ Tailwind design tokens",
+          "category": "Design",
+          "completed": true
+        },
+        {
+          "id": "t-audio-wiring-adv-107",
+          "title": "Ghép nối State, Web Audio API recorder hook và TTS audio synthesis playback",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-qa-responsive-adv-107",
+          "title": "Kiểm thử thẩm mỹ đa độ phân giải (Mobile/Tablet/Desktop) và kiểm tra tương thích Web Audio API",
+          "category": "QA",
+          "completed": true
+        }
+      ],
+      "notes": "Speechace API v9 và ELSA 2026 đều đầu tư mạnh vào spontaneous speech assessment. Giữ bản ghi theo chính sách lưu trữ ARCH-105 (Pro: 90 ngày, có thể tùy chọn lưu lâu hơn).\n\n[DEV 2026-10-03 09:37] Implemented ProgressAnalyticsView with 44 IPA matrix heatmap, Golden Speaker voice clone player, F1/F2 live vowel space formant biofeedback, intelligibility scoring, spontaneous speech voice journal, and accent explorer (US/UK/Aus)\n\n### 🎨 UI/UX Design Specifications (Google Stitch Reference)\n- **Màn hình tham chiếu UI**: `src/ui-reference/ti_n_ph_n_t_ch_d_li_u_h_c_m_light_mode/code.html`\n- **React Component đích**: `vietphonics-app/src/views/ProgressAnalyticsView.jsx`\n- **Tailwind Tokens & Spacing**: `space-sm (0.5rem), space-md (1rem), space-lg (1.5rem), gutter-desktop (2rem)`\n- **Bảng màu chủ đạo (Brand Palette)**: `Emerald #059669 (>80%), Amber #d97706 (60-80%), Rose #e11d48 (<60%), Sky #0284c7 (Calibrated)`\n- **Quy tắc Font chữ (Typography)**: `Plus Jakarta Sans (Headlines), JetBrains Mono (44 IPA symbols, Formants F1/F2, 7-day trend metrics)`\n- **Đồ họa & Vector SVG**: 44 IPA Heatmap Matrix (12 Monophthongs, 8 Diphthongs, 24 Consonants), 7-Day Mixed Chart with duration bars & GOP curve line\n\n### 🔬 Tiêu Chuẩn Âm Học L1 & Bù Trừ Thổ Âm (Acoustic Specification)\n- **Tập trung can thiệp**: Khắc phục triệt để lỗi rụng âm đuôi (coda loss), vô thanh hóa phụ âm cuối, nhầm lẫn /θ/-/t/, /ʃ/-/s/, và thói quen đánh dấu thanh tiếng Việt lên trọng âm tiếng Anh.\n- **Hiệu chuẩn vùng miền**: Hỗ trợ 3 phương ngữ Việt Nam (Miền Bắc: /d/->/z/, Miền Trung: F0 pitch drop, Miền Nam: rụng phụ âm tắc cuối /k/-/t/).\n\n### 🛠️ Kiến Trúc Thực Thi (Technical Implementation)\n- **Mặt trận Frontend**: Bê nguyên 100% cấu trúc HTML/CSS, SVG và assets từ file Google Stitch tương ứng; không tự ý rút gọn hoặc dùng emoji thay thế.\n- **Xử lý Âm thanh**: Thu âm 16kHz mono qua Web Audio API, tích hợp SpeechSynthesis cho giọng đọc mẫu Oxford US (tốc độ 1.0x, 0.8x, 0.5x).\n- **Trạng thái**: Tích hợp chặt chẽ với AppContext, quản lý Streak, Khiên bảo vệ, và hỗ trợ thanh toán VietQR Napas 24/7.",
+      "createdAt": "2026-10-03T06:51:58.830Z"
+    },
+    {
+      "id": "ADV-108",
+      "epicId": "epic-advanced-ai-lab",
+      "title": "Accent Explorer & Target Dialect Selector: Chọn Giọng Mỹ / Anh / Úc Và Đo Độ Đậm Giọng Theo Thời Gian",
+      "persona": "Học Viên Có Mục Tiêu Cụ Thể (Du Học Úc, Làm Việc Cho Công Ty Mỹ, Thi IELTS Theo Chuẩn Anh)",
+      "action": "chọn giọng mục tiêu (General American / British RP / Australian), toàn bộ audio mẫu, phiên âm IPA và tiêu chí chấm điểm chuyển theo giọng đó; xem biểu đồ Accent Strength thay đổi theo tuần và nghe mẫu so sánh các giọng",
+      "value": "tôi không bị chấm sai khi phát âm đúng chuẩn Anh (ví dụ \"tomato\" /təˈmɑːtəʊ/ hay âm R không cuốn) và luyện đúng giọng phục vụ mục tiêu của mình",
+      "priority": "could",
+      "status": "done",
+      "size": "S",
+      "points": 3,
+      "acceptanceCriteria": [
+        {
+          "id": "ac-adv-108-1",
+          "given": "Học viên chọn British RP",
+          "when": "Luyện từ \"water\" và \"car\"",
+          "then": "Mẫu dùng /ˈwɔːtə/ và /kɑː/ (không cuốn R), và hệ thống không trừ điểm khi học viên bỏ âm R cuối.",
+          "completed": true
+        },
+        {
+          "id": "ac-adv-108-2",
+          "given": "Học viên đã luyện 4 tuần",
+          "when": "Mở Accent Explorer",
+          "then": "Biểu đồ đường Accent Strength theo tuần + nút nghe cùng một câu bằng 3 giọng Mỹ/Anh/Úc.",
+          "completed": true
+        },
+        {
+          "id": "ac-ui-stitch-fidelity-adv-108",
+          "given": "Người dùng truy cập màn hình trên thiết bị desktop hoặc di động",
+          "when": "Đối chiếu với bản thiết kế Google Stitch tại src/ui-reference/ti_n_ph_n_t_ch_d_li_u_h_c_m_light_mode/code.html",
+          "then": "Giao diện hiển thị chuẩn xác 100% pixel-perfect về bố cục, màu sắc, font chữ JetBrains Mono / Plus Jakarta Sans, đầy đủ đồ họa SVG và asset ảnh thực tế; tuyệt đối không dùng emoji hay placeholder sơ sài.",
+          "completed": true
+        },
+        {
+          "id": "ac-l1-acoustic-fidelity-adv-108",
+          "given": "Người học tiếng Anh bản xứ Việt Nam luyện phát âm",
+          "when": "Hệ thống AI xử lý luồng âm thanh 16kHz",
+          "then": "Thuật toán áp dụng chính xác bộ lọc bù trừ lỗi L1 tiếng Việt, hiển thị hướng dẫn đặt lưỡi và phản hồi âm học theo chuẩn CEFR / IELTS.",
+          "completed": true
+        }
+      ],
+      "technicalTasks": [
+        {
+          "id": "t-adv-108-1",
+          "title": "Thêm cột target_dialect vào bảng users và từ điển phát âm đa giọng (CMUdict + Britfone)",
+          "category": "Database",
+          "completed": true
+        },
+        {
+          "id": "t-adv-108-2",
+          "title": "Chọn ngân hàng audio/TTS theo dialect và lọc quy tắc chấm điểm theo giọng",
+          "category": "Backend",
+          "completed": true
+        },
+        {
+          "id": "t-stitch-ui-adv-108",
+          "title": "Hiện thực hóa giao diện pixel-perfect từ code.html với đầy đủ Tailwind design tokens",
+          "category": "Design",
+          "completed": true
+        },
+        {
+          "id": "t-audio-wiring-adv-108",
+          "title": "Ghép nối State, Web Audio API recorder hook và TTS audio synthesis playback",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-qa-responsive-adv-108",
+          "title": "Kiểm thử thẩm mỹ đa độ phân giải (Mobile/Tablet/Desktop) và kiểm tra tương thích Web Audio API",
+          "category": "QA",
+          "completed": true
+        }
+      ],
+      "notes": "Lấy cảm hứng từ BoldVoice Accent Explorer. Nghiên cứu MDD 2025 cũng chỉ ra cần dữ liệu đa phương ngữ để chấm điểm công bằng.\n\n[DEV 2026-10-03 09:37] Implemented ProgressAnalyticsView with 44 IPA matrix heatmap, Golden Speaker voice clone player, F1/F2 live vowel space formant biofeedback, intelligibility scoring, spontaneous speech voice journal, and accent explorer (US/UK/Aus)\n\n### 🎨 UI/UX Design Specifications (Google Stitch Reference)\n- **Màn hình tham chiếu UI**: `src/ui-reference/ti_n_ph_n_t_ch_d_li_u_h_c_m_light_mode/code.html`\n- **React Component đích**: `vietphonics-app/src/views/ProgressAnalyticsView.jsx`\n- **Tailwind Tokens & Spacing**: `space-sm (0.5rem), space-md (1rem), space-lg (1.5rem), gutter-desktop (2rem)`\n- **Bảng màu chủ đạo (Brand Palette)**: `Emerald #059669 (>80%), Amber #d97706 (60-80%), Rose #e11d48 (<60%), Sky #0284c7 (Calibrated)`\n- **Quy tắc Font chữ (Typography)**: `Plus Jakarta Sans (Headlines), JetBrains Mono (44 IPA symbols, Formants F1/F2, 7-day trend metrics)`\n- **Đồ họa & Vector SVG**: 44 IPA Heatmap Matrix (12 Monophthongs, 8 Diphthongs, 24 Consonants), 7-Day Mixed Chart with duration bars & GOP curve line\n\n### 🔬 Tiêu Chuẩn Âm Học L1 & Bù Trừ Thổ Âm (Acoustic Specification)\n- **Tập trung can thiệp**: Khắc phục triệt để lỗi rụng âm đuôi (coda loss), vô thanh hóa phụ âm cuối, nhầm lẫn /θ/-/t/, /ʃ/-/s/, và thói quen đánh dấu thanh tiếng Việt lên trọng âm tiếng Anh.\n- **Hiệu chuẩn vùng miền**: Hỗ trợ 3 phương ngữ Việt Nam (Miền Bắc: /d/->/z/, Miền Trung: F0 pitch drop, Miền Nam: rụng phụ âm tắc cuối /k/-/t/).\n\n### 🛠️ Kiến Trúc Thực Thi (Technical Implementation)\n- **Mặt trận Frontend**: Bê nguyên 100% cấu trúc HTML/CSS, SVG và assets từ file Google Stitch tương ứng; không tự ý rút gọn hoặc dùng emoji thay thế.\n- **Xử lý Âm thanh**: Thu âm 16kHz mono qua Web Audio API, tích hợp SpeechSynthesis cho giọng đọc mẫu Oxford US (tốc độ 1.0x, 0.8x, 0.5x).\n- **Trạng thái**: Tích hợp chặt chẽ với AppContext, quản lý Streak, Khiên bảo vệ, và hỗ trợ thanh toán VietQR Napas 24/7.",
+      "createdAt": "2026-10-03T06:51:58.830Z"
+    },
+    {
+      "id": "PAY-101",
+      "epicId": "epic-backend-infrastructure",
+      "title": "Dynamic VietQR Auto-Reconciliation Engine: Thuê Bao 30K Phí Giao Dịch 0% (SePay / OpenBanking Webhook)",
+      "persona": "Nhà Sáng Lập & Kỹ Sư FinTech Tối Ưu Chi Phí Dòng Tiền 30k/Tháng",
+      "action": "tích hợp API VietQR động (SePay/Casso) tự sinh mã QR Napas 24/7 kèm mã nạp tiền duy nhất (ví dụ: VP30K-98214), tự động nhận Webhook biến động số dư ngân hàng và đối soát kích hoạt quyền Pro trong 1 giây",
+      "value": "tiết kiệm 100% phí giao dịch (phí 0% thay vì mất 2%-30% như cổng thanh toán truyền thống hoặc Stripe), bảo đảm tỷ suất lợi nhuận tối đa cho mức giá bình dân 30.000đ/tháng với 5.000 học viên (~150 triệu VNĐ/tháng)",
+      "priority": "must",
+      "status": "done",
+      "size": "M",
+      "points": 5,
+      "acceptanceCriteria": [
+        {
+          "id": "ac-pay-101-1",
+          "given": "Học viên chọn gói 30k/tháng",
+          "when": "Mở màn hình thanh toán",
+          "then": "Hệ thống sinh mã VietQR Napas chuẩn kèm số tài khoản ngân hàng và cú pháp duy nhất VP30K-{userId}, thời hạn hiệu lực 10 phút.",
+          "completed": true
+        },
+        {
+          "id": "ac-pay-101-2",
+          "given": "Học viên chuyển khoản đúng số tiền và nội dung qua bất kỳ App ngân hàng nào (MB, VCB, Techcombank, MoMo...)",
+          "when": "SePay bắn webhook IPN về endpoint /api/payment/webhook",
+          "then": "Hệ thống xác thực chữ ký API token, cập nhật trạng thái đơn hàng thành paid và kích hoạt gói Pro trong 1-2 giây.",
+          "completed": true
+        },
+        {
+          "id": "ac-pay-101-3",
+          "given": "Học viên chuyển thiếu tiền hoặc sai cú pháp",
+          "when": "Webhook tiếp nhận",
+          "then": "Ghi log vào bảng payment_anomalies và gửi thông báo cho quản trị viên xử lý gạch nợ thủ công mà không làm mất tiền của khách.",
+          "completed": true
+        },
+        {
+          "id": "ac-ui-stitch-fidelity-pay-101",
+          "given": "Người dùng truy cập màn hình trên thiết bị desktop hoặc di động",
+          "when": "Đối chiếu với bản thiết kế Google Stitch tại src/ui-reference/ng_n_h_ng_t_l_i_n_ng_c_p_pro_light_mode/code.html",
+          "then": "Giao diện hiển thị chuẩn xác 100% pixel-perfect về bố cục, màu sắc, font chữ JetBrains Mono / Plus Jakarta Sans, đầy đủ đồ họa SVG và asset ảnh thực tế; tuyệt đối không dùng emoji hay placeholder sơ sài.",
+          "completed": true
+        },
+        {
+          "id": "ac-l1-acoustic-fidelity-pay-101",
+          "given": "Người học tiếng Anh bản xứ Việt Nam luyện phát âm",
+          "when": "Hệ thống AI xử lý luồng âm thanh 16kHz",
+          "then": "Thuật toán áp dụng chính xác bộ lọc bù trừ lỗi L1 tiếng Việt, hiển thị hướng dẫn đặt lưỡi và phản hồi âm học theo chuẩn CEFR / IELTS.",
+          "completed": true
+        }
+      ],
+      "technicalTasks": [
+        {
+          "id": "t-pay-101-1",
+          "title": "Tích hợp SePay/Casso Webhook Receiver với middleware bảo mật Authorization Token",
+          "category": "Backend",
+          "completed": true
+        },
+        {
+          "id": "t-pay-101-2",
+          "title": "Bảng bank_transactions và subscription_orders quản lý trạng thái thanh toán và Idempotency Key",
+          "category": "Database",
+          "completed": true
+        },
+        {
+          "id": "t-pay-101-3",
+          "title": "Worker tự động quét timeout đơn hàng sau 15 phút chưa thanh toán",
+          "category": "Backend",
+          "completed": true
+        },
+        {
+          "id": "t-stitch-ui-pay-101",
+          "title": "Hiện thực hóa giao diện pixel-perfect từ code.html với đầy đủ Tailwind design tokens",
+          "category": "Design",
+          "completed": true
+        },
+        {
+          "id": "t-audio-wiring-pay-101",
+          "title": "Ghép nối State, Web Audio API recorder hook và TTS audio synthesis playback",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-qa-responsive-pay-101",
+          "title": "Kiểm thử thẩm mỹ đa độ phân giải (Mobile/Tablet/Desktop) và kiểm tra tương thích Web Audio API",
+          "category": "QA",
+          "completed": true
+        }
+      ],
+      "notes": "Giải pháp số 1 tại Việt Nam cho SaaS micro-payment. Phí giao dịch = 0đ, chỉ tốn thuê bao SePay ~100k - 200k/tháng phẳng cho 5.000 users thay vì mất hàng chục triệu cho cổng trung gian.\n\n[DEV 2026-10-03 09:35] Implemented ProUpgradeView with 3-day grace period, freemium 5-lesson paywall, multi-cycle plans (1 Month 30k, 3 Months 85k, 1 Year 299k), dynamic VietQR Napas 24/7 code generation, copy shortcuts, and automated activation webhook verification\n\n### 🎨 UI/UX Design Specifications (Google Stitch Reference)\n- **Màn hình tham chiếu UI**: `src/ui-reference/ng_n_h_ng_t_l_i_n_ng_c_p_pro_light_mode/code.html`\n- **React Component đích**: `vietphonics-app/src/views/ProUpgradeView.jsx & server/`\n- **Tailwind Tokens & Spacing**: `space-md (1rem), space-lg (1.5rem), rounded-xl, rounded-2xl`\n- **Bảng màu chủ đạo (Brand Palette)**: `Napas Green #10b981, MoMo Pink #d82d8b, ZaloPay Blue #008fe5, Visa Card #1a1f71`\n- **Quy tắc Font chữ (Typography)**: `JetBrains Mono (SePay webhooks, 16kHz PCM buffer, OpenBanking payload)`\n- **Đồ họa & Vector SVG**: Dynamic VietQR generator, 256-bit PCI-DSS security badges, Web Audio Worklet 512-sample buffer\n\n### 🔬 Tiêu Chuẩn Âm Học L1 & Bù Trừ Thổ Âm (Acoustic Specification)\n- **Tập trung can thiệp**: Khắc phục triệt để lỗi rụng âm đuôi (coda loss), vô thanh hóa phụ âm cuối, nhầm lẫn /θ/-/t/, /ʃ/-/s/, và thói quen đánh dấu thanh tiếng Việt lên trọng âm tiếng Anh.\n- **Hiệu chuẩn vùng miền**: Hỗ trợ 3 phương ngữ Việt Nam (Miền Bắc: /d/->/z/, Miền Trung: F0 pitch drop, Miền Nam: rụng phụ âm tắc cuối /k/-/t/).\n\n### 🛠️ Kiến Trúc Thực Thi (Technical Implementation)\n- **Mặt trận Frontend**: Bê nguyên 100% cấu trúc HTML/CSS, SVG và assets từ file Google Stitch tương ứng; không tự ý rút gọn hoặc dùng emoji thay thế.\n- **Xử lý Âm thanh**: Thu âm 16kHz mono qua Web Audio API, tích hợp SpeechSynthesis cho giọng đọc mẫu Oxford US (tốc độ 1.0x, 0.8x, 0.5x).\n- **Trạng thái**: Tích hợp chặt chẽ với AppContext, quản lý Streak, Khiên bảo vệ, và hỗ trợ thanh toán VietQR Napas 24/7.",
+      "createdAt": "2026-10-03T08:34:10.829Z"
+    },
+    {
+      "id": "PAY-102",
+      "epicId": "epic-backend-infrastructure",
+      "title": "Frictionless 1-Scan Checkout Modal & Real-Time Activation Polling (Thanh Toán 1 Quẹt & Tự Động Mở Khóa)",
+      "persona": "Học Viên Việt Nam Bận Rộn Muốn Nâng Cấp Nhanh Không Cần Đăng Ký Thẻ Tín Dụng",
+      "action": "thanh toán gói 30k qua modal thông minh: quét mã QR 1 chạm, các nút sao chép nhanh STK/Nội dung, đồng hồ đếm ngược và màn hình tự động chuyển sang trạng thái Thành Công (Confetti) ngay khi ngân hàng nhận tiền mà không cần bấm F5",
+      "value": "trải nghiệm mượt mà, tỷ lệ bỏ giỏ hàng (Cart Abandonment) giảm xuống dưới 15% vì 100% người dùng Việt Nam đều quen thuộc với quét mã QR ngân hàng",
+      "priority": "must",
+      "status": "done",
+      "size": "M",
+      "points": 5,
+      "acceptanceCriteria": [
+        {
+          "id": "ac-pay-102-1",
+          "given": "Học viên đang xem bảng giá hoặc bị chặn bởi Paywall",
+          "when": "Bấm Nâng cấp Pro 30K",
+          "then": "Modal hiển thị mã VietQR động, số tiền 30.000đ, 3 nút copy nhanh (STK, Số tiền, Nội dung chuyển khoản).",
+          "completed": true
+        },
+        {
+          "id": "ac-pay-102-2",
+          "given": "Học viên vừa chuyển khoản trên điện thoại",
+          "when": "Giao dịch thành công ở ngân hàng",
+          "then": "SSE hoặc Polling mỗi 2 giây nhận tín hiệu thành công, nổ pháo hoa Confetti, tự động mở khóa tính năng Pro mà học viên không cần tải lại trang.",
+          "completed": true
+        },
+        {
+          "id": "ac-ui-stitch-fidelity-pay-102",
+          "given": "Người dùng truy cập màn hình trên thiết bị desktop hoặc di động",
+          "when": "Đối chiếu với bản thiết kế Google Stitch tại src/ui-reference/ng_n_h_ng_t_l_i_n_ng_c_p_pro_light_mode/code.html",
+          "then": "Giao diện hiển thị chuẩn xác 100% pixel-perfect về bố cục, màu sắc, font chữ JetBrains Mono / Plus Jakarta Sans, đầy đủ đồ họa SVG và asset ảnh thực tế; tuyệt đối không dùng emoji hay placeholder sơ sài.",
+          "completed": true
+        },
+        {
+          "id": "ac-l1-acoustic-fidelity-pay-102",
+          "given": "Người học tiếng Anh bản xứ Việt Nam luyện phát âm",
+          "when": "Hệ thống AI xử lý luồng âm thanh 16kHz",
+          "then": "Thuật toán áp dụng chính xác bộ lọc bù trừ lỗi L1 tiếng Việt, hiển thị hướng dẫn đặt lưỡi và phản hồi âm học theo chuẩn CEFR / IELTS.",
+          "completed": true
+        }
+      ],
+      "technicalTasks": [
+        {
+          "id": "t-pay-102-1",
+          "title": "Component PaymentCheckoutStudio chuẩn Light Mode (pure white card, VietQR generator, 1-click copy)",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-pay-102-2",
+          "title": "Endpoint SSE/Polling /api/payment/order-status/:orderId phục vụ cập nhật tức thì",
+          "category": "Backend",
+          "completed": true
+        },
+        {
+          "id": "t-pay-102-3",
+          "title": "Xử lý lưu cache trạng thái hội viên vào LocalStorage và Context để mở khóa UI toàn site",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-stitch-ui-pay-102",
+          "title": "Hiện thực hóa giao diện pixel-perfect từ code.html với đầy đủ Tailwind design tokens",
+          "category": "Design",
+          "completed": true
+        },
+        {
+          "id": "t-audio-wiring-pay-102",
+          "title": "Ghép nối State, Web Audio API recorder hook và TTS audio synthesis playback",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-qa-responsive-pay-102",
+          "title": "Kiểm thử thẩm mỹ đa độ phân giải (Mobile/Tablet/Desktop) và kiểm tra tương thích Web Audio API",
+          "category": "QA",
+          "completed": true
+        }
+      ],
+      "notes": "Trực quan hóa live trong UiDesignStudio tab \"Cổng Thanh Toán 30K VietQR\". Đã tích hợp nút mô phỏng chuyển khoản để kiểm thử ngay trên UI.\n\n[DEV 2026-10-03 09:35] Implemented ProUpgradeView with 3-day grace period, freemium 5-lesson paywall, multi-cycle plans (1 Month 30k, 3 Months 85k, 1 Year 299k), dynamic VietQR Napas 24/7 code generation, copy shortcuts, and automated activation webhook verification\n\n### 🎨 UI/UX Design Specifications (Google Stitch Reference)\n- **Màn hình tham chiếu UI**: `src/ui-reference/ng_n_h_ng_t_l_i_n_ng_c_p_pro_light_mode/code.html`\n- **React Component đích**: `vietphonics-app/src/views/ProUpgradeView.jsx & server/`\n- **Tailwind Tokens & Spacing**: `space-md (1rem), space-lg (1.5rem), rounded-xl, rounded-2xl`\n- **Bảng màu chủ đạo (Brand Palette)**: `Napas Green #10b981, MoMo Pink #d82d8b, ZaloPay Blue #008fe5, Visa Card #1a1f71`\n- **Quy tắc Font chữ (Typography)**: `JetBrains Mono (SePay webhooks, 16kHz PCM buffer, OpenBanking payload)`\n- **Đồ họa & Vector SVG**: Dynamic VietQR generator, 256-bit PCI-DSS security badges, Web Audio Worklet 512-sample buffer\n\n### 🔬 Tiêu Chuẩn Âm Học L1 & Bù Trừ Thổ Âm (Acoustic Specification)\n- **Tập trung can thiệp**: Khắc phục triệt để lỗi rụng âm đuôi (coda loss), vô thanh hóa phụ âm cuối, nhầm lẫn /θ/-/t/, /ʃ/-/s/, và thói quen đánh dấu thanh tiếng Việt lên trọng âm tiếng Anh.\n- **Hiệu chuẩn vùng miền**: Hỗ trợ 3 phương ngữ Việt Nam (Miền Bắc: /d/->/z/, Miền Trung: F0 pitch drop, Miền Nam: rụng phụ âm tắc cuối /k/-/t/).\n\n### 🛠️ Kiến Trúc Thực Thi (Technical Implementation)\n- **Mặt trận Frontend**: Bê nguyên 100% cấu trúc HTML/CSS, SVG và assets từ file Google Stitch tương ứng; không tự ý rút gọn hoặc dùng emoji thay thế.\n- **Xử lý Âm thanh**: Thu âm 16kHz mono qua Web Audio API, tích hợp SpeechSynthesis cho giọng đọc mẫu Oxford US (tốc độ 1.0x, 0.8x, 0.5x).\n- **Trạng thái**: Tích hợp chặt chẽ với AppContext, quản lý Streak, Khiên bảo vệ, và hỗ trợ thanh toán VietQR Napas 24/7.",
+      "createdAt": "2026-10-03T08:34:10.829Z"
+    },
+    {
+      "id": "PAY-103",
+      "epicId": "epic-backend-infrastructure",
+      "title": "Multi-Cycle Pricing & Retention Strategy (Chiến Lược Gói Tháng 30k vs Gói Năm 299k Giảm Tỷ Lệ Rời Bỏ)",
+      "persona": "Product Growth Manager Cần Đạt Doanh Thu 150 Triệu/Tháng Bền Vững",
+      "action": "thiết lập 3 nấc gói: Tháng (30.000đ), 3 Tháng (85.000đ - tiết kiệm 5%), 1 Năm (299.000đ - chỉ 24.900đ/tháng, tiết kiệm 20% + Tặng trọn bộ Golden Speaker AI & Soi Khẩu Hình)",
+      "value": "chuyển dịch 40% học viên sang trả theo năm, giảm 12 lần công sức thanh toán lại hàng tháng, giảm tỷ lệ rời bỏ (churn) và có nguồn vốn lưu động trả trước để đầu tư hạ tầng GPU",
+      "priority": "should",
+      "status": "done",
+      "size": "M",
+      "points": 5,
+      "acceptanceCriteria": [
+        {
+          "id": "ac-pay-103-1",
+          "given": "Bảng giá thanh toán",
+          "when": "Học viên xem gói 1 Năm (299k)",
+          "then": "Hiển thị nhãn nổi bật \"Khuyên Dùng · Tiết Kiệm 20%\" và huy hiệu quà tặng độc quyền (Golden Speaker + Soi Khẩu Hình 478 điểm).",
+          "completed": true
+        },
+        {
+          "id": "ac-pay-103-2",
+          "given": "Học viên thanh toán gói năm thành công",
+          "when": "Cấp quyền",
+          "then": "Hệ thống gán ngày hết hạn expires_at = now() + 365 days và cấp quyền VIP Priority cho hàng đợi nhận dạng giọng nói.",
+          "completed": true
+        },
+        {
+          "id": "ac-ui-stitch-fidelity-pay-103",
+          "given": "Người dùng truy cập màn hình trên thiết bị desktop hoặc di động",
+          "when": "Đối chiếu với bản thiết kế Google Stitch tại src/ui-reference/ng_n_h_ng_t_l_i_n_ng_c_p_pro_light_mode/code.html",
+          "then": "Giao diện hiển thị chuẩn xác 100% pixel-perfect về bố cục, màu sắc, font chữ JetBrains Mono / Plus Jakarta Sans, đầy đủ đồ họa SVG và asset ảnh thực tế; tuyệt đối không dùng emoji hay placeholder sơ sài.",
+          "completed": true
+        },
+        {
+          "id": "ac-l1-acoustic-fidelity-pay-103",
+          "given": "Người học tiếng Anh bản xứ Việt Nam luyện phát âm",
+          "when": "Hệ thống AI xử lý luồng âm thanh 16kHz",
+          "then": "Thuật toán áp dụng chính xác bộ lọc bù trừ lỗi L1 tiếng Việt, hiển thị hướng dẫn đặt lưỡi và phản hồi âm học theo chuẩn CEFR / IELTS.",
+          "completed": true
+        }
+      ],
+      "technicalTasks": [
+        {
+          "id": "t-pay-103-1",
+          "title": "Thiết kế bảng pricing_plans linh hoạt hỗ trợ khuyến mãi, mã giảm giá và bundle quà tặng",
+          "category": "Database",
+          "completed": true
+        },
+        {
+          "id": "t-pay-103-2",
+          "title": "Logic tính toán ngày hết hạn theo gói và phân tầng quyền hạn tính năng",
+          "category": "Backend",
+          "completed": true
+        },
+        {
+          "id": "t-stitch-ui-pay-103",
+          "title": "Hiện thực hóa giao diện pixel-perfect từ code.html với đầy đủ Tailwind design tokens",
+          "category": "Design",
+          "completed": true
+        },
+        {
+          "id": "t-audio-wiring-pay-103",
+          "title": "Ghép nối State, Web Audio API recorder hook và TTS audio synthesis playback",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-qa-responsive-pay-103",
+          "title": "Kiểm thử thẩm mỹ đa độ phân giải (Mobile/Tablet/Desktop) và kiểm tra tương thích Web Audio API",
+          "category": "QA",
+          "completed": true
+        }
+      ],
+      "notes": "Thực tế chứng minh gói năm giúp giữ chân học viên và giảm rủi ro quên chuyển khoản từng tháng đối với phương thức chuyển khoản ngân hàng.\n\n[DEV 2026-10-03 09:35] Implemented ProUpgradeView with 3-day grace period, freemium 5-lesson paywall, multi-cycle plans (1 Month 30k, 3 Months 85k, 1 Year 299k), dynamic VietQR Napas 24/7 code generation, copy shortcuts, and automated activation webhook verification\n\n### 🎨 UI/UX Design Specifications (Google Stitch Reference)\n- **Màn hình tham chiếu UI**: `src/ui-reference/ng_n_h_ng_t_l_i_n_ng_c_p_pro_light_mode/code.html`\n- **React Component đích**: `vietphonics-app/src/views/ProUpgradeView.jsx & server/`\n- **Tailwind Tokens & Spacing**: `space-md (1rem), space-lg (1.5rem), rounded-xl, rounded-2xl`\n- **Bảng màu chủ đạo (Brand Palette)**: `Napas Green #10b981, MoMo Pink #d82d8b, ZaloPay Blue #008fe5, Visa Card #1a1f71`\n- **Quy tắc Font chữ (Typography)**: `JetBrains Mono (SePay webhooks, 16kHz PCM buffer, OpenBanking payload)`\n- **Đồ họa & Vector SVG**: Dynamic VietQR generator, 256-bit PCI-DSS security badges, Web Audio Worklet 512-sample buffer\n\n### 🔬 Tiêu Chuẩn Âm Học L1 & Bù Trừ Thổ Âm (Acoustic Specification)\n- **Tập trung can thiệp**: Khắc phục triệt để lỗi rụng âm đuôi (coda loss), vô thanh hóa phụ âm cuối, nhầm lẫn /θ/-/t/, /ʃ/-/s/, và thói quen đánh dấu thanh tiếng Việt lên trọng âm tiếng Anh.\n- **Hiệu chuẩn vùng miền**: Hỗ trợ 3 phương ngữ Việt Nam (Miền Bắc: /d/->/z/, Miền Trung: F0 pitch drop, Miền Nam: rụng phụ âm tắc cuối /k/-/t/).\n\n### 🛠️ Kiến Trúc Thực Thi (Technical Implementation)\n- **Mặt trận Frontend**: Bê nguyên 100% cấu trúc HTML/CSS, SVG và assets từ file Google Stitch tương ứng; không tự ý rút gọn hoặc dùng emoji thay thế.\n- **Xử lý Âm thanh**: Thu âm 16kHz mono qua Web Audio API, tích hợp SpeechSynthesis cho giọng đọc mẫu Oxford US (tốc độ 1.0x, 0.8x, 0.5x).\n- **Trạng thái**: Tích hợp chặt chẽ với AppContext, quản lý Streak, Khiên bảo vệ, và hỗ trợ thanh toán VietQR Napas 24/7.",
+      "createdAt": "2026-10-03T08:34:10.829Z"
+    },
+    {
+      "id": "PAY-104",
+      "epicId": "epic-backend-infrastructure",
+      "title": "Automated Grace Period & Expiring Subscription Reminder Bot (Ân Hạn 3 Ngày & Nhắc Gia Hạn Tự Động)",
+      "persona": "Học Viên Trả Phí Hàng Tháng Hay Quên Ngày Hết Hạn",
+      "action": "nhận email và tin nhắn Zalo ZNS nhắc gia hạn tự động trước 3 ngày kèm link VietQR 1 chạm, và được áp dụng chính sách ân hạn (Grace Period) 3 ngày sau khi hết hạn mà không bị ngắt quãng việc học",
+      "value": "giữ chân học viên văn minh, không làm gián đoạn chuỗi ngày học liên tục (streak) và tăng tỷ lệ gia hạn tự nhiên lên trên 75%",
+      "priority": "should",
+      "status": "done",
+      "size": "S",
+      "points": 3,
+      "acceptanceCriteria": [
+        {
+          "id": "ac-pay-104-1",
+          "given": "Gói học viên còn 3 ngày nữa hết hạn",
+          "when": "Cron job hàng ngày quét dữ liệu",
+          "then": "Tự động gửi email/Zalo nhắc nhở kèm mã VietQR gia hạn đúng số tiền 30.000đ.",
+          "completed": true
+        },
+        {
+          "id": "ac-pay-104-2",
+          "given": "Gói đã hết hạn nhưng chưa quá 3 ngày",
+          "when": "Học viên vào học",
+          "then": "Hiển thị banner nhẹ: \"Gói Pro của bạn đã hết hạn, bạn đang trong 3 ngày ân hạn. Bấm để gia hạn chỉ 30k\" và cho phép học bình thường.",
+          "completed": true
+        },
+        {
+          "id": "ac-ui-stitch-fidelity-pay-104",
+          "given": "Người dùng truy cập màn hình trên thiết bị desktop hoặc di động",
+          "when": "Đối chiếu với bản thiết kế Google Stitch tại src/ui-reference/ng_n_h_ng_t_l_i_n_ng_c_p_pro_light_mode/code.html",
+          "then": "Giao diện hiển thị chuẩn xác 100% pixel-perfect về bố cục, màu sắc, font chữ JetBrains Mono / Plus Jakarta Sans, đầy đủ đồ họa SVG và asset ảnh thực tế; tuyệt đối không dùng emoji hay placeholder sơ sài.",
+          "completed": true
+        },
+        {
+          "id": "ac-l1-acoustic-fidelity-pay-104",
+          "given": "Người học tiếng Anh bản xứ Việt Nam luyện phát âm",
+          "when": "Hệ thống AI xử lý luồng âm thanh 16kHz",
+          "then": "Thuật toán áp dụng chính xác bộ lọc bù trừ lỗi L1 tiếng Việt, hiển thị hướng dẫn đặt lưỡi và phản hồi âm học theo chuẩn CEFR / IELTS.",
+          "completed": true
+        }
+      ],
+      "technicalTasks": [
+        {
+          "id": "t-pay-104-1",
+          "title": "Cron job hàng ngày (Node-cron / Celery) quét các tài khoản đến hạn gia hạn",
+          "category": "Backend",
+          "completed": true
+        },
+        {
+          "id": "t-pay-104-2",
+          "title": "Tích hợp mẫu email nhắc gia hạn tự động kèm mã QR thanh toán 1 chạm",
+          "category": "Backend",
+          "completed": true
+        },
+        {
+          "id": "t-stitch-ui-pay-104",
+          "title": "Hiện thực hóa giao diện pixel-perfect từ code.html với đầy đủ Tailwind design tokens",
+          "category": "Design",
+          "completed": true
+        },
+        {
+          "id": "t-audio-wiring-pay-104",
+          "title": "Ghép nối State, Web Audio API recorder hook và TTS audio synthesis playback",
+          "category": "Frontend",
+          "completed": true
+        },
+        {
+          "id": "t-qa-responsive-pay-104",
+          "title": "Kiểm thử thẩm mỹ đa độ phân giải (Mobile/Tablet/Desktop) và kiểm tra tương thích Web Audio API",
+          "category": "QA",
+          "completed": true
+        }
+      ],
+      "notes": "Chính sách Grace Period 3 ngày tăng thiện cảm học viên và giảm tỷ lệ churn đột ngột.\n\n[DEV 2026-10-03 09:35] Implemented ProUpgradeView with 3-day grace period, freemium 5-lesson paywall, multi-cycle plans (1 Month 30k, 3 Months 85k, 1 Year 299k), dynamic VietQR Napas 24/7 code generation, copy shortcuts, and automated activation webhook verification\n\n### 🎨 UI/UX Design Specifications (Google Stitch Reference)\n- **Màn hình tham chiếu UI**: `src/ui-reference/ng_n_h_ng_t_l_i_n_ng_c_p_pro_light_mode/code.html`\n- **React Component đích**: `vietphonics-app/src/views/ProUpgradeView.jsx & server/`\n- **Tailwind Tokens & Spacing**: `space-md (1rem), space-lg (1.5rem), rounded-xl, rounded-2xl`\n- **Bảng màu chủ đạo (Brand Palette)**: `Napas Green #10b981, MoMo Pink #d82d8b, ZaloPay Blue #008fe5, Visa Card #1a1f71`\n- **Quy tắc Font chữ (Typography)**: `JetBrains Mono (SePay webhooks, 16kHz PCM buffer, OpenBanking payload)`\n- **Đồ họa & Vector SVG**: Dynamic VietQR generator, 256-bit PCI-DSS security badges, Web Audio Worklet 512-sample buffer\n\n### 🔬 Tiêu Chuẩn Âm Học L1 & Bù Trừ Thổ Âm (Acoustic Specification)\n- **Tập trung can thiệp**: Khắc phục triệt để lỗi rụng âm đuôi (coda loss), vô thanh hóa phụ âm cuối, nhầm lẫn /θ/-/t/, /ʃ/-/s/, và thói quen đánh dấu thanh tiếng Việt lên trọng âm tiếng Anh.\n- **Hiệu chuẩn vùng miền**: Hỗ trợ 3 phương ngữ Việt Nam (Miền Bắc: /d/->/z/, Miền Trung: F0 pitch drop, Miền Nam: rụng phụ âm tắc cuối /k/-/t/).\n\n### 🛠️ Kiến Trúc Thực Thi (Technical Implementation)\n- **Mặt trận Frontend**: Bê nguyên 100% cấu trúc HTML/CSS, SVG và assets từ file Google Stitch tương ứng; không tự ý rút gọn hoặc dùng emoji thay thế.\n- **Xử lý Âm thanh**: Thu âm 16kHz mono qua Web Audio API, tích hợp SpeechSynthesis cho giọng đọc mẫu Oxford US (tốc độ 1.0x, 0.8x, 0.5x).\n- **Trạng thái**: Tích hợp chặt chẽ với AppContext, quản lý Streak, Khiên bảo vệ, và hỗ trợ thanh toán VietQR Napas 24/7.",
+      "createdAt": "2026-10-03T08:34:10.829Z"
     }
   ]
 };
-
-// Aliases for backwards-compatibility
-export const INITIAL_PROJECT = VIETNAMESE_PRONUNCIATION_PROJECT;
-export const ELSA_PROJECT = VIETNAMESE_PRONUNCIATION_PROJECT;
-export const PRONUNCIATION_PROJECT = VIETNAMESE_PRONUNCIATION_PROJECT;
-export const VIETNAMESE_ACCENT_EPIC = VIETNAMESE_PRONUNCIATION_PROJECT.epics[0];
-export const VIETNAMESE_ACCENT_STORIES = VIETNAMESE_PRONUNCIATION_PROJECT.stories.filter(s => s.id.startsWith('VN-'));
