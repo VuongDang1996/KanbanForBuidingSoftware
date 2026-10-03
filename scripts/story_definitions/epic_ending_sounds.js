@@ -4,94 +4,93 @@ export const endingSoundsStories = [
     epic_id: 'epic-ending-sounds',
     title: 'Web Audio API Low-Latency In-Browser Audio Streaming: Bộ Thu Âm Trình Duyệt Không Độ Trễ & Hiển Thị Sóng Âm 48kHz',
     persona: 'Người học tiếng Anh cần phản hồi phát âm tức thì ngay khi vừa dứt lời, không chấp nhận độ trễ (latency) gây mất tập trung',
-    action: 'thu âm giọng nói trực tiếp qua micro trình duyệt bằng Web Audio API, truyền luồng âm thanh PCM 16kHz/48kHz với độ trễ dưới 80ms và hiển thị dải sóng âm thời gian thực 60fps',
-    value: 'loại bỏ hoàn toàn cảm giác lag, tạo cảm giác mượt mà tức thời như đang trò chuyện với giáo viên bản ngữ trực tiếp',
+    action: 'thu âm giọng nói trực tiếp qua micro trình duyệt bằng Web Audio API, truyền luồng âm thanh PCM 16kHz/48kHz với độ trễ dưới 50ms và hiển thị dải sóng âm thời gian thực 60fps',
+    value: 'loại bỏ hoàn toàn cảm giác giật lag, tạo trải nghiệm mượt mà tức thời như đang đối thoại trực tiếp với giáo viên bản xứ',
     priority: 'must',
-    status: 'in-progress',
+    status: 'done',
     size: 'L',
     points: 8,
+    uiMockupUrl: '/src/ui-reference/acoustic_precision_light/code.html',
     acceptance_criteria: JSON.stringify([
       {
-        id: 'ac-pron-101-audio-stream',
-        given: 'Học viên bấm giữ nút mic hoặc phím Space',
-        when: 'Micro bắt đầu thu âm',
-        then: 'Hệ thống khởi tạo Web Audio API AudioContext, lấy dữ liệu từ AnalyserNode (FFT Size 1024) và truyền luồng nhị phân về bộ nhớ đệm với độ trễ dưới 80ms.',
+        id: 'ac-pron-101-worklet-init',
+        given: 'Học viên cấp quyền sử dụng microphone trong trình duyệt',
+        when: 'AudioContext được khởi tạo',
+        then: 'Hệ thống nạp AudioWorkletProcessor trích xuất luồng mẫu PCM 16kHz Float32 mono với buffer size 1024 mẫu và độ trễ ngắt âm thanh dưới 50ms.',
         completed: true
       },
       {
-        id: 'ac-pron-101-frontend-design',
-        given: 'Giao diện LiveWaveformVisualizer trong VietPhonics App',
-        when: 'Học viên đang nói vào micro',
-        then: 'Canvas HTML5 vẽ dải sóng âm đối xứng 64 thanh phổ màu gradient Rose sang Sky nhảy múa theo tần số âm thanh thời gian thực ở tốc độ 60 FPS, không gây giật lag luồng UI chính (Zero Jank).',
+        id: 'ac-pron-101-canvas-render',
+        given: 'AudioContext đang nhận luồng dữ liệu micro',
+        when: 'AnalyserNode tính toán biến đổi Fourier nhanh (FFT Size 1024)',
+        then: 'LiveWaveformCanvas vẽ 64 thanh phổ tần số đối xứng dạng sóng âm neon gradient từ Sky-400 sang Rose-500 ở tốc độ ổn định 60 FPS mà không làm rớt khung hình (Zero Frame Drop).',
         completed: true
       },
       {
-        id: 'ac-pron-101-backend-design',
-        given: '5,000 học viên cùng lúc thu âm và truyền luồng âm thanh',
-        when: 'Máy khách kết nối WebSocket Gateway /ws/v1/audio/stream',
-        then: 'Sử dụng cụm Node.js / Go WebSocket gateway xử lý đóng gói binary chunk (Opus 48kbps), duy trì 5,000 kết nối đồng thời với lượng RAM tiêu thụ dưới 350MB, P95 độ trễ mạng < 40ms.',
+        id: 'ac-pron-101-push-to-talk',
+        given: 'Học viên nhấn và giữ phím Space hoặc nút Mic tròn ở trung tâm',
+        when: 'Sự kiện keydown / mousedown kích hoạt',
+        then: 'Trạng thái chuyển sang recording ngay lập tức, nút mic mở rộng viền phát sáng pulsating ring, và tự động dừng thu âm khi nhả phím (keyup / mouseup).',
         completed: true
       },
       {
-        id: 'ac-pron-101-l1-precision',
-        given: 'Đặc trưng âm học của người Việt khi phát âm phụ âm cuối thường có âm lượng nhỏ dần (Decrescendo)',
-        when: 'Thu âm âm cuối',
-        then: 'Bộ tiền khuếch đại phần mềm (Software Gain Pre-amp) tự động tăng độ nhạy microphone thêm 3dB ở dải tần số cao (3kHz - 8kHz) để bắt trọn âm xát và âm bật hơi.',
-        completed: true
-      },
-      {
-        id: 'ac-pron-101-a11y-fallback',
-        given: 'Học viên dùng phím Space để điều khiển thu âm',
-        when: 'Bấm và giữ phím Space',
-        then: 'Tự động kích hoạt Push-To-Talk, nhả phím Space để dừng và nộp bài, kèm âm thanh bip báo hiệu nhẹ nhàng qua Web Audio Synthesizer.',
+        id: 'ac-pron-101-mic-denied-fallback',
+        given: 'Trình duyệt từ chối quyền microphone hoặc không tìm thấy thiết bị thu âm',
+        when: 'Học viên cố gắng bấm nút thu âm',
+        then: 'Hiển thị hộp thoại MicPermissionDeniedModal hướng dẫn bật lại quyền mic trên Chrome/Safari kèm nút "Kiểm tra lại thiết bị".',
         completed: true
       }
     ]),
     technical_tasks: JSON.stringify([
-      { id: 't-pron-101-fe-worklet', title: 'Xây dựng AudioWorkletProcessor trích xuất luồng PCM 16kHz mono trong luồng nền (Audio Worker Thread)', category: 'Frontend', completed: true },
-      { id: 't-pron-101-fe-canvas', title: 'Phát triển component LiveWaveformCanvas.jsx vẽ 64 thanh sóng âm FFT với hiệu ứng đổ bóng neon', category: 'Frontend', completed: true },
-      { id: 't-pron-101-be-ws', title: 'Thiết lập WebSocket streaming gateway bằng uWebSockets.js đáp ứng 5,000 kết nối đồng thời', category: 'Backend', completed: true },
-      { id: 't-pron-101-be-codec', title: 'Tích hợp bộ giải mã libopus thời gian thực chuyển đổi luồng Opus sang PCM nạp cho GPU pipeline', category: 'Audio/DSP', completed: true },
-      { id: 't-pron-101-qa', title: 'Đo kiểm độ trễ Round-Trip Time (RTT) từ lúc ngắt tiếng nói đến khi canvas nhận diện dừng hoàn toàn (<100ms)', category: 'QA', completed: true }
+      { id: 't-pron-101-worklet', title: 'Xây dựng pcm-recorder-processor.js trong AudioWorklet thread tách biệt hoàn toàn khỏi Main UI thread', category: 'Frontend', completed: true },
+      { id: 't-pron-101-canvas', title: 'Phát triển component LiveWaveformCanvas.jsx sử dụng requestAnimationFrame và 2D Canvas context', category: 'Frontend', completed: true },
+      { id: 't-pron-101-ptt', title: 'Thiết lập listener bàn phím toàn cục xử lý Push-to-Talk bằng phím Space với bộ đệm chống dội phím (Debounce)', category: 'Frontend', completed: true },
+      { id: 't-pron-101-fallback', title: 'Xây dựng modal cảnh báo MicPermissionModal.jsx với đồ họa minh họa các bước cấp quyền micro', category: 'Frontend', completed: true }
     ]),
-    notes: `### 🎨 FRONTEND DESIGN SPECIFICATION
-- **Component File**: \`vietphonics-app/src/components/audio/AudioRecordingController.jsx\`
-- **Component Architecture**:
-  \`\`\`
-  <AudioRecordingController onAudioChunk={handleStreamChunk} onRecordComplete={handleDone}>
-    <LiveWaveformCanvas analyser={analyserNode} isRecording={isRecording} />
-    <PushToTalkButton isRecording={isRecording} volumeLevel={volumeRms} />
-    <LatencyBadge latencyMs={measuredLatency} />
-  </AudioRecordingController>
-  \`\`\`
-- **Audio Worklet Pipeline**:
-  - \`navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true, sampleRate: 16000 } })\`
-  - Gắn vào \`audioContext.audioWorklet.addModule('/worklets/pcm-processor.js')\`
-  - Gửi binary array \`Float32Array\` sang Web Worker để đóng gói Opus chunk.
-- **Stitch Design Tokens**:
-  - Mic Button: \`w-24 h-24 rounded-full bg-gradient-to-tr from-rose-600 to-rose-400 shadow-[0_0_40px_rgba(244,63,94,0.45)] ring-4 ring-rose-500/20 active:scale-95 transition-all\`
-  - Canvas: \`h-20 w-full max-w-md rounded-2xl bg-slate-900/80 border border-slate-800\`.
+    notes: `### 🎨 PURE FRONTEND DESIGN SPECIFICATION
+- **Phân loại**: Pure Frontend Audio Pipeline & Canvas 2D
+- **UI Mockup**: \`vietphonics-app/src/ui-reference/acoustic_precision_light/code.html\`
+- **Frontend Component**: \`vietphonics-app/src/components/audio/AudioRecordingController.jsx\`
 
----
+#### 📐 Component Hierarchy & State
+\`\`\`
+<AudioRecordingController onAudioData={handleChunk} onStop={handleRecordingEnd}>
+  <LiveWaveformCanvas 
+    analyserNode={analyserNode} 
+    isRecording={isRecording} 
+    barCount={64} 
+  />
+  <PushToTalkButton 
+    isRecording={isRecording} 
+    volumeRms={currentVolumeRms} 
+    hotkey="Space" 
+  />
+  <MicPermissionModal 
+    isOpen={hasPermissionError} 
+    onRetry={requestMicAccess} 
+  />
+</AudioRecordingController>
+\`\`\`
 
-### 🗄️ BACKEND DESIGN SPECIFICATION
-- **WebSocket Protocol Contract**:
-  \`\`\`
-  WebSocket URL: wss://api.vietphonics.com/ws/v1/audio/stream?token=<JWT>
-  
-  Client -> Server (Binary Frames):
-  - Frame 1: JSON Config { "sampleRate": 16000, "channels": 1, "targetSentenceId": "sent_102" }
-  - Frames 2..N: Opus encoded binary audio chunks (20ms frames, ~120 bytes each)
-  - Frame End: String "__EOF__"
+#### 🎵 AudioWorklet Architecture
+- \`navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true, sampleRate: 16000 } })\`
+- AudioWorklet tách riêng khỏi main event loop:
+\`\`\`javascript
+class PCMRecorderProcessor extends AudioWorkletProcessor {
+  process(inputs) {
+    const input = inputs[0];
+    if (input && input[0]) {
+      this.port.postMessage(input[0]); // Float32Array 128 samples
+    }
+    return true;
+  }
+}
+\`\`\`
 
-  Server -> Client (JSON Text Frames):
-  - Ping / Pong: Heartbeat every 15s
-  - Realtime Telemetry: { "rmsDb": -18.4, "vadActive": true, "latencyMs": 28 }
-  - Final Result: { "transcript": "contact", "confidence": 0.96, "audioUrl": "https://r2.../audio.opus" }
-  \`\`\`
-- **High Concurrency & Load (5,000 Users)**:
-  - WebSocket Server sử dụng uWebSockets.js (viết bằng C++), 1 node chịu 10,000 kết nối đồng thời với 400MB RAM.
-  - Phân tải qua AWS Network Load Balancer (NLB) Layer 4 với thuật toán Least Connections.`
+#### 🎨 Design Tokens & Visual Specs
+- **Mic Button**: \`w-24 h-24 rounded-full bg-gradient-to-tr from-rose-600 to-rose-400 shadow-[0_0_40px_rgba(244,63,94,0.45)] ring-4 ring-rose-500/20 active:scale-95 transition-all\`.
+- **Waveform Canvas**: \`h-24 w-full max-w-lg rounded-2xl bg-slate-900/90 border border-slate-800 shadow-inner\`.
+- **Canvas Rendering**: 64 bars đối xứng trục tâm, màu gradient \`#38bdf8\` (Sky-400) đến \`#f43f5e\` (Rose-500).`
   },
   {
     id: 'ELSA-201',
@@ -101,127 +100,78 @@ export const endingSoundsStories = [
     action: 'đọc câu tiếng Anh và nhận kết quả tức thì dưới dạng Bản Đồ Nhiệt Âm Vị (Phoneme Heatmap), trong đó từng âm vị được tô màu trực quan: Xanh lá (Đúng ≥85%), Vàng cam (Tạm chấp nhận 60-84%), Đỏ (Phát âm sai <60%)',
     value: 'chỉ ra lỗi sai với độ chính xác đến từng âm tố, loại bỏ hoàn toàn sự hoang mang "tôi nói cả câu mà không biết sai chữ nào"',
     priority: 'must',
-    status: 'in-progress',
+    status: 'done',
     size: 'XL',
     points: 13,
+    uiMockupUrl: '/src/ui-reference/ph_ng_luy_n_ph_t_m_ph_k_m_h_c_light_mode/code.html',
     acceptance_criteria: JSON.stringify([
       {
-        id: 'ac-elsa-201-alignment-flow',
-        given: 'Học viên hoàn thành bài nói câu mục tiêu',
-        when: 'Thuật toán CTC Forced Alignment phân tích âm thanh',
-        then: 'Xác định chính xác thời điểm bắt đầu (Start Time ms) và kết thúc (End Time ms) của từng âm vị, tính toán điểm số độ tin cậy ngữ âm và trả về bản đồ nhiệt trong vòng dưới 350ms.',
+        id: 'ac-elsa-201-ctc-alignment',
+        given: 'Bản ghi âm giọng nói của học viên đã được gửi lên hệ thống',
+        when: 'Mô hình CTC Forced Alignment xử lý',
+        then: 'Trả về danh sách từng từ và các âm vị IPA con tương ứng kèm mốc thời gian (startMs, endMs) và điểm tin cậy độ chính xác (0-100%).',
         completed: true
       },
       {
-        id: 'ac-elsa-201-frontend-design',
-        given: 'Giao diện PhonemeHeatmapView',
-        when: 'Hiển thị kết quả chấm câu',
-        then: 'Mỗi từ được hiển thị bằng chữ cái lớn, ngay bên dưới là phiên âm IPA tương ứng được chia thành các ô âm vị (Phoneme Chips) tô màu theo 3 cấp độ (Xanh #10b981, Vàng #f59e0b, Đỏ #ef4444); khi click vào âm đỏ sẽ mở Modal hướng dẫn khẩu hình sửa lỗi.',
+        id: 'ac-elsa-201-heatmap-chips',
+        given: 'Dữ liệu điểm số âm vị được trả về máy khách',
+        when: 'PhonemeHeatmapRenderer hiển thị trên màn hình',
+        then: 'Từng âm vị được bao bọc trong thẻ chip có màu: Xanh lá (≥85%), Vàng hổ phách (60-84%), Đỏ hồng (<60% kèm hiệu ứng viền phát sáng cảnh báo).',
         completed: true
       },
       {
-        id: 'ac-elsa-201-backend-design',
-        given: '5,000 yêu cầu chấm forced alignment diễn ra trong giờ cao điểm',
-        when: 'Hệ thống xử lý phân tích âm vị',
-        then: 'Sử dụng mô hình ONNX Runtime Whisper-CTC quantize FP16 chạy trên worker GPU, xử lý 300 câu/giây, P95 độ trễ toàn trình < 350ms.',
+        id: 'ac-elsa-201-phoneme-popover',
+        given: 'Học viên click vào một âm vị có điểm dưới 60% (ví dụ âm /t/ bị nuốt trong từ "contact")',
+        when: 'Drawer chẩn đoán mở ra',
+        then: 'Hiển thị ký hiệu IPA to bản, mô tả khẩu hình sai thường gặp của người Việt và nút "Nghe lại âm này".',
         completed: true
       },
       {
-        id: 'ac-elsa-201-l1-precision',
-        given: 'Học viên nuốt âm cuối /t/ trong từ "contact" (nói thành "con-tac")',
-        when: 'Bản đồ nhiệt phân tích âm vị cuối',
-        then: 'Ký tự /t/ tô màu đỏ rực rỡ kèm nhãn cảnh báo L1: "Lỗi nuốt âm đuôi: Thiếu âm bật hơi /t/ ở cuối từ".',
-        completed: true
-      },
-      {
-        id: 'ac-elsa-201-a11y-fallback',
-        given: 'Người dùng bị mù màu (Color Blindness)',
-        when: 'Bật chế độ Color-Blind Friendly',
-        then: 'Các thẻ âm vị bổ sung ký hiệu biểu tượng rõ ràng: Dấu tick tròn (Đúng), Dấu chấm than tam giác (Cần chú ý), Dấu X chéo (Sai), không phụ thuộc vào màu sắc.',
+        id: 'ac-elsa-201-colorblind-mode',
+        given: 'Người dùng bật chế độ hỗ trợ thị giác trong phần Cài đặt',
+        when: 'Bản đồ nhiệt hiển thị',
+        then: 'Bổ sung các icon hình học (Tick tròn, Chấm than, Dấu X) bên cạnh màu sắc để đảm bảo khả năng tiếp cận WCAG 2.1 AA.',
         completed: true
       }
     ]),
     technical_tasks: JSON.stringify([
-      { id: 't-elsa-201-fe-chips', title: 'Xây dựng component PhonemeHeatmapCard.jsx hiển thị từ ngữ và dải ký hiệu IPA tương tác', category: 'Frontend', completed: true },
-      { id: 't-elsa-201-fe-popover', title: 'Thiết kế PhonemeDiagnosticModal.jsx hiển thị ảnh động khẩu hình và nút nghe âm thanh lỗi vs chuẩn', category: 'Frontend', completed: true },
-      { id: 't-elsa-201-be-ctc', title: 'Tích hợp mô hình Wav2Vec2/Whisper CTC Forced Alignment trích xuất time-aligned phonemes', category: 'AI/DSP', completed: true },
-      { id: 't-elsa-201-be-cache', title: 'Cấu hình Redis cache lưu trữ ma trận âm vị target dictionary cho 10,000 từ vựng tiếng Anh phổ biến', category: 'Backend', completed: true },
-      { id: 't-elsa-201-qa', title: 'Kiểm thử độ chính xác căn chỉnh thời gian (Boundary Alignment Error < 25ms) trên tập dữ liệu TIMIT', category: 'QA', completed: true }
+      { id: 't-elsa-201-chips', title: 'Xây dựng component PhonemeHeatmapRenderer.jsx render danh sách từ và âm vị theo flex-wrap', category: 'Frontend', completed: true },
+      { id: 't-elsa-201-drawer', title: 'Thiết kế PhonemeQuickDiagnosticDrawer.jsx hiển thị giải thích âm học và bài tập khắc phục nhanh', category: 'Frontend', completed: true },
+      { id: 't-elsa-201-ctc-api', title: 'Xây dựng endpoint POST /api/v1/scoring/phoneme-alignment tích hợp mô hình Wav2Vec2-CTC', category: 'AI/Backend', completed: true },
+      { id: 't-elsa-201-cache', title: 'Lưu trữ ma trận âm vị target dictionary vào Redis cache giảm thời gian trích xuất xuống < 5ms', category: 'Backend', completed: true }
     ]),
-    notes: `### 🎨 FRONTEND DESIGN SPECIFICATION
-- **Component File**: \`vietphonics-app/src/components/scoring/PhonemeHeatmapRenderer.jsx\`
-- **Component Hierarchy**:
-  \`\`\`
-  <PhonemeHeatmapRenderer sentence={targetSentence} result={scoringResult}>
-    <SentenceOverviewScore overallScore={86} fluencyScore={90} />
-    <WordClusterContainer>
-      {result.words.map(w => (
-        <WordCard key={w.wordId} text={w.text} score={w.score}>
-          <IpaPhonemeStrip phonemes={w.phonemes} onPhonemeClick={handleOpenDiagnostic} />
-        </WordCard>
-      ))}
-    </WordClusterContainer>
-    <PhonemeDiagnosticDrawer activePhoneme={selectedPhoneme} onClose={closeDrawer} />
-  </PhonemeHeatmapRenderer>
-  \`\`\`
-- **Stitch Design Tokens**:
-  - Correct Chip (≥85%): \`bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 px-2 py-1 rounded-lg font-mono text-sm\`
-  - Warning Chip (60-84%): \`bg-amber-500/10 text-amber-400 border border-amber-500/30 px-2 py-1 rounded-lg font-mono text-sm\`
-  - Error Chip (<60%): \`bg-rose-500/10 text-rose-400 border border-rose-500/30 px-2 py-1 rounded-lg font-mono text-sm animate-pulse\`
-  - Word Card: \`bg-slate-900 border border-slate-800 rounded-2xl p-4 flex flex-col items-center gap-2\`.
+    notes: `### 🎯 FULLSTACK FEATURE SPECIFICATION
+- **Phân loại**: Full-stack AI Feature (Interactive Heatmap Chips + CTC Forced Alignment)
+- **UI Mockup**: \`vietphonics-app/src/ui-reference/ph_ng_luy_n_ph_t_m_ph_k_m_h_c_light_mode/code.html\`
+- **Frontend Component**: \`vietphonics-app/src/components/scoring/PhonemeHeatmapRenderer.jsx\`
 
----
+#### 🎨 Frontend Heatmap Layout
+\`\`\`
++---------------------------------------------------------------+
+| Câu: "She sells seashells by the seashore"                    |
+| [She]       [sells]     [sea-shells]      [by]  [the]  [seashore] |
+| ʃ   iː      s  ɛ  l  z   s  iː  ʃ  ɛ  l  z                         |
+| [●] [●]    [●][●][●][▲] [●] [●][▲][●][●][✕]                       |
++---------------------------------------------------------------+
+\`\`\`
+- **Chip Tokens**:
+  - Green (≥85%): \`bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 px-2 py-1 rounded-lg font-mono text-sm\`
+  - Amber (60-84%): \`bg-amber-500/10 text-amber-400 border border-amber-500/30 px-2 py-1 rounded-lg font-mono text-sm\`
+  - Red (<60%): \`bg-rose-500/10 text-rose-400 border border-rose-500/30 px-2 py-1 rounded-lg font-mono text-sm animate-pulse\`
 
-### 🗄️ BACKEND DESIGN SPECIFICATION
-- **REST API Endpoint**:
-  \`\`\`http
-  POST /api/v1/scoring/phoneme-alignment
-  Authorization: Bearer <JWT>
-  Content-Type: application/json
+#### 🗄️ Backend API Contract
+\`\`\`http
+POST /api/v1/scoring/phoneme-alignment
+Authorization: Bearer <JWT>
+Content-Type: application/json
 
-  Request Body:
-  {
-    "audioUrl": "https://r2.vietphonics.com/audio/session_102.opus",
-    "targetSentence": "She sells seashells by the seashore",
-    "targetIpa": "ʃiː sɛlz ˈsiːʃɛlz baɪ ðə ˈsiːʃɔː"
-  }
-
-  Response 200 OK:
-  {
-    "overallScore": 79.4,
-    "durationMs": 2840,
-    "words": [
-      {
-        "word": "seashells",
-        "score": 62.0,
-        "startMs": 850,
-        "endMs": 1420,
-        "phonemes": [
-          { "symbol": "/s/", "score": 92, "startMs": 850, "endMs": 930 },
-          { "symbol": "/iː/", "score": 88, "startMs": 930, "endMs": 1050 },
-          { "symbol": "/ʃ/", "score": 45, "startMs": 1050, "endMs": 1180, "errorType": "substituted_with_/s/" },
-          { "symbol": "/ɛ/", "score": 85, "startMs": 1180, "endMs": 1260 },
-          { "symbol": "/l/", "score": 80, "startMs": 1260, "endMs": 1330 },
-          { "symbol": "/z/", "score": 38, "startMs": 1330, "endMs": 1420, "errorType": "omitted_final_consonant" }
-        ]
-      }
-    ]
-  }
-  \`\`\`
-- **Database Schema (PostgreSQL DDL)**:
-  \`\`\`sql
-  CREATE TABLE phoneme_alignment_records (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-    sentence_text TEXT NOT NULL,
-    overall_score NUMERIC(5, 2) NOT NULL,
-    word_details JSONB NOT NULL,
-    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-  );
-  CREATE INDEX idx_alignment_records_user ON phoneme_alignment_records(user_id, created_at DESC);
-  \`\`\`
-- **5,000 Users Scale Strategy**:
-  - GPU Inference được điều phối qua Triton Inference Server với dynamic batching (batch size max 32, max queue delay 10ms) đảm bảo GPU đạt 95% hiệu suất khai thác.`
+{
+  "audioUrl": "https://r2.vietphonics.com/audio/session_102.opus",
+  "targetSentence": "She sells seashells by the seashore"
+}
+\`\`\`
+- **Response**: Trả về cấu trúc JSON phân cấp Word -> Phoneme array với các trường \`symbol\`, \`score\`, \`startMs\`, \`endMs\`, \`errorType\`.
+- **Database Table**: \`phoneme_alignment_records\` (PostgreSQL) lưu vết để tính toán tiến bộ lịch sử.`
   },
   {
     id: 'ELSA-204',
@@ -234,102 +184,75 @@ export const endingSoundsStories = [
     status: 'in-progress',
     size: 'M',
     points: 5,
+    uiMockupUrl: '/src/ui-reference/acoustic_precision_light/code.html',
     acceptance_criteria: JSON.stringify([
       {
-        id: 'ac-elsa-204-fluency-calc',
-        given: 'Học viên hoàn thành bài nói kéo dài từ 20 đến 60 giây',
-        when: 'Hệ thống phân tích phổ âm học đoạn nói',
-        then: 'Tính toán chính xác: Tốc độ nói WPM (chuẩn 120-150 WPM), tổng số quãng nghỉ bất thường (>0.6s) và danh sách từ đệm rác (Filler Words).',
+        id: 'ac-elsa-204-wpm-gauge',
+        given: 'Dữ liệu bài nói của học viên kéo dài từ 15 đến 60 giây',
+        when: 'Giao diện FluencyTracker tải lên',
+        then: 'Hiển thị đồng hồ WPM bán nguyệt SVG với kim chỉ số mượt mà, phân chia 3 dải tốc độ: Chậm (<110 WPM), Lý tưởng (120-150 WPM), và Quá nhanh (>170 WPM).',
         completed: true
       },
       {
-        id: 'ac-elsa-204-frontend-design',
-        given: 'Giao diện FluencyTrackerView',
-        when: 'Render kết quả trên màn hình',
-        then: 'Hiển thị thước đo tốc độ WPM Speedometer dạng bán nguyệt, dòng thời gian Timeline trực quan với các điểm ngắt nghỉ tô màu hổ phách, các từ đệm rác tô màu tím Violet có huy hiệu cảnh báo, bảng so sánh với tốc độ người bản xứ.',
+        id: 'ac-elsa-204-timeline-segments',
+        given: 'Các mốc thời gian lời nói và khoảng lặng được phân tích',
+        when: 'Thanh timeline hiển thị trên màn hình',
+        then: 'Phân đoạn nói bình thường màu Sky-500, khoảng lặng tự nhiên (<0.5s) màu xám mờ, và quãng nghỉ ấp úng (>0.6s) màu Amber-500 có viền cảnh báo nổi bật.',
         completed: true
       },
       {
-        id: 'ac-elsa-204-backend-design',
-        given: '5,000 học viên nộp bài phân tích độ lưu loát',
-        when: 'Endpoint POST /api/v1/scoring/fluency tiếp nhận dữ liệu',
-        then: 'Phân tích âm học dựa trên đặc trưng VAD và nén dữ liệu báo cáo JSON lưu trong Redis với TTL 24h; P95 độ trễ xử lý < 200ms.',
+        id: 'ac-elsa-204-audio-excerpt-playback',
+        given: 'Học viên click vào một khoảng nghỉ hoặc từ đệm rác trên thanh timeline',
+        when: 'Hành động click diễn ra',
+        then: 'Trình duyệt tự động cắt và phát đoạn âm thanh 1.5 giây quanh điểm đó để học viên tự nghe lại khoảnh khắc ngập ngừng của mình.',
         completed: true
       },
       {
-        id: 'ac-elsa-204-l1-precision',
-        given: 'Người Việt có thói quen chèn âm đệm tiếng Việt ("ờ", "ừm") khi suy nghĩ từ vựng tiếng Anh',
-        when: 'Hệ thống phân tích phổ âm thanh',
-        then: 'Nhận diện chính xác các âm đệm L1 tiếng Việt và đưa ra lời khuyên: "Thay vì nói \'ờ\', hãy giữ im lặng 0.5s để chuẩn bị ý tiếp theo - sự im lặng có chủ đích thể hiện sự tự tin".',
-        completed: true
-      },
-      {
-        id: 'ac-elsa-204-a11y-fallback',
-        given: 'Học viên xem lại các vị trí ngắt nghỉ bất thường',
-        when: 'Bấm phím Tab đến từng điểm cảnh báo quãng nghỉ',
-        then: 'Hệ thống tự động phát đoạn audio 2 giây xung quanh vị trí đó để học viên tự nghe lại sự ấp úng của mình.',
-        completed: true
+        id: 'ac-elsa-204-l1-filler-filter',
+        given: 'Bài nói chứa các từ đệm tiếng Việt L1 ("ờ", "ừm", "kiểu như")',
+        when: 'Bật bộ lọc L1 Hesitation Filter',
+        then: 'Làm nổi bật các thẻ từ đệm kèm lời khuyên thay thế bằng sự im lặng có chủ đích.',
+        completed: false
       }
     ]),
     technical_tasks: JSON.stringify([
-      { id: 't-elsa-204-fe-timeline', title: 'Xây dựng component FluencyTimeline.jsx hiển thị trục thời gian trực quan với các khối lời nói và khoảng lặng', category: 'Frontend', completed: true },
-      { id: 't-elsa-204-fe-meter', title: 'Phát triển đồng hồ đo tốc độ WpmSpeedometer.jsx với 3 vùng tốc độ (Chậm <110, Chuẩn 120-150, Quá nhanh >170)', category: 'Frontend', completed: true },
-      { id: 't-elsa-204-be-vad', title: 'Triển khai thuật toán Silero VAD phân tích độ dài khoảng lặng và trích xuất nhịp điệu lời nói', category: 'AI/DSP', completed: true },
-      { id: 't-elsa-204-be-filler', title: 'Xây dựng bộ từ điển nhận diện âm đệm đa ngôn ngữ (English Fillers + Vietnamese L1 hesitation tokens)', category: 'Backend', completed: true },
-      { id: 't-elsa-204-qa', title: 'Kiểm thử với 40 đoạn thu âm có tốc độ nói từ cực chậm (80 WPM) đến cực nhanh (190 WPM)', category: 'QA', completed: true }
+      { id: 't-elsa-204-gauge', title: 'Xây dựng component WpmSpeedometerGauge.jsx bằng SVG thuần với kim xoay góc -90deg đến +90deg', category: 'Frontend', completed: true },
+      { id: 't-elsa-204-timeline', title: 'Phát triển component FluencyInteractiveTimeline.jsx có khả năng kéo trượt zoom và click chọn đoạn', category: 'Frontend', completed: true },
+      { id: 't-elsa-204-audio-slice', title: 'Xây dựng hàm playBufferSegment(audioBuffer, startMs, endMs) sử dụng Web Audio API AudioBufferSourceNode', category: 'Frontend', completed: true },
+      { id: 't-elsa-204-l1-filter', title: 'Tích hợp bộ lọc phân loại từ đệm tiếng Việt vào thanh công cụ điều khiển', category: 'Frontend', completed: false }
     ]),
-    notes: `### 🎨 FRONTEND DESIGN SPECIFICATION
-- **Component File**: \`vietphonics-app/src/components/scoring/FluencyTimelineTracker.jsx\`
-- **Component Hierarchy**:
-  \`\`\`
-  <FluencyTimelineTracker metrics={fluencyData}>
-    <WpmSpeedometer currentWpm={fluencyData.wpm} targetRange={[120, 150]} />
-    <TimelineTrack durationMs={fluencyData.durationMs}>
-      {fluencyData.segments.map(s => (
-        <TimelineSegment key={s.id} type={s.type} startMs={s.startMs} endMs={s.endMs} label={s.label} />
-      ))}
-    </TimelineTrack>
-    <FillerWordList fillers={fluencyData.fillers} onPlayExcerpt={playExcerpt} />
-  </FluencyTimelineTracker>
-  \`\`\`
-- **Stitch Design Tokens**:
-  - Normal Speech Segment: \`bg-sky-500/20 border-sky-500/50 text-sky-300 rounded px-2 py-1 text-xs\`
-  - Awkward Pause (>0.6s): \`bg-amber-500/20 border border-amber-500 text-amber-400 rounded px-2 py-1 text-xs font-mono\`
-  - Filler Word Badge: \`bg-purple-500/20 border border-purple-500 text-purple-300 rounded-full px-2.5 py-0.5 text-xs font-semibold\`.
+    notes: `### 🎨 PURE FRONTEND DESIGN SPECIFICATION
+- **Phân loại**: Pure Frontend UI/UX Component (Fluency Speedometer & Timeline)
+- **UI Mockup**: \`vietphonics-app/src/ui-reference/acoustic_precision_light/code.html\`
+- **Frontend Component**: \`vietphonics-app/src/components/scoring/FluencyTimelineTracker.jsx\`
 
----
+#### 📐 Layout & Timeline Track Structure
+\`\`\`
++-------------------------------------------------------------+
+| [ Đồng Hồ WPM: 128 WPM (Chuẩn) ]  [ 2 Từ Đệm ]  [ 1 Ngập Ngừng ] |
++-------------------------------------------------------------+
+| 0s       2s           4s            6s            8s        |
+| [=== Nói ===] [..Nghỉ..] [==== Nói ====] [!Ùm!] [=== Nói ===] |
++-------------------------------------------------------------+
+| > Bấm vào đoạn [!Ùm!] để nghe lại 1.5s ngập ngừng          |
++-------------------------------------------------------------+
+\`\`\`
 
-### 🗄️ BACKEND DESIGN SPECIFICATION
-- **REST API Endpoint**:
-  \`\`\`http
-  POST /api/v1/scoring/fluency-analysis
-  Authorization: Bearer <JWT>
-  Content-Type: application/json
-
-  Request Body:
-  {
-    "audioUrl": "https://r2.vietphonics.com/audio/session_303.opus",
-    "transcript": "Well, um, I think that the project is, you know, quite challenging."
-  }
-
-  Response 200 OK:
-  {
-    "wpm": 118,
-    "speechDurationSec": 5.4,
-    "totalPauses": 3,
-    "awkwardPausesCount": 1,
-    "fillerWordsCount": 2,
-    "fluencyBandIelts": 6.5,
-    "fillersDetected": [
-      { "word": "um", "timestampMs": 950, "durationMs": 420 },
-      { "word": "you know", "timestampMs": 3100, "durationMs": 580 }
-    ],
-    "recommendation": "Tốc độ nói 118 WPM ở mức tốt, hãy giảm 2 từ đệm 'um' và 'you know' để đạt chuẩn Band 7.5+."
-  }
-  \`\`\`
-- **High Concurrency (5,000 Users)**:
-  - Silero VAD chạy cực nhẹ trên CPU (chỉ tốn ~2MB RAM và 1.5ms mỗi câu 5 giây).
-  - Kết quả lưu trong Redis cache với key \`fluency:user:{userId}:{sessionId}\`.`
+#### 🎨 Micro-Interactions & Audio Snippets
+- **WPM Speedometer**: SVG Arc \`d="M 20 100 A 80 80 0 0 1 180 100"\` với kim chỉ số xoay theo công thức: \`angle = ((wpm - 80) / 120) * 180 - 90\`.
+- **Audio Excerpt Slice**:
+\`\`\`javascript
+function playAudioSnippet(audioBuffer, startMs, endMs) {
+  const source = audioContext.createBufferSource();
+  source.buffer = audioBuffer;
+  source.connect(audioContext.destination);
+  source.start(0, startMs / 1000, (endMs - startMs) / 1000);
+}
+\`\`\`
+- **Tokens**:
+  - Segment Speech: \`bg-sky-500/20 border-sky-500/50 text-sky-300 rounded px-2 py-1 text-xs\`
+  - Segment Pause (>0.6s): \`bg-amber-500/20 border border-amber-500 text-amber-400 rounded px-2 py-1 text-xs font-mono\`
+  - Segment Filler: \`bg-purple-500/20 border border-purple-500 text-purple-300 rounded-full px-2.5 py-0.5 text-xs font-semibold\`.`
   },
   {
     id: 'VN-101',
@@ -342,99 +265,77 @@ export const endingSoundsStories = [
     status: 'in-progress',
     size: 'XL',
     points: 13,
+    uiMockupUrl: '/src/ui-reference/acoustic_precision_light/code.html',
     acceptance_criteria: JSON.stringify([
       {
-        id: 'ac-vn-101-burst-detection',
-        given: 'Học viên phát âm từ có phụ âm bật hơi cuối (e.g., "cat", "friend", "six", "desk")',
-        when: 'Hệ thống đo đạc xung năng lượng âm học (Transient Burst Energy Spike)',
-        then: 'Phát hiện sự hiện diện của xung bật hơi trong khoảng 50ms cuối cùng của từ; nếu tỷ lệ năng lượng xung > 0.35 thì công nhận phát âm rõ âm đuôi.',
+        id: 'ac-vn-101-dual-oscilloscope',
+        given: 'Từ mục tiêu có phụ âm đuôi bật hơi (e.g., "contact", "desk", "six")',
+        when: 'Học viên hoàn thành phát âm',
+        then: 'Hiển thị 2 kênh sóng âm song song: Kênh trên là giọng bản ngữ chuẩn, kênh dưới là giọng học viên, căn chỉnh đồng bộ theo đỉnh nguyên âm chính.',
         completed: true
       },
       {
-        id: 'ac-vn-101-frontend-design',
-        given: 'Giao diện EndingSoundInspectorView',
-        when: 'Render kết quả phân tích',
-        then: 'Hiển thị đồ thị dạng sóng âm đôi (A/B Comparison Oscilloscope): Kênh trên là giọng chuẩn bản ngữ với mũi tên chỉ rõ xung bật hơi /t/, kênh dưới là sóng âm học viên; nếu thiếu xung bật hơi thì vị trí cuối từ nhấp nháy vòng tròn đỏ cảnh báo.',
+        id: 'ac-vn-101-burst-spike-indicator',
+        given: 'Hệ thống đo đạc xung năng lượng âm học (Transient Burst Energy Spike dE/dt)',
+        when: 'Tỷ lệ năng lượng xung trong 50ms cuối của từ đạt ≥ 0.35',
+        then: 'Hiển thị huy hiệu xanh lá "Bật hơi chuẩn!"; nếu thiếu xung bật hơi, vị trí cuối từ xuất hiện vòng tròn đỏ nhấp nháy cảnh báo "Nuốt âm đuôi".',
         completed: true
       },
       {
-        id: 'ac-vn-101-backend-design',
-        given: '5,000 học viên cùng lúc luyện bài tập âm cuối',
-        when: 'Endpoint POST /api/v1/acoustic/ending-burst phân tích',
-        then: 'Thuật toán trích xuất đặc trưng âm học Spectral Flux và Zero Crossing Rate (ZCR) chạy trên WebAssembly client-side hoặc worker server trong < 30ms, không gây nghẽn hệ thống.',
-        completed: true
+        id: 'ac-vn-101-l1-unreleased-stop-warning',
+        given: 'Học viên khép miệng ngậm hơi theo thói quen tiếng Việt (Unreleased Stop e.g. "bát" thay vì "bat")',
+        when: 'Hệ thống phát hiện năng lượng dải tần số 3kHz - 8kHz bị triệt tiêu đột ngột',
+        then: 'Hiển thị sơ đồ giải phẫu 2D chỉ rõ cách mở nhẹ đầu lưỡi để nhả luồng hơi bật ra ngoài.',
+        completed: false
       },
       {
-        id: 'ac-vn-101-l1-precision',
-        given: 'Sự khác biệt giữa âm tắc khép tiếng Việt (Unreleased Stop e.g. "bát", "mát") vs âm tắc nhả tiếng Anh (Released Plosive e.g. "bat", "mat")',
-        when: 'Học viên khép miệng không nhả hơi',
-        then: 'Giao diện bật cảnh báo giải phẫu học: "Bạn đang khép môi giữ hơi như nói tiếng Việt! Hãy mở miệng và bật một luồng hơi nhỏ qua đầu lưỡi để phát ra âm /t/".',
-        completed: true
-      },
-      {
-        id: 'ac-vn-101-a11y-fallback',
-        given: 'Học viên muốn nghe chậm lại âm đuôi để bắt chước',
+        id: 'ac-vn-101-slowmo-playback',
+        given: 'Học viên muốn nghe phân tích chi tiết âm đuôi',
         when: 'Bấm nút "Nghe Chậm 0.5x"',
-        then: 'Hệ thống phát lại đoạn âm thanh bản ngữ ở tốc độ 0.5x với thuật toán bảo toàn cao độ (Pitch-preserving Slowdown), giúp đôi tai nghe rõ từng âm /k/ và /s/ trong từ "six".',
-        completed: true
+        then: 'Hệ thống phát lại đoạn audio ở tốc độ nửa nhịp nhưng vẫn giữ nguyên cao độ giọng nói (Pitch-preserving Timestretch) qua Web Audio API.',
+        completed: false
       }
     ]),
     technical_tasks: JSON.stringify([
-      { id: 't-vn-101-fe-scope', title: 'Xây dựng component OscilloscopeDualWaveform.jsx so sánh sóng âm đôi người dùng vs người bản xứ', category: 'Frontend', completed: true },
-      { id: 't-vn-101-fe-burst', title: 'Thiết kế mũi tên SVG phát sáng chỉ vào vị trí xung bật hơi Acoustic Burst Indicator', category: 'Frontend', completed: true },
-      { id: 't-vn-101-be-dsp', title: 'Xây dựng thuật toán phát hiện xung bật hơi dựa trên đạo hàm năng lượng dE/dt và Zero-Crossing Rate (ZCR)', category: 'Audio/DSP', completed: true },
-      { id: 't-vn-101-be-bench', title: 'Tối ưu hóa thư viện xử lý tín hiệu chạy dưới dạng WebAssembly (Rust/C++ Wasm) nhúng thẳng vào trình duyệt', category: 'DevOps/Scale', completed: true },
-      { id: 't-vn-101-qa', title: 'Kiểm thử với 100 mẫu phát âm chứa 15 loại cụm phụ âm đuôi phức tạp (/kts/, /sks/, /mps/, /ndz/)', category: 'QA', completed: true }
+      { id: 't-vn-101-scope', title: 'Xây dựng component OscilloscopeDualWaveform.jsx vẽ 2 kênh sóng âm bằng Canvas 2D', category: 'Frontend', completed: true },
+      { id: 't-vn-101-burst-meter', title: 'Thiết kế AcousticalBurstMeter.jsx hiển thị thanh đo tỷ lệ năng lượng xung nhịp', category: 'Frontend', completed: true },
+      { id: 't-vn-101-dsp-burst', title: 'Viết thuật toán trích xuất đạo hàm năng lượng dE/dt và Zero Crossing Rate (ZCR) trong 50ms cuối', category: 'Audio/DSP', completed: false },
+      { id: 't-vn-101-slowmo', title: 'Tích hợp Phase Vocoder hoặc Web Audio playbackRate giữ pitch để phát chậm 0.5x', category: 'Audio/DSP', completed: false }
     ]),
-    notes: `### 🎨 FRONTEND DESIGN SPECIFICATION
-- **Component File**: \`vietphonics-app/src/components/ending-sounds/EndingSoundInspector.jsx\`
-- **Component Hierarchy**:
-  \`\`\`
-  <EndingSoundInspector targetWord="contact" targetSound="/t/">
-    <AudioComparisonOscilloscope
-      nativeWaveform={nativeWaveBuffer}
-      userWaveform={userWaveBuffer}
-      burstLocationMs={userBurstTime}
-    />
-    <BurstMeterIndicator burstEnergyRatio={0.42} threshold={0.35} />
-    <L1MouthCavityDiagram anatomyType="alveolar-plosive" isReleased={isReleased} />
-    <SlowPlaybackController speed={0.5} onPlayAudio={playNativeSlow} />
-  </EndingSoundInspector>
-  \`\`\`
-- **Stitch Design Tokens**:
-  - Native Waveform: \`stroke-sky-400 fill-sky-500/10 h-16 w-full\`
-  - User Waveform: \`stroke-rose-400 fill-rose-500/10 h-16 w-full\`
-  - Burst Pin: \`bg-emerald-500 text-slate-950 font-bold px-2 py-0.5 rounded shadow-[0_0_15px_rgba(16,185,129,0.8)] animate-bounce text-[10px]\`.
+    notes: `### 🎯 FULLSTACK & AUDIO DSP SPECIFICATION
+- **Phân loại**: Full-stack Audio DSP & Oscilloscope Visualizer
+- **UI Mockup**: \`vietphonics-app/src/ui-reference/acoustic_precision_light/code.html\`
+- **Frontend Component**: \`vietphonics-app/src/components/ending-sounds/EndingSoundInspector.jsx\`
 
----
+#### 🎨 Dual Oscilloscope Visualization
+\`\`\`
++-------------------------------------------------------------+
+| NATIVE:  ---~--/\/\/\--~---..|  <-- [Xung bật /t/ rõ ràng]   |
+| USER:    ---~--/\/\/\-------..|  <-- [! KHÔNG CÓ XUNG BẬT !]  |
++-------------------------------------------------------------+
+| Burst Energy Ratio: 0.12 (Ngưỡng yêu cầu: >= 0.35) -> Cần sửa |
++-------------------------------------------------------------+
+\`\`\`
 
-### 🗄️ BACKEND DESIGN SPECIFICATION
-- **REST API Endpoint**:
-  \`\`\`http
-  POST /api/v1/acoustic/ending-burst
-  Authorization: Bearer <JWT>
-  Content-Type: application/json
+#### 🧮 Acoustic Burst Formula
+\`\`\`
+BurstEnergyRatio = \int_{T_{end}-50ms}^{T_{end}} |x(t)|^2 dt / E_{vowel}
+\`\`\`
+- Nếu \`BurstEnergyRatio < 0.20\`: Người học hoàn toàn ngậm miệng lại (Vietnamese unreleased stop coda).
+- Nếu \`BurstEnergyRatio >= 0.35\`: Luồng khí bật ra đủ mạnh tạo âm nổ (Released plosive).
 
-  Request Body:
-  {
-    "word": "contact",
-    "targetEndingPhoneme": "/t/",
-    "audioBase64": "UklGRi...",
-    "sampleRate": 16000
-  }
+#### 🗄️ Backend Contract & Wasm Client Scale
+- **Rust/Wasm Client-Side**: Thuật toán tính toán năng lượng tức thời chạy trực tiếp trên client bằng WebAssembly, giảm 100% tải tính toán âm học trên server backend.
+- **REST API Fallback**:
+\`\`\`http
+POST /api/v1/acoustic/ending-burst
+Content-Type: application/json
 
-  Response 200 OK:
-  {
-    "hasReleasedBurst": true,
-    "burstTimeMs": 620,
-    "burstEnergyRatio": 0.48,
-    "threshold": 0.35,
-    "isUnreleasedStop": false,
-    "phoneticScore": 92,
-    "feedbackMessage": "Xuất sắc! Âm bật hơi /t/ cuối từ rất đanh và rõ nét."
-  }
-  \`\`\`
-- **High Concurrency & Low Latency (5,000 Users)**:
-  - Thuật toán Wasm biên dịch từ Rust chạy 100% trên client trình duyệt của học viên -> Server backend chịu tải 0% CPU cho việc tính xung bật hơi.`
+{
+  "word": "contact",
+  "targetEndingPhoneme": "/t/",
+  "audioUrl": "https://r2.../c1.opus"
+}
+\`\`\``
   }
 ];

@@ -4,508 +4,286 @@ export const diagnosticStories = [
     epic_id: 'epic-diagnostic',
     title: 'Native Language (L1) Regional Dialect Calibration: Hiệu Chuẩn Ngữ Điệu Vùng Miền Việt Nam (Bắc - Trung - Nam)',
     persona: 'Người học tiếng Anh tại 3 miền Bắc, Trung, Nam của Việt Nam có các thói quen phát âm tiếng mẹ đẻ (L1) rất khác nhau',
-    action: 'lựa chọn vùng miền sinh sống hoặc làm bài test hiệu chuẩn 30 giây để AI nhận diện đặc trưng phát âm địa phương, từ đó điều chỉnh trọng số chấm điểm và bài tập sửa lỗi tương ứng',
-    value: 'loại bỏ hiện tượng chấm điểm sai lệch do chất giọng vùng miền (miền Bắc hay lẫn lộn l/n, miền Nam hay nuốt âm cuối /t/, /k/, miền Trung ngữ điệu nặng), tăng độ tin cậy và sự hài lòng của học viên',
+    action: 'chọn vùng miền xuất thân hoặc đọc đoạn âm thanh ngắn để hệ thống tự động căn chỉnh trọng số phát hiện lỗi theo phương ngữ địa phương',
+    value: 'tránh bị phạt điểm oan do chất giọng địa phương, đồng thời nhận lộ trình bài tập tập trung chính xác vào tật phát âm đặc trưng của vùng miền mình',
     priority: 'must',
-    status: 'in-progress',
+    status: 'done',
     size: 'L',
     points: 8,
+    uiMockupUrl: '/src/ui-reference/ng_nh_p_nh_chu_n_gi_ng_l1_light_mode/code.html',
     acceptance_criteria: JSON.stringify([
       {
-        id: 'ac-elsa-102-calibration-flow',
-        given: 'Học viên bắt đầu phiên hiệu chuẩn vùng miền',
-        when: 'Học viên chọn vùng miền (Bắc / Trung / Nam) hoặc đọc đoạn âm thanh mẫu chẩn đoán',
-        then: 'Hệ thống thiết lập ma trận trọng số âm vị (Phonetic Weight Matrix) tùy biến cho tài khoản, phân bổ các bài tập khắc phục đúng điểm yếu ngữ âm của vùng miền đó.',
+        id: 'ac-elsa-102-select-region',
+        given: 'Màn hình cài đặt vùng miền hiển thị 3 tùy chọn: Miền Bắc, Miền Trung, Miền Nam',
+        when: 'Người dùng click chọn "Miền Bắc (Northern)"',
+        then: 'Hệ thống kích hoạt profile lỗi L1: Tăng độ nhạy phát hiện nhầm lẫn /l/ và /n/, giảm độ gắt đối với âm /r/ uốn lưỡi, và lưu cấu hình vào hồ sơ người dùng.',
         completed: true
       },
       {
-        id: 'ac-elsa-102-frontend-design',
-        given: 'Giao diện hiệu chuẩn DialectCalibrationView',
-        when: 'Hiển thị trên màn hình',
-        then: 'Bản đồ Việt Nam dạng SVG tương tác 3 miền (Bắc: Sky-500, Trung: Amber-500, Nam: Emerald-500), khi click vào miền nào thì thẻ danh sách lỗi phổ biến trượt ra mượt mà 60fps với font Plus Jakarta Sans, badge cảnh báo viền Rose-500.',
+        id: 'ac-elsa-102-audio-calibration',
+        given: 'Người dùng chọn chế độ "Tự động nhận diện phương ngữ qua giọng nói"',
+        when: 'Người dùng đọc câu kiểm tra: "Look at the little light shining at night"',
+        then: 'Bộ phân tích âm học đo đạc độ mở nguyên âm và cách bật âm /l/-/n/, tự động đề xuất phương ngữ Miền Bắc với độ tin cậy > 88%.',
         completed: true
       },
       {
-        id: 'ac-elsa-102-backend-design',
-        given: '5,000 học viên cùng lúc gửi dữ liệu hiệu chuẩn vùng miền',
-        when: 'Endpoint POST /api/v1/user/dialect-calibration tiếp nhận dữ liệu',
-        then: 'Ghi nhận hồ sơ vào bảng PostgreSQL user_dialect_profiles và nạp cấu hình trọng số vào Redis Hash user:dialect:{user_id} với TTL 7 ngày; thời gian phản hồi API P95 < 45ms.',
+        id: 'ac-elsa-102-curriculum-adaptation',
+        given: 'Tài khoản đã hoàn tất hiệu chuẩn vùng miền',
+        when: 'Người dùng vào trang Lộ trình học tập cá nhân',
+        then: 'Module 1 trong lộ trình tự động đổi tên thành "Khắc phục bẫy âm L/N cho người miền Bắc" thay vì lộ trình chung chung.',
         completed: true
       },
       {
-        id: 'ac-elsa-102-l1-precision',
-        given: 'Học viên miền Bắc chọn giọng Bắc',
-        when: 'Hệ thống thiết lập trọng số âm vị',
-        then: 'Gia tăng độ nhạy nhận diện cặp âm /l/ và /n/, bổ sung bài tập phân biệt "light" vs "night", "lead" vs "need" vào lộ trình ưu tiên số 1.',
-        completed: true
-      },
-      {
-        id: 'ac-elsa-102-a11y-fallback',
-        given: 'Học viên điều hướng không dùng chuột',
-        when: 'Dùng phím Tab và phím mũi tên',
-        then: 'Focus outline hiển thị rõ ràng trên từng vùng miền, aria-label đọc: "Miền Bắc: Lỗi đặc thù l/n, nhấn Enter để chọn", hỗ trợ phím số 1, 2, 3 để chọn nhanh.',
+        id: 'ac-elsa-102-switch-region',
+        given: 'Người dùng muốn thay đổi vùng miền bất kỳ lúc nào',
+        when: 'Vào phần Cài đặt tài khoản và chọn lại vùng miền khác',
+        then: 'Toàn bộ trọng số chấm điểm và danh sách bài tập ưu tiên được cập nhật lại ngay lập tức mà không làm mất lịch sử điểm số cũ.',
         completed: true
       }
     ]),
     technical_tasks: JSON.stringify([
-      { id: 't-elsa-102-fe-map', title: 'Xây dựng component DialectMapSelector.jsx với SVG 3 miền tương tác và hiệu ứng hover pulse', category: 'Frontend', completed: true },
-      { id: 't-elsa-102-fe-matrix', title: 'Thiết kế bảng hiển thị DialectPhonemeTable với badge độ lệch âm vị theo vùng miền', category: 'Frontend', completed: true },
-      { id: 't-elsa-102-be-api', title: 'Xây dựng API REST POST /api/v1/user/dialect-calibration và GET /api/v1/user/dialect-profile', category: 'Backend', completed: true },
-      { id: 't-elsa-102-be-redis', title: 'Thiết lập Redis Hash user:dialect:{userId} lưu ma trận trọng số âm vị cho 5,000 active users', category: 'Backend', completed: true },
-      { id: 't-elsa-102-qa', title: 'Kiểm thử ma trận chấm điểm đối chiếu với 30 mẫu âm thanh chuẩn từ 3 vùng miền Việt Nam', category: 'QA', completed: true }
+      { id: 't-102-ui', title: 'Xây dựng DialectSelectorCard với bản đồ 3 miền tương tác và badge mô tả lỗi đặc thù', category: 'Frontend', completed: true },
+      { id: 't-102-api', title: 'Tạo API POST /api/v1/user/dialect-profile lưu cấu hình vùng miền vào bảng user_profiles', category: 'Backend', completed: true },
+      { id: 't-102-weights', title: 'Định nghĩa ma trận trọng số âm vị L1 (Phoneme Penalty Weight Matrix) cho 3 miền', category: 'AI/DSP', completed: true },
+      { id: 't-102-qa', title: 'Kiểm thử hộp đen chuyển đổi qua lại giữa 3 miền xem danh sách bài gợi ý có đổi theo', category: 'QA', completed: true }
     ]),
-    notes: `### 🎨 FRONTEND DESIGN SPECIFICATION
-- **Component File**: \`vietphonics-app/src/components/diagnostic/DialectCalibrationModal.jsx\`
-- **Component Tree**:
-  \`\`\`
-  <DialectCalibrationModal isOpen={isOpen} onClose={handleClose}>
-    <DialectMapSvg activeRegion={selectedRegion} onSelectRegion={setSelectedRegion} />
-    <RegionDetailCard region={selectedRegion}>
-      <DialectRiskBadges risks={regionData.commonRisks} />
-      <PhonemeWeightPreview weights={regionData.phonemeWeights} />
-      <CalibrationAudioRecorder onCalibrationDone={handleSaveProfile} />
-    </RegionDetailCard>
-  </DialectCalibrationModal>
-  \`\`\`
-- **React State Shape**:
-  \`\`\`typescript
-  interface DialectState {
-    selectedRegion: 'northern' | 'central' | 'southern';
-    isRecording: boolean;
-    audioBlob: Blob | null;
-    calibratedWeights: Record<string, number>; // e.g. { "/l/": 1.4, "/n/": 1.4, "/t/": 1.2 }
-    isSubmitting: boolean;
-  }
-  \`\`\`
-- **Stitch Design Tokens & Tailwind**:
-  - Container: \`bg-slate-900/95 backdrop-blur-xl border border-slate-800 rounded-3xl p-6 shadow-2xl max-w-2xl w-full\`
-  - Region Badges:
-    - Northern: \`bg-sky-500/10 text-sky-400 border border-sky-500/30 font-semibold text-xs px-3 py-1 rounded-full\`
-    - Central: \`bg-amber-500/10 text-amber-400 border border-amber-500/30 font-semibold text-xs px-3 py-1 rounded-full\`
-    - Southern: \`bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 font-semibold text-xs px-3 py-1 rounded-full\`
-  - Typography: \`font-['Plus_Jakarta_Sans']\` for headings, \`font-mono text-xs\` for phonetic weights.
+    notes: `### 🎯 FULLSTACK FEATURE SPECIFICATION
+- **Phân loại**: Full-stack Integration (Frontend Selection + Backend Penalty Weights)
+- **UI Mockup**: \`vietphonics-app/src/ui-reference/ng_nh_p_nh_chu_n_gi_ng_l1_light_mode/code.html\`
+- **Frontend Component**: \`vietphonics-app/src/components/diagnostic/DialectCalibrationModal.jsx\`
 
----
+#### 🎨 Frontend Interface
+- **State**: \`selectedRegion: 'northern' | 'central' | 'southern'\`, \`confidenceScore: number\`.
+- **Interactions**: Click chọn vùng miền -> Thẻ đổi viền sang màu chủ đạo (Bắc: Sky-500, Trung: Amber-500, Nam: Emerald-500) -> Hiện danh sách 3 lỗi phát âm phổ biến nhất của miền đó.
 
-### 🗄️ BACKEND DESIGN SPECIFICATION
-- **REST API Endpoint**:
-  \`\`\`http
-  POST /api/v1/user/dialect-calibration
-  Authorization: Bearer <JWT>
-  Content-Type: application/json
+#### 🗄️ Backend API & Data Contract
+\`\`\`http
+POST /api/v1/user/dialect-profile
+Authorization: Bearer <JWT>
+Content-Type: application/json
 
-  Request Body:
-  {
-    "userId": "usr_99a8b12f",
-    "region": "northern",
-    "detectedAnomalies": ["l_n_confusion", "final_s_omission"],
-    "calibrationAudioUrl": "https://r2.vietphonics.com/calibration/usr_99a8b12f.opus"
-  }
-
-  Response 200 OK:
-  {
-    "success": true,
-    "calibratedAt": "2026-10-03T13:45:00Z",
-    "appliedWeights": {
-      "/l/": 1.45,
-      "/n/": 1.45,
-      "/s/": 1.25,
-      "/ʃ/": 1.10
-    },
-    "recommendedCurriculumModule": "mod_northern_remediation_v1"
-  }
-  \`\`\`
-- **Database Schema (PostgreSQL DDL)**:
-  \`\`\`sql
-  CREATE TABLE user_dialect_profiles (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-    region VARCHAR(20) NOT NULL CHECK (region IN ('northern', 'central', 'southern')),
-    l1_penalties JSONB NOT NULL DEFAULT '{}'::jsonb,
-    audio_sample_url TEXT,
-    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    CONSTRAINT uq_user_dialect UNIQUE(user_id)
-  );
-  CREATE INDEX idx_user_dialect_region ON user_dialect_profiles(region);
-  \`\`\`
-- **High Concurrency & Caching (5,000 Users)**:
-  - Cache Key: \`user:dialect:{userId}\` (Redis Hash)
-  - TTL: 604800s (7 days). Scoring worker reads dialect weights directly from Redis memory in <1ms without hitting PostgreSQL.`
+{
+  "region": "northern",
+  "calibrationMode": "manual_selection"
+}
+\`\`\`
+- **Database Storage**:
+  - Lưu vào cột \`dialect_preference\` trong bảng \`users\` (PostgreSQL/SQLite).
+  - Cache ma trận trọng số vào Redis key \`user:weights:{userId}\` để worker chấm điểm đọc trực tiếp.`
   },
   {
     id: 'ELSA-103',
     epic_id: 'epic-diagnostic',
     title: 'Predicted IELTS & CEFR Speaking Band Estimator: Bảng Ước Tính Điểm IELTS Speaking & Khung CEFR',
     persona: 'Người học tiếng Anh chuẩn bị thi IELTS (mục tiêu Band 6.5 - 8.0) hoặc cần chứng chỉ CEFR (B1 - C1) cho công việc',
-    action: 'xem bảng quy đổi điểm số phát âm chi tiết sang thang điểm IELTS Speaking (0 - 9.0) và khung năng lực Châu Âu CEFR (A1 - C2), kèm biểu đồ phân rã 4 tiêu chí chấm thi chính thức',
-    value: 'giúp người học nắm bắt chính xác trình độ thực tế hiện tại, xóa tan sự mông lung và định lượng được số buổi luyện tập cần thiết để đạt mục tiêu band điểm mong muốn',
+    action: 'quan sát con số dự báo điểm IELTS Speaking và trình độ CEFR được cập nhật động sau mỗi bài nói',
+    value: 'biết rõ mình đang ở mức nào trên thang đo quốc tế, loại bỏ cảm giác học mù quáng không định lượng được kết quả',
     priority: 'must',
-    status: 'in-progress',
+    status: 'done',
     size: 'L',
     points: 8,
+    uiMockupUrl: '/src/ui-reference/t_ng_quan_l_tr_nh_10_ph_t_light_mode/code.html',
     acceptance_criteria: JSON.stringify([
       {
-        id: 'ac-elsa-103-prediction-flow',
-        given: 'Học viên hoàn thành bài kiểm tra chẩn đoán hoặc tích lũy tối thiểu 10 bài luyện phát âm',
-        when: 'Hệ thống kích hoạt thuật toán dự báo Band Estimator',
-        then: 'Tính toán chính xác điểm ước lượng IELTS Speaking (e.g. 6.5) và CEFR Level (e.g. B2) kèm khoảng tin cậy (Confidence Interval ±0.5 band).',
+        id: 'ac-elsa-103-gauge-display',
+        given: 'Học viên đã làm tối thiểu 1 bài sàng lọc hoặc 5 bài luyện âm',
+        when: 'Mở trang Dashboard',
+        then: 'Hiển thị đồng hồ đo bán nguyệt với con số dự báo IELTS Speaking (ví dụ 6.5 Band) và thẻ CEFR (ví dụ B2) với chữ số to bản, rõ ràng.',
         completed: true
       },
       {
-        id: 'ac-elsa-103-frontend-design',
-        given: 'Giao diện thẻ điểm BandEstimatorCard trong DashboardView',
-        when: 'Render trên màn hình',
-        then: 'Đồng hồ đo bán nguyệt (Semi-circle Gauge) hiển thị điểm IELTS lớn màu vàng kim Amber-400, bên cạnh là biểu đồ Radar SVG 4 trục chuẩn British Council (Pronunciation, Fluency, Lexical, Grammar), thanh so sánh CEFR A1-C2 phân tầng màu gradient.',
+        id: 'ac-elsa-103-radar-breakdown',
+        given: 'Học viên bấm vào thẻ điểm IELTS để xem chi tiết',
+        when: 'Hộp thoại phân tích mở ra',
+        then: 'Hiển thị biểu đồ Radar 4 tiêu chí chuẩn khảo thí: Pronunciation (Phát âm), Fluency & Coherence (Lưu loát), Lexical Resource (Từ vựng), Grammatical Range (Ngữ pháp).',
         completed: true
       },
       {
-        id: 'ac-elsa-103-backend-design',
-        given: '5,000 học viên đồng thời tra cứu hoặc cập nhật ước tính điểm band',
-        when: 'Truy vấn GET /api/v1/assessment/ielts-prediction',
-        then: 'Dữ liệu được lấy từ Redis cache user:ielts_band:{user_id} với thời gian phản hồi < 20ms; nền tảng tính toán cập nhật điểm định kỳ bằng BullMQ worker sau mỗi bài thi.',
-        completed: true
-      },
-      {
-        id: 'ac-elsa-103-l1-precision',
-        given: 'Tiêu chí Pronunciation trong thang chấm IELTS Speaking',
-        when: 'Hệ thống phân tích ảnh hưởng của ngữ âm L1 tiếng Việt',
-        then: 'Chỉ rõ tỷ lệ mất điểm do "Nuốt âm cuối" (ảnh hưởng tiêu chí Pronunciation Features Band 6 vs Band 7) và gợi ý lộ trình nâng band cụ thể.',
-        completed: true
-      },
-      {
-        id: 'ac-elsa-103-a11y-fallback',
-        given: 'Người dùng sử dụng công nghệ hỗ trợ đọc màn hình',
-        when: 'Focus vào đồng hồ đo điểm IELTS',
-        then: 'Trình đọc thông báo rõ: "Điểm dự báo IELTS Speaking: 6.5, tương đương khung CEFR B2. Tiêu chí Phát âm: 7.0, Độ lưu loát: 6.0".',
+        id: 'ac-elsa-103-target-gap',
+        given: 'Học viên đặt mục tiêu thi đạt 7.5 Band',
+        when: 'Hệ thống so sánh điểm hiện tại (6.5) với mục tiêu (7.5)',
+        then: 'Chỉ ra rõ ràng: "Bạn cần cải thiện +1.0 Band ở tiêu chí Pronunciation (đặc biệt là âm đuôi và ngữ điệu câu hỏi) để chạm mốc mục tiêu".',
         completed: true
       }
     ]),
     technical_tasks: JSON.stringify([
-      { id: 't-elsa-103-fe-gauge', title: 'Xây dựng component IeltsGaugeMeter.jsx dạng SVG bán nguyệt với hoạt ảnh kim chỉ số mượt mà', category: 'Frontend', completed: true },
-      { id: 't-elsa-103-fe-radar', title: 'Thiết kế biểu đồ Radar 4 trục đánh giá năng lực IELTS Speaking chuẩn khảo thí', category: 'Frontend', completed: true },
-      { id: 't-elsa-103-be-algo', title: 'Phát triển module IeltsEstimatorService áp dụng thuật toán hồi quy phi tuyến tính (Polynomial Regression)', category: 'Backend', completed: true },
-      { id: 't-elsa-103-be-cache', title: 'Thiết lập Redis Key user:ielts_band:{userId} lưu kết quả tính toán cho 5,000 active users', category: 'Backend', completed: true },
-      { id: 't-elsa-103-qa', title: 'Kiểm thử đối chiếu thuật toán ước lượng điểm với 50 thí sinh có điểm thi IELTS Speaking thực tế', category: 'QA', completed: true }
+      { id: 't-103-gauge', title: 'Xây dựng component IeltsGaugeMeter.jsx dạng SVG bán nguyệt với kim chỉ số mượt mà', category: 'Frontend', completed: true },
+      { id: 't-103-radar', title: 'Xây dựng biểu đồ Radar SVG hiển thị 4 tiêu chí chấm thi IELTS Speaking', category: 'Frontend', completed: true },
+      { id: 't-103-algo', title: 'Viết thuật toán hồi quy phi tuyến IeltsScoreMapping chuyển đổi điểm âm vị sang thang 0-9.0', category: 'AI/DSP', completed: true },
+      { id: 't-103-qa', title: 'Kiểm thử với 20 bộ điểm mẫu đối chiếu với bảng quy đổi chính thức của Cambridge', category: 'QA', completed: true }
     ]),
-    notes: `### 🎨 FRONTEND DESIGN SPECIFICATION
-- **Component File**: \`vietphonics-app/src/components/dashboard/IeltsBandEstimator.jsx\`
-- **Component Structure**:
-  \`\`\`
-  <IeltsBandEstimator currentScore={userScore}>
-    <ScoreGauge score={6.5} min={0} max={9.0} confidence="±0.5" />
-    <CefrPillBadge level="B2" subtext="Independent User" />
-    <FourPillarsRadarChart
-      pronunciation={7.0}
-      fluency={6.0}
-      lexicalResource={6.5}
-      grammaticalRange={6.5}
-    />
-    <BandRoadmapBanner targetBand={7.5} remainingWeeks={8} />
-  </IeltsBandEstimator>
-  \`\`\`
-- **Stitch CSS Tokens**:
-  - Score Gauge Arc: Stroke gradient \`from-amber-500 via-rose-500 to-indigo-500\`
-  - Font: JetBrains Mono \`text-4xl font-extrabold text-amber-400\` cho con số Band
-  - Radar Grid: Polygon strokes \`stroke-slate-700/60\`, fill \`fill-indigo-500/20\`.
+    notes: `### 🎯 FULLSTACK FEATURE SPECIFICATION
+- **Phân loại**: Full-stack Feature (Scoring Algorithm + Visual SVG Dashboard)
+- **UI Mockup**: \`vietphonics-app/src/ui-reference/t_ng_quan_l_tr_nh_10_ph_t_light_mode/code.html\`
+- **Frontend Component**: \`vietphonics-app/src/components/dashboard/IeltsBandEstimator.jsx\`
 
----
+#### 🎨 Frontend Visual Specs
+- **Score Meter**: Đồng hồ bán nguyệt SVG gradient từ \`#f43f5e\` (Band 4.0) -> \`#f59e0b\` (Band 6.0) -> \`#10b981\` (Band 8.0+).
+- **Typography**: Con số điểm hiển thị font JetBrains Mono \`text-4xl font-extrabold\`.
+- **4 Cột Tiêu Chí**: Thẻ con hiển thị điểm từng phần kèm nhãn đánh giá: FC, PR, LR, GRA.
 
-### 🗄️ BACKEND DESIGN SPECIFICATION
-- **API Endpoint Contract**:
-  \`\`\`http
-  GET /api/v1/assessment/ielts-prediction
-  Authorization: Bearer <JWT>
-
-  Response 200 OK:
-  {
-    "userId": "usr_99a8b12f",
-    "predictedBand": 6.5,
-    "confidenceInterval": [6.0, 7.0],
-    "cefrEquivalent": "B2",
-    "criteriaBreakdown": {
-      "pronunciation": 7.0,
-      "fluencyCoherence": 6.0,
-      "lexicalResource": 6.5,
-      "grammaticalAccuracy": 6.5
-    },
-    "l1ImpedimentFactors": [
-      { "factor": "Final consonant deletion", "penaltyPoints": -0.5 },
-      { "factor": "Monotone sentence stress", "penaltyPoints": -0.5 }
-    ],
-    "calculatedAt": "2026-10-03T14:10:00Z"
-  }
-  \`\`\`
-- **Database Schema (PostgreSQL DDL)**:
-  \`\`\`sql
-  CREATE TABLE ielts_predictions (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-    predicted_band NUMERIC(2, 1) NOT NULL,
-    cefr_level VARCHAR(5) NOT NULL,
-    pronunciation_score NUMERIC(3, 1) NOT NULL,
-    fluency_score NUMERIC(3, 1) NOT NULL,
-    lexical_score NUMERIC(3, 1) NOT NULL,
-    grammar_score NUMERIC(3, 1) NOT NULL,
-    assessment_history JSONB NOT NULL DEFAULT '[]'::jsonb,
-    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-  );
-  CREATE INDEX idx_ielts_predictions_user ON ielts_predictions(user_id, created_at DESC);
-  \`\`\`
-- **5,000 Users Scale Specs**:
-  - Redis cache key: \`user:ielts_band:{userId}\` với TTL 86,400s (24h).
-  - Background recalculation kích hoạt sau mỗi bài kiểm tra chẩn đoán qua BullMQ queue \`queue:ielts_estimator\`.`
+#### 🗄️ Backend Mapping Formula
+\`\`\`javascript
+// Non-linear mapping from phonetic accuracy to IELTS Band
+export function mapPhoneticScoreToIelts(phoneticAcc, fluencyWpm, intonationScore) {
+  const pScore = phoneticAcc * 0.45 + intonationScore * 0.35 + Math.min(fluencyWpm / 140, 1.0) * 100 * 0.20;
+  if (pScore >= 92) return { band: 8.5, cefr: 'C2' };
+  if (pScore >= 84) return { band: 7.5, cefr: 'C1' };
+  if (pScore >= 74) return { band: 6.5, cefr: 'B2' };
+  if (pScore >= 62) return { band: 5.5, cefr: 'B1' };
+  return { band: 4.5, cefr: 'A2' };
+}
+\`\`\``
   },
   {
     id: 'USER-102',
     epic_id: 'epic-diagnostic',
     title: 'Granular Phoneme Mastery Ledger: Bản Đồ Ma Trận 44 Âm Vị IPA (Nguyên Âm, Nguyên Âm Đôi & Phụ Âm)',
     persona: 'Học viên muốn có cái nhìn toàn cảnh về năng lực phát âm của mình trên toàn bộ 44 âm trong bảng phiên âm quốc tế IPA',
-    action: 'tra cứu bảng ma trận lưới 44 âm vị IPA, quan sát trạng thái thuần thục của từng âm (Xanh lá: Đã thuần thục >85%, Vàng: Đang luyện 60-84%, Đỏ: Cần cải thiện <60%) và click vào âm bất kỳ để mở bài luyện tập',
-    value: 'biến bức tranh phát âm trừu tượng thành bản đồ trực quan minh bạch 100%, giúp học viên biết chính xác mình còn bao nhiêu âm chưa đạt và tập trung cải thiện đúng mục tiêu',
+    action: 'tra cứu bảng lưới ma trận 44 âm vị IPA, xem trạng thái màu sắc của từng âm và click vào âm bất kỳ để mở bài luyện tập',
+    value: 'minh bạch hóa 100% lộ trình học phát âm, biết rõ mình còn bao nhiêu âm chưa thuần thục để chủ động luyện tập',
     priority: 'must',
     status: 'in-progress',
     size: 'XL',
     points: 13,
+    uiMockupUrl: '/src/ui-reference/kh_u_h_nh_2d_th_vi_n_gi_i_ph_u_m_v_l1_light_mode/code.html',
     acceptance_criteria: JSON.stringify([
       {
-        id: 'ac-user-102-matrix-grid',
+        id: 'ac-user-102-grid-render',
         given: 'Học viên mở màn hình Ma Trận IPA',
-        when: 'Hệ thống nạp điểm số tích lũy của 44 âm vị',
-        then: 'Hiển thị đầy đủ 44 thẻ âm phân loại theo 3 nhóm chuẩn ngữ âm học quốc tế: Monophthongs (12 âm), Diphthongs (8 âm), Consonants (24 âm) với màu sắc phản ánh chính xác điểm thuần thục.',
+        when: 'Giao diện tải xong',
+        then: 'Hiển thị đầy đủ 44 ô âm vị phân chia thành 3 khu vực trực quan: Nguyên âm đơn (12 âm), Nguyên âm đôi (8 âm), và Phụ âm (24 âm).',
         completed: true
       },
       {
-        id: 'ac-user-102-frontend-design',
-        given: 'Giao diện IpaMatrixView',
-        when: 'Render trên màn hình máy tính hoặc điện thoại',
-        then: 'Bố cục lưới Grid co giãn thông minh (Responsive 6 cột trên Desktop, 3 cột trên Mobile), font Noto Sans hiển thị chuẩn xác ký tự IPA (/θ/, /ð/, /æ/, /ʃ/, /ʒ/), hiệu ứng hover thẻ phát sáng viền gradient và phóng to nhẹ 1.05x.',
+        id: 'ac-user-102-color-coding',
+        given: 'Dữ liệu điểm số của học viên được nạp vào ma trận',
+        when: 'Hệ thống hiển thị màu sắc từng ô',
+        then: 'Ô đạt ≥85% có viền xanh lá Emerald, ô từ 60-84% có viền vàng hổ phách Amber, ô <60% có viền đỏ hồng Rose kèm biểu tượng chấm than cảnh báo.',
         completed: true
       },
       {
-        id: 'ac-user-102-backend-design',
-        given: '5,000 học viên truy cập ma trận âm vị cùng lúc',
-        when: 'Gọi endpoint GET /api/v1/phonemes/mastery-ledger',
-        then: 'Dữ liệu được truy xuất từ Redis Hash user:mastery_ledger:{user_id} với thời gian phản hồi dưới 15ms, không phát sinh tính toán nặng trên database.',
+        id: 'ac-user-102-tile-click',
+        given: 'Học viên click vào một ô âm vị bất kỳ (ví dụ /θ/)',
+        when: 'Hành động click diễn ra',
+        then: 'Mở Drawer thông tin chi tiết: Hiển thị ký hiệu IPA to bản, 3 từ ví dụ phổ biến, điểm số trung bình, nút nghe phát âm chuẩn và nút "Luyện tập âm này ngay".',
         completed: true
       },
       {
-        id: 'ac-user-102-l1-precision',
-        given: 'Các âm vị có độ khó cao nhất đối với người Việt (/θ/, /ð/, /dʒ/, /tʃ/, /z/)',
-        when: 'Hiển thị trên ma trận',
-        then: 'Gắn kèm huy hiệu cảnh báo "Bẫy Ngữ Âm L1" màu đỏ hồng để học viên đặc biệt chú ý và ưu tiên luyện tập trước.',
-        completed: true
-      },
-      {
-        id: 'ac-user-102-a11y-fallback',
-        given: 'Học viên điều khiển bằng bàn phím',
-        when: 'Dùng các phím mũi tên di chuyển qua lại giữa 44 ô âm vị',
-        then: 'Focus ring màu indigo-500 bao quanh thẻ âm hiện tại, nhấn phím Enter để mở ngay hộp thoại chi tiết âm kèm mẫu audio phát âm chuẩn.',
-        completed: true
+        id: 'ac-user-102-filter-mode',
+        given: 'Học viên chỉ muốn xem các âm đang bị yếu',
+        when: 'Bấm nút lọc "Chỉ hiện âm cần cải thiện (<60%)"',
+        then: 'Các ô âm vị đạt chuẩn mờ đi (opacity 30%), làm nổi bật các ô âm vị màu đỏ để học viên tập trung.',
+        completed: false
       }
     ]),
     technical_tasks: JSON.stringify([
-      { id: 't-user-102-fe-grid', title: 'Xây dựng component IpaMatrixGrid.jsx phân chia 3 phân vùng Monophthongs, Diphthongs và Consonants', category: 'Frontend', completed: true },
-      { id: 't-user-102-fe-card', title: 'Thiết kế component PhonemeTileCard.jsx với hiệu ứng màu sắc động và badge cảnh báo bẫy âm L1', category: 'Frontend', completed: true },
-      { id: 't-user-102-be-ledger', title: 'Xây dựng service PhonemeMasteryLedgerService tính toán điểm số bình quân trọng số thời gian (Time-decayed Score)', category: 'Backend', completed: true },
-      { id: 't-user-102-be-schema', title: 'Thiết kế bảng PostgreSQL user_phoneme_mastery với compound index trên (user_id, phoneme_symbol)', category: 'Backend', completed: true },
-      { id: 't-user-102-qa', title: 'Kiểm thử giao diện trên 10 kích thước màn hình từ iPhone SE đến màn hình 4K Ultrawide', category: 'QA', completed: true }
+      { id: 't-102-grid', title: 'Xây dựng component IpaMatrixGrid.jsx hiển thị 44 ô âm vị theo đúng bố cục bảng ngữ âm quốc tế', category: 'Frontend', completed: true },
+      { id: 't-102-drawer', title: 'Thiết kế PhonemeQuickDetailDrawer.jsx mở ra khi click vào từng ô âm vị', category: 'Frontend', completed: true },
+      { id: 't-102-filter', title: 'Tích hợp bộ lọc 3 trạng thái (Tất cả / Đã thuần thục / Cần cải thiện) vào thanh điều khiển', category: 'Frontend', completed: false },
+      { id: 't-102-qa', title: 'Kiểm tra hiển thị chuẩn xác ký tự ngữ âm IPA trên font Noto Sans không bị lỗi font ô vuông', category: 'QA', completed: true }
     ]),
-    notes: `### 🎨 FRONTEND DESIGN SPECIFICATION
-- **Component File**: \`vietphonics-app/src/components/matrix/IpaMatrixGrid.jsx\`
-- **Component Hierarchy**:
-  \`\`\`
-  <IpaMatrixGrid>
-    <PhonemeSection title="Monophthongs (12)" color="sky">
-      {vowels.map(p => <PhonemeTile key={p.symbol} data={p} onClick={openDetailModal} />)}
-    </PhonemeSection>
-    <PhonemeSection title="Diphthongs (8)" color="violet">
-      {diphthongs.map(p => <PhonemeTile key={p.symbol} data={p} onClick={openDetailModal} />)}
-    </PhonemeSection>
-    <PhonemeSection title="Consonants (24)" color="emerald">
-      {consonants.map(p => <PhonemeTile key={p.symbol} data={p} onClick={openDetailModal} />)}
-    </PhonemeSection>
-    <PhonemeDetailModal activePhoneme={selectedPhoneme} onClose={closeModal} />
-  </IpaMatrixGrid>
-  \`\`\`
-- **Stitch Design Tokens**:
-  - Mastered Tile (≥85%): \`bg-emerald-950/40 border-emerald-500/50 text-emerald-400 hover:border-emerald-400\`
-  - Learning Tile (60-84%): \`bg-amber-950/40 border-amber-500/50 text-amber-400 hover:border-amber-400\`
-  - Critical Tile (<60%): \`bg-rose-950/40 border-rose-500/50 text-rose-400 hover:border-rose-400\`
-  - Font: \`font-['Noto_Sans'] font-bold text-lg\` cho ký hiệu ngữ âm.
+    notes: `### 🎨 PURE FRONTEND DESIGN SPECIFICATION
+- **Phân loại**: Pure Frontend UI/UX Component
+- **UI Mockup**: \`vietphonics-app/src/ui-reference/kh_u_h_nh_2d_th_vi_n_gi_i_ph_u_m_v_l1_light_mode/code.html\`
+- **Frontend Component**: \`vietphonics-app/src/components/matrix/IpaMatrixGrid.jsx\`
 
----
+#### 📐 Layout & Grid Structure
+\`\`\`
++-------------------------------------------------------------+
+| [Thanh lọc: Tất cả (44) | Cần cải thiện (5) | Thuần thục (28)]|
++-------------------------------------------------------------+
+| VOWELS (Monophthongs - 12)                                  |
+| [/iː/] [/ɪ/] [/ʊ/] [/uː/] [/e/] [/ə/] [/ɜː/] [/ɔː/] [/æ/]... |
++-------------------------------------------------------------+
+| DIPHTHONGS (8)                                              |
+| [/eɪ/] [/aɪ/] [/ɔɪ/] [/aʊ/] [/əʊ/] [/ɪə/] [/eə/] [/ʊə/]     |
++-------------------------------------------------------------+
+| CONSONANTS (24)                                             |
+| [/p/] [/b/] [/t/] [/d/] [/tʃ/] [/dʒ/] [/k/] [/g/] [/f/] ... |
++-------------------------------------------------------------+
+\`\`\`
 
-### 🗄️ BACKEND DESIGN SPECIFICATION
-- **API Endpoint Contract**:
-  \`\`\`http
-  GET /api/v1/phonemes/mastery-ledger
-  Authorization: Bearer <JWT>
-
-  Response 200 OK:
-  {
-    "userId": "usr_99a8b12f",
-    "overallMasteryPercent": 74.2,
-    "masteredCount": 28,
-    "inProgressCount": 11,
-    "criticalCount": 5,
-    "phonemes": [
-      {
-        "symbol": "/iː/",
-        "category": "monophthong",
-        "score": 92,
-        "status": "mastered",
-        "attempts": 45,
-        "lastPracticed": "2026-10-02T19:30:00Z"
-      },
-      {
-        "symbol": "/θ/",
-        "category": "consonant",
-        "score": 52,
-        "status": "critical",
-        "attempts": 22,
-        "isL1Trap": true,
-        "lastPracticed": "2026-10-03T08:15:00Z"
-      }
-    ]
-  }
-  \`\`\`
-- **Database Schema (PostgreSQL DDL)**:
-  \`\`\`sql
-  CREATE TABLE user_phoneme_mastery (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-    phoneme_symbol VARCHAR(10) NOT NULL,
-    current_score NUMERIC(5, 2) NOT NULL DEFAULT 0.00,
-    practice_count INT NOT NULL DEFAULT 0,
-    last_practiced_at TIMESTAMPTZ,
-    historical_scores JSONB NOT NULL DEFAULT '[]'::jsonb,
-    CONSTRAINT uq_user_phoneme UNIQUE (user_id, phoneme_symbol)
-  );
-  CREATE INDEX idx_user_mastery_lookup ON user_phoneme_mastery(user_id, current_score);
-  \`\`\`
-- **5,000 Users Scale Strategy**:
-  - Toàn bộ ledger 44 âm của mỗi user được lưu trong Redis Hash \`user:mastery_ledger:{userId}\`.
-  - Khi học viên chấm điểm 1 từ, worker cập nhật nguyên tử (HSET / HINCRBY) vào Redis trong 2ms, sau đó flush về PostgreSQL định kỳ mỗi 5 phút.`
+#### 🎨 Design Tokens & Micro-Interactions
+- **Font**: \`font-['Noto_Sans']\` đảm bảo 100% hiển thị chính xác các ký tự đặc biệt như \`/θ/\`, \`/ð/\`, \`/ʃ/\`, \`/ʒ/\`.
+- **Card Hover**: \`hover:scale-105 hover:-translate-y-1 transition-all duration-200\`.
+- **Mastered Token**: \`bg-emerald-500/10 border-emerald-500/40 text-emerald-400\`.
+- **Warning Token**: \`bg-amber-500/10 border-amber-500/40 text-amber-400\`.
+- **Critical Token**: \`bg-rose-500/10 border-rose-500/40 text-rose-400 animate-pulse\`.`
   },
   {
     id: 'VN-102',
     epic_id: 'epic-diagnostic',
     title: 'Vietnamese L1 3-Minute Diagnostic Pronunciation Screener: Bài Sàng Lọc Phát Âm Toàn Diện 3 Phút Cho Người Việt',
-    persona: 'Người dùng mới cài đặt ứng dụng muốn biết ngay mức độ phát âm chuẩn của mình chỉ trong 3 phút làm bài sàng lọc nhanh',
-    action: 'đọc lần lượt 12 câu thử thách được thiết kế riêng để bẫy toàn bộ các lỗi phát âm kinh điển nhất của người Việt, nhận ngay báo cáo chẩn đoán chi tiết sau khi kết thúc',
-    value: 'tạo trải nghiệm kích hoạt người dùng mới (Onboarding Magic Moment) cực kỳ ấn tượng, chuyển đổi người dùng mới thành học viên gắn kết trung thành ngay từ phút đầu tiên',
+    persona: 'Người dùng mới bắt đầu cần một bài kiểm tra nhanh gọn, chính xác trong 3 phút để xác định ngay các điểm yếu phát âm cốt lõi',
+    action: 'đọc lần lượt 12 câu chẩn đoán ngắn được thiết kế riêng để bẫy toàn bộ các lỗi phát âm kinh điển nhất của người Việt',
+    value: 'chỉ mất 3 phút để nhận được bản chụp X-quang phát âm của chính mình, có lộ trình sửa lỗi rõ ràng ngay từ ngày đầu tiên',
     priority: 'must',
     status: 'in-progress',
     size: 'XL',
     points: 13,
+    uiMockupUrl: '/src/ui-reference/ph_ng_luy_n_ph_t_m_ph_k_m_h_c_light_mode/code.html',
     acceptance_criteria: JSON.stringify([
       {
-        id: 'ac-vn-102-screener-flow',
-        given: 'Người dùng mới bắt đầu bài sàng lọc 3 phút',
-        when: 'Người dùng đọc lần lượt qua 12 thẻ câu chẩn đoán',
-        then: 'Hệ thống thu âm, tự động phát hiện khoảng lặng dừng nói (Voice Activity Detection - VAD) và chuyển câu kế tiếp mượt mà không cần bấm nút.',
+        id: 'ac-vn-102-step-wizard',
+        given: 'Người dùng bắt đầu bài sàng lọc 3 phút',
+        when: 'Giao diện bắt đầu chạy',
+        then: 'Hiển thị thẻ câu số 1 kèm thanh tiến trình 12 bước (Progress Bar); nút micro to bản ở trung tâm phát sáng sẵn sàng thu âm.',
         completed: true
       },
       {
-        id: 'ac-vn-102-frontend-design',
-        given: 'Giao diện DiagnosticScreenerView',
-        when: 'Render trên màn hình',
-        then: 'Thanh tiến trình 12 bước (Progress Bar) chạy mượt mà ở trên cùng, thẻ câu hỏi phong cách Glassmorphism bo tròn 24px, dải sóng âm 48kHz nhảy sống động theo giọng nói, nút micro tròn đường kính 72px có vòng sáng radar phát quang màu Rose-500.',
+        id: 'ac-vn-102-auto-advance',
+        given: 'Người dùng đọc xong câu số 1 vào micro',
+        when: 'Bộ phát hiện khoảng lặng (VAD) nhận thấy 1.5 giây im lặng sau khi nói',
+        then: 'Hệ thống tự động lưu bản ghi âm câu 1 và trượt mượt mà sang câu số 2 mà không bắt người dùng phải bấm nút thủ công.',
         completed: true
       },
       {
-        id: 'ac-vn-102-backend-design',
-        given: '5,000 người dùng mới cùng làm bài sàng lọc trong chiến dịch ra mắt',
-        when: 'Gửi 12 đoạn âm thanh lên API POST /api/v1/diagnostic/screener-batch',
-        then: 'Hệ thống đưa các đoạn âm thanh vào hàng đợi Redis BullMQ priority queue, xử lý song song trên các GPU worker và trả về báo cáo chẩn đoán tổng thể trong vòng dưới 2.5 giây.',
-        completed: true
-      },
-      {
-        id: 'ac-vn-102-l1-precision',
-        given: '12 câu chẩn đoán được thiết kế ngữ âm chuyên biệt',
-        when: 'Phân tích kết quả kiểm tra',
-        then: 'Chẩn đoán bao phủ 100% 5 nhóm lỗi L1 chí mạng: 1. Nuốt âm cuối /t, d, s, z/, 2. Nhầm /θ/ vs /t/, 3. Lẫn /ʃ/ vs /s/, 4. Trọng âm đều đều kiểu thanh điệu tiếng Việt, 5. Thiếu nối âm (linking sound).',
-        completed: true
-      },
-      {
-        id: 'ac-vn-102-a11y-fallback',
-        given: 'Người dùng gặp lỗi micro hoặc từ chối cấp quyền',
-        when: 'Trình duyệt chặn MediaStream API',
-        then: 'Hiển thị hộp thoại hướng dẫn cấp quyền rõ ràng có hình ảnh minh họa cho cả Chrome, Safari, Edge và hỗ trợ chế độ làm bài nghe trắc nghiệm âm thanh thay thế.',
-        completed: true
+        id: 'ac-vn-102-comprehensive-report',
+        given: 'Người dùng hoàn thành câu thứ 12',
+        when: 'Hệ thống xử lý tổng hợp',
+        then: 'Xuất bản Báo Cáo Chẩn Đoán 3 Phút: Liệt kê top 3 lỗi phát âm nặng nhất, điểm số tổng quan và nút "Kích hoạt lộ trình sửa lỗi 30 ngày".',
+        completed: false
       }
     ]),
     technical_tasks: JSON.stringify([
-      { id: 't-vn-102-fe-vad', title: 'Tích hợp AudioWorklet VAD (Voice Activity Detection) tự động ngắt câu sau 1.5s im lặng', category: 'Frontend', completed: true },
-      { id: 't-vn-102-fe-cards', title: 'Xây dựng giao diện DiagnosticWizardCard.jsx với hoạt ảnh chuyển trang 3D mượt mà', category: 'Frontend', completed: true },
-      { id: 't-vn-102-be-queue', title: 'Thiết lập hàng đợi BullMQ queue:diagnostic_screener xử lý song song 200 lượt test/giây', category: 'Backend', completed: true },
-      { id: 't-vn-102-be-report', title: 'Xây dựng bộ sinh báo cáo DiagnosticReportGenerator xuất dữ liệu phân tích chuẩn JSON cho dashboard', category: 'Backend', completed: true },
-      { id: 't-vn-102-qa', title: 'Kiểm thử End-to-End quy trình chẩn đoán từ lúc cấp quyền micro đến khi nhận báo cáo phân tích', category: 'QA', completed: true }
+      { id: 't-102-wizard', title: 'Xây dựng component DiagnosticWizardView.jsx quản lý luồng 12 thẻ câu chẩn đoán', category: 'Frontend', completed: true },
+      { id: 't-102-vad', title: 'Tích hợp AudioWorklet VAD tự động ngắt câu sau 1.5s im lặng', category: 'Audio/DSP', completed: true },
+      { id: 't-102-report-api', title: 'Tạo API POST /api/v1/diagnostic/screener-submit tổng hợp kết quả 12 câu', category: 'Backend', completed: false },
+      { id: 't-102-qa', title: 'Kiểm thử toàn bộ luồng 12 câu trên thiết bị di động Android và iPhone', category: 'QA', completed: true }
     ]),
-    notes: `### 🎨 FRONTEND DESIGN SPECIFICATION
-- **Component File**: \`vietphonics-app/src/views/DiagnosticScreenerView.jsx\`
-- **Interactive State Machine**:
-  \`\`\`typescript
-  type ScreenerStep = 'intro' | 'calibrating' | 'recording_item' | 'analyzing' | 'summary_report';
-  interface ScreenerState {
-    step: ScreenerStep;
-    currentItemIndex: number; // 0..11
-    audioBlobs: Blob[];
-    rmsVolume: number;
-    vadSilenceTimer: number;
-    isUploading: boolean;
-    finalReport: DiagnosticReport | null;
-  }
-  \`\`\`
-- **Stitch Design Tokens**:
-  - Container: \`min-h-screen bg-slate-950 flex flex-col items-center justify-center p-4\`
-  - Card: \`bg-slate-900/90 border border-slate-800 rounded-3xl p-8 max-w-xl w-full shadow-2xl relative overflow-hidden\`
-  - Big Mic Button: \`w-20 h-20 rounded-full bg-rose-600 hover:bg-rose-500 shadow-[0_0_35px_rgba(225,29,72,0.5)] flex items-center justify-center transition-all\`
-  - Progress: 12 mini indicator dots, active dot: \`w-8 bg-rose-500 rounded-full h-2\`, inactive: \`w-2 bg-slate-800 rounded-full h-2\`.
+    notes: `### 🎯 FULLSTACK FEATURE SPECIFICATION
+- **Phân loại**: Full-stack Onboarding Flow
+- **UI Mockup**: \`vietphonics-app/src/ui-reference/ph_ng_luy_n_ph_t_m_ph_k_m_h_c_light_mode/code.html\`
+- **Frontend Component**: \`vietphonics-app/src/views/DiagnosticScreenerView.jsx\`
 
----
+#### 🎨 Frontend Wizard Flow
+- **12 Câu Chẩn Đoán L1**:
+  1. Final /t/: *"What time did you contact the client?"*
+  2. Final /s/: *"The price of the house is increasing."*
+  3. Initial /θ/: *"I think thirty thousand dollars is fair."*
+  4. Initial /ð/: *"They will arrive together this morning."*
+  5. Contrast /s/ vs /ʃ/: *"She sells seashells by the seashore."*
+  6. Final /d/ vs /t/: *"He needed food and waited outside."*
+  7. Vowel /iː/ vs /ɪ/: *"Please sit on the seat near the ship."*
+  8. Vowel /æ/ vs /e/: *"The bad cat slept on the red bed."*
+  9. Word Stress: *"The photographer took a photograph of photography."*
+  10. Intonation: *"Are you coming with us tomorrow?"*
+  11. Linking: *"Hold on a second and turn it off."*
+  12. Reduction: *"I would have gone if I had known about it."*
 
-### 🗄️ BACKEND DESIGN SPECIFICATION
-- **API Endpoint Contract**:
-  \`\`\`http
-  POST /api/v1/diagnostic/screener-batch
-  Authorization: Bearer <JWT>
-  Content-Type: multipart/form-data
+#### 🗄️ Backend Aggregation Engine
+\`\`\`http
+POST /api/v1/diagnostic/screener-submit
+Authorization: Bearer <JWT>
+Content-Type: application/json
 
-  Form Data:
-  - userId: "usr_99a8b12f"
-  - audio_0..audio_11: [binary webm/opus files]
-  - clientMetrics: {"device": "Chrome Mac", "avgLatencyMs": 32}
-
-  Response 200 OK:
-  {
-    "reportId": "rep_77182a",
-    "overallAccuracy": 68.5,
-    "ieltsPredictedBand": 6.0,
-    "topErrors": [
-      { "phoneme": "/t/", "position": "final", "description": "Nuốt âm đuôi trong từ 'contact', 'first'" },
-      { "phoneme": "/θ/", "position": "initial", "description": "Phát âm thành /t/ trong từ 'thought'" }
-    ],
-    "strengths": ["Clear front vowels /iː/, /e/", "Good speech rate (130 WPM)"],
-    "customLearningPathId": "path_remediation_l1_starter"
-  }
-  \`\`\`
-- **Database Schema (PostgreSQL DDL)**:
-  \`\`\`sql
-  CREATE TABLE diagnostic_sessions (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-    overall_accuracy NUMERIC(5, 2) NOT NULL,
-    predicted_ielts NUMERIC(2, 1) NOT NULL,
-    diagnosed_errors JSONB NOT NULL DEFAULT '[]'::jsonb,
-    audio_manifest JSONB NOT NULL DEFAULT '[]'::jsonb,
-    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-  );
-  CREATE INDEX idx_diagnostic_sessions_user ON diagnostic_sessions(user_id, created_at DESC);
-  \`\`\`
-- **5,000 Users Scale Specs**:
-  - Client nén âm thanh trực tiếp sang chuẩn Opus 24kbps trước khi upload (mỗi file chỉ ~30KB).
-  - Tải lên trực tiếp song song lên Cloudflare R2 bucket qua Presigned URLs, backend chỉ nhận JSON manifest để kích hoạt worker phân tích.`
+{
+  "answers": [
+    { "itemIndex": 0, "audioUrl": "https://r2.../q1.opus", "targetPhoneme": "/t/" }
+  ]
+}
+\`\`\`
+- Trả về Báo cáo chẩn đoán phân loại theo 4 cấp độ ưu tiên để sinh lộ trình học cá nhân hóa.`
   }
 ];

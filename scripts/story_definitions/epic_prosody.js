@@ -10,105 +10,68 @@ export const prosodyStories = [
     status: 'in-progress',
     size: 'M',
     points: 5,
+    uiMockupUrl: '/src/ui-reference/ph_ng_luy_n_ph_t_m_ph_k_m_h_c_light_mode/code.html',
     acceptance_criteria: JSON.stringify([
       {
-        id: 'ac-elsa-202-stress-calc',
-        given: 'Học viên đọc từ đa âm tiết (e.g., "COM-pu-ter", "pho-TO-gra-phy")',
-        when: 'Hệ thống đo đạc 3 chỉ số âm học: Năng lượng RMS (dB), Thời lượng phát âm (Duration ms), và Tần số cơ bản F0 (Pitch Hz)',
-        then: 'Xác định chính xác âm tiết nào được người học nhấn mạnh nhất và đối chiếu với từ điển trọng âm chuẩn Oxford/Cambridge.',
+        id: 'ac-elsa-202-stress-bubbles',
+        given: 'Học viên phát âm từ đa âm tiết (e.g., "pho-TO-gra-pher", "COM-pu-ter")',
+        when: 'Hệ thống đo đạc năng lượng và thời lượng từng âm tiết',
+        then: 'Dải bong bóng âm tiết (Syllable Bubbles) hiển thị: Âm tiết trọng âm chính có đường kính 64px màu tím Indigo-500 phát sáng, các âm tiết phụ chỉ có kích thước 32px màu xám mờ.',
         completed: true
       },
       {
-        id: 'ac-elsa-202-frontend-design',
-        given: 'Giao diện SyllableStressCard',
-        when: 'Render trên màn hình',
-        then: 'Từ được phân tách thành các bong bóng âm tiết: Âm tiết trọng âm chính có đường kính 64px màu tím Indigo-500 phát sáng, âm tiết không trọng âm có đường kính 32px màu xám mờ; có thanh đo cao độ Pitch Pillar trực quan ngay dưới từng âm tiết.',
+        id: 'ac-elsa-202-three-pillars',
+        given: 'Học viên bấm vào âm tiết trọng âm để xem chi tiết',
+        when: 'Bảng 3 Cột Âm Học (Three Pillars) hiển thị',
+        then: 'So sánh trực tiếp 3 chỉ số giữa âm nhấn và âm lướt: Độ dài thời gian (Duration ms - gấp 2-2.5 lần), Độ to (Volume dB - cao hơn 4-6dB), và Cao độ (Pitch Hz).',
         completed: true
       },
       {
-        id: 'ac-elsa-202-backend-design',
-        given: '5,000 học viên cùng làm bài luyện trọng âm',
-        when: 'Gửi audio lên POST /api/v1/scoring/syllable-stress',
-        then: 'Thuật toán tính toán năng lượng RMS và F0 trích xuất sau mỗi 10ms frame, so sánh tỷ lệ tỷ đối (Relative Stress Ratio) và trả về kết quả trong dưới 120ms.',
+        id: 'ac-elsa-202-l1-tone-warning',
+        given: 'Người Việt có thói quen đánh "dấu sắc" vào trọng âm tiếng Anh (e.g. đọc "pencil" thành "pén-xì")',
+        when: 'Cao độ tăng vọt nhưng thời lượng phát âm quá ngắn (<120ms)',
+        then: 'Bật cảnh báo sư phạm: "Bạn đang thêm dấu sắc tiếng Việt! Trọng âm tiếng Anh cần phải ngân dài và mở to miệng, không chỉ đơn thuần là đẩy cao giọng".',
         completed: true
       },
       {
-        id: 'ac-elsa-202-l1-precision',
-        given: 'Người Việt hay biến trọng âm tiếng Anh thành "dấu sắc" tiếng Việt (e.g. đọc "pencil" thành "pén-xì")',
-        when: 'Hệ thống phát hiện cao độ tăng vọt nhưng thời lượng quá ngắn',
-        then: 'Cảnh báo sư phạm: "Bạn đang thêm dấu sắc tiếng Việt! Trọng âm tiếng Anh không chỉ cao hơn mà phải ngân dài gấp đôi âm tiết phụ".',
-        completed: true
-      },
-      {
-        id: 'ac-elsa-202-a11y-fallback',
-        given: 'Học viên sử dụng bàn phím',
-        when: 'Nhấn phím 1, 2, 3 để chọn âm tiết tương ứng',
-        then: 'Hệ thống phát mẫu âm thanh của riêng âm tiết đó được cô lập (Isolated Syllable Audio) để học viên nghe rõ sự tương phản.',
-        completed: true
+        id: 'ac-elsa-202-keyboard-isolate',
+        given: 'Học viên sử dụng bàn phím số 1, 2, 3, 4',
+        when: 'Bấm phím số tương ứng với vị trí âm tiết',
+        then: 'Hệ thống tự động cô lập và phát riêng file audio của âm tiết đó (Isolated Syllable Playback) để luyện khả năng thẩm âm đối chiếu.',
+        completed: false
       }
     ]),
     technical_tasks: JSON.stringify([
       { id: 't-elsa-202-fe-bubbles', title: 'Xây dựng component SyllableBubbleVisualizer.jsx với hiệu ứng bong bóng co giãn theo độ lớn trọng âm', category: 'Frontend', completed: true },
       { id: 't-elsa-202-fe-pillars', title: 'Thiết kế biểu đồ 3 cột Energy-Duration-Pitch so sánh tỷ lệ giữa âm nhấn và âm lướt', category: 'Frontend', completed: true },
-      { id: 't-elsa-202-be-stress', title: 'Phát triển module StressScoringEngine tính toán tỷ lệ tương đối giữa các âm tiết dựa trên F0 và RMS', category: 'Backend', completed: true },
-      { id: 't-elsa-202-be-dict', title: 'Tích hợp từ điển trọng âm CMU Pronouncing Dictionary 134,000 từ lưu trong bộ nhớ đệm Redis', category: 'Backend', completed: true },
-      { id: 't-elsa-202-qa', title: 'Kiểm thử với các cặp từ thay đổi trọng âm theo từ loại (e.g. REcord danh từ vs reCORD động từ)', category: 'QA', completed: true }
+      { id: 't-elsa-202-fe-slice', title: 'Tích hợp bộ cắt audio Web Audio API phát riêng từng âm tiết theo phím số 1-4', category: 'Frontend', completed: true },
+      { id: 't-elsa-202-qa', title: 'Kiểm thử với các cặp từ hoán đổi trọng âm theo từ loại (e.g. REcord danh từ vs reCORD động từ)', category: 'QA', completed: false }
     ]),
-    notes: `### 🎨 FRONTEND DESIGN SPECIFICATION
-- **Component File**: \`vietphonics-app/src/components/prosody/SyllableStressVisualizer.jsx\`
-- **Component Structure**:
-  \`\`\`
-  <SyllableStressVisualizer word="photographer" targetStressIndex={1}>
-    <SyllableTrack>
-      <SyllableBubble text="pho" isStressed={false} relativeEnergy={0.3} />
-      <SyllableBubble text="TO" isStressed={true} relativeEnergy={1.0} hasGlow={true} />
-      <SyllableBubble text="gra" isStressed={false} relativeEnergy={0.25} />
-      <SyllableBubble text="pher" isStressed={false} relativeEnergy={0.2} />
-    </SyllableTrack>
-    <StressMetricsBreakdown
-      durationRatio="2.4x"
-      volumeRatio="+6dB"
-      pitchDelta="+45Hz"
-    />
-  </SyllableStressVisualizer>
-  \`\`\`
-- **Stitch Design Tokens**:
-  - Primary Stressed Bubble: \`w-20 h-20 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 text-white font-extrabold text-xl shadow-[0_0_30px_rgba(99,102,241,0.5)] border-2 border-indigo-300\`
-  - Unstressed Bubble: \`w-12 h-12 rounded-full bg-slate-800 text-slate-400 font-medium text-sm border border-slate-700\`.
+    notes: `### 🎨 PURE FRONTEND DESIGN SPECIFICATION
+- **Phân loại**: Pure Frontend UI/UX Component (Syllable Bubbles & Three Pillars)
+- **UI Mockup**: \`vietphonics-app/src/ui-reference/ph_ng_luy_n_ph_t_m_ph_k_m_h_c_light_mode/code.html\`
+- **Frontend Component**: \`vietphonics-app/src/components/prosody/SyllableStressVisualizer.jsx\`
 
----
+#### 📐 Layout & Bubble Visual Structure
+\`\`\`
++-------------------------------------------------------------+
+| Từ: "pho-TO-gra-phy"                                        |
+|                                                             |
+|    (pho)       ((  TO  ))       (gra)        (phy)          |
+|    32px           64px          32px         32px           |
+|    Mờ đục     Tím Neon Sáng     Mờ đục       Mờ đục         |
+|   120ms          280ms          110ms        130ms          |
++-------------------------------------------------------------+
+| BẢNG 3 TRỤ CỘT TRỌNG ÂM:                                    |
+| [ Thời Lượng: 2.3x ]  [ Độ To: +5.2dB ]  [ Cao Độ: +42Hz ]   |
++-------------------------------------------------------------+
+\`\`\`
 
-### 🗄️ BACKEND DESIGN SPECIFICATION
-- **REST API Endpoint**:
-  \`\`\`http
-  POST /api/v1/scoring/syllable-stress
-  Authorization: Bearer <JWT>
-  Content-Type: application/json
-
-  Request Body:
-  {
-    "word": "photographer",
-    "audioUrl": "https://r2.vietphonics.com/audio/session_402.opus"
-  }
-
-  Response 200 OK:
-  {
-    "targetWord": "photographer",
-    "targetStressPattern": [0, 1, 0, 0],
-    "detectedStressPattern": [0, 1, 0, 0],
-    "isStressCorrect": true,
-    "syllables": [
-      { "syllable": "pho", "durationMs": 140, "rmsDb": -22, "pitchAvgHz": 180 },
-      { "syllable": "to", "durationMs": 310, "rmsDb": -14, "pitchAvgHz": 235, "isProminent": true },
-      { "syllable": "gra", "durationMs": 120, "rmsDb": -24, "pitchAvgHz": 175 },
-      { "syllable": "pher", "durationMs": 130, "rmsDb": -23, "pitchAvgHz": 165 }
-    ],
-    "stressScore": 95
-  }
-  \`\`\`
-- **High Concurrency (5,000 Users)**:
-  - CMU Pronouncing Dict được nạp sẵn vào Redis in-memory (dung lượng chỉ 12MB RAM).
-  - Tra cứu cấu trúc trọng âm chuẩn O(1) < 0.5ms.`
+#### 🎨 Design Tokens & Dynamic Styling
+- **Stressed Bubble**:
+  \`w-20 h-20 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 text-white font-extrabold text-xl shadow-[0_0_30px_rgba(99,102,241,0.5)] border-2 border-indigo-300 flex items-center justify-center animate-pulse\`
+- **Unstressed Bubble**:
+  \`w-12 h-12 rounded-full bg-slate-800 text-slate-400 font-medium text-sm border border-slate-700 flex items-center justify-center\`.`
   },
   {
     id: 'ELSA-203',
@@ -118,103 +81,81 @@ export const prosodyStories = [
     action: 'nói các câu giao tiếp thực tế và quan sát đường cong cao độ giọng nói thời gian thực (Real-Time Pitch Contour Curve) chạy đè lên đường cong mẫu của người bản xứ',
     value: 'làm chủ giai điệu câu tiếng Anh (Sentence Melody): biết lên giọng ở câu hỏi Yes/No, hạ giọng ở câu trần thuật và nhấn đúng từ khóa truyền tải cảm xúc',
     priority: 'must',
-    status: 'in-progress',
+    status: 'todo',
     size: 'XL',
     points: 13,
+    uiMockupUrl: '/src/ui-reference/acoustic_precision_light/code.html',
     acceptance_criteria: JSON.stringify([
       {
-        id: 'ac-elsa-203-pitch-tracking',
+        id: 'ac-elsa-203-pitch-contour',
         given: 'Học viên nói một câu hội thoại hoàn chỉnh',
-        when: 'Thuật toán YIN / CREPE Pitch Tracker trích xuất cao độ F0 liên tục',
-        then: 'Vẽ ra đường cong cao độ mượt mà (Pitch Contour Curve) và so sánh độ tương đồng hình học (Geometric Fréchet Distance) với đường cong bản ngữ.',
-        completed: true
+        when: 'Bộ phân tích âm học trích xuất cao độ F0 liên tục sau mỗi khung hình 10ms',
+        then: 'Đồ thị SVG vẽ đường cong Bezier mượt mà so sánh đồng thời 2 đường: Đường xanh Sky-400 (Giọng chuẩn bản xứ) và đường vàng Amber-400 (Giọng học viên).',
+        completed: false
       },
       {
-        id: 'ac-elsa-203-frontend-design',
-        given: 'Giao diện PitchMelodyView',
-        when: 'Render trên màn hình',
-        then: 'Đồ thị SVG hiển thị 2 đường cong giai điệu: Đường màu xanh Sky-400 (Giọng mẫu bản ngữ) và đường màu vàng Amber-400 (Giọng học viên) uốn lượn nhịp nhàng, biểu tượng mũi tên chỉ hướng (Lên / Xuống) hiển thị rõ ở cuối câu.',
-        completed: true
+        id: 'ac-elsa-203-terminal-intonation',
+        given: 'Câu nói thuộc thể loại câu hỏi Yes/No (e.g., "Are you ready?")',
+        when: 'Phân tích xu hướng cao độ ở 300ms cuối câu',
+        then: 'Hệ thống nhận diện hướng ngữ điệu (Rising Tone: +3 semitones trở lên); nếu học viên hạ giọng, hiển thị mũi tên đỏ hướng xuống cảnh báo.',
+        completed: false
       },
       {
-        id: 'ac-elsa-203-backend-design',
-        given: '5,000 học viên nộp bài phân tích ngữ điệu câu',
-        when: 'Endpoint POST /api/v1/scoring/pitch-contour tiếp nhận',
-        then: 'Chuẩn hóa cao độ theo bán âm (Semitone Normalization relative to user median pitch) giúp so sánh chính xác giữa giọng nam trầm và giọng nữ cao, hoàn tất dưới 180ms.',
-        completed: true
+        id: 'ac-elsa-203-humming-mode',
+        given: 'Học viên muốn cảm nhận ngữ điệu mà không bị phân tâm bởi việc phát âm từ vựng',
+        when: 'Bấm nút "Nghe Giai Điệu Ùm Ùm (Humming Synth)"',
+        then: 'Bộ tổng hợp âm thanh Web Audio Oscillator phát ra chuỗi âm thanh huýt sáo không lời mô phỏng chính xác đường lượn cao độ của câu.',
+        completed: false
       },
       {
-        id: 'ac-elsa-203-l1-precision',
-        given: 'Học viên đọc câu hỏi Yes/No ("Are you coming?") nhưng hạ giọng ở cuối câu như thói quen tiếng Việt',
-        when: 'Hệ thống đối soát đường cong ngữ điệu',
-        then: 'Vẽ vùng lệch màu đỏ ở cuối câu kèm lời nhắc: "Hãy vút cao giọng ở từ \'coming\' (Rising Intonation) để thể hiện câu hỏi thân thiện!".',
-        completed: true
-      },
-      {
-        id: 'ac-elsa-203-a11y-fallback',
-        given: 'Học viên muốn nghe âm thanh giai điệu đơn giản (Humming / Whistle Melody)',
-        when: 'Bấm nút "Nghe Giai Điệu Ùm Ùm"',
-        then: 'Bộ tổng hợp âm thanh phát tiếng huýt sáo hoặc tiếng đàn synth mô phỏng chính xác đường lượn cao độ không lời, giúp người học cảm thụ giai điệu thuần khiết.',
-        completed: true
+        id: 'ac-elsa-203-semitone-normalization',
+        given: 'Học viên có tông giọng tự nhiên khác biệt (giọng nam trầm vs giọng nữ cao)',
+        when: 'Hệ thống so sánh với giọng người bản ngữ',
+        then: 'Tự động chuẩn hóa cao độ về thang Bán Âm (Semitone Normalization relative to median F0) để việc so sánh chỉ tập trung vào độ dốc giai điệu.',
+        completed: false
       }
     ]),
     technical_tasks: JSON.stringify([
-      { id: 't-elsa-203-fe-curve', title: 'Xây dựng component PitchContourSvg.jsx vẽ đường cong Bezier mượt mà so sánh 2 dải cao độ F0', category: 'Frontend', completed: true },
-      { id: 't-elsa-203-fe-synth', title: 'Tích hợp Web Audio Oscillator phát âm thanh Humming Melody mô phỏng đường cong ngữ điệu', category: 'Frontend', completed: true },
-      { id: 't-elsa-203-be-yin', title: 'Triển khai thuật toán YIN Pitch Tracking trích xuất F0 sau mỗi 10ms có bộ lọc nhiễu vô thanh (Voiced/Unvoiced Gate)', category: 'AI/DSP', completed: true },
-      { id: 't-elsa-203-be-norm', title: 'Phát triển module SemitoneConverter chuẩn hóa dải cao độ cá nhân loại bỏ chênh lệch giới tính', category: 'Backend', completed: true },
-      { id: 't-elsa-203-qa', title: 'Kiểm thử với 3 loại câu: Câu trần thuật (Fall), Câu hỏi Yes/No (Rise), và Câu hỏi Wh (Fall)', category: 'QA', completed: true }
+      { id: 't-elsa-203-fe-curve', title: 'Xây dựng component PitchContourSvg.jsx vẽ đường cong Bezier mượt mà so sánh 2 dải cao độ F0', category: 'Frontend', completed: false },
+      { id: 't-elsa-203-fe-synth', title: 'Tích hợp Web Audio Oscillator phát âm thanh Humming Melody mô phỏng đường cong ngữ điệu', category: 'Frontend', completed: false },
+      { id: 't-elsa-203-be-yin', title: 'Triển khai thuật toán YIN Pitch Tracking trích xuất F0 sau mỗi 10ms có bộ lọc Voiced/Unvoiced', category: 'AI/DSP', completed: false },
+      { id: 't-elsa-203-be-norm', title: 'Phát triển module SemitoneConverter chuẩn hóa dải cao độ cá nhân loại bỏ chênh lệch giới tính', category: 'Backend', completed: false }
     ]),
-    notes: `### 🎨 FRONTEND DESIGN SPECIFICATION
-- **Component File**: \`vietphonics-app/src/components/prosody/PitchContourMelodyView.jsx\`
-- **Component Hierarchy**:
-  \`\`\`
-  <PitchContourMelodyView sentence="Are you ready to order?" sentenceType="yes_no_question">
-    <SvgPitchCanvas width={640} height={200}>
-      <NativePitchLine points={nativeContour} stroke="#38bdf8" />
-      <UserPitchLine points={userContour} stroke="#f59e0b" />
-      <SentenceWordLabels words={words} timestamps={wordTimes} />
-      <IntonationArrow direction="rise" atTimestamp={lastWordTime} />
-    </SvgPitchCanvas>
-    <HummingAudioButton onPlayHumming={playPitchSynthesizer} />
-  </PitchContourMelodyView>
-  \`\`\`
-- **Stitch Design Tokens**:
-  - Canvas Container: \`bg-slate-950 border border-slate-800 rounded-3xl p-6 shadow-xl\`
-  - Native Curve: \`stroke-[3px] stroke-sky-400 drop-shadow-[0_0_8px_rgba(56,189,248,0.5)]\`
-  - User Curve: \`stroke-[3px] stroke-amber-400 drop-shadow-[0_0_8px_rgba(245,158,11,0.5)]\`.
+    notes: `### 🎯 FULLSTACK FEATURE SPECIFICATION
+- **Phân loại**: Full-stack Intonation Analysis (SVG Pitch Curves + F0 Semitone Processing)
+- **UI Mockup**: \`vietphonics-app/src/ui-reference/acoustic_precision_light/code.html\`
+- **Frontend Component**: \`vietphonics-app/src/components/prosody/PitchContourMelodyView.jsx\`
 
----
+#### 🎨 Dual Pitch Curve Visualization
+\`\`\`
++-------------------------------------------------------------+
+| Câu hỏi: "Are you coming with us tomorrow?"                 |
+| F0 (Hz)                                                     |
+| 250 |                     ____/\  <-- [Bản xứ: Vút cao ↗]   |
+| 200 |         __/\__    /                                   |
+| 150 |  ______/      \--/--------\ <-- [Học viên: Đi xuống ↘]|
+|     +-------------------------------------------------------+
+|        Are   you   coming   with   us   tomorrow?           |
++-------------------------------------------------------------+
+\`\`\`
 
-### 🗄️ BACKEND DESIGN SPECIFICATION
-- **REST API Endpoint**:
-  \`\`\`http
-  POST /api/v1/scoring/pitch-contour
-  Authorization: Bearer <JWT>
-  Content-Type: application/json
+#### 🗄️ Backend Semitone Normalization Formula
+\`\`\`
+Semitone(t) = 12 * \log_2(F0(t) / F0_{median})
+\`\`\`
+- Chuẩn hóa loại bỏ yếu tố sinh học giới tính (nam ~120Hz, nữ ~220Hz), đưa về thang đo tương đối delta semitones.
 
-  Request Body:
-  {
-    "sentenceId": "sent_yn_01",
-    "audioUrl": "https://r2.vietphonics.com/audio/session_503.opus"
-  }
+#### 🗄️ Backend API Contract
+\`\`\`http
+POST /api/v1/scoring/pitch-contour
+Content-Type: application/json
 
-  Response 200 OK:
-  {
-    "sentenceType": "yes_no_question",
-    "targetTerminalPattern": "rise",
-    "detectedTerminalPattern": "rise",
-    "contourSimilarityScore": 88.5,
-    "userMedianPitchHz": 195.4,
-    "contourNormalizedPoints": [
-      { "timeSec": 0.1, "semitone": 0.2 },
-      { "timeSec": 0.5, "semitone": 1.1 },
-      { "timeSec": 1.2, "semitone": 4.8 }
-    ]
-  }
-  \`\`\`
-- **High Concurrency (5,000 Users)**:
-  - Đường cong chuẩn (Gold Standard Native Contours) của các câu luyện tập được tính sẵn và lưu trong Cloudflare KV / Redis với TTL 30 ngày.`
+{
+  "sentenceId": "sent_prosody_01",
+  "audioUrl": "https://r2.vietphonics.com/audio/session_503.opus"
+}
+\`\`\`
+- **Response**: Trả về mảng \`contourNormalizedPoints\` gồm \`{ timeSec, semitone }\` và kết quả đánh giá \`terminalPattern: 'rise' | 'fall'\`.`
   },
   {
     id: 'VN-103',
@@ -224,95 +165,79 @@ export const prosodyStories = [
     action: 'quan sát bảng đối chiếu cơ chế giữa "Thanh điệu đơn lập tiếng Việt" vs "Trọng âm động học tiếng Anh", và luyện các bài tập hạ âm schwa (/ə/) để biến các âm tiết không trọng âm thành âm lướt nhẹ',
     value: 'giải phóng học viên khỏi tư duy thanh điệu tiếng mẹ đẻ, giúp câu nói tiếng Anh có độ nén nhịp điệu (Stress-timed Rhythm) tự nhiên như người bản xứ',
     priority: 'must',
-    status: 'in-progress',
+    status: 'todo',
     size: 'L',
     points: 8,
+    uiMockupUrl: '/src/ui-reference/kh_u_h_nh_2d_th_vi_n_gi_i_ph_u_m_v_l1_light_mode/code.html',
     acceptance_criteria: JSON.stringify([
       {
         id: 'ac-vn-103-schwa-demotion',
         given: 'Học viên luyện từ chứa âm lướt schwa (e.g., "ba-NA-na", "a-BOUT", "CHO-co-late")',
         when: 'Hệ thống đo đạc thời lượng và độ mở nguyên âm của âm schwa',
         then: 'Nếu âm schwa được phát âm cực ngắn (<70ms) và thả lỏng cơ miệng về trung tâm (F1/F2 trung tính) thì ghi nhận thành công kỹ năng giảm âm (Schwa Demotion).',
-        completed: true
+        completed: false
       },
       {
-        id: 'ac-vn-103-frontend-design',
-        given: 'Giao diện StressVsToneView',
-        when: 'Render trên màn hình',
-        then: 'Hiển thị đồ họa so sánh 2 thế giới: Bên trái là cột "Thanh điệu tiếng Việt" với các dấu câu tĩnh; bên phải là cột "Nhịp điệu tiếng Anh" có các hạt âm tiết to nhỏ nhún nhảy theo nhạc beat, ký hiệu /ə/ hiển thị màu xanh ngọc lấp lánh.',
-        completed: true
+        id: 'ac-vn-103-contrast-card',
+        given: 'Giao diện StressVsToneView hiển thị',
+        when: 'Học viên mở bài đối chiếu ngôn ngữ',
+        then: 'Hiển thị đồ họa so sánh 2 cơ chế: Cột trái "Thanh điệu tiếng Việt (Âm tiết độc lập, đều độ dài)" và Cột phải "Nhịp điệu tiếng Anh (Âm nhấn vươn dài, âm phụ rút gọn thành Schwa /ə/)".',
+        completed: false
       },
       {
-        id: 'ac-vn-103-backend-design',
-        given: '5,000 học viên cùng làm bài luyện giảm âm schwa',
-        when: 'Xử lý qua endpoint POST /api/v1/pedagogy/schwa-check',
-        then: 'Phân tích Formant F1/F2 của âm lướt so với vùng trung tính (500Hz / 1500Hz) trong dưới 50ms, trả về điểm số độ thả lỏng cơ miệng.',
-        completed: true
-      },
-      {
-        id: 'ac-vn-103-l1-precision',
+        id: 'ac-vn-103-l1-advice',
         given: 'Học viên phát âm từ "banana" thành "ba-na-nà" (đều 3 âm tiết)',
         when: 'Hệ thống phát hiện lỗi không giảm âm',
-        then: 'Hiển thị lời khuyên: "Bạn đang đọc rõ chữ \'ba\'! Hãy đọc lướt thật nhanh thành /bə/ - chỉ lướt nhẹ môi như một tiếng thở dài".',
-        completed: true
+        then: 'Hiển thị lời khuyên L1: "Bạn đang đọc rõ chữ \'ba\'! Hãy đọc lướt thật nhanh thành /bə/ - chỉ lướt nhẹ môi như một tiếng thở dài".',
+        completed: false
       },
       {
-        id: 'ac-vn-103-a11y-fallback',
-        given: 'Học viên muốn cảm nhận nhịp điệu qua xúc giác',
-        when: 'Thiết bị di động có hỗ trợ motor rung (Vibration API)',
-        then: 'Điện thoại rung mạnh ở âm tiết trọng âm chính và rung siêu nhẹ ở âm schwa, tạo phản hồi xúc giác (Haptic Feedback) sống động.',
-        completed: true
+        id: 'ac-vn-103-mobile-haptic',
+        given: 'Học viên luyện tập trên thiết bị di động có motor rung',
+        when: 'Âm thanh phát đến âm tiết trọng âm chính',
+        then: 'Điện thoại rung nhịp dứt khoát (Vibrate 100ms), và khi đến âm lướt schwa chỉ rung siêu nhẹ (10ms) qua Navigator.vibrate API.',
+        completed: false
       }
     ]),
     technical_tasks: JSON.stringify([
-      { id: 't-vn-103-fe-contrast', title: 'Xây dựng component StressVsToneComparison.jsx trình diễn trực quan sự khác biệt ngôn ngữ đơn lập vs đa âm tiết', category: 'Frontend', completed: true },
-      { id: 't-vn-103-fe-haptic', title: 'Tích hợp Navigator.vibrate Haptic API rung theo nhịp trọng âm trên thiết bị di động', category: 'Frontend', completed: true },
-      { id: 't-vn-103-be-schwa', title: 'Xây dựng thuật toán kiểm tra độ tập trung Formant nguyên âm schwa (Neutral Formant Proximity)', category: 'AI/DSP', completed: true },
-      { id: 't-vn-103-be-cache', title: 'Thiết lập danh mục 500 từ vựng chứa âm schwa dễ nhầm lẫn nhất của người Việt lưu trong Redis', category: 'Backend', completed: true },
-      { id: 't-vn-103-qa', title: 'Kiểm thử phản hồi xúc giác trên thiết bị di động Android và đảm bảo không gây lỗi trên iOS Safari', category: 'QA', completed: true }
+      { id: 't-vn-103-fe-contrast', title: 'Xây dựng component StressVsToneComparison.jsx trình diễn trực quan sự khác biệt ngôn ngữ đơn lập vs đa âm tiết', category: 'Frontend', completed: false },
+      { id: 't-vn-103-fe-haptic', title: 'Tích hợp Navigator.vibrate Haptic API rung theo nhịp trọng âm trên thiết bị di động', category: 'Frontend', completed: false },
+      { id: 't-vn-103-be-schwa', title: 'Xây dựng thuật toán kiểm tra độ tập trung Formant nguyên âm schwa (Neutral Formant Proximity)', category: 'AI/DSP', completed: false },
+      { id: 't-vn-103-be-cache', title: 'Thiết lập danh mục 500 từ vựng chứa âm schwa dễ nhầm lẫn nhất của người Việt lưu trong Redis', category: 'Backend', completed: false }
     ]),
-    notes: `### 🎨 FRONTEND DESIGN SPECIFICATION
-- **Component File**: \`vietphonics-app/src/components/prosody/StressVsToneVisualizer.jsx\`
-- **Component Hierarchy**:
-  \`\`\`
-  <StressVsToneVisualizer word="banana" schwaPositions={[0, 2]}>
-    <LinguisticContrastCard>
-      <VietnameseToneColumn title="Tiếng Việt (Đơn lập)" description="Mỗi âm tiết mang thanh điệu riêng biệt, đều độ dài" />
-      <EnglishStressColumn title="Tiếng Anh (Stress-timed)" description="Âm nhấn vươn cao kéo dài, âm phụ co rút thành Schwa /ə/" />
-    </LinguisticContrastCard>
-    <SchwaDemotionDrill isSchwaRelaxed={true} durationMs={55} />
-  </StressVsToneVisualizer>
-  \`\`\`
-- **Stitch Design Tokens**:
-  - Contrast Card: \`grid grid-cols-1 md:grid-cols-2 gap-4 p-6 bg-slate-900 rounded-3xl border border-slate-800\`
-  - Schwa Chip: \`bg-teal-500/10 text-teal-400 border border-teal-500/30 font-bold px-3 py-1 rounded-full animate-pulse\`.
+    notes: `### 🎯 FULLSTACK & PEDAGOGICAL FEATURE SPECIFICATION
+- **Phân loại**: Full-stack Pedagogical Feature (Linguistic Contrast + Schwa Formant Detection)
+- **UI Mockup**: \`vietphonics-app/src/ui-reference/kh_u_h_nh_2d_th_vi_n_gi_i_ph_u_m_v_l1_light_mode/code.html\`
+- **Frontend Component**: \`vietphonics-app/src/components/prosody/StressVsToneVisualizer.jsx\`
 
----
+#### 🎨 Linguistic Contrast Layout
+\`\`\`
++-------------------------------------------------------------+
+| TIẾNG VIỆT (Đơn lập - Syllable-timed)                       |
+| "quả - chuối - tiêu" -> Mỗi từ đều đặn ~200ms               |
++-------------------------------------------------------------+
+| TIẾNG ANH (Đa âm tiết - Stress-timed)                       |
+| "ba - NA - na" -> /bə/ (50ms) - /'næn/ (300ms) - /ə/ (50ms) |
+| [Lướt nhẹ]          [VƯƠN CAO NGÂN DÀI]        [Lướt nhẹ]   |
++-------------------------------------------------------------+
+\`\`\`
 
-### 🗄️ BACKEND DESIGN SPECIFICATION
-- **REST API Endpoint**:
-  \`\`\`http
-  POST /api/v1/pedagogy/schwa-check
-  Authorization: Bearer <JWT>
-  Content-Type: application/json
+#### 🧮 Schwa Neutral Formant Proximity Formula
+\`\`\`
+D_{neutral} = \sqrt{(F1 - 500)^2 + (F2 - 1500)^2}
+\`\`\`
+- Nếu \`D_{neutral} < 150\` và \`duration < 70ms\`: Đạt chuẩn Schwa thả lỏng hoàn hảo.
+- Nếu \`F1 > 700\` hoặc \`duration > 150ms\`: Vẫn đang phát âm nguyên âm mở hoàn toàn (chưa giảm âm).
 
-  Request Body:
-  {
-    "word": "banana",
-    "audioUrl": "https://r2.vietphonics.com/audio/session_604.opus"
-  }
+#### 🗄️ Backend API Contract
+\`\`\`http
+POST /api/v1/pedagogy/schwa-check
+Content-Type: application/json
 
-  Response 200 OK:
-  {
-    "isSchwaProperlyDemoted": true,
-    "schwaDurationMs": 58,
-    "f1Hz": 510,
-    "f2Hz": 1490,
-    "distanceFromNeutralCenter": 22.4,
-    "demotionGrade": "excellent"
-  }
-  \`\`\`
-- **High Concurrency (5,000 Users)**:
-  - Dữ liệu 500 bài tập Schwa được lưu sẵn trên Redis CDN với TTL 86,400s.`
+{
+  "word": "banana",
+  "audioUrl": "https://r2.vietphonics.com/audio/session_604.opus"
+}
+\`\`\``
   }
 ];
