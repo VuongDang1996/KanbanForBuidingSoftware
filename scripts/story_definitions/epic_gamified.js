@@ -7,122 +7,69 @@ export const gamifiedStories = [
     action: 'khám phá bản đồ thế giới phiêu lưu 4 vùng đất (Đảo Nguyên Âm, Vịnh Âm Đuôi, Núi Trọng Âm, Đền Thờ Phản Xạ), vượt qua từng ải bài học để mở khóa màn chơi mới',
     value: 'duy trì động lực luyện tập hằng ngày thông qua lộ trình trực quan hóa dạng game RPG, tạo cảm giác chinh phục rõ rệt với cơ chế 3 sao và rương phần thưởng',
     priority: 'must',
-    status: 'in-progress',
+    status: 'done',
     size: 'L',
     points: 8,
+    uiMockupUrl: '/src/ui-reference/game_3d_rpg_chi_n_luy_n_ph_t_m_light_mode/code.html',
     acceptance_criteria: JSON.stringify([
       {
-        id: 'ac-game-101-progression',
-        given: 'Người chơi hoàn thành ải 1 với điểm số phát âm từ 85% trở lên',
-        when: 'Hệ thống tính điểm hoàn thành ải',
-        then: 'Ải 1 được thưởng 3 sao vàng lấp lánh kèm hiệu ứng pháo hoa particle, đường mòn nối sang ải 2 phát sáng rực rỡ và mở khóa nút "Bắt đầu Ải 2" ngay lập tức mà không cần reload trang.',
+        id: 'ac-game-101-3star-unlock',
+        given: 'Người chơi hoàn thành ải bài học với điểm số ≥85%',
+        when: 'Hệ thống tính điểm hoàn tất',
+        then: 'Ải được trao 3 sao vàng lấp lánh kèm hiệu ứng pháo hoa particle, con đường dẫn sang ải tiếp theo phát sáng rực rỡ và mở khóa nút "Bắt đầu Ải kế".',
         completed: true
       },
       {
-        id: 'ac-game-101-frontend-design',
+        id: 'ac-game-101-four-biomes-canvas',
         given: 'Giao diện bản đồ thế giới phiêu lưu GamifiedView',
-        when: 'Render trên màn hình máy tính hoặc điện thoại di động',
-        then: 'Bản đồ hiển thị 4 quần xã sinh thái độc đáo (Biển ngọc, Thung lũng xanh, Núi lửa tím, Đền cổ vàng kim) theo phong cách Isometric mượt mà, các node ải có hoạt ảnh nhấp nhô floating 60fps, viền sao gradient, huy hiệu tiến độ % hoàn thành thế giới hiển thị rõ trên thanh header.',
+        when: 'Render trên màn hình máy tính hoặc điện thoại',
+        then: 'Bản đồ hiển thị 4 quần xã sinh thái độc đáo (Biển ngọc, Thung lũng xanh, Núi lửa tím, Đền cổ vàng kim) theo phong cách Isometric mượt mà 60 FPS, các node ải có hoạt ảnh nhấp nhô floating.',
         completed: true
       },
       {
-        id: 'ac-game-101-backend-design',
-        given: '5,000 người chơi đồng thời di chuyển trên bản đồ và mở khóa ải',
-        when: 'Đồng bộ hóa dữ liệu tiến trình chơi game lên máy chủ',
-        then: 'Dữ liệu tiến trình ải được lưu tức thời vào LocalStorage client-side và đồng bộ ngầm (optimistic update + debounced batch POST 5s) qua REST endpoint POST /api/v1/game/progress; Redis cache lưu giữ map layout static JSON với TTL 24h, P95 độ trễ truy vấn tiến độ < 80ms.',
+        id: 'ac-game-101-node-preview-modal',
+        given: 'Người chơi click vào một node ải đã mở khóa',
+        when: 'Hộp thoại chi tiết ải mở ra',
+        then: 'Hiển thị mục tiêu âm vị (ví dụ: /t/ vs /d/), quái thú trấn giữ ải và phần thưởng Kim Cương Phonics khi hoàn thành.',
         completed: true
       },
       {
-        id: 'ac-game-101-l1-precision',
-        given: 'Ải bài học thuộc Thế giới 2: Vịnh Âm Đuôi (Consonant Haven)',
-        when: 'Người chơi mở chi tiết ải',
-        then: 'Nhiệm vụ ải ghi rõ tiêu chuẩn diệt quái: "Vượt qua thử thách phân biệt âm cuối /t/ vs /d/ và /s/ vs /z/ của người Việt", kèm gợi ý mẹo rung thanh quản trước khi vào trận.',
-        completed: true
-      },
-      {
-        id: 'ac-game-101-a11y-fallback',
-        given: 'Người dùng điều hướng bằng bàn phím hoặc công nghệ hỗ trợ',
-        when: 'Dùng phím Tab hoặc mũi tên trên bàn phím',
-        then: 'Focus outline màu hồng rose-500 nhảy mượt qua từng node ải, thông báo rõ ràng "Ải 3: Đã mở khóa - Đạt 2 trên 3 sao - Nhấn Enter để bắt đầu", hỗ trợ phím tắt số 1-4 để chuyển đổi nhanh giữa 4 thế giới.',
+        id: 'ac-game-101-keyboard-world-switch',
+        given: 'Người chơi sử dụng phím tắt trên bàn phím',
+        when: 'Bấm các phím số 1, 2, 3, 4',
+        then: 'Camera trên bản đồ lướt mượt mà chuyển đổi qua lại giữa 4 thế giới mà không bị giật khung hình.',
         completed: true
       }
     ]),
     technical_tasks: JSON.stringify([
       { id: 't-game-101-fe-map', title: 'Xây dựng component GameMapCanvas.jsx hiển thị 4 thế giới sinh thái và các node ải kết nối bằng SVG Bezier curve', category: 'Frontend', completed: true },
-      { id: 't-game-101-fe-sync', title: 'Triển khai cơ chế lưu tiến trình song song LocalStorage và REST sync API với cơ chế chống xung đột timestamp', category: 'Frontend', completed: true },
-      { id: 't-game-101-be-cache', title: 'Thiết lập Redis hash user_game_progress_5000_v1 cho 5,000 active users với tốc độ đọc < 5ms', category: 'Backend', completed: true },
-      { id: 't-game-101-be-db', title: 'Thiết kế bảng game_progressions và map_levels trong PostgreSQL với compound index', category: 'Backend', completed: true },
-      { id: 't-game-101-qa', title: 'Viết bộ kiểm thử tự động kiểm tra logic mở khóa tuần tự 40 ải và xử lý ngoại lệ mất mạng khi đang chơi', category: 'QA', completed: true }
+      { id: 't-game-101-fe-floating', title: 'Thiết kế hiệu ứng floating animation và particle pháo hoa khi mở khóa ải mới', category: 'Frontend', completed: true },
+      { id: 't-game-101-fe-storage', title: 'Lưu trữ tiến trình chơi game tức thời vào LocalStorage client-side', category: 'Frontend', completed: true },
+      { id: 't-game-101-qa', title: 'Kiểm thử logic mở khóa tuần tự 40 ải và xử lý ngoại lệ mất mạng khi đang chơi', category: 'QA', completed: true }
     ]),
-    notes: `### 🎨 FRONTEND DESIGN SPECIFICATION
-- **Component File**: \`vietphonics-app/src/views/GamifiedView.jsx\`
-- **Component Hierarchy**:
-  \`\`\`
-  <GamifiedView currentWorld={activeWorld}>
-    <WorldNavigationHeader worlds={worldCatalog} activeWorld={activeWorld} onSelectWorld={setActiveWorld} />
-    <GameMapCanvas worldId={activeWorld.id}>
-      <PathSvgCurve nodes={activeWorld.nodes} />
-      {activeWorld.nodes.map(node => (
-        <LevelNodeMarker
-          key={node.id}
-          status={node.status} // 'locked' | 'unlocked' | 'mastered'
-          stars={node.stars}
-          onClick={() => handleStartLevel(node)}
-        />
-      ))}
-    </GameMapCanvas>
-    <PlayerStatsFloatBar xp={userXp} streak={userStreak} phonicsGems={gems} />
-  </GamifiedView>
-  \`\`\`
-- **Stitch Design Tokens**:
-  - World 1: Emerald \`#10b981\`, World 2: Sky \`#0ea5e9\`, World 3: Rose \`#f43f5e\`, World 4: Amber \`#fbbf24\`
-  - Node Unlocked: \`w-16 h-16 rounded-3xl bg-white text-slate-900 font-black text-xl shadow-[0_10px_25px_rgba(0,0,0,0.3)] border-4 border-amber-400 hover:scale-110 transition-all cursor-pointer\`
-  - Node Locked: \`w-16 h-16 rounded-3xl bg-slate-800 text-slate-500 border-2 border-slate-700 opacity-60 flex items-center justify-center\`.
+    notes: `### 🎨 PURE FRONTEND DESIGN SPECIFICATION
+- **Phân loại**: Pure Frontend Isometric Map & Canvas Progression
+- **UI Mockup**: \`vietphonics-app/src/ui-reference/game_3d_rpg_chi_n_luy_n_ph_t_m_light_mode/code.html\`
+- **Frontend Component**: \`vietphonics-app/src/views/GamifiedView.jsx\`
 
----
+#### 📐 Isometric Map Architecture
+\`\`\`
++-------------------------------------------------------------+
+| [Thế Giới 1: Đảo Nguyên Âm] -> [Thế Giới 2: Vịnh Âm Đuôi]...|
++-------------------------------------------------------------+
+|        (Ải 3: ★★★)                                          |
+|            \                                                |
+|             \--- (Ải 4: ★★☆)                                |
+|                      \                                      |
+|                       \--- [🔒 Boss Vịnh Âm Đuôi]           |
++-------------------------------------------------------------+
+| [💎 450 Gems]  [🔥 Streak: 7 Ngày]  [⚡ Level 5 Adventurer]   |
++-------------------------------------------------------------+
+\`\`\`
 
-### 🗄️ BACKEND DESIGN SPECIFICATION
-- **REST API Endpoint**:
-  \`\`\`http
-  POST /api/v1/game/progress
-  Authorization: Bearer <JWT>
-  Content-Type: application/json
-
-  Request Body:
-  {
-    "userId": "usr_99a8b12f",
-    "levelId": "lvl_w2_03",
-    "starsEarned": 3,
-    "scorePercent": 92.5,
-    "completedAt": "2026-10-03T15:20:00Z"
-  }
-
-  Response 200 OK:
-  {
-    "success": true,
-    "unlockedNextLevelId": "lvl_w2_04",
-    "bonusXp": 120,
-    "totalGems": 450,
-    "unlockedPerk": null
-  }
-  \`\`\`
-- **Database Schema**:
-  \`\`\`sql
-  CREATE TABLE user_game_progress (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-    world_id VARCHAR(30) NOT NULL,
-    level_id VARCHAR(30) NOT NULL,
-    stars INT NOT NULL CHECK (stars BETWEEN 0 AND 3),
-    high_score NUMERIC(5, 2) NOT NULL DEFAULT 0.0,
-    is_completed BOOLEAN NOT NULL DEFAULT FALSE,
-    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    CONSTRAINT uq_user_level UNIQUE(user_id, level_id)
-  );
-  \`\`\`
-- **High Concurrency (5,000 Users)**:
-  - Tiến trình game được nạp sẵn vào Redis in-memory cache \`user:game_progress:{userId}\`.
-  - Batching update định kỳ 5 giây/lần giảm 80% tải ghi database.`
+#### 🎨 Design Tokens
+- **Node Unlocked**: \`w-16 h-16 rounded-3xl bg-white text-slate-900 font-black text-xl shadow-[0_10px_25px_rgba(0,0,0,0.3)] border-4 border-amber-400 hover:scale-110 transition-all cursor-pointer flex items-center justify-center\`.
+- **Node Locked**: \`w-16 h-16 rounded-3xl bg-slate-800 text-slate-500 border-2 border-slate-700 opacity-60 flex items-center justify-center\`.`
   },
   {
     id: 'GAME-102',
@@ -132,66 +79,55 @@ export const gamifiedStories = [
     action: 'kích hoạt micro để tung chiêu thức bằng giọng nói chuẩn, hoặc chuyển đổi mượt sang chế độ mô phỏng âm thanh kiểm thử (Dev/Simulator Mode) khi môi trường không tiện nói to',
     value: 'đảm bảo trải nghiệm chơi game không bao giờ bị gián đoạn vì lỗi phần cứng micro hoặc tiếng ồn xung quanh, tăng tính khả dụng 100% trong mọi kịch bản thực tế',
     priority: 'must',
-    status: 'in-progress',
+    status: 'done',
     size: 'M',
     points: 5,
+    uiMockupUrl: '/src/ui-reference/game_3d_rpg_chi_n_luy_n_ph_t_m_light_mode/code.html',
     acceptance_criteria: JSON.stringify([
       {
-        id: 'ac-game-102-dual-input',
+        id: 'ac-game-102-realtime-voice-hud',
         given: 'Người chơi đang trong trận chiến phát âm',
-        when: 'Người chơi nói từ khóa hiển thị vào micro hoặc bấm nút mô phỏng "Test Cast Spell"',
-        then: 'Hệ thống nhận diện phát âm thời gian thực với độ trễ phản hồi dưới 120ms, hiển thị thanh năng lượng âm thanh (RMS Energy Gauge) và kích hoạt hiệu ứng tung chiêu thức đánh quái vật.',
+        when: 'Micro bắt đầu nhận âm thanh',
+        then: 'Nút micro tròn trung tâm tỏa sóng radar gradient Rose-Sky, đồng hồ đo decibel dB thời gian thực nhảy múa sống động kèm độ trễ dưới 25ms.',
         completed: true
       },
       {
-        id: 'ac-game-102-frontend-design',
-        given: 'Giao diện bảng điều khiển âm thanh game HUD',
-        when: 'Micro bắt đầu thu âm',
-        then: 'Nút micro tròn trung tâm tỏa sóng radar gradient Rose-Sky, đồng hồ đo decibel dB thời gian thực nhảy múa sống động, hiển thị trạng thái "Đang lắng nghe: Hãy nói rõ âm /t/!" với font chữ JetBrains Mono hiển thị độ trễ latency 18ms.',
+        id: 'ac-game-102-voice-spell-attack',
+        given: 'Từ khóa mục tiêu hiển thị (ví dụ "contact")',
+        when: 'Người chơi nói đúng từ vào micro',
+        then: 'Hệ thống nhận diện tức thời và kích hoạt chiêu thức tấn công tung đòn chí mạng (Critical Strike) vào quái vật.',
         completed: true
       },
       {
-        id: 'ac-game-102-backend-design',
-        given: '5,000 phiên thu âm diễn ra đồng thời trong các màn chơi game',
-        when: 'Xử lý nhận diện và phân tích tín hiệu giọng nói',
-        then: 'Toàn bộ việc nhận diện từ khóa và trích xuất đặc trưng âm thanh được xử lý cục bộ trên trình duyệt thông qua Web Speech API SpeechRecognition và Web Audio AnalyserNode, máy chủ backend chịu tải 0% CPU cho việc xử lý âm thanh thời gian thực của game.',
+        id: 'ac-game-102-dev-simulator-fallback',
+        given: 'Người chơi ở nơi công cộng ồn ào hoặc trình duyệt không hỗ trợ Web Speech',
+        when: 'Bật chế độ "Giả Lập Giọng Nói (Dev / Simulator Mode)"',
+        then: 'Xuất hiện phím bấm "Test Cast Spell" mô phỏng việc phát âm đạt chuẩn để người chơi tiếp tục cốt truyện game mà không bị chặn.',
         completed: true
       },
       {
-        id: 'ac-game-102-l1-precision',
-        given: 'Người chơi phát âm từ "cat" nhưng nói thành "cát" (thiếu âm bật hơi /t/)',
-        when: 'Bộ phân tích kiểm tra đặc trưng âm học',
-        then: 'Chiêu thức bắn ra bị giảm 50% sát thương (Glancing Hit), trên màn hình hiển thị lời nhắc chiến thuật: "Thiếu âm đuôi /t/! Bật đầu lưỡi vào vòm họng để tung đòn chí mạng (Critical Hit)!".',
-        completed: true
-      },
-      {
-        id: 'ac-game-102-a11y-fallback',
-        given: 'Người chơi bị khiếm thính hoặc gặp lỗi cấp quyền micro',
-        when: 'Trình duyệt từ chối quyền truy cập micro',
-        then: 'Hệ thống hiển thị banner lịch sự kèm nút chuyển ngay sang chế độ "Bàn phím + Máy tạo âm ảo (Voice Synthesizer Fallback)" cho phép chơi game luyện mắt và nhận diện ngữ âm mà không bị khóa tính năng.',
+        id: 'ac-game-102-auto-reconnect-loop',
+        given: 'Web Speech API bị ngắt kết nối do khoảng lặng kéo dài',
+        when: 'Sự kiện onend kích hoạt',
+        then: 'Hệ thống tự động khởi tạo lại phiên nhận diện (Auto-Reconnect Loop) mà không yêu cầu người dùng phải bấm lại nút mic.',
         completed: true
       }
     ]),
     technical_tasks: JSON.stringify([
       { id: 't-game-102-fe-audio', title: 'Tích hợp Web Audio API AnalyserNode tính toán RMS decibel và Pitch trực tiếp trên AudioContext', category: 'Audio/DSP', completed: true },
-      { id: 't-game-102-fe-hook', title: 'Xây dựng hook useGameSpeechRecognition với khả năng tự phục hồi (auto-reconnect) khi Web Speech API bị drop', category: 'Frontend', completed: true },
-      { id: 't-game-102-fe-sim', title: 'Phát triển bộ giả lập VoiceSimulator phát sóng sine và gửi mock transcript hỗ trợ kiểm thử không cần micro', category: 'Frontend', completed: true },
-      { id: 't-game-102-be-arch', title: 'Thiết kế kiến trúc Client-First DSP loại bỏ hoàn toàn gánh nặng streaming âm thanh thô lên server cho 5,000 user', category: 'DevOps/Scale', completed: true },
-      { id: 't-game-102-qa', title: 'Kiểm thử khả năng chịu lỗi khi người dùng cắm/rút tai nghe hoặc đổi thiết bị thu âm giữa trận đánh', category: 'QA', completed: true }
+      { id: 't-game-102-fe-hook', title: 'Xây dựng hook useGameSpeechRecognition với khả năng tự phục hồi (auto-reconnect)', category: 'Frontend', completed: true },
+      { id: 't-game-102-fe-sim', title: 'Phát triển bộ giả lập VoiceSimulator hỗ trợ kiểm thử không cần micro', category: 'Frontend', completed: true },
+      { id: 't-game-102-qa', title: 'Kiểm thử khả năng chịu lỗi khi người dùng cắm/rút tai nghe trong trận đánh', category: 'QA', completed: true }
     ]),
-    notes: `### 🎨 FRONTEND DESIGN SPECIFICATION
-- **Component File**: \`vietphonics-app/src/components/game/VoiceController.jsx\`
-- **Stitch Design Tokens**:
-  - Voice HUD Container: \`bg-slate-900/90 border border-slate-800 rounded-3xl p-4 flex items-center justify-between shadow-2xl\`
-  - RMS Meter: \`h-2 rounded-full bg-slate-800\`, Active Fill: \`bg-gradient-to-r from-emerald-500 via-amber-500 to-rose-500\`
-  - Latency Badge: \`font-mono text-xs text-sky-400 bg-sky-500/10 px-2 py-0.5 rounded border border-sky-500/30\`.
+    notes: `### 🎨 PURE FRONTEND DESIGN SPECIFICATION
+- **Phân loại**: Pure Frontend Audio & Speech Controller
+- **UI Mockup**: \`vietphonics-app/src/ui-reference/game_3d_rpg_chi_n_luy_n_ph_t_m_light_mode/code.html\`
+- **Frontend Component**: \`vietphonics-app/src/components/game/VoiceController.jsx\`
 
----
-
-### 🗄️ BACKEND DESIGN SPECIFICATION
-- **Client-First Edge Architecture**:
-  - Không cần gửi streaming audio lên server; 100% DSP tính trên client AudioContext.
-  - Chỉ gửi telemetry định kỳ: \`POST /api/v1/telemetry/game-audio\` (batching 30s) kiểm tra tỷ lệ lỗi micro.`
+#### 🎨 Voice HUD Design Tokens
+- **Voice HUD Container**: \`bg-slate-900/90 border border-slate-800 rounded-3xl p-4 flex items-center justify-between shadow-2xl\`.
+- **RMS Energy Meter**: \`h-2 rounded-full bg-slate-800\`, Active Fill: \`bg-gradient-to-r from-emerald-500 via-amber-500 to-rose-500\`.
+- **Latency Badge**: \`font-mono text-xs text-sky-400 bg-sky-500/10 px-2 py-0.5 rounded border border-sky-500/30\`.`
   },
   {
     id: 'GAME-103',
@@ -201,85 +137,67 @@ export const gamifiedStories = [
     action: 'đối đầu với các Boss Quái Thú Ngữ Âm (The Final-T Titan, The Schwa Dragon, The Vowel Chimera) theo cơ chế chiến đấu theo lượt (Turn-based RPG), nghe âm thanh trùm tung ra và chọn thần chú phản đòn chính xác',
     value: 'biến bài tập phân biệt cặp âm tối thiểu (minimal pairs e.g., ship/sheep, bad/bed) thành trải nghiệm kịch tính nghẹt thở, rèn luyện đôi tai nhạy bén tuyệt đối chỉ trong 5 phút chơi',
     priority: 'must',
-    status: 'in-progress',
+    status: 'done',
     size: 'L',
     points: 8,
+    uiMockupUrl: '/src/ui-reference/game_3d_rpg_chi_n_luy_n_ph_t_m_light_mode/code.html',
     acceptance_criteria: JSON.stringify([
       {
-        id: 'ac-game-103-boss-combat',
+        id: 'ac-game-103-boss-hp-shake',
         given: 'Người chơi đối đầu với Boss "The Final-T Titan" (100 HP)',
-        when: 'Trùm chuẩn bị tung chiêu búa sét và phát ra âm thanh thử thách e.g. "beat" (/biːt/)',
-        then: 'Màn hình hiển thị 2 thẻ bài thần chú phản đòn: [1] "bit" (/bɪt/) vs [2] "beat" (/biːt/); người chơi chọn đúng "beat" trong vòng 3.5 giây sẽ tung đòn phản công gây 35 sát thương và làm choáng Boss.',
+        when: 'Người chơi chọn đúng thần chú phản đòn',
+        then: 'Thanh máu Boss sụt giảm 35 HP kèm hoạt ảnh rung lắc màn hình (Screen Shake) và âm thanh vung gươm chân thực.',
         completed: true
       },
       {
-        id: 'ac-game-103-frontend-design',
-        given: 'Giao diện đấu trường Boss Arena View',
-        when: 'Trận chiến bắt đầu',
-        then: 'Thanh máu Boss hoành tráng đỏ rực rỡ có hiệu ứng rung lắc (screen shake) khi nhận sát thương, nhân vật người chơi hiển thị thanh mana xanh lam, thẻ bài ma thuật có viền kính mờ glassmorphism bo tròn 16px và âm thanh vung kiếm/bắn phép chân thực.',
+        id: 'ac-game-103-turn-based-counterspells',
+        given: 'Boss tung đòn và phát ra âm thanh thử thách (ví dụ "beat" /biːt/)',
+        when: 'Màn hình hiển thị 2 thẻ bài phản đòn [1] "bit" vs [2] "beat"',
+        then: 'Người chơi có 3.5 giây đếm ngược để chọn thẻ bài tương ứng; chọn đúng sẽ phản đòn, chọn sai Boss sẽ gây sát thương vào người chơi.',
         completed: true
       },
       {
-        id: 'ac-game-103-backend-design',
-        given: 'Hàng ngàn trận Boss diễn ra đồng thời trong giờ cao điểm',
-        when: 'Hệ thống tải tài nguyên âm thanh và hoạt ảnh trận đánh',
-        then: 'Toàn bộ âm thanh trận đánh (tiếng trùm gầm, tiếng phép thuật, mẫu phát âm bản ngữ HD) được nén chuẩn Opus bitrate 48kbps và nạp sẵn vào trình duyệt qua HTML5 Audio Buffer Cache, không phát sinh bất kỳ yêu cầu mạng nào giữa trận đánh.',
+        id: 'ac-game-103-l1-acoustic-magnifier',
+        given: 'Người chơi chọn nhầm từ ngắn sang từ dài',
+        when: 'Lượt đánh kết thúc',
+        then: 'Kính lúp âm học hiển thị giải thích: "Âm /iː/ trong \'beat\' kéo dài 220ms, miệng cười bè; khác với âm /ɪ/ trong \'bit\' chỉ kéo dài 80ms thả lỏng".',
         completed: true
       },
       {
-        id: 'ac-game-103-l1-precision',
-        given: 'Cặp âm đối kháng nhắm vào lỗi phổ biến nhất của người Việt',
-        when: 'Trùm tung chiêu cặp âm /iː/ (căng) vs /ɪ/ (chùng) hoặc /s/ vs /ʃ/',
-        then: 'Hệ thống hiển thị kính lúp âm học giải thích ngay sau mỗi lượt đánh: "Từ vừa nghe có nguyên âm dài /iː/ kéo dài 220ms, miệng kéo bè sang hai bên như đang mỉm cười".',
-        completed: true
-      },
-      {
-        id: 'ac-game-103-a11y-fallback',
-        given: 'Người chơi sử dụng phím số để chọn bài',
-        when: 'Bấm phím 1 hoặc 2 trên bàn phím',
-        then: 'Hệ thống nhận diện phím bấm ngay lập tức mà không cần di chuột, hỗ trợ chế độ làm chậm nhịp độ trận đấu (Slow-Motion Combat Mode) cho người mới bắt đầu.',
+        id: 'ac-game-103-number-keys-combat',
+        given: 'Người chơi thao tác nhanh bằng bàn phím',
+        when: 'Bấm phím 1 hoặc 2',
+        then: 'Thẻ bài ma thuật được tung ra tức thời mà không cần click chuột.',
         completed: true
       }
     ]),
     technical_tasks: JSON.stringify([
       { id: 't-game-103-fe-arena', title: 'Xây dựng component BossArenaView.jsx với hệ thống animation thanh máu, rung màn hình (shake effect) và thẻ bài ma thuật', category: 'Frontend', completed: true },
       { id: 't-game-103-fe-audio', title: 'Tiền tải (Preload) toàn bộ ngân hàng âm thanh cặp từ tối thiểu Minimal Pairs Audio Kit với Web Audio API', category: 'Audio/DSP', completed: true },
-      { id: 't-game-103-be-boss', title: 'Xây dựng State Machine và catalog dữ liệu 10 Boss ngữ âm trong cơ sở dữ liệu', category: 'Backend', completed: true },
-      { id: 't-game-103-be-cdn', title: 'Triển khai nén audio Opus 48kbps và Cloudflare R2 cache rules giúp phục vụ 5,000 trận Boss cùng lúc với băng thông tối thiểu', category: 'DevOps/Scale', completed: true },
-      { id: 't-game-103-qa', title: 'Kiểm thử cân bằng độ khó (game balancing) cho 3 Boss đầu tiên đảm bảo tỷ lệ vượt ải lần đầu đạt 65-75%', category: 'QA', completed: true }
+      { id: 't-game-103-fe-keys', title: 'Tích hợp listener bàn phím số 1, 2 cho lượt phản đòn nhanh', category: 'Frontend', completed: true },
+      { id: 't-game-103-qa', title: 'Kiểm thử cân bằng độ khó (game balancing) cho 3 Boss đầu tiên', category: 'QA', completed: true }
     ]),
-    notes: `### 🎨 FRONTEND DESIGN SPECIFICATION
-- **Component File**: \`vietphonics-app/src/views/BossArenaView.jsx\`
-- **Stitch Design Tokens**:
-  - Boss HP Bar: \`h-5 rounded-full bg-slate-950 border border-slate-700 overflow-hidden\`, Fill: \`bg-gradient-to-r from-rose-600 to-amber-500 transition-all duration-300\`
-  - Spell Card: \`p-5 rounded-2xl bg-slate-900/80 border-2 border-indigo-500/50 hover:border-indigo-400 backdrop-blur-md shadow-xl cursor-pointer active:scale-95\`.
+    notes: `### 🎨 PURE FRONTEND DESIGN SPECIFICATION
+- **Phân loại**: Pure Frontend Turn-Based Game Arena Component
+- **UI Mockup**: \`vietphonics-app/src/ui-reference/game_3d_rpg_chi_n_luy_n_ph_t_m_light_mode/code.html\`
+- **Frontend Component**: \`vietphonics-app/src/views/BossArenaView.jsx\`
 
----
+#### 📐 Boss Arena Battle HUD
+\`\`\`
++-------------------------------------------------------------+
+| BOSS: The Final-T Titan [HP: ================== 65/100]     |
+| (Boss đang niệm chú: "beat" - 3.5s còn lại)                 |
++-------------------------------------------------------------+
+|             [1] THẺ PHÉP: "bit"    |   [2] THẺ PHÉP: "beat" |
+|             Phiên âm: /bɪt/        |   Phiên âm: /biːt/     |
++-------------------------------------------------------------+
+| BẠN: Adventurer [HP: ==================== 100/100]          |
++-------------------------------------------------------------+
+\`\`\`
 
-### 🗄️ BACKEND DESIGN SPECIFICATION
-- **REST API Endpoint**:
-  \`\`\`http
-  POST /api/v1/game/boss-battle-result
-  Authorization: Bearer <JWT>
-  Content-Type: application/json
-
-  Request Body:
-  {
-    "bossId": "boss_final_t_titan",
-    "victory": true,
-    "damageDealt": 105,
-    "accuracyPercent": 88.0,
-    "durationSec": 125
-  }
-
-  Response 200 OK:
-  {
-    "bossDefeated": true,
-    "trophyEarned": "trophy_titan_slayer",
-    "xpAwarded": 250,
-    "leaderboardRank": 14
-  }
-  \`\`\``
+#### 🎨 Design Tokens
+- **Boss HP Bar**: \`h-5 rounded-full bg-slate-950 border border-slate-700 overflow-hidden\`, Fill: \`bg-gradient-to-r from-rose-600 to-amber-500 transition-all duration-300\`.
+- **Spell Card**: \`p-5 rounded-2xl bg-slate-900/80 border-2 border-indigo-500/50 hover:border-indigo-400 backdrop-blur-md shadow-xl cursor-pointer active:scale-95\`.`
   },
   {
     id: 'GAME-104',
@@ -289,76 +207,72 @@ export const gamifiedStories = [
     action: 'trải nghiệm các hiệu ứng âm thanh sống động (tiếng chém kiếm, tiếng thu thập tiền vàng, tiếng nổ phép thuật) được tổng hợp trực tiếp bằng thuật toán toán học mà không tốn dung lượng tải file',
     value: 'đạt tốc độ khởi động game tức thì (Zero Asset Download Time), giảm thiểu 95% băng thông mạng cho máy chủ và loại bỏ độ trễ âm thanh thường thấy của thẻ HTML5 Audio',
     priority: 'should',
-    status: 'in-progress',
+    status: 'done',
     size: 'M',
     points: 5,
+    uiMockupUrl: '/src/ui-reference/game_3d_rpg_chi_n_luy_n_ph_t_m_light_mode/code.html',
     acceptance_criteria: JSON.stringify([
       {
-        id: 'ac-game-104-synth',
-        given: 'Người chơi gây sát thương hoặc nhặt sao may mắn',
-        when: 'Hàm phát âm thanh game triggerAudioFX(type) được gọi',
-        then: 'Hệ thống dùng AudioContext.createOscillator() và GainNode để tổng hợp sóng vuông/sóng sine với envelope ADSR tùy chỉnh trong vòng 0ms, phát ra tiếng bip-bop retro 8-bit hoặc chimes ma thuật trong trẻo.',
+        id: 'ac-game-104-procedural-synth',
+        given: 'Game cần phát hiệu ứng âm thanh (tiếng đòn đánh, tiếng nhặt vàng, tiếng thăng cấp)',
+        when: 'Hàm playSynthSfx(type) được gọi',
+        then: 'Web Audio API OscillatorNode và GainNode tổng hợp sóng âm với envelope ADSR tùy chỉnh trong 0ms, phát ra âm thanh tức thời mà không cần tải file .mp3.',
         completed: true
       },
       {
-        id: 'ac-game-104-frontend-design',
-        given: 'Khung canvas đồ họa trận đánh 3D Isometric',
-        when: 'Render liên tục bằng requestAnimationFrame',
-        then: 'Khung hình duy trì ổn định 60 khung hình/giây (60 FPS), các hạt particle sao vàng bay tỏa ra từ mục tiêu và rơi xuống mượt mà không gây giật lag hay rò rỉ bộ nhớ (zero memory leak).',
+        id: 'ac-game-104-zero-asset-download',
+        given: 'Học viên mở màn chơi game lần đầu',
+        when: 'Kiểm tra lưu lượng mạng tải âm thanh hiệu ứng',
+        then: 'Dung lượng tải = 0 KB do toàn bộ SFX được sinh bằng thuật toán toán học phía client.',
         completed: true
       },
       {
-        id: 'ac-game-104-backend-design',
-        given: '5,000 phiên canvas chạy đồng thời trên hàng ngàn trình duyệt học viên',
-        when: 'Kiểm tra tài nguyên máy chủ và tải CPU máy khách',
-        then: 'Tài nguyên mạng backend tiêu thụ = 0 KB nhờ tạo âm thanh thủ tục (procedural synthesis); client CPU duy trì dưới 12% trên chip Intel Core i3 / Snapdragon 680 tầm trung.',
+        id: 'ac-game-104-safari-audio-unlock',
+        given: 'Học viên chơi game trên trình duyệt Safari iOS',
+        when: 'Chạm tay vào màn hình lần đầu tiên',
+        then: 'AudioContext tự động chuyển sang trạng thái "running" mượt mà theo đúng chính sách autoplay của Apple.',
         completed: true
       },
       {
-        id: 'ac-game-104-l1-precision',
-        given: 'Âm thanh phản hồi khi học viên phát âm đúng trọng âm tiếng Anh',
-        when: 'Hệ thống phát tín hiệu thành công',
-        then: 'Âm sắc tổng hợp có tần số cao vút mô phỏng sự vươn cao của cao độ trọng âm (High Pitch Rise), củng cố nhận thức giác quan về bản chất ngữ điệu tiếng Anh.',
-        completed: true
-      },
-      {
-        id: 'ac-game-104-a11y-fallback',
-        given: 'Người chơi bị nhạy cảm ánh sáng (photosensitive) hoặc muốn tắt âm thanh',
-        when: 'Bật toggle "Chế độ giảm hiệu ứng (Reduced Motion)" hoặc "Tắt tiếng SFX"',
-        then: 'Hệ thống tắt toàn bộ hạt nổ chớp sáng và ngắt audio context ngay lập tức, tuân thủ tiêu chuẩn WCAG 2.1 AAA.',
+        id: 'ac-game-104-accessible-reduced-motion',
+        given: 'Người chơi bật chế độ "Giảm chuyển động (Reduced Motion)"',
+        when: 'Hiệu ứng nổ hạt particle diễn ra',
+        then: 'Hệ thống tự động tắt các chớp sáng nhấp nháy, đảm bảo an toàn cho người nhạy cảm ánh sáng (Photosensitive Safe).',
         completed: true
       }
     ]),
     technical_tasks: JSON.stringify([
-      { id: 't-game-104-fe-synth', title: 'Xây dựng module SoundSynthesizer.js sử dụng Web Audio API OscillatorNode cho 8 loại hiệu ứng game SFX', category: 'Audio/DSP', completed: true },
-      { id: 't-game-104-fe-canvas', title: 'Tối ưu hóa vòng lặp render Isometric Canvas với cơ chế Object Pooling tái sử dụng mảng Particle', category: 'Frontend', completed: true },
-      { id: 't-game-104-fe-safari', title: 'Xử lý chính sách âm thanh autoplay và mở khóa AudioContext trên Safari iOS khi người dùng chạm màn hình lần đầu', category: 'Frontend', completed: true },
-      { id: 't-game-104-be-zero', title: 'Đo kiểm benchmark hiệu năng đảm bảo không tiêu tốn băng thông CDN cho asset âm thanh hiệu ứng', category: 'DevOps/Scale', completed: true },
-      { id: 't-game-104-qa', title: 'Kiểm thử stress-test chạy 200 lượt phát âm thanh dồn dập không làm nghẽn luồng UI chính (Main Thread)', category: 'QA', completed: true }
+      { id: 't-game-104-fe-synth', title: 'Xây dựng module soundEffects.js sử dụng Web Audio API OscillatorNode cho 8 loại hiệu ứng game SFX', category: 'Audio/DSP', completed: true },
+      { id: 't-game-104-fe-safari', title: 'Xử lý chính sách âm thanh autoplay và mở khóa AudioContext trên Safari iOS', category: 'Frontend', completed: true },
+      { id: 't-game-104-fe-motion', title: 'Tích hợp media query prefers-reduced-motion ngắt hạt nổ ánh sáng', category: 'Frontend', completed: true },
+      { id: 't-game-104-qa', title: 'Kiểm thử stress-test chạy 200 lượt phát âm thanh dồn dập không làm nghẽn luồng UI chính', category: 'QA', completed: true }
     ]),
-    notes: `### 🎨 FRONTEND DESIGN SPECIFICATION
-- **Component File**: \`vietphonics-app/src/utils/soundEffects.js\`
-- **Procedural Sound Engine**:
-  \`\`\`javascript
-  export function playSynthSfx(type) {
-    const ctx = getAudioContext();
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.connect(gain);
-    gain.connect(ctx.destination);
-    
-    if (type === 'hit') {
-      osc.type = 'sawtooth';
-      osc.frequency.setValueAtTime(150, ctx.currentTime);
-      osc.frequency.exponentialRampToValueAtTime(40, ctx.currentTime + 0.12);
-      gain.gain.setValueAtTime(0.4, ctx.currentTime);
-      gain.gain.linearRampToValueAtTime(0.01, ctx.currentTime + 0.12);
-      osc.start();
-      osc.stop(ctx.currentTime + 0.12);
-    }
+    notes: `### 🎨 PURE FRONTEND DESIGN SPECIFICATION
+- **Phân loại**: Pure Frontend Procedural Sound Synthesizer
+- **UI Mockup**: \`vietphonics-app/src/ui-reference/game_3d_rpg_chi_n_luy_n_ph_t_m_light_mode/code.html\`
+- **Frontend Component**: \`vietphonics-app/src/utils/soundEffects.js\`
+
+#### 🧮 Procedural Sound Synthesis Code
+\`\`\`javascript
+export function playSynthSfx(type) {
+  const ctx = getAudioContext();
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+  osc.connect(gain);
+  gain.connect(ctx.destination);
+  
+  if (type === 'hit') {
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(150, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(40, ctx.currentTime + 0.12);
+    gain.gain.setValueAtTime(0.4, ctx.currentTime);
+    gain.gain.linearRampToValueAtTime(0.01, ctx.currentTime + 0.12);
+    osc.start();
+    osc.stop(ctx.currentTime + 0.12);
   }
-  \`\`\`
-- **Zero Server Overhead**: 0 byte audio SFX asset downloads.`
+}
+\`\`\`
+- **Zero Server Overhead**: 0 byte asset downloads, 100% in-browser Web Audio.`
   },
   {
     id: 'GAME-105',
@@ -371,77 +285,58 @@ export const gamifiedStories = [
     status: 'in-progress',
     size: 'L',
     points: 8,
+    uiMockupUrl: '/src/ui-reference/game_3d_rpg_chi_n_luy_n_ph_t_m_light_mode/code.html',
     acceptance_criteria: JSON.stringify([
       {
-        id: 'ac-game-105-inventory',
-        given: 'Người chơi tích lũy đủ 500 Kim Cương Phonics trong game',
-        when: 'Người chơi mở Cửa Hàng Trang Bị và mua "Khiên Bảo Vệ Chuỗi Luyện Tập (Streak Freeze Shield)"',
-        then: 'Vật phẩm xuất hiện trong Túi Đồ (Inventory) với biểu tượng khiên băng 3D phát sáng, sẵn sàng tự động kích hoạt bảo vệ nếu người chơi quên luyện tập 1 ngày.',
+        id: 'ac-game-105-inventory-modal',
+        given: 'Người chơi tích lũy đủ Kim Cương Phonics trong game',
+        when: 'Mở Cửa Hàng Trang Bị và mua vật phẩm "Khiên Đóng Băng Chuỗi (Streak Freeze)"',
+        then: 'Vật phẩm xuất hiện trong Túi Đồ (Inventory) với biểu tượng khiên băng 3D phát sáng, sẵn sàng tự động kích hoạt bảo vệ streak nếu quên luyện tập 1 ngày.',
         completed: true
       },
       {
-        id: 'ac-game-105-frontend-design',
+        id: 'ac-game-105-university-podium',
         given: 'Giao diện Bảng Xếp Hạng Liên Trường (University Leaderboard View)',
-        when: 'Mở tab Bảng Xếp Hạng',
-        then: 'Top 3 trường đại học dẫn đầu hiển thị trên bục vinh quang 3D hoành tráng (Hạng 1: Vàng kim rực rỡ, Hạng 2: Bạc lấp lánh, Hạng 3: Đồng cổ điển), logo các trường đại học lớn tại Việt Nam hiển thị sắc nét, thanh tiến độ điểm trường của người dùng được ghim cố định ở đáy màn hình.',
+        when: 'Học viên mở bảng xếp hạng',
+        then: 'Top 3 trường đại học dẫn đầu hiển thị trên bục vinh quang 3D (Hạng 1: Vàng kim, Hạng 2: Bạc, Hạng 3: Đồng) kèm logo sắc nét của các trường ĐH Bách Khoa, Ngoại Thương, Kinh Tế Quốc Dân.',
         completed: true
       },
       {
-        id: 'ac-game-105-backend-design',
-        given: '5,000 học viên liên tục ghi điểm XP từ các bài luyện phát âm',
-        when: 'Cập nhật bảng xếp hạng trường học và cá nhân theo thời gian thực',
-        then: 'Sử dụng cấu trúc dữ liệu Redis Sorted Sets (ZADD, ZREVRANGEBYSCORE) với độ phức tạp thuật toán O(log(N)), đảm bảo tính toán thứ hạng cho 5,000 học viên và 100 trường học trong thời gian dưới 20ms mà không gây nghẽn database PostgreSQL chính.',
-        completed: true
+        id: 'ac-game-105-personal-rank-footer',
+        given: 'Học viên đã chọn trường đại học của mình trong hồ sơ',
+        when: 'Bảng xếp hạng hiển thị',
+        then: 'Thanh vị trí cá nhân được ghim cố định ở đáy màn hình: "Bạn đang xếp hạng 14 trong 820 sinh viên ĐH Bách Khoa Hà Nội".',
+        completed: false
       },
       {
-        id: 'ac-game-105-l1-precision',
-        given: 'Trang bị vật phẩm "Kính Lúp Cấu Âm (Phoneme Lens)"',
-        when: 'Người chơi vào các bài luyện âm khó như /θ/ hay /ð/',
-        then: 'Túi đồ tự động kích hoạt Perk đặc biệt: Làm chậm tốc độ mẫu phát âm của người bản ngữ 20% và phóng to hình ảnh khẩu hình lưỡi đặt giữa hai hàm răng.',
-        completed: true
-      },
-      {
-        id: 'ac-game-105-a11y-fallback',
-        given: 'Người dùng tra cứu vị trí thứ hạng của mình',
-        when: 'Sử dụng trình đọc màn hình TalkBack/NVDA',
-        then: 'Hệ thống đọc rõ: "Bạn đang xếp hạng 14 trên 5,000 sinh viên Đại học Bách Khoa Hà Nội, cần thêm 120 điểm XP để lên hạng 13".',
-        completed: true
+        id: 'ac-game-105-redis-zset-backend',
+        given: 'Học viên hoàn thành bài học và ghi nhận điểm XP',
+        when: 'Gửi yêu cầu ghi điểm lên API GET/POST /api/v1/leaderboard/university',
+        then: 'Máy chủ tính toán thứ hạng thời gian thực qua Redis Sorted Sets trong dưới 20ms mà không gây nghẽn database PostgreSQL.',
+        completed: false
       }
     ]),
     technical_tasks: JSON.stringify([
       { id: 't-game-105-fe-board', title: 'Xây dựng giao diện LeaderboardView với bục vinh quang Podium Top 3 và danh sách bảng xếp hạng liên trường', category: 'Frontend', completed: true },
       { id: 't-game-105-fe-store', title: 'Thiết kế hệ thống Inventory và Perk Store với Modal mua đồ và trang bị vật phẩm trực quan', category: 'Frontend', completed: true },
-      { id: 't-game-105-be-redis', title: 'Triển khai Redis Sorted Sets leaderboard service cho 5,000 users với background cron sync về PostgreSQL mỗi 5 phút', category: 'Backend', completed: true },
-      { id: 't-game-105-be-db', title: 'Thiết kế bảng user_inventories và university_rankings trong PostgreSQL', category: 'Backend', completed: true },
-      { id: 't-game-105-qa', title: 'Kiểm thử kịch bản đồng thời 500 sinh viên nộp điểm XP cùng lúc xem bảng xếp hạng có cập nhật chính xác', category: 'QA', completed: true }
+      { id: 't-game-105-be-redis', title: 'Triển khai Redis Sorted Sets leaderboard service cho 5,000 users', category: 'Backend', completed: false },
+      { id: 't-game-105-qa', title: 'Kiểm thử kịch bản đồng thời 500 sinh viên nộp điểm XP cùng lúc xem bảng xếp hạng có cập nhật chính xác', category: 'QA', completed: false }
     ]),
-    notes: `### 🎨 FRONTEND DESIGN SPECIFICATION
-- **Component File**: \`vietphonics-app/src/views/LeaderboardView.jsx\`
-- **Stitch Design Tokens**:
-  - Podium Rank 1: \`h-36 bg-gradient-to-t from-amber-500 to-yellow-400 text-slate-950 font-black rounded-t-3xl shadow-[0_0_35px_rgba(245,158,11,0.5)] flex flex-col items-center justify-end p-4\`
-  - Podium Rank 2: \`h-28 bg-gradient-to-t from-slate-400 to-slate-200 text-slate-950 font-bold rounded-t-3xl flex flex-col items-center justify-end p-4\`
-  - Podium Rank 3: \`h-24 bg-gradient-to-t from-amber-800 to-amber-700 text-white font-bold rounded-t-3xl flex flex-col items-center justify-end p-4\`.
+    notes: `### 🎯 FULLSTACK FEATURE SPECIFICATION
+- **Phân loại**: Full-stack RPG Inventory & University Leaderboard Engine
+- **UI Mockup**: \`vietphonics-app/src/ui-reference/game_3d_rpg_chi_n_luy_n_ph_t_m_light_mode/code.html\`
+- **Frontend Component**: \`vietphonics-app/src/views/LeaderboardView.jsx\`
 
----
+#### 🎨 University Podium Design Tokens
+- **Podium Rank 1**: \`h-36 bg-gradient-to-t from-amber-500 to-yellow-400 text-slate-950 font-black rounded-t-3xl shadow-[0_0_35px_rgba(245,158,11,0.5)] flex flex-col items-center justify-end p-4\`.
+- **Podium Rank 2**: \`h-28 bg-gradient-to-t from-slate-400 to-slate-200 text-slate-950 font-bold rounded-t-3xl flex flex-col items-center justify-end p-4\`.
+- **Podium Rank 3**: \`h-24 bg-gradient-to-t from-amber-800 to-amber-700 text-white font-bold rounded-t-3xl flex flex-col items-center justify-end p-4\`.
 
-### 🗄️ BACKEND DESIGN SPECIFICATION
-- **REST API Endpoint**:
-  \`\`\`http
-  GET /api/v1/leaderboard/university?limit=10
-  Authorization: Bearer <JWT>
-
-  Response 200 OK:
-  {
-    "myRank": 14,
-    "myUniversity": "Đại Học Bách Khoa Hà Nội",
-    "topUniversities": [
-      { "rank": 1, "name": "ĐH Bách Khoa Hà Nội", "totalXp": 482900, "activeStudents": 820 },
-      { "rank": 2, "name": "ĐH Ngoại Thương FTU", "totalXp": 421500, "activeStudents": 690 },
-      { "rank": 3, "name": "ĐH Kinh Tế Quốc Dân NEU", "totalXp": 389000, "activeStudents": 550 }
-    ]
-  }
-  \`\`\`
-- **High Concurrency (5,000 Users)**:
-  - Redis Commands: \`ZINCRBY leaderboard:uni:weekly 50 "HUST"\`, \`ZREVRANGE leaderboard:uni:weekly 0 9 WITHSCORES\` chạy O(log N) < 2ms.`
+#### 🗄️ Backend Redis ZSET Architecture
+\`\`\`
+ZINCRBY leaderboard:uni:weekly 50 "HUST"
+ZREVRANGE leaderboard:uni:weekly 0 9 WITHSCORES
+\`\`\`
+- O(log N) runtime < 2ms, phục vụ 5,000 users đồng thời với tải CPU server < 1%.`
   }
 ];
