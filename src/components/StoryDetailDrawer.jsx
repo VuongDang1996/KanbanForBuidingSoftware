@@ -45,6 +45,7 @@ export default function StoryDetailDrawer({
   const [newTaskTitle, setNewTaskTitle] = useState('');
   const [newTaskCategory, setNewTaskCategory] = useState('Frontend');
   const [isSaved, setIsSaved] = useState(false);
+  const [isEditingNotes, setIsEditingNotes] = useState(false);
 
   useEffect(() => {
     if (story) {
@@ -641,18 +642,45 @@ export default function StoryDetailDrawer({
               </form>
             </div>
 
-            {/* Implementation Notes */}
-            <div className="space-y-1.5">
-              <label className="block text-xs font-bold uppercase tracking-wider text-slate-300">
-                Implementation Notes & Context
-              </label>
-              <textarea
-                rows={3}
-                value={formData.notes || ''}
-                onChange={(e) => updateField('notes', e.target.value)}
-                placeholder="Architecture decisions, dependencies, mockups, or API links..."
-                className="w-full text-xs rounded-xl border border-slate-700 bg-slate-800/60 p-3 text-slate-200 placeholder-slate-500 focus:outline-none focus:border-indigo-500"
-              />
+            {/* Implementation Notes & Technical Architecture Blueprint */}
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <label className="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
+                  <Code2 className="w-3.5 h-3.5 text-indigo-400" />
+                  <span>Technical Design & Architecture Blueprint</span>
+                </label>
+                <button
+                  type="button"
+                  onClick={() => setIsEditingNotes(!isEditingNotes)}
+                  className="px-2.5 py-1 text-[11px] font-semibold text-indigo-300 bg-indigo-950/60 hover:bg-indigo-900/80 border border-indigo-500/40 rounded-lg transition-all flex items-center gap-1"
+                >
+                  {isEditingNotes ? (
+                    <>
+                      <Eye className="w-3 h-3" />
+                      <span>Preview Blueprint</span>
+                    </>
+                  ) : (
+                    <>
+                      <Sparkles className="w-3 h-3 text-amber-400" />
+                      <span>Edit Raw Markdown</span>
+                    </>
+                  )}
+                </button>
+              </div>
+
+              {isEditingNotes ? (
+                <textarea
+                  rows={8}
+                  value={formData.notes || ''}
+                  onChange={(e) => updateField('notes', e.target.value)}
+                  placeholder="Architecture decisions, dependencies, mockups, or API links..."
+                  className="w-full text-xs font-mono rounded-xl border border-slate-700 bg-slate-900 p-3.5 text-slate-200 placeholder-slate-500 focus:outline-none focus:border-indigo-500 leading-relaxed"
+                />
+              ) : (
+                <div className="rounded-2xl border border-slate-800 bg-slate-950/60 p-4 max-h-96 overflow-y-auto">
+                  <ArchitectureNotesViewer markdown={formData.notes} />
+                </div>
+              )}
             </div>
           </>
         ) : (
@@ -786,4 +814,104 @@ export default function StoryDetailDrawer({
       </div>
     </div>
   );
+}
+
+function ArchitectureNotesViewer({ markdown }) {
+  if (!markdown || !markdown.trim()) {
+    return <p className="text-xs text-slate-500 italic">No technical architecture notes provided.</p>;
+  }
+
+  const lines = markdown.split('\n');
+  const elements = [];
+  let inCodeBlock = false;
+  let codeBuffer = [];
+  let codeLang = '';
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+
+    if (line.startsWith('```')) {
+      if (!inCodeBlock) {
+        inCodeBlock = true;
+        codeLang = line.replace('```', '').trim();
+        codeBuffer = [];
+      } else {
+        inCodeBlock = false;
+        elements.push(
+          <div key={`code-block-${i}`} className="my-2 rounded-xl overflow-hidden border border-slate-800 bg-slate-950">
+            {codeLang && (
+              <div className="px-3 py-1 bg-slate-900 border-b border-slate-800 text-[10px] font-mono text-indigo-400 font-bold uppercase flex items-center justify-between">
+                <span>{codeLang}</span>
+                <span className="text-slate-500 text-[9px]">Syntax Block</span>
+              </div>
+            )}
+            <pre className="p-3 font-mono text-[11px] leading-relaxed text-indigo-200 overflow-x-auto whitespace-pre">
+              {codeBuffer.join('\n')}
+            </pre>
+          </div>
+        );
+      }
+      continue;
+    }
+
+    if (inCodeBlock) {
+      codeBuffer.push(line);
+      continue;
+    }
+
+    if (line.startsWith('### ')) {
+      elements.push(
+        <h4 key={`h3-${i}`} className="text-xs font-bold text-sky-400 uppercase tracking-wider mt-3.5 mb-1.5 flex items-center gap-1.5 border-b border-slate-800/80 pb-1">
+          <span>{line.replace('### ', '')}</span>
+        </h4>
+      );
+    } else if (line.startsWith('## ')) {
+      elements.push(
+        <h3 key={`h2-${i}`} className="text-sm font-extrabold text-white mt-4 mb-2">
+          {line.replace('## ', '')}
+        </h3>
+      );
+    } else if (line.startsWith('- ')) {
+      const content = line.substring(2);
+      elements.push(
+        <li key={`li-${i}`} className="text-xs text-slate-300 ml-4 list-disc mb-1 leading-relaxed">
+          {formatInlineMarkdown(content)}
+        </li>
+      );
+    } else if (line.trim() === '---') {
+      elements.push(<hr key={`hr-${i}`} className="my-2.5 border-slate-800" />);
+    } else if (line.trim().length > 0) {
+      elements.push(
+        <p key={`p-${i}`} className="text-xs text-slate-300 mb-1 leading-relaxed">
+          {formatInlineMarkdown(line)}
+        </p>
+      );
+    }
+  }
+
+  return <div className="space-y-1">{elements}</div>;
+}
+
+function formatInlineMarkdown(text) {
+  const parts = text.split(/(\*\*.*?\*\*|`.*?`)/g);
+  return parts.map((part, idx) => {
+    if (part.startsWith('**') && part.endsWith('**')) {
+      return (
+        <strong key={idx} className="font-semibold text-slate-100">
+          {part.slice(2, -2)}
+        </strong>
+      );
+    }
+    if (part.startsWith('`') && part.endsWith('`')) {
+      return (
+        <code
+          key={idx}
+          className="font-mono text-[11px] px-1.5 py-0.5 rounded bg-slate-800 text-rose-300 border border-slate-700"
+        >
+          {part.slice(1, -1)}
+        </code>
+      );
+    }
+    return part;
+  });
 }

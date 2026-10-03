@@ -19,28 +19,28 @@ export const roleplayStories = [
         completed: true
       },
       {
-        id: 'ac-elsa-301-ui',
+        id: 'ac-elsa-301-frontend-design',
         given: 'Giao diện phòng hội thoại RoleplayView',
         when: 'Render trên màn hình',
         then: 'Hiển thị ảnh chân dung Alex sắc nét có vòng hào quang gradient công nghệ, hiệu ứng sóng âm spectrum 48kHz WebRTC nhảy múa khi Alex nói, khung chat hội thoại dạng bong bóng hiện đại, nút Push-To-Talk tròn lớn ở chân trang.',
         completed: true
       },
       {
-        id: 'ac-elsa-301-scale-5000',
+        id: 'ac-elsa-301-backend-design',
         given: '5,000 học viên cùng lúc tham gia các phiên roleplay trực tuyến',
         when: 'Duy trì kết nối âm thanh và nhận diện hội thoại',
         then: 'Sử dụng kiến trúc WebSocket connection pooling với heartbeat 15s; luồng TTS của Alex phát trực tiếp qua Web Speech API trên client hoặc CDN edge cache, máy chủ backend duy trì mức sử dụng RAM dưới 30% cho 5,000 kết nối đồng thời.',
         completed: true
       },
       {
-        id: 'ac-elsa-301-l1',
+        id: 'ac-elsa-301-l1-precision',
         given: 'Học viên trả lời báo cáo blocker nhưng nuốt âm đuôi /t/ trong từ "blocked"',
         when: 'Alex nghe câu trả lời',
         then: 'Thẻ checklist mục tiêu bên phải cảnh báo: "Báo cáo blocker kỹ thuật rõ âm: Cần phát âm rõ âm đuôi /t/ trong từ \'blocked\'".',
         completed: true
       },
       {
-        id: 'ac-elsa-301-a11y',
+        id: 'ac-elsa-301-a11y-fallback',
         given: 'Học viên muốn đọc phụ đề tiếng Việt',
         when: 'Bật toggle "Phụ đề song ngữ"',
         then: 'Hiển thị bản dịch tiếng Việt mượt mà ngay dưới câu thoại của Alex giúp học viên hiểu trọn vẹn ngữ cảnh công sở.',
@@ -48,131 +48,308 @@ export const roleplayStories = [
       }
     ]),
     technical_tasks: JSON.stringify([
-      { id: 't-elsa-301-ui', title: 'Xây dựng giao diện RoleplayView với ảnh đại diện Alex, dải spectrum WebRTC và khung chat', category: 'Frontend', completed: true },
-      { id: 't-elsa-301-mic', title: 'Tích hợp Push-To-Talk toàn cục với phím Space và xử lý chuyển đổi lượt nói (turn-taking)', category: 'Audio/DSP', completed: true },
-      { id: 't-elsa-301-scale', title: 'Thiết kế WebSocket gateway tối ưu hóa cho 5,000 kết nối đồng thời với Node.js cluster', category: 'Backend', completed: true },
+      { id: 't-elsa-301-fe-ui', title: 'Xây dựng giao diện RoleplayView với ảnh đại diện Alex, dải spectrum WebRTC và khung chat', category: 'Frontend', completed: true },
+      { id: 't-elsa-301-fe-mic', title: 'Tích hợp Push-To-Talk toàn cục với phím Space và xử lý chuyển đổi lượt nói (turn-taking)', category: 'Audio/DSP', completed: true },
+      { id: 't-elsa-301-be-ws', title: 'Thiết kế WebSocket gateway tối ưu hóa cho 5,000 kết nối đồng thời với Node.js cluster', category: 'Backend', completed: true },
+      { id: 't-elsa-301-be-llm', title: 'Tích hợp LLM streaming API với system prompt chuyên sâu về Scrum meeting IT', category: 'Backend', completed: true },
       { id: 't-elsa-301-qa', title: 'Kiểm thử độ trễ phản hồi của AI hội thoại luôn duy trì dưới 1.2 giây', category: 'QA', completed: true }
     ]),
-    notes: `### 🎨 UI/UX Design Specifications
-- **Màn hình tham chiếu**: \`src/ui-reference/ai_h_i_tho_i_roleplay_c_ng_s_light_mode/code.html\`
-- **React Component**: \`vietphonics-app/src/views/RoleplayView.jsx\`
-- **Alex Portrait**: Google CDN ảnh chân dung giám đốc công nghệ phong cách Silicon Valley, viền \`ring-2 ring-white\`, chấm xanh online nhấp nháy.
-- **Spectrum Indicator**: Dải 8 thanh sóng âm nhảy động mô phỏng WebRTC 48kHz latency 14ms.`
+    notes: `### 🎨 FRONTEND DESIGN SPECIFICATION
+- **Component File**: \`vietphonics-app/src/views/RoleplayView.jsx\`
+- **Component Hierarchy**:
+  \`\`\`
+  <RoleplayView scenario="it_standup_scrum">
+    <AlexAvatarHeader status="speaking" latencyMs={18}>
+      <SpectrumIndicator active={isAlexSpeaking} />
+    </AlexAvatarHeader>
+    <ChatDialogueStream messages={chatHistory} />
+    <ObjectiveChecklist items={scrumObjectives} />
+    <PushToTalkFooter
+      isListening={isUserSpeaking}
+      onStartRecording={startRecording}
+      onStopRecording={stopRecording}
+    />
+  </RoleplayView>
+  \`\`\`
+- **Stitch Design Tokens**:
+  - Avatar Halo: \`ring-4 ring-indigo-500/40 shadow-[0_0_30px_rgba(99,102,241,0.5)] rounded-full\`
+  - AI Bubble: \`bg-slate-800 text-slate-100 rounded-3xl rounded-tl-sm p-4 border border-slate-700 max-w-lg\`
+  - User Bubble: \`bg-rose-600 text-white rounded-3xl rounded-tr-sm p-4 max-w-lg ml-auto\`.
+
+---
+
+### 🗄️ BACKEND DESIGN SPECIFICATION
+- **WebSocket Protocol Contract**:
+  \`\`\`
+  Endpoint: wss://api.vietphonics.com/ws/v1/roleplay/session
+  
+  Client -> Server:
+  {
+    "action": "user_speech_chunk",
+    "sessionId": "rol_88291",
+    "transcript": "Yesterday I finished the checkout gateway and today I will test the webhook.",
+    "audioUrl": "https://r2.../turn_01.opus"
+  }
+
+  Server -> Client (Stream):
+  {
+    "type": "agent_response_token",
+    "token": "Great",
+    "isFinished": false
+  }
+  {
+    "type": "turn_evaluation",
+    "phoneticAccuracy": 85.0,
+    "unreleasedStopsDetected": ["test"],
+    "coherenceScore": 90.0
+  }
+  \`\`\`
+- **Database Schema (PostgreSQL DDL)**:
+  \`\`\`sql
+  CREATE TABLE roleplay_sessions (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    scenario_code VARCHAR(50) NOT NULL,
+    total_turns INT NOT NULL DEFAULT 0,
+    overall_pronunciation_score NUMERIC(5, 2),
+    conversation_transcript JSONB NOT NULL DEFAULT '[]'::jsonb,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+  );
+  CREATE INDEX idx_roleplay_sessions_user ON roleplay_sessions(user_id, created_at DESC);
+  \`\`\`
+- **5,000 Users Scale Specs**:
+  - Context hội thoại rút gọn lưu trong Redis Hash \`roleplay:context:{sessionId}\` (dung lượng < 3KB).
+  - TTFT (Time-to-first-token) duy trì < 450ms qua vLLM engine inference.`
   },
   {
     id: 'ELSA-302',
     epic_id: 'epic-roleplay-ielts',
-    title: 'Post-Roleplay Comprehensive Scorecard: Bảng Chỉ Số Toàn Diện Phát Âm & Ngữ Pháp',
-    persona: 'Người học sau khi kết thúc phiên hội thoại muốn biết mình được bao nhiêu điểm và cần cải thiện gì',
-    action: 'kết thúc phiên roleplay và xem bảng điểm tổng kết (Scorecard)',
-    value: 'nhận bảng chỉ số 3 đồng hồ đo: Phát Âm (Pronunciation 84%), Ngữ Pháp (Grammar 88%), Độ Tự Nhiên (Natural Cadence 80%) cùng "3 Cách Nói Hay Hơn Cho Kỹ Sư Việt"',
+    title: 'Post-Roleplay Comprehensive Scorecard: Bảng Chỉ Số Toàn Diện Sau Hội Thoại & Phân Tích Lỗi Giao Tiếp',
+    persona: 'Người học vừa kết thúc phiên hội thoại 5 phút và cần một bản báo cáo phân tích toàn diện để biết mình làm tốt điều gì và cần cải thiện gì',
+    action: 'xem bảng điểm tổng kết (Post-Roleplay Scorecard) đánh giá 5 trụ cột: Điểm Phát Âm, Độ Lưu Loát, Ngữ Pháp, Từ Vựng Công Sở, và Tỷ Lệ Hoàn Thành Mục Tiêu Buổi Họp',
+    value: 'biến một cuộc trò chuyện cảm tính thành dữ liệu định lượng cụ thể, lưu lại các câu nói chưa chuẩn vào Ngân Hàng Lỗi để ôn tập',
     priority: 'must',
     status: 'in-progress',
-    size: 'M',
-    points: 5,
+    size: 'L',
+    points: 8,
     acceptance_criteria: JSON.stringify([
       {
-        id: 'ac-elsa-302-gauges',
-        given: 'Phiên hội thoại kết thúc',
-        when: 'Bảng chỉ số Standup hiển thị ở cột bên phải',
-        then: 'Hiển thị 3 đồng hồ đo hình tròn SVG sắc nét: Phát Âm (84%), Ngữ Pháp (88%), Độ Tự Nhiên (80%), kèm nhãn "Real-time Telemetry".',
+        id: 'ac-elsa-302-scorecard-flow',
+        given: 'Học viên bấm "Kết thúc buổi họp" sau khi hoàn thành 5 lượt đối thoại',
+        when: 'Hệ thống kích hoạt thuật toán tổng hợp đánh giá',
+        then: 'Màn hình hiển thị Bảng Chỉ Số Toàn Diện với điểm tổng quan (Overall Performance Score /100) và 5 chỉ số thành phần trong vòng dưới 800ms.',
         completed: true
       },
       {
-        id: 'ac-elsa-302-better-ways',
-        given: 'Câu trả lời của học viên còn mang tính dịch từ tiếng Việt sang (Viet-glish)',
-        when: 'Hệ thống gợi ý cải thiện',
-        then: 'Đưa ra 3 câu diễn đạt tự nhiên hơn chuẩn Silicon Valley: 1) "I\'m currently blocked by the payment gateway API timeout", 2) "We\'re refactoring the database indexing pipeline", 3) "I\'ll sync with the QA team right after standup".',
-        completed: true
-      },
-      {
-        id: 'ac-elsa-302-ui',
-        given: 'Giao diện Scorecard trong RoleplayView',
+        id: 'ac-elsa-302-frontend-design',
+        given: 'Giao diện PostRoleplayScorecardView',
         when: 'Render trên màn hình',
-        then: 'Bảng điểm đóng khung trắng bo góc rounded-xl, viền slate-200 nhẹ nhàng, các đồng hồ tròn vẽ bằng SVG xoay -90 độ với strokeDasharray mượt mà, văn bản rõ ràng dễ đọc.',
+        then: 'Bố cục Bento grid sang trọng: Điểm tổng kết hình huy hiệu vàng kim ở trung tâm, 5 thẻ chỉ số có thanh tiến trình phân màu, bảng toàn văn hội thoại (Full Transcript) cho phép bấm vào từng câu để nghe lại giọng mình.',
         completed: true
       },
       {
-        id: 'ac-elsa-302-scale-5000',
-        given: '5,000 học viên cùng nhận bảng điểm sau phiên họp',
-        when: 'Tạo báo cáo',
-        then: 'Dữ liệu chỉ số được tính toán ngay trong phiên của client, chỉ đồng bộ 1 bản ghi tổng kết 200 byte về bảng user_roleplay_sessions; cơ sở dữ liệu xử lý nhẹ nhàng 5,000 phiên/phút.',
+        id: 'ac-elsa-302-backend-design',
+        given: '5,000 học viên hoàn thành phiên hội thoại cùng lúc',
+        when: 'Gửi yêu cầu tổng hợp điểm số',
+        then: 'Thuật toán tính điểm chạy bất đồng bộ qua BullMQ worker, lưu báo cáo vào PostgreSQL và cache trong Redis \`scorecard:{sessionId}\` với thời gian phản hồi < 60ms.',
         completed: true
       },
       {
-        id: 'ac-elsa-302-a11y',
-        given: 'Học viên muốn nghe phát âm 3 cách nói hay hơn',
-        when: 'Bấm vào biểu tượng loa cạnh từng câu gợi ý',
-        then: 'Phát âm thanh mẫu chuẩn của câu gợi ý giúp học viên học thuộc lòng cấu trúc.',
+        id: 'ac-elsa-302-l1-precision',
+        given: 'Báo cáo chỉ ra các từ chuyên ngành CNTT học viên phát âm sai',
+        when: 'Rà soát danh sách từ vựng',
+        then: 'Liệt kê chính xác các từ kỹ thuật hay bị phát âm sai kiểu Việt Nam (e.g., "API" đọc thành "A-pi", "Debug" nuốt âm /g/, "Release" đọc thành "Rì-liu") kèm cách sửa chuẩn.',
+        completed: true
+      },
+      {
+        id: 'ac-elsa-302-a11y-fallback',
+        given: 'Học viên muốn lưu báo cáo về máy',
+        when: 'Bấm nút "Tải Báo Cáo PDF" hoặc "Chia sẻ kết quả"',
+        then: 'Hệ thống sinh file ảnh tóm tắt thành tích dạng thẻ card đẹp mắt để học viên dễ dàng chia sẻ lên LinkedIn hoặc nhóm học tập.',
         completed: true
       }
     ]),
     technical_tasks: JSON.stringify([
-      { id: 't-elsa-302-ui', title: 'Thiết kế 3 đồng hồ đo hình tròn SVG và danh sách 3 gợi ý nói hay hơn trong RoleplayView', category: 'Frontend', completed: true },
-      { id: 't-elsa-302-scoring', title: 'Xây dựng module đánh giá điểm số ngữ pháp và độ tự nhiên dựa trên từ vựng công nghệ', category: 'Algorithm', completed: true },
-      { id: 't-elsa-302-scale', title: 'Thiết kế payload lưu trữ kết quả roleplay siêu nhẹ 200 byte', category: 'Database', completed: true },
-      { id: 't-elsa-302-qa', title: 'Kiểm thử hiển thị bảng điểm trên các kích thước màn hình máy tính bảng và laptop', category: 'QA', completed: true }
+      { id: 't-elsa-302-fe-bento', title: 'Xây dựng component PostRoleplayScorecard.jsx với bố cục Bento Grid 5 chỉ số', category: 'Frontend', completed: true },
+      { id: 't-elsa-302-fe-transcript', title: 'Thiết kế component TranscriptReviewList.jsx hỗ trợ bấm nghe lại từng câu thoại', category: 'Frontend', completed: true },
+      { id: 't-elsa-302-be-eval', title: 'Phát triển module ConversationEvaluator chấm điểm 5 tiêu chuẩn giao tiếp quốc tế', category: 'Backend', completed: true },
+      { id: 't-elsa-302-be-cache', title: 'Lưu trữ báo cáo tổng kết trong Redis với TTL 7 ngày hỗ trợ tra cứu nhanh', category: 'Backend', completed: true },
+      { id: 't-elsa-302-qa', title: 'Kiểm thử tính nhất quán giữa điểm số hiển thị trên thẻ card và dữ liệu chi tiết trong cơ sở dữ liệu', category: 'QA', completed: true }
     ]),
-    notes: `### 🎨 UI/UX Design Specifications
-- **Màn hình tham chiếu**: \`src/ui-reference/ai_h_i_tho_i_roleplay_c_ng_s_light_mode/code.html\`
-- **React Component**: \`vietphonics-app/src/views/RoleplayView.jsx\` (Bảng Chỉ Số Standup)`
+    notes: `### 🎨 FRONTEND DESIGN SPECIFICATION
+- **Component File**: \`vietphonics-app/src/components/roleplay/PostRoleplayScorecard.jsx\`
+- **Component Hierarchy**:
+  \`\`\`
+  <PostRoleplayScorecard sessionData={completedSession}>
+    <ScoreHeroBadge score={88} rank="Senior Communicator" />
+    <FivePillarsGrid>
+      <MetricCard title="Pronunciation" score={85} color="rose" />
+      <MetricCard title="Fluency" score={92} color="sky" />
+      <MetricCard title="Grammar" score={88} color="emerald" />
+      <MetricCard title="IT Vocabulary" score={90} color="indigo" />
+      <MetricCard title="Goal Completion" score={100} color="amber" />
+    </FivePillarsGrid>
+    <DetailedTranscriptReview transcripts={completedSession.turns} onPlayAudio={playTurnAudio} />
+    <ActionFooter onRetry={restartSession} onSaveErrorBank={saveWeakWords} />
+  </PostRoleplayScorecard>
+  \`\`\`
+- **Stitch Design Tokens**:
+  - Hero Card: \`bg-gradient-to-b from-slate-900 to-slate-950 border border-slate-800 rounded-3xl p-8 shadow-2xl\`
+  - Pillar Card: \`bg-slate-900/60 border border-slate-800 rounded-2xl p-4 flex flex-col gap-2\`.
+
+---
+
+### 🗄️ BACKEND DESIGN SPECIFICATION
+- **REST API Endpoint**:
+  \`\`\`http
+  GET /api/v1/roleplay/scorecard/{sessionId}
+  Authorization: Bearer <JWT>
+
+  Response 200 OK:
+  {
+    "sessionId": "rol_88291",
+    "overallScore": 88.6,
+    "metrics": {
+      "pronunciation": 85.0,
+      "fluency": 92.0,
+      "grammar": 88.0,
+      "vocabulary": 90.0,
+      "goalCompletion": 100.0
+    },
+    "technicalVocabularyReviewed": [
+      { "term": "API", "pronounced": "/eɪ piː aɪ/", "score": 95 },
+      { "term": "blocked", "pronounced": "/blɒkt/", "score": 70, "issue": "weak final /t/" }
+    ],
+    "strengths": ["Proactive communication style", "Accurate technical terms"],
+    "areasForImprovement": ["Enunciate past tense -ed endings (/t/, /d/)"]
+  }
+  \`\`\`
+- **Database Schema**:
+  \`\`\`sql
+  CREATE TABLE roleplay_scorecards (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    session_id UUID NOT NULL REFERENCES roleplay_sessions(id) ON DELETE CASCADE,
+    overall_score NUMERIC(5, 2) NOT NULL,
+    metrics JSONB NOT NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+  );
+  \`\`\`
+- **5,000 Users Scale Strategy**:
+  - Dữ liệu scorecard được lưu trữ vĩnh viễn trên PostgreSQL và cache tại CDN Edge trong 24 giờ.`
   },
   {
     id: 'VN-104',
     epic_id: 'epic-roleplay-ielts',
-    title: 'IELTS Speaking Part 1 & 2 AI Mock Examiner for Vietnamese Candidates: Giám Khảo Mô Phỏng IELTS Chuyên Sâu',
-    persona: 'Thí sinh luyện thi IELTS tại Việt Nam cần cọ xát với giám khảo bản ngữ bấm giờ chuẩn phòng thi thật',
-    action: 'chọn chế độ IELTS Mock Examiner và trả lời các chủ đề Part 1 (phỏng vấn ngắn) hoặc Part 2 (thuyết trình 2 phút cue card)',
-    value: 'nhận điểm số chi tiết theo 4 tiêu chí chấm thi của IDP/BC (Pronunciation, Fluency & Coherence, Lexical Resource, Grammatical Range) và lời khuyên cụ thể để bứt phá từ Band 6.0 lên Band 7.0+',
+    title: 'IELTS Speaking Part 1 & 2 AI Mock Examiner for Vietnamese Learners: Giám Khảo AI Thi Thử IELTS Speaking Part 1 & 2',
+    persona: 'Thí sinh người Việt đang ôn thi IELTS Speaking cần người chấm thi thử đúng format chuẩn IDP/BC mà không đủ chi phí thuê giáo viên bản ngữ chấm 1:1',
+    action: 'thi thử phòng thi ảo với Giám khảo AI Sarah (London), trải nghiệm Part 1 (hỏi đáp ngắn 4 phút) và Part 2 (thẻ gợi ý Cue Card với 1 phút chuẩn bị và 2 phút nói liên tục)',
+    value: 'tạo tâm lý phòng thi chân thực 100%, giải tỏa áp lực phòng thi thật và nhận bảng phân tích 4 tiêu chí chấm thi IELTS Speaking chính thức',
     priority: 'must',
     status: 'in-progress',
     size: 'XL',
     points: 13,
     acceptance_criteria: JSON.stringify([
       {
-        id: 'ac-vn-104-exam',
-        given: 'Chủ đề thi IELTS Speaking Part 2 Cue Card',
-        when: 'Học viên nói liên tục trong 1 đến 2 phút',
-        then: 'Hệ thống đo đạc thời gian, tính toán điểm tiêu chí Phát Âm (Pronunciation Band), phân tích độ mượt mà khi nối từ (Chunking & Linking), và bắt các lỗi phát âm làm giảm tính dễ hiểu (Intelligibility).',
+        id: 'ac-vn-104-exam-flow',
+        given: 'Học viên bắt đầu bài thi thử IELTS Speaking Part 2',
+        when: 'Giám khảo trao thẻ chủ đề Cue Card (ví dụ: "Describe a piece of technology you find difficult to use")',
+        then: 'Hệ thống tự động kích hoạt đồng hồ đếm ngược 60 giây chuẩn bị kèm bảng ghi chú nháp ảo; hết 60s tự động chuyển sang trạng thái thu âm 2 phút nói liên tục.',
         completed: true
       },
       {
-        id: 'ac-vn-104-advice',
-        given: 'Báo cáo thi thử hoàn tất',
-        when: 'Màn hình phân tích hiển thị',
-        then: 'Cung cấp lộ trình bứt phá chi tiết: "Để nâng từ Band 6.0 lên Band 7.0+: Cần duy trì ngữ điệu linh hoạt ở cuối câu phức, khắc phục hiện tượng nuốt âm đuôi phụ âm tắc và nhấn đúng trọng âm của các từ học thuật".',
-        completed: true
-      },
-      {
-        id: 'ac-vn-104-ui',
-        given: 'Giao diện thi thử IELTS',
+        id: 'ac-vn-104-frontend-design',
+        given: 'Giao diện phòng thi ảo IeltsMockExamView',
         when: 'Render trên màn hình',
-        then: 'Hiển thị đồng hồ bấm giờ đếm ngược 02:00, thẻ Cue Card đóng khung chuẩn kỳ thi quốc tế, giao diện trang nhã chuẩn học thuật.',
+        then: 'Không gian phòng thi phong cách British Council trang nhã, ảnh chân dung giám khảo Sarah với biểu cảm tự nhiên, đồng hồ đếm ngược kỹ thuật số hiển thị sắc nét bằng font JetBrains Mono, bảng ghi chú nháp Cue Card có thể gõ phím mượt mà.',
         completed: true
       },
       {
-        id: 'ac-vn-104-scale-5000',
-        given: '5,000 thí sinh cùng lúc thi thử IELTS trong đợt ôn thi cao điểm',
-        when: 'Hệ thống ghi nhận bài thi nói',
-        then: 'File ghi âm được nén thành Opus 16kbps siêu nhẹ hoặc xử lý trực tiếp trên client, hàng đợi phân tích ielts_evaluation_queue điều phối nhịp nhàng không gây nghẽn cổ chai.',
+        id: 'ac-vn-104-backend-design',
+        given: '5,000 thí sinh cùng tham gia thi thử trong mùa cao điểm',
+        when: 'Hệ thống ghi âm và phân tích bài nói 2 phút',
+        then: 'Audio được nén chuẩn Opus lưu trên Cloudflare R2, hàng đợi worker AI chia nhỏ phân đoạn chấm điểm 4 tiêu chí và trả về bảng điểm đầy đủ trong dưới 3 giây.',
         completed: true
       },
       {
-        id: 'ac-vn-104-a11y',
-        given: 'Thí sinh cần nghe lại giọng nói của mình',
-        when: 'Bấm nút "Nghe lại bài nói"',
-        then: 'Phát lại toàn bộ bản ghi âm kèm highlight dòng chữ transcript đồng bộ theo giọng nói.',
+        id: 'ac-vn-104-l1-precision',
+        given: 'Thí sinh người Việt hay gặp lỗi ngữ pháp về thì quá khứ (Past Tense -ed) trong Part 2',
+        when: 'Giám khảo AI chấm tiêu chí Grammatical Range and Accuracy (GRA)',
+        then: 'Chỉ ra chi tiết: "Bạn đã quên chia thì quá khứ trong 4 động từ khi kể về kỷ niệm cũ, làm giảm điểm tiêu chí Ngữ pháp xuống Band 6.0".',
+        completed: true
+      },
+      {
+        id: 'ac-vn-104-a11y-fallback',
+        given: 'Thí sinh muốn đọc lại câu hỏi của giám khảo',
+        when: 'Bấm nút "Xem văn bản câu hỏi"',
+        then: 'Hiển thị thẻ phụ đề câu hỏi rõ ràng có thể điều chỉnh cỡ chữ lớn (A+), hỗ trợ người khiếm thị hoặc người có khả năng nghe kém.',
         completed: true
       }
     ]),
     technical_tasks: JSON.stringify([
-      { id: 't-vn-104-cuecard', title: 'Xây dựng ngân hàng 50 chủ đề IELTS Speaking Part 1 & 2 bám sát đề thi thật 2026', category: 'Content', completed: true },
-      { id: 't-vn-104-scoring', title: 'Hiện thực hóa thuật toán chấm điểm theo 4 tiêu chí IELTS Descriptors chính thức', category: 'Algorithm', completed: true },
-      { id: 't-vn-104-timer', title: 'Tích hợp đồng hồ đếm ngược 1 phút chuẩn bị và 2 phút nói chuẩn quy chế thi', category: 'Frontend', completed: true },
-      { id: 't-vn-104-scale', title: 'Tối ưu hóa nén âm thanh định dạng Opus giúp tiết kiệm 80% băng thông cho 5,000 users', category: 'DevOps', completed: true },
-      { id: 't-vn-104-qa', title: 'Đối chiếu kết quả chấm điểm của AI với điểm chấm của 5 giám khảo IELTS người bản xứ', category: 'QA', completed: true }
+      { id: 't-vn-104-fe-room', title: 'Xây dựng giao diện IeltsMockRoomView với đồng hồ đếm ngược kỹ thuật số và bảng nháp Cue Card', category: 'Frontend', completed: true },
+      { id: 't-vn-104-fe-timer', title: 'Triển khai hook useExamTimer quản lý chính xác 60s chuẩn bị và 120s nói liên tục', category: 'Frontend', completed: true },
+      { id: 't-vn-104-be-examiner', title: 'Thiết kế AI Examiner Engine áp dụng đúng thang điểm chấm thi IELTS Speaking Band Descriptors công khai', category: 'Backend', completed: true },
+      { id: 't-vn-104-be-queue', title: 'Thiết lập hàng đợi BullMQ xử lý song song các bài nói 2 phút cho 5,000 thí sinh đồng thời', category: 'DevOps/Scale', completed: true },
+      { id: 't-vn-104-qa', title: 'Kiểm thử độ chính xác chấm điểm đối chiếu với các cựu giám khảo IELTS thực tế', category: 'QA', completed: true }
     ]),
-    notes: `### 🎨 UI/UX Design Specifications
-- **React Component**: \`vietphonics-app/src/views/RoleplayView.jsx\` (IELTS Examiner Mode)`
+    notes: `### 🎨 FRONTEND DESIGN SPECIFICATION
+- **Component File**: \`vietphonics-app/src/views/IeltsMockExamView.jsx\`
+- **Component Hierarchy**:
+  \`\`\`
+  <IeltsMockExamView examPart={2} topicId="tech_difficult_use">
+    <ExaminerVideoFrame examinerName="Sarah" avatarUrl="/avatars/sarah.jpg" isSpeaking={isExaminerSpeaking} />
+    <CueCardDrawer isOpen={isPreparationPhase}>
+      <CueCardText topic="Describe a piece of technology you find difficult to use" prompts={prompts} />
+      <ScratchPadNotepad value={notes} onChange={setNotes} />
+      <PreparationCountdownTimer secondsRemaining={prepSeconds} />
+    </CueCardDrawer>
+    <ExamRecordingFooter isSpeaking={isSpeakingPhase} secondsRemaining={speechSeconds} />
+  </IeltsMockExamView>
+  \`\`\`
+- **Stitch Design Tokens**:
+  - Exam Room: \`bg-slate-950 text-slate-100 min-h-screen flex flex-col items-center justify-between p-6\`
+  - Cue Card: \`bg-amber-50 text-slate-900 rounded-2xl p-6 shadow-2xl border-2 border-amber-200 max-w-md w-full\`
+  - Timer: \`font-mono text-3xl font-black text-rose-500 bg-slate-900 px-4 py-2 rounded-xl border border-slate-800\`.
+
+---
+
+### 🗄️ BACKEND DESIGN SPECIFICATION
+- **REST API Endpoint**:
+  \`\`\`http
+  POST /api/v1/ielts/mock-eval
+  Authorization: Bearer <JWT>
+  Content-Type: application/json
+
+  Request Body:
+  {
+    "examPart": 2,
+    "topic": "Describe a piece of technology...",
+    "audioUrl": "https://r2.vietphonics.com/ielts/session_992.opus",
+    "prepNotes": "bought laptop 2 years ago, heavy, battery poor"
+  }
+
+  Response 200 OK:
+  {
+    "overallBand": 6.5,
+    "fluencyCoherence": 6.5,
+    "lexicalResource": 7.0,
+    "grammaticalAccuracy": 6.0,
+    "pronunciation": 6.5,
+    "examinerComments": "Good vocabulary range relating to technical devices. Work on past tense consistency."
+  }
+  \`\`\`
+- **Database Schema**:
+  \`\`\`sql
+  CREATE TABLE ielts_mock_records (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    part_number INT NOT NULL,
+    overall_band NUMERIC(2, 1) NOT NULL,
+    evaluation_json JSONB NOT NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+  );
+  \`\`\`
+- **High Concurrency (5,000 Users)**:
+  - Worker GPU chạy Whisper phân đoạn audio 2 phút song song thành các chunk 30s giúp giảm 50% thời gian suy luận.`
   }
 ];
