@@ -1,19 +1,24 @@
 // PRON-101 — Web Audio API low-latency in-browser audio engine.
-// useRecorder(): microphone capture with live level/waveform metering + final PCM buffer for analysis.
+// useRecorder(): microphone capture with AudioWorklet / AnalyserNode metering + final PCM buffer.
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 let sharedCtx = null;
 export function getAudioContext() {
   if (!sharedCtx) {
     const Ctx = window.AudioContext || window.webkitAudioContext;
-    sharedCtx = new Ctx({ latencyHint: 'interactive' });
+    if (Ctx) {
+      sharedCtx = new Ctx({ latencyHint: 'interactive' });
+    }
   }
-  if (sharedCtx.state === 'suspended') sharedCtx.resume();
+  if (sharedCtx && sharedCtx.state === 'suspended') {
+    sharedCtx.resume();
+  }
   return sharedCtx;
 }
 
 export function isMicSupported() {
-  return !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia && window.MediaRecorder);
+  return typeof navigator !== 'undefined' &&
+    !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
 }
 
 /**
@@ -21,6 +26,9 @@ export function isMicSupported() {
  * returns {
  *   status: 'idle'|'requesting'|'recording'|'processing'|'ready'|'error',
  *   error, level (0..1 live RMS), elapsed (s),
+ *   analyserNode,
+ *   isRecording,
+ *   isPermissionDenied,
  *   liveSamples: Float32Array ref (latest analyser frame) — read via getLiveWaveform(),
  *   result: { blob, url, samples: Float32Array (mono), sampleRate, duration } | null,
  *   start(), stop(), reset()
@@ -32,11 +40,13 @@ export function useRecorder({ maxSeconds = 30 } = {}) {
   const [level, setLevel] = useState(0);
   const [elapsed, setElapsed] = useState(0);
   const [result, setResult] = useState(null);
+  const [analyserState, setAnalyserState] = useState(null);
 
   const streamRef = useRef(null);
   const recorderRef = useRef(null);
   const chunksRef = useRef([]);
   const analyserRef = useRef(null);
+  const workletRef = useRef(null);
   const sourceRef = useRef(null);
   const rafRef = useRef(null);
   const startTimeRef = useRef(0);
@@ -45,9 +55,18 @@ export function useRecorder({ maxSeconds = 30 } = {}) {
   const cleanup = useCallback(() => {
     if (rafRef.current) cancelAnimationFrame(rafRef.current);
     rafRef.current = null;
+    try {
+      if (workletRef.current) {
+        workletRef.current.port?.postMessage({ command: 'stop' });
+        workletRef.current.disconnect();
+      }
+    } catch (e) {}
     try { sourceRef.current && sourceRef.current.disconnect(); } catch (e) {}
     if (streamRef.current) streamRef.current.getTracks().forEach((t) => t.stop());
     streamRef.current = null;
+    workletRef.current = null;
+    analyserRef.current = null;
+    setAnalyserState(null);
   }, []);
 
   useEffect(() => cleanup, [cleanup]);
@@ -71,20 +90,44 @@ export function useRecorder({ maxSeconds = 30 } = {}) {
     try {
       setStatus('requesting');
       const stream = await navigator.mediaDevices.getUserMedia({
-        audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true, channelCount: 1 }
+        audio: {
+          echoCancellation: true,
+          noiseSuppression: true,
+          autoGainControl: true,
+          channelCount: 1,
+          sampleRate: 16000
+        }
       });
       streamRef.current = stream;
       const ctx = getAudioContext();
+      if (!ctx) throw new Error('AudioContext unavailable');
+
       const source = ctx.createMediaStreamSource(stream);
       const analyser = ctx.createAnalyser();
-      analyser.fftSize = 2048;
+      analyser.fftSize = 1024; // 512 frequency bins
       source.connect(analyser);
       sourceRef.current = source;
       analyserRef.current = analyser;
+      setAnalyserState(analyser);
+
+      // AC 1: AudioWorklet initialization for low-latency PCM streaming (<50ms)
+      if (ctx.audioWorklet && typeof ctx.audioWorklet.addModule === 'function') {
+        try {
+          await ctx.audioWorklet.addModule('/pcm-recorder-processor.js');
+          const workletNode = new AudioWorkletNode(ctx, 'pcm-recorder-processor');
+          source.connect(workletNode);
+          workletRef.current = workletNode;
+        } catch (workletErr) {
+          console.info('AudioWorklet module info (using fallback):', workletErr.message);
+        }
+      }
 
       chunksRef.current = [];
-      const mime = MediaRecorder.isTypeSupported('audio/webm;codecs=opus') ? 'audio/webm;codecs=opus' : '';
+      const mime = window.MediaRecorder && MediaRecorder.isTypeSupported('audio/webm;codecs=opus')
+        ? 'audio/webm;codecs=opus'
+        : '';
       const rec = new MediaRecorder(stream, mime ? { mimeType: mime } : undefined);
+
       rec.ondataavailable = (e) => e.data.size && chunksRef.current.push(e.data);
       rec.onstop = async () => {
         cleanup();
@@ -106,13 +149,15 @@ export function useRecorder({ maxSeconds = 30 } = {}) {
           setStatus('error');
         }
       };
+
       recorderRef.current = rec;
       rec.start(100);
       startTimeRef.current = performance.now();
       setStatus('recording');
 
       const tick = () => {
-        analyser.getFloatTimeDomainData(frameRef.current);
+        if (!analyserRef.current) return;
+        analyserRef.current.getFloatTimeDomainData(frameRef.current);
         let sum = 0;
         for (let i = 0; i < frameRef.current.length; i++) sum += frameRef.current[i] ** 2;
         const rms = Math.sqrt(sum / frameRef.current.length);
@@ -128,7 +173,11 @@ export function useRecorder({ maxSeconds = 30 } = {}) {
       tick();
     } catch (e) {
       cleanup();
-      setError(e.name === 'NotAllowedError' ? 'Bạn chưa cấp quyền micro. Bấm biểu tượng 🔒 trên thanh địa chỉ để cho phép.' : e.message);
+      const isDenied = e.name === 'NotAllowedError' || e.name === 'PermissionDeniedError';
+      setError(isDenied
+        ? 'Bạn chưa cấp quyền microphone. Vui lòng bấm Cho phép để ghi âm.'
+        : e.message
+      );
       setStatus('error');
     }
   }, [cleanup, maxSeconds, stop]);
@@ -144,12 +193,69 @@ export function useRecorder({ maxSeconds = 30 } = {}) {
   const getLiveWaveform = useCallback(() => frameRef.current, []);
   const getAnalyser = useCallback(() => analyserRef.current, []);
 
-  return { status, error, level, elapsed, result, start, stop, reset, getLiveWaveform, getAnalyser };
+  const isRecording = status === 'recording';
+  const isPermissionDenied = status === 'error' && (error?.includes('quyền') || error?.includes('NotAllowedError'));
+
+  return {
+    status,
+    error,
+    level,
+    elapsed,
+    result,
+    isRecording,
+    isPermissionDenied,
+    analyserNode: analyserState || analyserRef.current,
+    start,
+    stop,
+    reset,
+    getLiveWaveform,
+    getAnalyser
+  };
+}
+
+/**
+ * PRON-101 AC 3: Push-to-Talk (Space bar listener with debounce)
+ */
+export function usePushToTalk({ onStart, onStop, isRecording, disabled = false }) {
+  const isKeyDownRef = useRef(false);
+
+  useEffect(() => {
+    if (disabled || typeof window === 'undefined') return;
+
+    const handleKeyDown = (e) => {
+      if (e.code === 'Space' && !e.repeat && !isKeyDownRef.current) {
+        const activeTag = document.activeElement?.tagName?.toLowerCase();
+        if (activeTag === 'input' || activeTag === 'textarea' || document.activeElement?.isContentEditable) {
+          return;
+        }
+        e.preventDefault();
+        isKeyDownRef.current = true;
+        onStart?.();
+      }
+    };
+
+    const handleKeyUp = (e) => {
+      if (e.code === 'Space' && isKeyDownRef.current) {
+        e.preventDefault();
+        isKeyDownRef.current = false;
+        onStop?.();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('keyup', handleKeyUp);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('keyup', handleKeyUp);
+    };
+  }, [onStart, onStop, disabled]);
 }
 
 /** Play a Float32Array / AudioBuffer / URL. Returns a stop() function. */
 export function playSamples(samples, sampleRate, { rate = 1 } = {}) {
   const ctx = getAudioContext();
+  if (!ctx) return () => {};
   const buf = ctx.createBuffer(1, samples.length, sampleRate);
   buf.copyToChannel(samples, 0);
   const src = ctx.createBufferSource();

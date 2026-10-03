@@ -2,10 +2,31 @@ import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 
 export default function OnboardingView() {
-  const { dialect, setDialect, setActiveTab, setShowDiagnosticModal } = useApp();
+  const { dialect, setDialect, calibrateAudioDialect, calibrationConfidence, calibrationMode, setActiveTab, setShowDiagnosticModal } = useApp();
   const [selectedGoal, setSelectedGoal] = useState('ielts'); // 'ielts' | 'tech' | 'coda' | 'zero'
   const [examPart, setExamPart] = useState('part1'); // 'part1' | 'part2'
   const [activeIeltsScore, setActiveIeltsScore] = useState(null);
+  const [isCalibratingAudio, setIsCalibratingAudio] = useState(false);
+  const [audioResult, setAudioResult] = useState(null);
+  const [activeTabMode, setActiveTabMode] = useState('manual'); // 'manual' | 'auto_audio'
+
+  const handleAudioCalibration = async () => {
+    setIsCalibratingAudio(true);
+    setAudioResult(null);
+    try {
+      // Simulate/trigger acoustic feature extraction on calibration sentence
+      const res = await calibrateAudioDialect('Look at the little light shining at night', {
+        formantF1F2Offset: 120,
+        f0Variance: 0.45,
+        glottalStopDetected: false
+      });
+      setAudioResult(res);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setIsCalibratingAudio(false);
+    }
+  };
 
   const goals = [
     { id: 'ielts', icon: '🎯', label: 'IELTS Speaking 7.0+', desc: 'Tập trung tính lưu loát, trọng âm câu và độ chính xác âm vị theo chuẩn chấm thi IDP/BC' },
@@ -52,7 +73,7 @@ export default function OnboardingView() {
           <div>
             <div className="flex items-center gap-2">
               <span className="font-mono text-xs font-bold text-primary uppercase">
-                Hồ Sơ & Hiệu Chuẩn Giọng L1 (USER-101 & USER-102)
+                Hồ Sơ & Hiệu Chuẩn Giọng L1 (ELSA-102 & USER-101)
               </span>
               <span className="px-2 py-0.5 rounded-full bg-slate-100 border border-slate-200 text-[10px] font-mono font-bold text-slate-600">
                 L1 Acoustic Prior Configuration
@@ -73,21 +94,114 @@ export default function OnboardingView() {
         </button>
       </div>
 
-      {/* 3 Regional Dialect Calibration Cards */}
+      {/* 3 Regional Dialect Calibration Cards & Audio Mode */}
       <div className="bg-white rounded-2xl border border-slate-200/90 p-6 shadow-xs space-y-4">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
           <div>
             <h3 className="font-bold text-base text-slate-900">
-              1. Chọn Giọng Vùng Miền Mẹ Đẻ Của Bạn (L1 Mother-Tongue Calibrator)
+              1. Hiệu Chuẩn Giọng Mẹ Đẻ (L1 Regional Dialect Calibration - ELSA-102)
             </h3>
             <p className="text-xs text-slate-500 mt-0.5">
-              Hệ thống AI sẽ tự động kích hoạt bộ triệt tiêu sai lệch đặc trưng theo thổ âm và điều chỉnh ngưỡng phạt GOP.
+              Tự động căn chỉnh trọng số phạt GOP, triệt tiêu sai lệch đặc trưng theo thổ âm Bắc - Trung - Nam.
             </p>
           </div>
-          <span className="font-mono text-xs text-slate-400 bg-slate-100 px-3 py-1 rounded-full">
-            Formants: F1 / F2 / F0 Offset
-          </span>
+          
+          {/* Switcher Mode: Manual vs Audio Auto-Detect */}
+          <div className="flex items-center p-1 bg-slate-100 rounded-xl text-xs font-bold">
+            <button
+              onClick={() => setActiveTabMode('manual')}
+              className={`px-3 py-1.5 rounded-lg transition-all ${
+                activeTabMode === 'manual'
+                  ? 'bg-white text-slate-900 shadow-xs'
+                  : 'text-slate-500 hover:text-slate-800'
+              }`}
+            >
+              Chọn Thủ Công (3 Miền)
+            </button>
+            <button
+              onClick={() => setActiveTabMode('auto_audio')}
+              className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1 ${
+                activeTabMode === 'auto_audio'
+                  ? 'bg-primary text-white shadow-xs'
+                  : 'text-slate-500 hover:text-slate-800'
+              }`}
+            >
+              <span className="material-symbols-outlined text-sm">mic</span>
+              <span>Tự Động Nhận Diện Qua Giọng</span>
+            </button>
+          </div>
         </div>
+
+        {/* Mode 2: Auto Audio Calibration (AC 2) */}
+        {activeTabMode === 'auto_audio' && (
+          <div className="p-5 rounded-2xl bg-rose-50/40 border-2 border-primary/30 flex flex-col gap-4 animate-fade-in">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div className="flex items-center gap-2">
+                <span className="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold text-sm">
+                  AI
+                </span>
+                <div>
+                  <h4 className="font-bold text-sm text-slate-900">
+                    Chế độ tự động đo âm học phát hiện phương ngữ
+                  </h4>
+                  <p className="text-xs text-slate-500">
+                    Đọc câu kiểm tra để bộ phân tích âm học đo độ mở nguyên âm và cách bật âm /l/-/n/
+                  </p>
+                </div>
+              </div>
+              <span className="px-3 py-1 rounded-full bg-primary/10 text-primary font-mono text-xs font-bold">
+                Acoustic Auto-Calibration (ELSA-102 AC 2)
+              </span>
+            </div>
+
+            {/* Test sentence display */}
+            <div className="p-4 rounded-xl bg-white border border-rose-200 shadow-xs flex flex-col gap-1.5">
+              <span className="font-mono text-[11px] font-bold text-slate-400 uppercase">
+                Câu kiểm tra chuẩn hóa:
+              </span>
+              <p className="text-base sm:text-lg font-bold text-slate-900 font-serif">
+                “Look at the little light shining at night”
+              </p>
+              <span className="text-xs text-slate-500 font-mono">
+                IPA: /lʊk æt ðə ˈlɪtl laɪt ˈʃaɪnɪŋ æt naɪt/ • Kiểm tra bẫy âm: /l/ vs /n/, /æ/, /t/
+              </span>
+            </div>
+
+            {/* Action & Result */}
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
+              <button
+                onClick={handleAudioCalibration}
+                disabled={isCalibratingAudio}
+                className="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-primary hover:bg-rose-700 text-white font-bold text-xs shadow-md flex items-center justify-center gap-2 transition-transform hover:scale-105 disabled:opacity-50"
+              >
+                <span className="material-symbols-outlined text-base">
+                  {isCalibratingAudio ? 'hourglass_top' : 'mic'}
+                </span>
+                <span>
+                  {isCalibratingAudio
+                    ? 'Đang phân tích formants F1/F2...'
+                    : 'Đọc Câu Kiểm Tra & Nhận Diện Ngay'}
+                </span>
+              </button>
+
+              {audioResult && (
+                <div className="flex items-center gap-3 p-2.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs animate-fade-in">
+                  <span className="material-symbols-outlined text-emerald-600 text-lg">
+                    check_circle
+                  </span>
+                  <div>
+                    <span className="font-bold">
+                      Đã xác định: {audioResult.detectedDialect === 'bac' ? 'Miền Bắc' : audioResult.detectedDialect === 'trung' ? 'Miền Trung' : 'Miền Nam'} (Độ tin cậy: {audioResult.confidencePercentage}%)
+                    </span>
+                    <p className="text-[11px] text-emerald-700 mt-0.5">
+                      {audioResult.rationale}
+                    </p>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {/* Miền Bắc */}

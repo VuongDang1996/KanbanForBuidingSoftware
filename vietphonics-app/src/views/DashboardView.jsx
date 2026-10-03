@@ -1,8 +1,9 @@
 import React from 'react';
 import { useApp } from '../context/AppContext';
+import IeltsBandEstimator from '../components/dashboard/IeltsBandEstimator';
 
 export default function DashboardView() {
-  const { dialect, dialectConfig, setActiveTab, triggerPractice, setShowDiagnosticModal } = useApp();
+  const { dialect, dialectConfig, gopScore, setActiveTab, triggerPractice, setShowDiagnosticModal } = useApp();
 
   const playWord = (word) => {
     if ('speechSynthesis' in window) {
@@ -224,24 +225,8 @@ export default function DashboardView() {
               </div>
             </div>
 
-            {/* Predicted Exam Benchmarks */}
-            <div className="grid grid-cols-3 gap-2 p-2.5 rounded-xl bg-slate-50 border border-slate-100 text-center relative">
-              <div className="flex flex-col p-2 rounded-lg bg-white border border-slate-200/60 shadow-sm">
-                <span className="font-label-mono text-label-mono text-slate-500 font-semibold">IELTS</span>
-                <span className="font-headline-sm text-headline-sm text-secondary font-bold">7.0</span>
-                <span className="font-label-mono text-[9px] text-slate-400">Speaking</span>
-              </div>
-              <div className="flex flex-col p-2 rounded-lg bg-white border border-slate-200/60 shadow-sm">
-                <span className="font-label-mono text-label-mono text-slate-500 font-semibold">CEFR</span>
-                <span className="font-headline-sm text-headline-sm text-primary font-bold">B2+</span>
-                <span className="font-label-mono text-[9px] text-slate-400">Upper Inter.</span>
-              </div>
-              <div className="flex flex-col p-2 rounded-lg bg-white border border-slate-200/60 shadow-sm">
-                <span className="font-label-mono text-label-mono text-slate-500 font-semibold">TOEIC</span>
-                <span className="font-headline-sm text-headline-sm text-indigo-600 font-bold">160</span>
-                <span className="font-label-mono text-[9px] text-slate-400">/ 200 PTS</span>
-              </div>
-            </div>
+            {/* Predicted Exam Benchmarks & Interactive IELTS Semicircle Gauge (ELSA-103) */}
+            <IeltsBandEstimator overallGop={gopScore} />
           </div>
 
           {/* Right Metric Card: L1 Habit Reduction & Cadence (3 cols on XL, full on MD/sm) */}
@@ -356,13 +341,23 @@ export default function DashboardView() {
                 </div>
                 <div className="flex flex-col">
                   <span className="font-label-mono text-label-mono text-emerald-600 uppercase tracking-wider font-bold">
-                    Step 01 • Khởi Động Âm Yếu
+                    Step 01 • Khởi Động Âm Yếu ({dialectConfig.name})
                   </span>
                   <h3 className="font-headline-sm text-headline-sm text-slate-900 mt-1 font-bold group-hover:text-secondary transition-colors">
-                    Luyện âm răng vô thanh /θ/
+                    {dialect === 'bac' && 'Khắc phục bẫy âm L/N cho người miền Bắc'}
+                    {dialect === 'trung' && 'Khắc phục bẫy thanh điệu & nguyên âm đôi cho người miền Trung'}
+                    {dialect === 'nam' && 'Khắc phục nuốt phụ âm đuôi /k/, /t/ cho người miền Nam'}
                   </h3>
                   <p className="font-body-sm text-body-sm text-slate-600 mt-1.5 leading-relaxed">
-                    Tập trung 5 từ mẫu hay lẫn lộn: <span className="font-ipa-inline text-slate-900 font-semibold">think, thank, breath, tooth, method</span>.
+                    {dialect === 'bac' && (
+                      <>Tập trung 5 từ mẫu hay lẫn lộn /l/-/n/: <span className="font-ipa-inline text-slate-900 font-semibold">light, night, line, nine, little</span>. Triệt tiêu phản xạ nhầm âm Bắc Bộ.</>
+                    )}
+                    {dialect === 'trung' && (
+                      <>Tập trung nguyên âm đôi /eə/ và /ɪə/: <span className="font-ipa-inline text-slate-900 font-semibold">hair, clear, tear, square</span>. Mở rộng vòm họng và giữ trường độ chuẩn.</>
+                    )}
+                    {dialect === 'nam' && (
+                      <>Tập trung bật dứt khoát âm đuôi: <span className="font-ipa-inline text-slate-900 font-semibold">street, cat, speak, look, pack</span>. Khắc phục thói quen nuốt tắt thanh hầu.</>
+                    )}
                   </p>
                 </div>
               </div>
