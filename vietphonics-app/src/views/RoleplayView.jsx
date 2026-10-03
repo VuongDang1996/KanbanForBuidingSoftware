@@ -47,7 +47,7 @@ export default function RoleplayView() {
 
   return (
     <div className="flex flex-col w-full animate-fade-in">
-      <section className="relative w-full px-4 md:px-gutter-desktop py-space-md mx-auto max-w-[1560px]">
+      <section className="relative w-full px-4 md:px-gutter-desktop py-space-md mx-auto max-w-[1440px]">
         <div className="grid grid-cols-12 gap-space-lg items-start">
           {/* Main Roleplay Stage (Left 8 cols) */}
           <div className="col-span-12 xl:col-span-8 flex flex-col gap-space-md">

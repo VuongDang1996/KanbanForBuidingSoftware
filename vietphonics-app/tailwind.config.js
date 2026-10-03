@@ -80,7 +80,7 @@ export default {
         "headline-sm": ["'Plus Jakarta Sans'"],
         "display-hero-mobile": ["'Plus Jakarta Sans'"],
         "headline-md": ["'Plus Jakarta Sans'"],
-        "ipa-body": ["'JetBrains Mono'"],
+        "ipa-body": ["'Noto Sans'", "'JetBrains Mono'", "sans-serif"],
         "body-sm": ["'Plus Jakarta Sans'"],
         "headline-lg-mobile": ["'Plus Jakarta Sans'"],
         "body-lg": ["'Plus Jakarta Sans'"],
@@ -88,8 +88,8 @@ export default {
         "body-md": ["'Plus Jakarta Sans'"],
         "display-hero": ["'Plus Jakarta Sans'"],
         "telemetry-data": ["'JetBrains Mono'"],
-        "ipa-display": ["'JetBrains Mono'"],
-        "ipa-inline": ["'JetBrains Mono'"],
+        "ipa-display": ["'Noto Sans'", "'JetBrains Mono'", "sans-serif"],
+        "ipa-inline": ["'Noto Sans'", "'JetBrains Mono'", "sans-serif"],
         "label-mono": ["'JetBrains Mono'"]
       },
       fontSize: {

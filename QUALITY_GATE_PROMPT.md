@@ -1,13 +1,13 @@
-# BỘ QUY CHUẨN KIỂM DUYỆT CHẤT LƯỢNG 10 CỔNG (10-GATE QUALITY PROTOCOL)
+# BỘ QUY CHUẨN KIỂM DUYỆT CHẤT LƯỢNG 11 CỔNG (11-GATE QUALITY PROTOCOL)
 ## Dành riêng cho Dự án Nền tảng Âm học VietPhonics AI
 
 ---
 
 ## I. NGUYÊN TẮC CỐT LÕI (CORE PRINCIPLES)
 
-1. **Tuyệt đối Không Khoan Nhượng (Zero Tolerance for Incomplete Implementation)**:
-   - Một User Story chỉ được chuyển từ `in-progress` sang `done` khi và chỉ khi **vượt qua toàn bộ 10 Cổng Kiểm Soát Chất Lượng (10 Mandatory Quality Gates)**.
-   - Nếu trượt dù chỉ 1 cổng, story bắt buộc phải giữ ở trạng thái `in-progress` và đội ngũ kỹ thuật phải bổ sung code cho tới khi đạt 10/10.
+1. **Kiểm Thử Chậm Mà Chắc (Batch Execution 10 US / Lần)**:
+   - Thay vì audit hàng loạt thiếu kiểm chứng hình ảnh thực tế, hệ thống bắt buộc audit theo từng cụm **10 User Stories một lần** (Batch 1: 1-10, Batch 2: 11-20, Batch 3: 21-30, Batch 4: 31-40, Batch 5: 41-50, Batch 6: 51-54).
+   - Chỉ khi 10 US của batch hiện tại vượt qua toàn bộ 11 Cổng, có bằng chứng code và không vỡ layout thì mới được chuyển sang `done` và tiếp tục batch kế tiếp.
 
 2. **Google Stitch làm Khuôn Mẫu Thẩm Mỹ & Chuẩn Mực UX**:
    - Tuân thủ 100% tokens, bố cục Bento Grid, bảng màu âm học, và hệ thống typography. Không được đơn giản hóa hoặc thay thế bằng UI sơ sài.
@@ -17,7 +17,7 @@
 
 ---
 
-## II. 10 CỔNG KIỂM SOÁT CHẤT LƯỢNG (THE 10 MANDATORY QUALITY GATES)
+## II. 11 CỔNG KIỂM SOÁT CHẤT LƯỢNG (THE 11 MANDATORY QUALITY GATES)
 
 ### 🚪 CỔNG 1: UI/UX & GOOGLE STITCH TOKENS FIDELITY GATE (Chuẩn Thẩm Mỹ)
 - [ ] **1.1 Design Tokens**: Bắt buộc sử dụng đúng hệ thống spacing tokens (`space-xs: 0.25rem`, `space-sm: 0.5rem`, `space-md: 1rem`, `space-lg: 1.5rem`, `space-xl: 2.5rem`, `gutter-desktop: 2rem`) trong `tailwind.config.js`.
@@ -25,13 +25,14 @@
   - Primary Rose: `#e11d48` / `#b80035`
   - Secondary Sky/Teal: `#0284c7` / `#006398`
   - Semantic Status: Emerald `#10b981` (GOP >80%), Amber `#f59e0b` (GOP 60-79%), Rose `#f43f5e` (GOP <60%).
-- [ ] **1.3 Bento Grid & Responsive**: Bố cục Bento Grid cân đối, hỗ trợ đầy đủ 4 kích thước màn hình (Desktop 1440px, Laptop 1024px, Tablet 768px, Mobile 375px), không bị vỡ layout hoặc tràn viền ngang (`overflow-x`).
+- [ ] **1.3 Bento Grid Layout**: Bố cục Bento Grid cân đối, các khối card có padding và gap đồng nhất.
 
 ### 🚪 CỔNG 2: TYPOGRAPHY & PHONETICS FONT STACK GATE (Chuẩn Ngữ Âm & Font Chữ)
 - [ ] **2.1 Hierarchy Font Chữ**:
   - `Inter` / `Plus Jakarta Sans`: Hiển thị văn bản, tiêu đề, hướng dẫn học.
   - `JetBrains Mono`: Hiển thị telemetry, tần số Hz, độ trễ ms, chỉ số GOP, mã Napas VietQR.
-- [ ] **2.2 Ký Tự Ngữ Âm Quốc Tế (IPA Precision)**: Ký hiệu IPA (`/ks/`, `/θ/`, `/ð/`, `/ʃ/`, `/dʒ/`, `/iː/`, `/æ/`, `/eə/`) phải được bọc trong font-ipa chuyên dụng, không bị méo hoặc hiển thị hình vuông (missing glyph).
+  - `Noto Sans`: Font ngữ âm quốc tế chuyên dụng cho ký hiệu IPA.
+- [ ] **2.2 Ký Tự Ngữ Âm Quốc Tế (IPA Precision)**: Ký hiệu IPA (`/ks/`, `/θ/`, `/ð/`, `/ʃ/`, `/dʒ/`, `/iː/`, `/æ/`, `/eə/`, `/ʌ/`) không bị lỗi font glyph hoặc biến dạng thành ký tự lạ (như `/eunBs/`).
 
 ### 🚪 CỔNG 3: FUNCTIONAL INTERACTIVITY & REACTIVE STATE GATE (Chuẩn Tương Tác)
 - [ ] **3.1 Zero Dead Buttons**: 100% nút bấm, tabs, accordion, toggle và modal triggers đều có sự kiện xử lý thực tế (`onClick`, `onChange`).
@@ -58,7 +59,7 @@
 
 ### 🚪 CỔNG 7: ACOUSTIC METRICS & SCIENTIFIC SCORING GATE (Đo Đạc Khoa Học)
 - [ ] **7.1 Chỉ Số GOP (Goodness of Pronunciation)**: Tính toán điểm số âm vị dựa trên log-posterior likelihood chuẩn hóa từ 0 - 100%.
-- [ ] **7.2 Biểu Đồ Formants F1/F2**: Trực quan hóa không gian nguyên âm (Vowel Space) giúp người học định vị độ mở hàm và vị trí lưỡi.
+- [ ] **7.2 Biểu Đồ Formants F1/F2**: Trực quan hóa không gian nguyên âm (Vowel Space) giúp người học định vị độ mở hàm và vị trí lưỡi bằng thuật toán LPC Levinson-Durbin.
 - [ ] **7.3 Đo Tốc Độ & Nhịp Điệu (WPM & F0 Pitch Tracking)**: Cung cấp chỉ số từ/phút và đường cong cao độ intonation so sánh với người bản ngữ.
 
 ### 🚪 CỔNG 8: ACCEPTANCE CRITERIA & CODE EVIDENCE GATE (Nghiệm Thu Given-When-Then)
@@ -66,35 +67,27 @@
 - [ ] **8.2 Hoàn Thành Technical Tasks**: Tất cả sub-tasks (Design, Logic, Audio, Verification) đều được hiện thực hóa.
 
 ### 🚪 CỔNG 9: ACCESSIBILITY (A11Y) & SEMANTIC HTML GATE (Khả Năng Tiếp Cận)
-- [ ] **9.1 Thẻ HTML Ngữ Nghĩa**: Dùng đúng thẻ `<button>`, `<nav>`, `<header>`, `<table>`, `<svg>`.
-- [ ] **9.2 Nhãn ARIA & Focus States**: Cung cấp `aria-label`, `role`, và `focus:ring` cho bàn phím điều hướng không dùng chuột.
-- [ ] **9.3 Tương Tác Bàn Phím**: Hỗ trợ phím Enter/Space để kích hoạt phát âm và ghi âm.
+- [ ] **9.1 Thẻ HTML Ngữ Nghĩa**: Dùng đúng thẻ `<button>`, `<nav>`, `<header>`, `<table>`, `<svg>`, `<main>`.
+- [ ] **9.2 100% Nút Có type="button" & aria-label**: Đảm bảo công cụ đọc màn hình nhận diện chính xác từng nút bấm.
+- [ ] **9.3 Tương Tác Bàn Phím**: Hỗ trợ phím Space để kích hoạt/dừng ghi âm tức thì mà không cần dùng chuột.
 
 ### 🚪 CỔNG 10: PRODUCTION BUILD, PERFORMANCE & GIT INTEGRITY GATE (Kỷ Luật Kỹ Thuật)
 - [ ] **10.1 Build Sạch 100%**: Lệnh `npm --prefix vietphonics-app run build` biên dịch thành công 0 lỗi.
 - [ ] **10.2 Tốc Độ & Dung Lượng**: Vite build dưới 2.0s, tối ưu bundle production.
 - [ ] **10.3 Tuyệt Đối Chỉ Commit Trên Nhánh `pronunciation-app`**: Không bao giờ can thiệp hoặc đẩy vào nhánh `main`.
 
+### 🚪 CỔNG 11: VISUAL LAYOUT, VIEWPORT BOUNDARY & NO-OVERFLOW GATE (Chống Tràn & Chống Che Khuất)
+- [ ] **11.1 Header Không Che Khuất Nội Dung**: Header sử dụng `sticky top-0` tự nhiên, nội dung trang không bị chìm dưới thanh điều hướng khi cuộn.
+- [ ] **11.2 Chống Tràn Ngang 100% (No Horizontal Overflow)**: Thuộc tính `overflow-x-hidden` và `max-w-[1440px]` được áp dụng trên container toàn cục, thanh navbar thu gọn nhịp nhàng trên màn hình laptop (1024px-1366px), không gây hiện tượng trôi ngang (horizontal shift).
+- [ ] **11.3 Vector Asset Bền Vững (Zero Broken Assets)**: Không phụ thuộc vào CDN ảnh ngoài dễ chết; toàn bộ logo và icon âm học dùng vector SVG nguyên bản chuẩn xác.
+
 ---
 
-## III. PROMPT MẪU KIỂM THỬ 10 CỔNG CHO TỪNG USER STORY
+## III. QUY TRÌNH AUDIT THEO BATCH (CHẬM MÀ CHẮC - 10 US / LẦN)
 
-```text
-Bạn là Trưởng Hội Đồng Thẩm Định Chất Lượng Âm Học (Lead Acoustic QA Auditor) của VietPhonics AI.
-Nhiệm vụ: Thẩm định User Story [MÃ_STORY] theo BỘ QUY CHUẨN 10 CỔNG KIỂM SOÁT CHẤT LƯỢNG (10-GATE QUALITY PROTOCOL).
-
-Hãy kiểm tra 10 Cổng:
-1. CỔNG 1 (Tokens & Stitch Fidelity): Tokens spacing và màu sắc Stitch chuẩn không?
-2. CỔNG 2 (Typography & IPA Precision): Font hierarchy và ký tự IPA có chuẩn xác không?
-3. CỔNG 3 (Interactivity & State): Zero dead buttons, state quản lý thông suốt không?
-4. CỔNG 4 (Audio Pipeline DSP): Web Audio API 16kHz/44.1kHz, AnalyserNode FFT 2048, VAD hoạt động chuẩn không?
-5. CỔNG 5 (Speech Synthesis TTS): Phát âm bản ngữ US, đa tốc độ 0.5x-1.0x, cancel chống đè âm không?
-6. CỔNG 6 (L1 Vietnamese Acoustics): Xử lý đúng tật rụng âm đuôi, cặp âm xát, khử dấu thanh, bù trừ 3 miền không?
-7. CỔNG 7 (Acoustic Metrics & GOP): Tính điểm GOP, formants F1/F2, F0 pitch và WPM có bằng chứng code không?
-8. CỔNG 8 (Acceptance Criteria Proof): Đáp ứng 100% Given-When-Then trong AC không?
-9. CỔNG 9 (Accessibility & Semantics): Thẻ ngữ nghĩa semantic, ARIA labels, focus ring có đầy đủ không?
-10. CỔNG 10 (Build & Git Discipline): Build sạch 0 error, commit nghiêm ngặt trên nhánh pronunciation-app không?
-
-NẾU PASS ĐỦ 10/10: Cho phép đánh dấu 'done' kèm con dấu kiểm định [10-GATE QUALITY AUDIT PASSED].
-NẾU THIẾU BẤT KỲ CỔNG NÀO: Giữ nguyên 'in-progress' và tiến hành bổ sung code ngay lập tức.
-```
+1. **Batch 1**: US 1 đến US 10 $\rightarrow$ Audit 11 Cổng $\rightarrow$ Code proof $\rightarrow$ Update Done.
+2. **Batch 2**: US 11 đến US 20 $\rightarrow$ Audit 11 Cổng $\rightarrow$ Code proof $\rightarrow$ Update Done.
+3. **Batch 3**: US 21 đến US 30 $\rightarrow$ Audit 11 Cổng $\rightarrow$ Code proof $\rightarrow$ Update Done.
+4. **Batch 4**: US 31 đến US 40 $\rightarrow$ Audit 11 Cổng $\rightarrow$ Code proof $\rightarrow$ Update Done.
+5. **Batch 5**: US 41 đến US 50 $\rightarrow$ Audit 11 Cổng $\rightarrow$ Code proof $\rightarrow$ Update Done.
+6. **Batch 6**: US 51 đến US 54 $\rightarrow$ Hoàn tất 100% dự án.

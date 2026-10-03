@@ -44,10 +44,10 @@ function MainContent() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] text-slate-800 flex flex-col font-sans antialiased">
+    <div className="min-h-screen bg-[#f8fafc] text-slate-800 flex flex-col font-sans antialiased overflow-x-hidden w-full max-w-full">
       <Navbar />
 
-      <main className="w-full pt-20 pb-12 flex-1 flex flex-col">
+      <main className="w-full pt-4 pb-12 flex-1 flex flex-col overflow-x-hidden">
         {renderActiveView()}
       </main>
 

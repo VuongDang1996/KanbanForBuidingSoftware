@@ -68,7 +68,7 @@ export default function Game3dView() {
 
   return (
     <div className="flex flex-col w-full animate-fade-in">
-      <main className="w-full px-4 md:px-gutter-desktop py-space-md max-w-[1560px] mx-auto">
+      <main className="w-full px-4 md:px-gutter-desktop py-space-md max-w-[1440px] mx-auto">
         {/* TOP STATUS BAR: LORE, COMBO & CURRENCY */}
         <div className="w-full flex flex-col xl:flex-row items-center justify-between gap-space-md mb-space-md">
           {/* Left: Player Combat Status & Combo */}

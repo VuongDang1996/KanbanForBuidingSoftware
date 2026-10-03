@@ -34,25 +34,25 @@ export default function Navbar() {
   };
 
   return (
-    <header className="fixed top-0 w-full z-50 bg-white/90 backdrop-blur-xl border-b border-slate-200/80 shadow-[0_2px_12px_rgba(15,23,42,0.04)]">
-      <div className="h-20 w-full px-6 lg:px-12 mx-auto flex items-center justify-between gap-space-md">
+    <header className="sticky top-0 w-full z-50 bg-white/95 backdrop-blur-xl border-b border-slate-200/80 shadow-[0_2px_12px_rgba(15,23,42,0.04)]">
+      <div className="h-16 lg:h-20 w-full max-w-[1440px] px-4 sm:px-6 lg:px-8 mx-auto flex items-center justify-between gap-2 sm:gap-4">
         {/* Brand & Dialect */}
-        <div className="flex items-center gap-space-md shrink-0">
-          <button aria-label="Chuyển phân hệ học"
+        <div className="flex items-center gap-space-sm sm:gap-space-md shrink-0">
+          <button aria-label="Trang chủ VietPhonics"
             onClick={() => setActiveTab('tong-quan')}
-            className="flex items-center gap-space-sm group text-left cursor-pointer"
+            className="flex items-center gap-2 group text-left cursor-pointer shrink-0"
             type="button"
           >
-            <img
-              alt="VietPhonics AI Logo"
-              className="h-8 w-auto object-contain"
-              src="https://lh3.googleusercontent.com/aida/AEtjO1UCQaKDtsj3J38N8G16hiFB1rFtzk8Or_FZ2uCp6sBdv6rGHrj8NSXG_cF3z_wX3NVm5tzBKR3BfL1UYYCEjdmjBf1o7Zec-8fmkcsZbVLT0RuylN6wzaZ4yGB1uattyruV3b2BLCL6Sox757lOOZgrmVAgtSdqp_Tir0lVMVjhP_IVLT32sfbaEFQmiJ8sW1D-n7TFKsOlbfeDERhznPohzjQc5vRhpeI5en-N76Sk_hxqZLRTSzcHFYs"
-            />
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-primary to-rose-500 flex items-center justify-center text-white shadow-md shadow-rose-500/20 shrink-0">
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 100-6 3 3 0 000 6z" />
+              </svg>
+            </div>
             <div className="flex flex-col">
-              <span className="font-headline-sm text-headline-sm text-primary font-extrabold tracking-tight">
+              <span className="font-headline-sm text-lg sm:text-xl text-primary font-black tracking-tight leading-none">
                 VietPhonics<span className="text-secondary">.AI</span>
               </span>
-              <span className="font-label-mono text-label-mono text-slate-500 uppercase tracking-widest text-[10px]">
+              <span className="font-label-mono text-[9px] sm:text-[10px] text-slate-500 uppercase tracking-widest font-bold mt-0.5">
                 Acoustic L1 Lab
               </span>
             </div>
@@ -142,14 +142,14 @@ export default function Navbar() {
         </div>
 
         {/* Center Nav Links */}
-        <nav className="hidden xl:flex items-center gap-1.5 bg-slate-100/90 border border-slate-200/80 p-1 rounded-full shrink-0">
+        <nav className="hidden xl:flex items-center gap-1 bg-slate-100/90 border border-slate-200/80 p-1 rounded-full shrink min-w-0">
           {navItems.map((item) => {
             const isActive = activeTab === item.id;
             return (
               <button aria-label="Chuyển phân hệ học" type="button"
                 key={item.id}
                 onClick={() => setActiveTab(item.id)}
-                className={`font-body-sm px-3.5 py-1.5 rounded-full transition-all cursor-pointer ${
+                className={`font-body-sm text-xs px-3 py-1.5 rounded-full transition-all cursor-pointer whitespace-nowrap ${
                   isActive
                     ? 'bg-white text-primary font-bold shadow-sm border border-slate-200/50'
                     : 'text-slate-600 hover:text-slate-900 hover:bg-white/60 font-medium'

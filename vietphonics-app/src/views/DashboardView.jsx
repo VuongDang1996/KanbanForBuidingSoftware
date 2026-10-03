@@ -63,9 +63,9 @@ export default function DashboardView() {
         </div>
 
         {/* 4-Pillar Vietnamese Phonetic Radar & High-Echelon Diagnostic Hero Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
-          {/* Left Glass Card: 4-Pillar Radial & Progress Gauges (5 cols) */}
-          <div className="lg:col-span-5 bg-white border border-slate-200/80 rounded-xl p-space-lg flex flex-col justify-between shadow-[0_4px_16px_rgba(15,23,42,0.04)] relative overflow-hidden">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-12 gap-6 items-stretch">
+          {/* Left Glass Card: 4-Pillar Radial & Progress Gauges (5 cols on XL, 1 col on MD) */}
+          <div className="md:col-span-1 xl:col-span-5 bg-white border border-slate-200/80 rounded-xl p-space-lg flex flex-col justify-between shadow-[0_4px_16px_rgba(15,23,42,0.04)] relative overflow-hidden">
             <div className="absolute -right-20 -top-20 w-64 h-64 bg-rose-50/70 rounded-full blur-3xl pointer-events-none" />
             <div className="flex flex-col gap-space-md relative">
               <div className="flex items-center justify-between">
@@ -175,8 +175,8 @@ export default function DashboardView() {
             </div>
           </div>
 
-          {/* Center-Right Hero Card: Overall GOP & Benchmarks (4 cols) */}
-          <div className="lg:col-span-4 bg-white border border-slate-200/80 rounded-xl p-space-lg flex flex-col justify-between shadow-[0_4px_16px_rgba(15,23,42,0.04)] relative overflow-hidden">
+          {/* Center-Right Hero Card: Overall GOP & Benchmarks (4 cols on XL, 1 col on MD) */}
+          <div className="md:col-span-1 xl:col-span-4 bg-white border border-slate-200/80 rounded-xl p-space-lg flex flex-col justify-between shadow-[0_4px_16px_rgba(15,23,42,0.04)] relative overflow-hidden">
             <div className="absolute -left-16 bottom-0 w-48 h-48 bg-sky-50/80 rounded-full blur-3xl pointer-events-none" />
             <div className="relative">
               <div className="flex items-center justify-between">
@@ -244,8 +244,8 @@ export default function DashboardView() {
             </div>
           </div>
 
-          {/* Right Metric Card: L1 Habit Reduction & Cadence (3 cols) */}
-          <div className="lg:col-span-3 bg-white border border-slate-200/80 rounded-xl p-space-lg flex flex-col justify-between shadow-[0_4px_16px_rgba(15,23,42,0.04)]">
+          {/* Right Metric Card: L1 Habit Reduction & Cadence (3 cols on XL, full on MD/sm) */}
+          <div className="col-span-full xl:col-span-3 bg-white border border-slate-200/80 rounded-xl p-space-lg flex flex-col justify-between shadow-[0_4px_16px_rgba(15,23,42,0.04)]">
             <div>
               <div className="flex items-center justify-between">
                 <span className="font-label-mono text-[10px] text-slate-500 uppercase tracking-widest font-semibold">
@@ -486,9 +486,9 @@ export default function DashboardView() {
         </div>
 
         {/* Lower Bento: Recent Phoneme Flaws & Articulation Diagnostic Breakdown */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-          {/* Left: Recent High-Risk Phoneme Flaws Table (8 cols) */}
-          <div className="lg:col-span-8 bg-white border border-slate-200/80 rounded-xl p-space-lg shadow-[0_4px_16px_rgba(15,23,42,0.04)] flex flex-col gap-space-md">
+        <div className="grid grid-cols-1 xl:grid-cols-12 gap-6">
+          {/* Left: Recent High-Risk Phoneme Flaws Table (8 cols on XL, full on mobile/tablet) */}
+          <div className="col-span-12 xl:col-span-8 bg-white border border-slate-200/80 rounded-xl p-space-lg shadow-[0_4px_16px_rgba(15,23,42,0.04)] flex flex-col gap-space-md">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <span className="material-symbols-outlined text-primary text-xl">warning</span>
@@ -610,8 +610,8 @@ export default function DashboardView() {
             </div>
           </div>
 
-          {/* Right: Real-Time Tongue & Palate Articulation Preview (4 cols) */}
-          <div className="lg:col-span-4 bg-white border border-slate-200/80 rounded-xl p-space-lg shadow-[0_4px_16px_rgba(15,23,42,0.04)] flex flex-col justify-between">
+          {/* Right: Real-Time Tongue & Palate Articulation Preview (4 cols on XL, full on mobile/tablet) */}
+          <div className="col-span-12 xl:col-span-4 bg-white border border-slate-200/80 rounded-xl p-space-lg shadow-[0_4px_16px_rgba(15,23,42,0.04)] flex flex-col justify-between">
             <div className="flex flex-col gap-2">
               <div className="flex items-center justify-between">
                 <span className="font-label-mono text-label-mono text-secondary uppercase tracking-widest font-bold">
