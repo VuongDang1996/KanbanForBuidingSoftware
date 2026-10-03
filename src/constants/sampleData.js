@@ -188,7 +188,7 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
       "action": "record speech in the browser with 16kHz PCM audio chunking streamed over WebSocket",
       "value": "I get sub-second pronunciation scores on desktop and mobile web without installing a heavy mobile app",
       "priority": "must",
-      "status": "done",
+      "status": "in-progress",
       "size": "M",
       "points": 5,
       "acceptanceCriteria": [
@@ -257,7 +257,7 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
       "action": "view a high-contrast anatomical cross-section showing tongue position, teeth contact, and lip rounding for any sound",
       "value": "I have a clear mental model of physical mouth geometry instead of guessing blindly",
       "priority": "should",
-      "status": "done",
+      "status": "in-progress",
       "size": "M",
       "points": 5,
       "acceptanceCriteria": [
@@ -326,7 +326,7 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
       "action": "view my estimated IELTS Speaking band (e.g. 6.5) and CEFR proficiency level (B1/B2/C1) based on my pronunciation accuracy",
       "value": "I can benchmark my progress toward university graduation or immigration requirements",
       "priority": "should",
-      "status": "done",
+      "status": "in-progress",
       "size": "M",
       "points": 5,
       "acceptanceCriteria": [
@@ -395,7 +395,7 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
       "action": "see each letter in my sentence colored green (>80% accuracy), yellow (60-80%), or red (<60%) immediately after speaking",
       "value": "I pinpoint the exact phonemes I mispronounced without guessing",
       "priority": "must",
-      "status": "done",
+      "status": "in-progress",
       "size": "L",
       "points": 8,
       "acceptanceCriteria": [
@@ -464,7 +464,7 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
       "action": "practice multi-syllabic words with visual stress capitalization (e.g. de-VE-lop-ment vs DE-ve-lop-ment)",
       "value": "I avoid the robotic flat speech that makes Vietnamese speakers hard to understand",
       "priority": "must",
-      "status": "done",
+      "status": "in-progress",
       "size": "M",
       "points": 5,
       "acceptanceCriteria": [
@@ -533,7 +533,7 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
       "action": "view my voice pitch frequency overlaid on a native speaker pitch curve to practice rising and falling intonation",
       "value": "my speech sounds natural, engaging, and expressive rather than flat and robotic",
       "priority": "should",
-      "status": "done",
+      "status": "in-progress",
       "size": "L",
       "points": 8,
       "acceptanceCriteria": [
@@ -602,7 +602,7 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
       "action": "receive feedback on my speaking speed (Words Per Minute), awkward mid-word pauses, and filler words (\"um\", \"uh\", \"à\")",
       "value": "I can speak smoothly at conversational tempo (120-150 WPM) without staccato syllable pauses",
       "priority": "should",
-      "status": "done",
+      "status": "in-progress",
       "size": "M",
       "points": 5,
       "acceptanceCriteria": [
@@ -671,7 +671,7 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
       "action": "play rapid-fire listening and speaking quizzes distinguishing easily confused pairs (e.g. \"sheep\" vs \"ship\", \"think\" vs \"sink\")",
       "value": "I train my ear and vocal muscles to prevent misunderstanding words in conversation",
       "priority": "must",
-      "status": "done",
+      "status": "in-progress",
       "size": "S",
       "points": 3,
       "acceptanceCriteria": [
@@ -740,7 +740,7 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
       "action": "have unscripted spoken conversation with an AI partner simulating realistic workplace scenarios (Daily Scrum Standup, Demoing Software, Coffee Shop)",
       "value": "I build spontaneous speaking confidence without fear of embarrassment in front of real people",
       "priority": "must",
-      "status": "done",
+      "status": "in-progress",
       "size": "L",
       "points": 8,
       "acceptanceCriteria": [
@@ -809,7 +809,7 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
       "action": "view a summary scorecard after completing an AI roleplay session highlighting pronunciation errors, vocabulary enhancements, and grammar corrections",
       "value": "I get holistic feedback on real communicative competence rather than just isolated phonemes",
       "priority": "should",
-      "status": "done",
+      "status": "in-progress",
       "size": "M",
       "points": 5,
       "acceptanceCriteria": [
@@ -878,7 +878,7 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
       "action": "open the app each day and have a personalized 3-step practice path automatically ready for me targeting my weakest phonemes",
       "value": "I never wonder what to practice next and can build continuous improvement in just 10 minutes a day",
       "priority": "must",
-      "status": "done",
+      "status": "in-progress",
       "size": "M",
       "points": 5,
       "acceptanceCriteria": [
@@ -947,7 +947,7 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
       "action": "have every word I mispronounce (<60%) automatically saved into my personal Error Bank for scheduled review at 1, 3, 7, and 14 days",
       "value": "I systematically eliminate my recurring mistakes through scientifically proven spaced retrieval practice",
       "priority": "should",
-      "status": "done",
+      "status": "in-progress",
       "size": "M",
       "points": 5,
       "acceptanceCriteria": [
@@ -1016,7 +1016,7 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
       "action": "see my active speaking streak on the home screen and use a \"Streak Freeze\" if I miss a day due to work/travel",
       "value": "I build a daily English speaking habit without losing motivation after a single missed day",
       "priority": "should",
-      "status": "done",
+      "status": "in-progress",
       "size": "S",
       "points": 2,
       "acceptanceCriteria": [
@@ -1085,7 +1085,7 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
       "action": "hit a friendly paywall after completing 5 free lessons today offering an upgrade to Pro for unlimited AI Roleplays",
       "value": "the company monetizes engaged users while allowing free users to build initial habit",
       "priority": "must",
-      "status": "done",
+      "status": "in-progress",
       "size": "M",
       "points": 5,
       "acceptanceCriteria": [
@@ -1154,7 +1154,7 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
       "action": "receive instant real-time visual and audio alerts whenever I drop ending consonants (/s/, /z/, /t/, /d/, /k/, /tʃ/, /ks/) in words like \"five\", \"street\", \"breakfast\", \"like\"",
       "value": "I eliminate the #1 phonological mistake of Vietnamese speakers that prevents foreigners from understanding my speech",
       "priority": "must",
-      "status": "done",
+      "status": "in-progress",
       "size": "M",
       "points": 5,
       "acceptanceCriteria": [
@@ -1236,7 +1236,7 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
       "action": "read 5 calibrated diagnostic sentences designed specifically around Vietnamese mother-tongue phonetic traps",
       "value": "I get an instant, empathetic diagnosis in Vietnamese explaining my Top 3 pronunciation habits and an estimated IELTS Pronunciation band",
       "priority": "must",
-      "status": "done",
+      "status": "in-progress",
       "size": "L",
       "points": 8,
       "acceptanceCriteria": [
@@ -1312,7 +1312,7 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
       "action": "see visual syllable weight bars and duration curves that teach me to lengthen stressed syllables and reduce unstressed syllables to schwa (/ə/)",
       "value": "I stop pronouncing English words with robotic, staccato tone marks (sắc, huyền, nặng) and sound naturally rhythmic",
       "priority": "should",
-      "status": "done",
+      "status": "in-progress",
       "size": "M",
       "points": 5,
       "acceptanceCriteria": [
@@ -1388,7 +1388,7 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
       "action": "answer common IELTS Speaking prompts (e.g. Hometown, Work, Technology, Culture) and receive an instant Pronunciation Band score (Band 5.0 to 8.5)",
       "value": "I practice high-stakes exam conditions with actionable feedback mapped directly to official IELTS Pronunciation Band Descriptors",
       "priority": "should",
-      "status": "done",
+      "status": "in-progress",
       "size": "L",
       "points": 8,
       "acceptanceCriteria": [
@@ -1470,7 +1470,7 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
       "action": "read physical mouth placement instructions written in simple Vietnamese with an interactive 2D anatomical cross-section",
       "value": "I clearly understand where to put my teeth and tongue without reading confusing linguistic jargon",
       "priority": "must",
-      "status": "done",
+      "status": "in-progress",
       "size": "S",
       "points": 3,
       "acceptanceCriteria": [
@@ -1546,7 +1546,7 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
       "action": "progress through 4 distinct phonetic worlds (World 1: Âm Đuôi, World 2: Cặp Âm, World 3: Trọng Âm, World 4: Nối Âm & Trùm Rồng) with 12 playable stages and 3-star ratings",
       "value": "I have a clear, structured roadmap that progressively challenges my pronunciation from basic final consonants to fluent connected speech",
       "priority": "must",
-      "status": "done",
+      "status": "in-progress",
       "size": "L",
       "points": 8,
       "acceptanceCriteria": [
@@ -1628,7 +1628,7 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
       "action": "speak directly into my laptop or phone microphone using Web Speech API, with one-click simulation buttons available for noisy environments",
       "value": "I can practice authentic vocal production and get instant in-game spellcast reactions without friction",
       "priority": "must",
-      "status": "done",
+      "status": "in-progress",
       "size": "M",
       "points": 5,
       "acceptanceCriteria": [
@@ -1704,7 +1704,7 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
       "action": "face epic area bosses (Stone Golem, Twin Phantoms, Chronos Titan, Dragon of Accents) and cast the precise phonetic counter-spell within a 3-second timer",
       "value": "I build lightning-fast auditory discrimination reflexes under game pressure, conquering my mother-tongue instincts",
       "priority": "should",
-      "status": "done",
+      "status": "in-progress",
       "size": "L",
       "points": 8,
       "acceptanceCriteria": [
@@ -1780,7 +1780,7 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
       "action": "experience crisp sound effects (laser beams, shattering crystals, hurt thuds, victory fanfares) and smooth 60 FPS combat animations with zero external sound file downloads",
       "value": "The game loads instantaneously (<1s) and plays without audio lag even on spotty 3G/4G mobile connections",
       "priority": "must",
-      "status": "done",
+      "status": "in-progress",
       "size": "M",
       "points": 5,
       "acceptanceCriteria": [
@@ -1856,7 +1856,7 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
       "action": "equip magical phonetic gear (Wand of Ending Sounds, Boots of Stress Rhythm) and climb university rankings (ĐHQG, Bách Khoa, NEU)",
       "value": "I stay motivated to practice daily through progression prestige and pride in representing my university",
       "priority": "could",
-      "status": "done",
+      "status": "in-progress",
       "size": "S",
       "points": 3,
       "acceptanceCriteria": [
@@ -1932,7 +1932,7 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
       "action": "select my regional accent background (e.g. Northern Vietnamese with /d/-/z/ merge, or Southern with /v/-/j/ merge)",
       "value": "the acoustic model calibrates its phonetic error detector to my specific regional transfer habits",
       "priority": "must",
-      "status": "done",
+      "status": "in-progress",
       "size": "S",
       "points": 3,
       "acceptanceCriteria": [
@@ -2001,7 +2001,7 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
       "action": "log in with my account, view my 4-pillar pronunciation mastery scores (% Ending Sounds, Minimal Pairs, Stress, Connected Speech), and review my complete history of recorded speech attempts",
       "value": "I have full visibility into my phonetic improvement over time and can listen back to native reference audio for every past mistake",
       "priority": "must",
-      "status": "done",
+      "status": "in-progress",
       "size": "L",
       "points": 8,
       "acceptanceCriteria": [
@@ -2083,7 +2083,7 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
       "action": "nghe người bản ngữ phát âm các từ hoặc câu chứa âm đang học, sau đó gõ lại từ hoặc điền vào chỗ trống âm vị còn thiếu (ví dụ: nghe thấy /θɪŋk/ -> điền th_nk hoặc chọn /θ/ vs /t/)",
       "value": "tôi huấn luyện đôi tai nhận diện chính xác âm thanh bản ngữ trước khi nói, tránh tình trạng nghe một đằng phát âm một nẻo",
       "priority": "must",
-      "status": "done",
+      "status": "in-progress",
       "size": "M",
       "points": 5,
       "acceptanceCriteria": [
@@ -2159,7 +2159,7 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
       "action": "đọc to các câu ngạn ngữ, văn cảnh đời sống hoặc câu lắt léo (Tongue Twisters) tập trung dày đặc âm đang học (ví dụ âm /θ/: \"The thirty-three thieves thought that they thrilled the throne throughout Thursday\")",
       "value": "tôi làm quen với việc duy trì phát âm chuẩn khi nói cả câu dài có ngữ cảnh tự nhiên thay vì chỉ phát âm đúng khi đọc từ đơn lẻ",
       "priority": "must",
-      "status": "done",
+      "status": "in-progress",
       "size": "M",
       "points": 5,
       "acceptanceCriteria": [
@@ -2235,7 +2235,7 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
       "action": "thu âm giọng nói của mình cho từ/câu mục tiêu, sau đó nhìn thấy 2 dải sóng âm (Waveform/Spectrogram) đặt song song: Track 1 của Người Bản Ngữ Oxford và Track 2 của Bản Thân, cùng nút nghe luân phiên A/B",
       "value": "tôi có bằng chứng trực quan về độ dài nguyên âm, độ ma sát hơi và lực bật âm đuôi, từ đó tự điều chỉnh cơ miệng chuẩn xác theo mẫu bản ngữ",
       "priority": "must",
-      "status": "done",
+      "status": "in-progress",
       "size": "L",
       "points": 8,
       "acceptanceCriteria": [
@@ -2317,7 +2317,7 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
       "action": "xem bảng thống kê chi tiết tỷ lệ chính xác, số lần luyện tập, và biểu đồ tiến bộ theo thời gian của từng âm trong 44 âm IPA (/θ/, /iː/, /ʃ/, /s/, /t/, /d/...)",
       "value": "tôi biết chính xác âm nào mình đã thuần thục để duy trì, và âm nào còn yếu để tập trung cải thiện mà không phải đoán mò",
       "priority": "must",
-      "status": "done",
+      "status": "in-progress",
       "size": "M",
       "points": 5,
       "acceptanceCriteria": [
@@ -2399,7 +2399,7 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
       "action": "luyện tập phát âm từ đơn theo 3 vị trí ngữ âm học có cấu trúc phân tầng: Initial Words (âm ở đầu từ: this, that), Medial Words (âm ở giữa từ: mother, weather) và Final Words (âm ở cuối từ: breathe, soothe)",
       "value": "tôi nắm vững phản xạ cơ miệng ở mọi vị trí phân bố âm (phonotactic distribution), đặc biệt khắc phục triệt để thói quen nuốt âm đuôi và líu lưỡi ở âm giữa từ của người Việt",
       "priority": "must",
-      "status": "done",
+      "status": "in-progress",
       "size": "M",
       "points": 5,
       "acceptanceCriteria": [
@@ -2475,7 +2475,7 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
       "action": "luyện tập theo nấc thang lũy tiến ngữ đoạn: từ cấp độ Phrases (cụm từ: \"this and that\", \"my mother said\", \"breathe deeply\") nâng dần lên cấp độ Sentences (câu hoàn chỉnh: \"This is the best that they could do\") chia theo từng vị trí Initial/Medial/End",
       "value": "tôi duy trì được khẩu hình chuẩn xác trong chuỗi lời nói tự nhiên (connected speech), liên kết từ mượt mà mà không bị rơi rụng âm vị mục tiêu",
       "priority": "must",
-      "status": "done",
+      "status": "in-progress",
       "size": "M",
       "points": 5,
       "acceptanceCriteria": [
@@ -2551,7 +2551,7 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
       "action": "học và luyện tập chuyên sâu các từ ngoại lệ (Exception Words: ví dụ chữ TH câm trong \"asthma\", \"thyme\", \"Thomas\") và quy tắc chuyển đổi âm vô thanh/hữu thanh giữa danh từ và động từ (Noun /θ/ vs Verb /ð/: \"breath\" vs \"breathe\", \"bath\" vs \"bathe\")",
       "value": "tôi hiểu rõ bản chất quy tắc ngữ âm và từ loại, không bị mặt chữ đánh lừa và tự tin dùng đúng từ loại trong cả văn viết lẫn văn nói",
       "priority": "should",
-      "status": "done",
+      "status": "in-progress",
       "size": "S",
       "points": 3,
       "acceptanceCriteria": [
@@ -2627,7 +2627,7 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
       "action": "luyện tập các bài tập chuyển đổi đối kháng chuyên sâu (e.g. Voiced TH vs D Words & Sentences: \"they\" vs \"day\", \"there\" vs \"dare\"; câu: \"They dare to go there today\")",
       "value": "bộ não và dây thần kinh vận động miệng của tôi hình thành phản xạ phân biệt rõ ràng giữa vị trí kẹp răng (/ð/) và vị trí chân răng (/d/), xóa bỏ vĩnh viễn thói quen thay thế âm tiếng Việt vào tiếng Anh",
       "priority": "must",
-      "status": "done",
+      "status": "in-progress",
       "size": "L",
       "points": 8,
       "acceptanceCriteria": [
@@ -2703,7 +2703,7 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
       "action": "luyện tập với các câu được chú thích bằng hệ thống số âm mục tiêu (Target 1, Target 2, Target 3...) đặt ngay trên từng âm tiết và gạch chân các tổ hợp chữ cái đại diện (ví dụ: số 2 trên chữ \"I\", \"ie\" trong \"tried\", \"y\" trong \"flying\", \"igh\" trong \"high\")",
       "value": "tôi nắm bắt trực giác quy luật chính tả tiếng Anh (Spelling-to-Sound Mapping), nhận ra ngay nhiều chữ cái khác nhau cùng tạo ra một âm thanh duy nhất mà không bị rào cản IPA gây nản lòng",
       "priority": "must",
-      "status": "done",
+      "status": "in-progress",
       "size": "M",
       "points": 5,
       "acceptanceCriteria": [
@@ -2779,7 +2779,7 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
       "action": "xem các video bài giảng của chuyên gia bản ngữ phân tích khẩu hình phóng đại (Exaggerated Facial Articulation), với phụ đề chạy nhịp nhàng đồng bộ theo từng âm vị đánh số và chế độ Shadowing Loop lặp lại câu mẫu",
       "value": "tôi sao chép chuẩn xác từng cử động cơ hàm và khóe miệng thực tế của người bản xứ, luyện nói nhại (shadowing) để giảm thiểu triệt để giọng điệu cứng ngắc (accent reduction)",
       "priority": "must",
-      "status": "done",
+      "status": "in-progress",
       "size": "L",
       "points": 8,
       "acceptanceCriteria": [
@@ -2855,7 +2855,7 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
       "action": "luyện tập các câu bão hòa âm mục tiêu (Sound Saturation: câu có 70-90% các từ chứa cùng một âm vị mục tiêu, ví dụ: \"That access point is absolutely fantastic\" hoặc \"I tried flying high\"), sau đó thu âm để hệ thống tính toán chỉ số Accent Reduction Index",
       "value": "tôi rèn luyện sức bền cơ miệng và sự đồng nhất của khẩu hình trong suốt câu nói, triệt tiêu phản xạ thả lỏng cơ miệng dẫn đến méo âm ở cuối câu",
       "priority": "must",
-      "status": "done",
+      "status": "in-progress",
       "size": "M",
       "points": 5,
       "acceptanceCriteria": [
@@ -2931,7 +2931,7 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
       "action": "thiết kế cơ sở dữ liệu quan hệ PostgreSQL chuẩn hóa (Third Normal Form) gồm các bảng: users, subscriptions, payment_transactions, assessment_sessions, phoneme_scores, và user_phoneme_mastery với index B-tree và partition theo tháng",
       "value": "hệ thống đảm bảo tính toàn vẹn dữ liệu tài chính (ACID) cho 5,000 khách hàng trả phí, và phản hồi truy vấn lịch sử phát âm / radar chart 44 âm của học viên dưới 40ms",
       "priority": "must",
-      "status": "done",
+      "status": "in-progress",
       "size": "XL",
       "points": 8,
       "acceptanceCriteria": [
@@ -3013,7 +3013,7 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
       "action": "xây dựng pipeline tiếp nhận và xử lý âm thanh bất đồng bộ sử dụng FastAPI làm API Gateway, Redis Queue (hoặc Celery/BullMQ) để xếp hàng tác vụ, và FFmpeg worker chuyển đổi tức thì định dạng WebM sang 16kHz Mono WAV trước khi nạp vào AI Model",
       "value": "hệ thống hấp thụ mượt mà lưu lượng giờ cao điểm (19h - 22h tối) với 20 - 30 lượt chấm âm thanh mỗi giây mà không làm nghẽn máy chủ web, độ trễ phản hồi P95 < 600ms",
       "priority": "must",
-      "status": "done",
+      "status": "in-progress",
       "size": "XL",
       "points": 8,
       "acceptanceCriteria": [
@@ -3095,7 +3095,7 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
       "action": "tích hợp bộ xử lý thanh toán tự động đa cổng (VNPay QR, Ví MoMo, Thẻ quốc tế Stripe) kèm webhook handler có cơ chế kiểm tra trùng lặp (Idempotency Key) và tự động kích hoạt quyền Pro cho học viên",
       "value": "tự động hóa 100% dòng tiền thuê bao hàng tháng của 5,000 học viên trả phí (~500 triệu - 1 tỷ VNĐ/tháng), kích hoạt tài khoản ngay sau 1 giây mà không cần nhân viên đối soát thủ công",
       "priority": "must",
-      "status": "done",
+      "status": "in-progress",
       "size": "XL",
       "points": 8,
       "acceptanceCriteria": [
@@ -3177,7 +3177,7 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
       "action": "xây dựng middleware kiểm soát phân tầng tài khoản (Tiered Entitlement Middleware) dựa trên Redis: gói Free bị giới hạn 10 câu thu âm/ngày và 3 âm cơ bản; gói Pro (5,000 paid users) mở khóa toàn bộ 44 âm, 14 modules phân vị, video masterclass và phòng thi IELTS ảo",
       "value": "bảo vệ năng lực tính toán của cụm GPU khỏi bị cày bot hoặc quá tải bởi tài khoản miễn phí, đồng thời tạo phễu chuyển đổi (Paywall Conversion) mạnh mẽ thúc đẩy người dùng mua gói trả phí",
       "priority": "must",
-      "status": "done",
+      "status": "in-progress",
       "size": "M",
       "points": 5,
       "acceptanceCriteria": [
@@ -3253,7 +3253,7 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
       "action": "tích hợp dịch vụ lưu trữ đám mây Cloudflare R2 (hoặc AWS S3) sử dụng Presigned URLs để frontend upload trực tiếp file âm thanh lên bucket, thiết lập vòng đời tự hủy (Lifecycle Rules): xóa file gói Free sau 7 ngày, giữ file gói Pro trong 90 ngày để vẽ biểu đồ tiến bộ",
       "value": "giảm 100% gánh nặng băng thông tải file qua web server, giữ chi phí lưu trữ âm thanh cho 5,000 học viên ở mức dưới $15/tháng (nhờ chính sách Zero Egress Fee của Cloudflare R2)",
       "priority": "must",
-      "status": "done",
+      "status": "in-progress",
       "size": "M",
       "points": 5,
       "acceptanceCriteria": [
@@ -3329,7 +3329,7 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
       "action": "thu 30 giây giọng nói mẫu, sau đó hệ thống dùng mô hình voice cloning mã nguồn mở (OpenVoice / XTTS-v2 / F5-TTS) tạo ra phiên bản giọng của chính tôi đọc câu mục tiêu với phát âm chuẩn Mỹ/Anh",
       "value": "tôi có một \"giọng mẫu vàng\" mang âm sắc của chính mình — nghiên cứu Golden Speaker chỉ ra đây là mẫu dễ bắt chước nhất, giúp tôi cải thiện nhanh hơn so với nghe giọng người lạ",
       "priority": "should",
-      "status": "done",
+      "status": "in-progress",
       "size": "XL",
       "points": 8,
       "acceptanceCriteria": [
@@ -3411,7 +3411,7 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
       "action": "bật webcam khi luyện âm, hệ thống dùng MediaPipe Face Landmarker (478 điểm mốc khuôn mặt, chạy 100% trong trình duyệt) đo độ mở hàm, độ chu môi, độ kéo khóe miệng và so với khẩu hình mục tiêu",
       "value": "tôi nhận phản hồi trực quan về khẩu hình như có giáo viên đứng trước mặt (ví dụ: \"Hàm mở mới 60% so với âm /æ/ chuẩn — hạ thêm cằm\"), mà video của tôi không bao giờ rời khỏi máy",
       "priority": "should",
-      "status": "done",
+      "status": "in-progress",
       "size": "L",
       "points": 8,
       "acceptanceCriteria": [
@@ -3500,7 +3500,7 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
       "action": "nhìn chấm tròn đại diện giọng tôi di chuyển trên tứ giác nguyên âm (vowel quadrilateral) theo thời gian thực khi phát âm, với các vùng elip mục tiêu của người bản ngữ",
       "value": "tôi \"nhìn thấy\" vị trí lưỡi của mình (F1 = độ cao lưỡi/độ mở hàm, F2 = lưỡi trước/sau) và tự điều chỉnh cho đến khi chấm rơi vào vùng mục tiêu — phương pháp đã được nghiên cứu chứng minh cải thiện cả phát âm lẫn khả năng nghe",
       "priority": "must",
-      "status": "done",
+      "status": "in-progress",
       "size": "M",
       "points": 5,
       "acceptanceCriteria": [
@@ -3582,7 +3582,7 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
       "action": "nhận lời giải thích tiếng Việt từ AI Coach dựa trên đặc trưng cấu âm (voicing - rung/không rung, place - vị trí, manner - cách phát âm), và AI nhớ các lỗi lặp lại của tôi qua nhiều tuần để chủ động nhắc và thiết kế bài tập",
       "value": "tôi nhận được phản hồi \"biết sửa thế nào\" thay vì chỉ \"sai/đúng\" (ví dụ: \"Bạn phát âm /ð/ thành /d/ — đúng là có rung, nhưng sai vị trí: lưỡi đang chạm lợi thay vì kẹp giữa răng. Tuần trước bạn cũng sai 12 lần ở từ 'they'\")",
       "priority": "must",
-      "status": "done",
+      "status": "in-progress",
       "size": "XL",
       "points": 8,
       "acceptanceCriteria": [
@@ -3671,7 +3671,7 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
       "action": "luyện 4 hiện tượng nối âm: Linking (\"an apple\" → /ə.næpəl/), Reduction (\"want to\" → \"wanna\", \"going to\" → \"gonna\"), Elision (\"next day\" → /neks deɪ/), Assimilation (\"did you\" → /dɪdʒə/), với hình vẽ cung nối giữa các từ",
       "value": "tôi nói trôi chảy, tự nhiên và — quan trọng không kém — nghe hiểu được người bản ngữ nói tốc độ thật trong phim, podcast và cuộc họp",
       "priority": "must",
-      "status": "done",
+      "status": "in-progress",
       "size": "M",
       "points": 5,
       "acceptanceCriteria": [
@@ -3760,7 +3760,7 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
       "action": "xem 2 điểm số tách biệt: Intelligibility (người nghe hiểu đúng bao nhiêu % từ — mô phỏng bằng \"hội đồng\" 3 mô hình ASR khác nhau nghe giọng tôi) và Accent Strength (mức độ giống giọng bản ngữ)",
       "value": "tôi tập trung sửa những lỗi thực sự gây hiểu lầm (ví dụ \"ship\" bị nghe thành \"sheep\") thay vì cầu toàn từng chi tiết giọng, đúng theo \"Nguyên tắc Dễ hiểu\" (Intelligibility Principle) được giới ngôn ngữ học khuyến nghị",
       "priority": "should",
-      "status": "done",
+      "status": "in-progress",
       "size": "M",
       "points": 5,
       "acceptanceCriteria": [
@@ -3842,7 +3842,7 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
       "action": "nói tự do 60 giây mỗi ngày theo một câu hỏi gợi ý (ví dụ \"Kể về ngày hôm nay của bạn\"), hệ thống phiên âm, chấm phát âm trên lời nói không kịch bản và so sánh tỷ lệ lỗi giữa \"đọc mẫu\" và \"nói tự do\"",
       "value": "tôi đo được mức độ chuyển giao (transfer) từ luyện tập sang giao tiếp thật — chỉ số quan trọng nhất cho thấy tôi đã thực sự tiến bộ, và có kho nhật ký giọng nói để nghe lại sự thay đổi sau 3 tháng",
       "priority": "should",
-      "status": "done",
+      "status": "in-progress",
       "size": "M",
       "points": 5,
       "acceptanceCriteria": [
@@ -3924,7 +3924,7 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
       "action": "chọn giọng mục tiêu (General American / British RP / Australian), toàn bộ audio mẫu, phiên âm IPA và tiêu chí chấm điểm chuyển theo giọng đó; xem biểu đồ Accent Strength thay đổi theo tuần và nghe mẫu so sánh các giọng",
       "value": "tôi không bị chấm sai khi phát âm đúng chuẩn Anh (ví dụ \"tomato\" /təˈmɑːtəʊ/ hay âm R không cuốn) và luyện đúng giọng phục vụ mục tiêu của mình",
       "priority": "could",
-      "status": "done",
+      "status": "in-progress",
       "size": "S",
       "points": 3,
       "acceptanceCriteria": [
@@ -4000,7 +4000,7 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
       "action": "tích hợp API VietQR động (SePay/Casso) tự sinh mã QR Napas 24/7 kèm mã nạp tiền duy nhất (ví dụ: VP30K-98214), tự động nhận Webhook biến động số dư ngân hàng và đối soát kích hoạt quyền Pro trong 1 giây",
       "value": "tiết kiệm 100% phí giao dịch (phí 0% thay vì mất 2%-30% như cổng thanh toán truyền thống hoặc Stripe), bảo đảm tỷ suất lợi nhuận tối đa cho mức giá bình dân 30.000đ/tháng với 5.000 học viên (~150 triệu VNĐ/tháng)",
       "priority": "must",
-      "status": "done",
+      "status": "in-progress",
       "size": "M",
       "points": 5,
       "acceptanceCriteria": [
@@ -4089,7 +4089,7 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
       "action": "thanh toán gói 30k qua modal thông minh: quét mã QR 1 chạm, các nút sao chép nhanh STK/Nội dung, đồng hồ đếm ngược và màn hình tự động chuyển sang trạng thái Thành Công (Confetti) ngay khi ngân hàng nhận tiền mà không cần bấm F5",
       "value": "trải nghiệm mượt mà, tỷ lệ bỏ giỏ hàng (Cart Abandonment) giảm xuống dưới 15% vì 100% người dùng Việt Nam đều quen thuộc với quét mã QR ngân hàng",
       "priority": "must",
-      "status": "done",
+      "status": "in-progress",
       "size": "M",
       "points": 5,
       "acceptanceCriteria": [
@@ -4171,7 +4171,7 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
       "action": "thiết lập 3 nấc gói: Tháng (30.000đ), 3 Tháng (85.000đ - tiết kiệm 5%), 1 Năm (299.000đ - chỉ 24.900đ/tháng, tiết kiệm 20% + Tặng trọn bộ Golden Speaker AI & Soi Khẩu Hình)",
       "value": "chuyển dịch 40% học viên sang trả theo năm, giảm 12 lần công sức thanh toán lại hàng tháng, giảm tỷ lệ rời bỏ (churn) và có nguồn vốn lưu động trả trước để đầu tư hạ tầng GPU",
       "priority": "should",
-      "status": "done",
+      "status": "in-progress",
       "size": "M",
       "points": 5,
       "acceptanceCriteria": [
@@ -4247,7 +4247,7 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
       "action": "nhận email và tin nhắn Zalo ZNS nhắc gia hạn tự động trước 3 ngày kèm link VietQR 1 chạm, và được áp dụng chính sách ân hạn (Grace Period) 3 ngày sau khi hết hạn mà không bị ngắt quãng việc học",
       "value": "giữ chân học viên văn minh, không làm gián đoạn chuỗi ngày học liên tục (streak) và tăng tỷ lệ gia hạn tự nhiên lên trên 75%",
       "priority": "should",
-      "status": "done",
+      "status": "in-progress",
       "size": "S",
       "points": 3,
       "acceptanceCriteria": [
