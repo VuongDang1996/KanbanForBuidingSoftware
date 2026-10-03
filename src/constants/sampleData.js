@@ -170,6 +170,13 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
       description: 'Production-ready PostgreSQL database schema, async GPU worker queues (FastAPI + Redis), VNPay/MoMo/Stripe subscription billing, and cloud audio storage for 5,000 monthly paid subscribers.',
       color: 'emerald',
       order: 8
+    },
+    {
+      id: 'epic-advanced-ai-lab',
+      title: 'Advanced AI Speech Lab (Research-Backed 2026 Features)',
+      description: 'Next-gen features from 2025-2026 CAPT research & competitors (ELSA, BoldVoice, Speechace): Golden Speaker voice cloning, webcam lip tracking, live F1/F2 vowel chart, LLM articulatory coach with memory, connected speech lab, intelligibility scoring.',
+      color: 'violet',
+      order: 9
     }
   ],
   stories: [
@@ -1509,6 +1516,300 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
         { id: 't-arch-13', title: 'Cấu hình CORS và Object Lifecycle Rule trên Cloudflare R2 bucket cho các phân lớp dữ liệu', category: 'DevOps', completed: true }
       ],
       notes: 'Cloudflare R2 không tính phí tải về (Zero egress fee), giúp tiết kiệm hàng nghìn USD băng thông so với AWS S3 truyền thống.'
+    },
+
+    // 9. Advanced AI Speech Lab (Research-Backed 2026 Features)
+    {
+      id: 'ADV-101',
+      epicId: 'epic-advanced-ai-lab',
+      title: 'Golden Speaker: Nghe Chính Giọng Mình Phát Âm Chuẩn Bản Ngữ (Voice-Cloned Self Model)',
+      persona: 'Học Viên Khó Bắt Chước Giọng Người Bản Ngữ Vì Khác Giới Tính, Cao Độ Và Âm Sắc',
+      action: 'thu 30 giây giọng nói mẫu, sau đó hệ thống dùng mô hình voice cloning mã nguồn mở (OpenVoice / XTTS-v2 / F5-TTS) tạo ra phiên bản giọng của chính tôi đọc câu mục tiêu với phát âm chuẩn Mỹ/Anh',
+      value: 'tôi có một "giọng mẫu vàng" mang âm sắc của chính mình — nghiên cứu Golden Speaker chỉ ra đây là mẫu dễ bắt chước nhất, giúp tôi cải thiện nhanh hơn so với nghe giọng người lạ',
+      priority: 'should',
+      status: 'backlog',
+      size: 'XL',
+      points: 8,
+      acceptanceCriteria: [
+        {
+          id: 'ac-adv-101-1',
+          given: 'Học viên đã đồng ý điều khoản và thu 30 giây giọng mẫu',
+          when: 'Học viên mở một câu luyện tập bất kỳ',
+          then: 'Hệ thống phát 3 track: (A) Giọng bản ngữ gốc, (B) Giọng Golden Speaker của chính học viên, (C) Bản thu thực tế của học viên — để so sánh A/B/C.',
+          completed: false
+        },
+        {
+          id: 'ac-adv-101-2',
+          given: 'Yêu cầu bảo mật dữ liệu giọng nói sinh trắc học',
+          when: 'Học viên bấm "Xóa giọng mẫu của tôi"',
+          then: 'Toàn bộ voice embedding và audio mẫu bị xóa vĩnh viễn khỏi server và R2 trong vòng 24h; voice clone không bao giờ được dùng ngoài mục đích luyện tập.',
+          completed: false
+        }
+      ],
+      technicalTasks: [
+        { id: 't-adv-101-1', title: 'Self-host OpenVoice/XTTS-v2 trên GPU worker, cache speaker embedding theo user_id', category: 'Backend', completed: false },
+        { id: 't-adv-101-2', title: 'Pre-generate Golden Speaker audio cho 200 câu phổ biến nhất (batch đêm) để tiết kiệm GPU', category: 'Backend', completed: false },
+        { id: 't-adv-101-3', title: 'UI player 3 track A/B/C với consent modal và nút xóa giọng mẫu', category: 'Frontend', completed: false }
+      ],
+      notes: 'Nguồn: nghiên cứu "Golden Speaker Builder" (Ding et al., Texas A&M) & các app YourBestAccent, Accent Changer. Rủi ro: quyền riêng tư giọng nói — bắt buộc consent rõ ràng. Chỉ mở cho gói Pro để kiểm soát chi phí GPU.'
+    },
+    {
+      id: 'ADV-102',
+      epicId: 'epic-advanced-ai-lab',
+      title: 'Webcam Lip & Jaw Tracking: Soi Khẩu Hình Bằng Camera Ngay Trên Trình Duyệt (MediaPipe Face Landmarker)',
+      persona: 'Học Viên Không Tự Thấy Được Miệng Mình Mở Đủ Rộng Hay Chu Môi Đúng Chưa',
+      action: 'bật webcam khi luyện âm, hệ thống dùng MediaPipe Face Landmarker (478 điểm mốc khuôn mặt, chạy 100% trong trình duyệt) đo độ mở hàm, độ chu môi, độ kéo khóe miệng và so với khẩu hình mục tiêu',
+      value: 'tôi nhận phản hồi trực quan về khẩu hình như có giáo viên đứng trước mặt (ví dụ: "Hàm mở mới 60% so với âm /æ/ chuẩn — hạ thêm cằm"), mà video của tôi không bao giờ rời khỏi máy',
+      priority: 'should',
+      status: 'backlog',
+      size: 'L',
+      points: 8,
+      acceptanceCriteria: [
+        {
+          id: 'ac-adv-102-1',
+          given: 'Học viên luyện âm /æ/ (Target 1) với webcam bật',
+          when: 'Học viên phát âm từ "fantastic"',
+          then: 'Overlay hiển thị thanh "Jaw Opening" thời gian thực (tỷ lệ khoảng cách môi trên-dưới / chiều rộng mặt) với vùng mục tiêu xanh lá, cảnh báo nếu hàm khép lại ở âm tiết thứ 2.',
+          completed: false
+        },
+        {
+          id: 'ac-adv-102-2',
+          given: 'Học viên luyện âm /ʃ/ (she) hoặc /uː/',
+          when: 'Hệ thống đo chỉ số Lip Rounding',
+          then: 'Hiển thị cảnh báo "Môi chưa chu đủ — đang bẹt như âm /s/" nếu độ tròn môi dưới ngưỡng.',
+          completed: false
+        },
+        {
+          id: 'ac-adv-102-3',
+          given: 'Quyền riêng tư camera',
+          when: 'Webcam đang bật',
+          then: 'Không có frame video nào được gửi lên server; chỉ xử lý landmark cục bộ qua WebAssembly/WebGPU.',
+          completed: false
+        }
+      ],
+      technicalTasks: [
+        { id: 't-adv-102-1', title: 'Tích hợp @mediapipe/tasks-vision FaceLandmarker (GPU delegate) vào React hook useMouthTracker', category: 'Frontend', completed: false },
+        { id: 't-adv-102-2', title: 'Tính 3 chỉ số chuẩn hóa: jaw_opening, lip_rounding, lip_spread; hiệu chỉnh theo khuôn mặt từng người (calibration 3 giây)', category: 'Frontend', completed: false },
+        { id: 't-adv-102-3', title: 'Xây dựng bảng khẩu hình mục tiêu cho 20 nguyên âm và 8 phụ âm môi/răng', category: 'Content', completed: false }
+      ],
+      notes: 'Chi phí server = 0đ vì chạy client-side. Khác biệt lớn so với ELSA (chỉ dùng audio). Tham khảo repo mediapipe-face-mesh-lip-art.'
+    },
+    {
+      id: 'ADV-103',
+      epicId: 'epic-advanced-ai-lab',
+      title: 'Live Vowel Space Chart: Biểu Đồ Nguyên Âm F1/F2 Thời Gian Thực (Visual Formant Biofeedback)',
+      persona: 'Học Viên Nhầm Lẫn Các Nguyên Âm Gần Nhau (/iː/-/ɪ/, /æ/-/e/, /ʌ/-/ɑː/)',
+      action: 'nhìn chấm tròn đại diện giọng tôi di chuyển trên tứ giác nguyên âm (vowel quadrilateral) theo thời gian thực khi phát âm, với các vùng elip mục tiêu của người bản ngữ',
+      value: 'tôi "nhìn thấy" vị trí lưỡi của mình (F1 = độ cao lưỡi/độ mở hàm, F2 = lưỡi trước/sau) và tự điều chỉnh cho đến khi chấm rơi vào vùng mục tiêu — phương pháp đã được nghiên cứu chứng minh cải thiện cả phát âm lẫn khả năng nghe',
+      priority: 'must',
+      status: 'backlog',
+      size: 'M',
+      points: 5,
+      acceptanceCriteria: [
+        {
+          id: 'ac-adv-103-1',
+          given: 'Học viên kéo dài nguyên âm /iː/ trong 1 giây',
+          when: 'Web Audio API trích xuất F1/F2 bằng LPC mỗi 20ms',
+          then: 'Một chấm sáng di chuyển trên biểu đồ; khi rơi vào elip /iː/ bản ngữ, elip đổi màu xanh lá và phát âm thanh "ting".',
+          completed: false
+        },
+        {
+          id: 'ac-adv-103-2',
+          given: 'Giọng nam, nữ và trẻ em có dải formant khác nhau',
+          when: 'Học viên hoàn thành bài hiệu chỉnh 3 nguyên âm góc (/iː/, /ɑː/, /uː/)',
+          then: 'Hệ thống chuẩn hóa vowel space theo giọng riêng của học viên (Lobanov normalization) để vùng mục tiêu chính xác.',
+          completed: false
+        }
+      ],
+      technicalTasks: [
+        { id: 't-adv-103-1', title: 'Viết AudioWorklet tính LPC + root-finding trích xuất F1/F2 client-side (fallback Parselmouth server-side)', category: 'Frontend', completed: false },
+        { id: 't-adv-103-2', title: 'Vẽ Canvas vowel quadrilateral với 12 elip nguyên âm Mỹ/Anh và đường trail chuyển động', category: 'Frontend', completed: false },
+        { id: 't-adv-103-3', title: 'Thu thập dữ liệu formant tham chiếu (Hillenbrand 1995 / Peterson-Barney) cho elip mục tiêu', category: 'Content', completed: false }
+      ],
+      notes: 'Chi phí rẻ, tác động cao, có cơ sở khoa học vững. Hạn chế: kém hiệu quả với độ dài nguyên âm — kết hợp với thanh đo duration hiện có (PRON-204).'
+    },
+    {
+      id: 'ADV-104',
+      epicId: 'epic-advanced-ai-lab',
+      title: 'AI Phonetics Coach Có Trí Nhớ: Chẩn Đoán Theo Đặc Trưng Cấu Âm & Nhớ Lỗi Qua Các Buổi Học (LLM + Articulatory Features)',
+      persona: 'Học Viên Nhận Điểm Số Nhưng Không Hiểu Tại Sao Sai Và Phải Sửa Thế Nào',
+      action: 'nhận lời giải thích tiếng Việt từ AI Coach dựa trên đặc trưng cấu âm (voicing - rung/không rung, place - vị trí, manner - cách phát âm), và AI nhớ các lỗi lặp lại của tôi qua nhiều tuần để chủ động nhắc và thiết kế bài tập',
+      value: 'tôi nhận được phản hồi "biết sửa thế nào" thay vì chỉ "sai/đúng" (ví dụ: "Bạn phát âm /ð/ thành /d/ — đúng là có rung, nhưng sai vị trí: lưỡi đang chạm lợi thay vì kẹp giữa răng. Tuần trước bạn cũng sai 12 lần ở từ \'they\'")',
+      priority: 'must',
+      status: 'backlog',
+      size: 'XL',
+      points: 8,
+      acceptanceCriteria: [
+        {
+          id: 'ac-adv-104-1',
+          given: 'MDD engine phát hiện lỗi thay thế âm /θ/ → /t/',
+          when: 'AI Coach sinh phản hồi',
+          then: 'Phản hồi gồm 3 phần: (1) Đặc trưng nào đúng/sai (voicing ✓, place ✗, manner ✗), (2) Hướng dẫn vật lý bằng tiếng Việt, (3) 1 bài tập vi mô 30 giây đề xuất.',
+          completed: false
+        },
+        {
+          id: 'ac-adv-104-2',
+          given: 'Học viên quay lại sau 5 ngày',
+          when: 'Mở buổi học mới',
+          then: 'AI Coach chào và tóm tắt: "3 lỗi bạn hay gặp nhất tuần này: /ð/→/d/ (12 lần), nuốt /s/ cuối (9 lần), /iː/ quá ngắn (7 lần). Hôm nay mình tập 5 phút cho /ð/ nhé."',
+          completed: false
+        },
+        {
+          id: 'ac-adv-104-3',
+          given: 'LLM có thể "bịa" (hallucinate) nhận xét',
+          when: 'Sinh phản hồi',
+          then: 'LLM chỉ được diễn giải dữ liệu lỗi có cấu trúc từ MDD engine (JSON), không tự chấm điểm audio.',
+          completed: false
+        }
+      ],
+      technicalTasks: [
+        { id: 't-adv-104-1', title: 'Bảng ánh xạ 44 âm IPA → vector đặc trưng cấu âm (voicing, place, manner, height, backness, rounding)', category: 'Content', completed: false },
+        { id: 't-adv-104-2', title: 'Bảng learner_error_memory tổng hợp lỗi theo tuần + prompt template có ngữ cảnh lịch sử', category: 'Database', completed: false },
+        { id: 't-adv-104-3', title: 'Tích hợp LLM (Gemini Flash / Qwen2.5 self-host) sinh phản hồi tiếng Việt từ JSON lỗi có cấu trúc', category: 'Backend', completed: false }
+      ],
+      notes: 'Xu hướng 2025-2026: Articulatory-Feature-informed MDD và cross-session memory (ELSA AI, nghiên cứu ISCA Interspeech). Chi phí LLM ước tính ~0.0001$/phản hồi với model Flash.'
+    },
+    {
+      id: 'ADV-105',
+      epicId: 'epic-advanced-ai-lab',
+      title: 'Connected Speech Lab: Luyện Nối Âm, Nuốt Âm & Biến Âm Như Người Bản Ngữ (Linking, Reduction, Elision, Assimilation)',
+      persona: 'Học Viên Phát Âm Từng Từ Rõ Ràng Nhưng Nói Câu Nghe Rời Rạc Như Robot Và Không Nghe Được Người Bản Ngữ Nói Nhanh',
+      action: 'luyện 4 hiện tượng nối âm: Linking ("an apple" → /ə.næpəl/), Reduction ("want to" → "wanna", "going to" → "gonna"), Elision ("next day" → /neks deɪ/), Assimilation ("did you" → /dɪdʒə/), với hình vẽ cung nối giữa các từ',
+      value: 'tôi nói trôi chảy, tự nhiên và — quan trọng không kém — nghe hiểu được người bản ngữ nói tốc độ thật trong phim, podcast và cuộc họp',
+      priority: 'must',
+      status: 'backlog',
+      size: 'M',
+      points: 5,
+      acceptanceCriteria: [
+        {
+          id: 'ac-adv-105-1',
+          given: 'Câu "Turn it off and pick it up"',
+          when: 'Hiển thị bài luyện',
+          then: 'Các điểm nối âm được vẽ cung ‿ (Turn‿it‿off‿and pick‿it‿up), bấm vào cung để nghe chậm phần nối.',
+          completed: false
+        },
+        {
+          id: 'ac-adv-105-2',
+          given: 'Học viên đọc câu có điểm nối',
+          when: 'Forced alignment phân tích khoảng lặng giữa các từ',
+          then: 'Nếu khoảng ngắt tại điểm nối > 120ms, hệ thống đánh dấu "Chưa nối âm" và tính Linking Score.',
+          completed: false
+        },
+        {
+          id: 'ac-adv-105-3',
+          given: 'Chế độ nghe ngược (Listening Decoder)',
+          when: 'Phát câu tốc độ bản ngữ "Whaddaya wanna do?"',
+          then: 'Học viên gõ lại câu đầy đủ ("What do you want to do?") để luyện tai nhận diện dạng rút gọn.',
+          completed: false
+        }
+      ],
+      technicalTasks: [
+        { id: 't-adv-105-1', title: 'Rule engine tự động phát hiện điểm linking/elision/assimilation từ chuỗi phiên âm IPA của câu', category: 'Backend', completed: false },
+        { id: 't-adv-105-2', title: 'Component ConnectedSpeechSentence vẽ cung nối SVG và phát audio từng đoạn nối', category: 'Frontend', completed: false },
+        { id: 't-adv-105-3', title: 'Biên soạn 150 câu connected speech theo chủ đề (công sở IT, du lịch, IELTS)', category: 'Content', completed: false }
+      ],
+      notes: 'Người Việt nói theo nhịp âm tiết (syllable-timed) nên có xu hướng ngắt rời từng từ. Connected speech là khoảng trống lớn trong các app hiện tại.'
+    },
+    {
+      id: 'ADV-106',
+      epicId: 'epic-advanced-ai-lab',
+      title: 'Intelligibility Score: Đo "Người Nghe Có Hiểu Bạn Không?" Thay Vì Chỉ Đo Giống Người Bản Ngữ (Multi-ASR Listener Panel)',
+      persona: 'Người Đi Làm Cần Giao Tiếp Hiệu Quả Với Đồng Nghiệp Quốc Tế, Không Cần Mất Hẳn Giọng Việt',
+      action: 'xem 2 điểm số tách biệt: Intelligibility (người nghe hiểu đúng bao nhiêu % từ — mô phỏng bằng "hội đồng" 3 mô hình ASR khác nhau nghe giọng tôi) và Accent Strength (mức độ giống giọng bản ngữ)',
+      value: 'tôi tập trung sửa những lỗi thực sự gây hiểu lầm (ví dụ "ship" bị nghe thành "sheep") thay vì cầu toàn từng chi tiết giọng, đúng theo "Nguyên tắc Dễ hiểu" (Intelligibility Principle) được giới ngôn ngữ học khuyến nghị',
+      priority: 'should',
+      status: 'backlog',
+      size: 'M',
+      points: 5,
+      acceptanceCriteria: [
+        {
+          id: 'ac-adv-106-1',
+          given: 'Học viên đọc một đoạn văn 3 câu',
+          when: '3 mô hình ASR độc lập (Whisper, Wav2Vec2, Web Speech) phiên âm lại giọng học viên',
+          then: 'Hiển thị Intelligibility % = tỷ lệ từ được nhận diện đúng trung bình, kèm danh sách từ "bị nghe nhầm" (ví dụ: bạn nói "beach" → máy nghe "bitch").',
+          completed: false
+        },
+        {
+          id: 'ac-adv-106-2',
+          given: 'Báo cáo có cả 2 điểm',
+          when: 'Intelligibility cao (>90%) nhưng Accent Strength trung bình',
+          then: 'Thông điệp khích lệ: "Bạn đã giao tiếp hiệu quả! Giọng Việt nhẹ là hoàn toàn bình thường. Tiếp tục nếu bạn muốn giọng tự nhiên hơn."',
+          completed: false
+        }
+      ],
+      technicalTasks: [
+        { id: 't-adv-106-1', title: 'Pipeline chạy song song nhiều ASR và tính Word Error Rate so với văn bản gốc', category: 'Backend', completed: false },
+        { id: 't-adv-106-2', title: 'Từ điển "cặp từ gây hiểu lầm nguy hiểm" (beach/bitch, sheet/shit, focus...) với cảnh báo ưu tiên cao', category: 'Content', completed: false },
+        { id: 't-adv-106-3', title: 'Thẻ kết quả 2 trục Intelligibility vs Accent trong Progress Dashboard', category: 'Frontend', completed: false }
+      ],
+      notes: 'Phân biệt intelligibility / comprehensibility / accent theo Munro & Derwing. Điểm khác biệt định vị sản phẩm: "Nói để được hiểu" thay vì "Nói giống Tây".'
+    },
+    {
+      id: 'ADV-107',
+      epicId: 'epic-advanced-ai-lab',
+      title: 'Spontaneous Speech Voice Journal: Nhật Ký Nói Tự Do Mỗi Ngày & Chấm Phát Âm Không Kịch Bản',
+      persona: 'Học Viên Đọc Câu Mẫu Thì Chuẩn Nhưng Khi Tự Nói Thì Lỗi Cũ Quay Lại',
+      action: 'nói tự do 60 giây mỗi ngày theo một câu hỏi gợi ý (ví dụ "Kể về ngày hôm nay của bạn"), hệ thống phiên âm, chấm phát âm trên lời nói không kịch bản và so sánh tỷ lệ lỗi giữa "đọc mẫu" và "nói tự do"',
+      value: 'tôi đo được mức độ chuyển giao (transfer) từ luyện tập sang giao tiếp thật — chỉ số quan trọng nhất cho thấy tôi đã thực sự tiến bộ, và có kho nhật ký giọng nói để nghe lại sự thay đổi sau 3 tháng',
+      priority: 'should',
+      status: 'backlog',
+      size: 'M',
+      points: 5,
+      acceptanceCriteria: [
+        {
+          id: 'ac-adv-107-1',
+          given: 'Học viên ghi 60 giây nói tự do',
+          when: 'Hệ thống phân tích (ASR → forced alignment trên transcript tự sinh)',
+          then: 'Báo cáo: tỷ lệ nuốt âm cuối, tỷ lệ lỗi /θ/-/ð/, WPM, số từ đệm ("um", "à"), so với điểm khi đọc câu mẫu cùng tuần.',
+          completed: false
+        },
+        {
+          id: 'ac-adv-107-2',
+          given: 'Học viên có ≥ 30 bản ghi',
+          when: 'Mở mục "Hành trình giọng nói"',
+          then: 'Phát song song bản ghi ngày 1 và ngày 90 kèm biểu đồ Transfer Gap (khoảng cách điểm đọc mẫu vs nói tự do) thu hẹp dần.',
+          completed: false
+        }
+      ],
+      technicalTasks: [
+        { id: 't-adv-107-1', title: 'Pipeline 2 bước: WhisperX transcript → GOP trên transcript tự sinh (không cần văn bản tham chiếu)', category: 'Backend', completed: false },
+        { id: 't-adv-107-2', title: 'Ngân hàng 365 câu hỏi gợi ý theo chủ đề và trình độ CEFR', category: 'Content', completed: false },
+        { id: 't-adv-107-3', title: 'UI Voice Journal timeline + so sánh Day 1 vs Day N', category: 'Frontend', completed: false }
+      ],
+      notes: 'Speechace API v9 và ELSA 2026 đều đầu tư mạnh vào spontaneous speech assessment. Giữ bản ghi theo chính sách lưu trữ ARCH-105 (Pro: 90 ngày, có thể tùy chọn lưu lâu hơn).'
+    },
+    {
+      id: 'ADV-108',
+      epicId: 'epic-advanced-ai-lab',
+      title: 'Accent Explorer & Target Dialect Selector: Chọn Giọng Mỹ / Anh / Úc Và Đo Độ Đậm Giọng Theo Thời Gian',
+      persona: 'Học Viên Có Mục Tiêu Cụ Thể (Du Học Úc, Làm Việc Cho Công Ty Mỹ, Thi IELTS Theo Chuẩn Anh)',
+      action: 'chọn giọng mục tiêu (General American / British RP / Australian), toàn bộ audio mẫu, phiên âm IPA và tiêu chí chấm điểm chuyển theo giọng đó; xem biểu đồ Accent Strength thay đổi theo tuần và nghe mẫu so sánh các giọng',
+      value: 'tôi không bị chấm sai khi phát âm đúng chuẩn Anh (ví dụ "tomato" /təˈmɑːtəʊ/ hay âm R không cuốn) và luyện đúng giọng phục vụ mục tiêu của mình',
+      priority: 'could',
+      status: 'backlog',
+      size: 'S',
+      points: 3,
+      acceptanceCriteria: [
+        {
+          id: 'ac-adv-108-1',
+          given: 'Học viên chọn British RP',
+          when: 'Luyện từ "water" và "car"',
+          then: 'Mẫu dùng /ˈwɔːtə/ và /kɑː/ (không cuốn R), và hệ thống không trừ điểm khi học viên bỏ âm R cuối.',
+          completed: false
+        },
+        {
+          id: 'ac-adv-108-2',
+          given: 'Học viên đã luyện 4 tuần',
+          when: 'Mở Accent Explorer',
+          then: 'Biểu đồ đường Accent Strength theo tuần + nút nghe cùng một câu bằng 3 giọng Mỹ/Anh/Úc.',
+          completed: false
+        }
+      ],
+      technicalTasks: [
+        { id: 't-adv-108-1', title: 'Thêm cột target_dialect vào bảng users và từ điển phát âm đa giọng (CMUdict + Britfone)', category: 'Database', completed: false },
+        { id: 't-adv-108-2', title: 'Chọn ngân hàng audio/TTS theo dialect và lọc quy tắc chấm điểm theo giọng', category: 'Backend', completed: false }
+      ],
+      notes: 'Lấy cảm hứng từ BoldVoice Accent Explorer. Nghiên cứu MDD 2025 cũng chỉ ra cần dữ liệu đa phương ngữ để chấm điểm công bằng.'
     }
   ]
 };
