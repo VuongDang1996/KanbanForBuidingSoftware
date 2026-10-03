@@ -1810,6 +1810,149 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
         { id: 't-adv-108-2', title: 'Chọn ngân hàng audio/TTS theo dialect và lọc quy tắc chấm điểm theo giọng', category: 'Backend', completed: false }
       ],
       notes: 'Lấy cảm hứng từ BoldVoice Accent Explorer. Nghiên cứu MDD 2025 cũng chỉ ra cần dữ liệu đa phương ngữ để chấm điểm công bằng.'
+    },
+
+    // 10. Low-Cost 30K VietQR Payment Architecture & Retention Engine
+    {
+      id: 'PAY-101',
+      epicId: 'epic-backend-infrastructure',
+      title: 'Dynamic VietQR Auto-Reconciliation Engine: Thuê Bao 30K Phí Giao Dịch 0% (SePay / OpenBanking Webhook)',
+      persona: 'Nhà Sáng Lập & Kỹ Sư FinTech Tối Ưu Chi Phí Dòng Tiền 30k/Tháng',
+      action: 'tích hợp API VietQR động (SePay/Casso) tự sinh mã QR Napas 24/7 kèm mã nạp tiền duy nhất (ví dụ: VP30K-98214), tự động nhận Webhook biến động số dư ngân hàng và đối soát kích hoạt quyền Pro trong 1 giây',
+      value: 'tiết kiệm 100% phí giao dịch (phí 0% thay vì mất 2%-30% như cổng thanh toán truyền thống hoặc Stripe), bảo đảm tỷ suất lợi nhuận tối đa cho mức giá bình dân 30.000đ/tháng với 5.000 học viên (~150 triệu VNĐ/tháng)',
+      priority: 'must',
+      status: 'done',
+      size: 'M',
+      points: 5,
+      acceptanceCriteria: [
+        {
+          id: 'ac-pay-101-1',
+          given: 'Học viên chọn gói 30k/tháng',
+          when: 'Mở màn hình thanh toán',
+          then: 'Hệ thống sinh mã VietQR Napas chuẩn kèm số tài khoản ngân hàng và cú pháp duy nhất VP30K-{userId}, thời hạn hiệu lực 10 phút.',
+          completed: true
+        },
+        {
+          id: 'ac-pay-101-2',
+          given: 'Học viên chuyển khoản đúng số tiền và nội dung qua bất kỳ App ngân hàng nào (MB, VCB, Techcombank, MoMo...)',
+          when: 'SePay bắn webhook IPN về endpoint /api/payment/webhook',
+          then: 'Hệ thống xác thực chữ ký API token, cập nhật trạng thái đơn hàng thành paid và kích hoạt gói Pro trong 1-2 giây.',
+          completed: true
+        },
+        {
+          id: 'ac-pay-101-3',
+          given: 'Học viên chuyển thiếu tiền hoặc sai cú pháp',
+          when: 'Webhook tiếp nhận',
+          then: 'Ghi log vào bảng payment_anomalies và gửi thông báo cho quản trị viên xử lý gạch nợ thủ công mà không làm mất tiền của khách.',
+          completed: true
+        }
+      ],
+      technicalTasks: [
+        { id: 't-pay-101-1', title: 'Tích hợp SePay/Casso Webhook Receiver với middleware bảo mật Authorization Token', category: 'Backend', completed: true },
+        { id: 't-pay-101-2', title: 'Bảng bank_transactions và subscription_orders quản lý trạng thái thanh toán và Idempotency Key', category: 'Database', completed: true },
+        { id: 't-pay-101-3', title: 'Worker tự động quét timeout đơn hàng sau 15 phút chưa thanh toán', category: 'Backend', completed: true }
+      ],
+      notes: 'Giải pháp số 1 tại Việt Nam cho SaaS micro-payment. Phí giao dịch = 0đ, chỉ tốn thuê bao SePay ~100k - 200k/tháng phẳng cho 5.000 users thay vì mất hàng chục triệu cho cổng trung gian.'
+    },
+    {
+      id: 'PAY-102',
+      epicId: 'epic-backend-infrastructure',
+      title: 'Frictionless 1-Scan Checkout Modal & Real-Time Activation Polling (Thanh Toán 1 Quẹt & Tự Động Mở Khóa)',
+      persona: 'Học Viên Việt Nam Bận Rộn Muốn Nâng Cấp Nhanh Không Cần Đăng Ký Thẻ Tín Dụng',
+      action: 'thanh toán gói 30k qua modal thông minh: quét mã QR 1 chạm, các nút sao chép nhanh STK/Nội dung, đồng hồ đếm ngược và màn hình tự động chuyển sang trạng thái Thành Công (Confetti) ngay khi ngân hàng nhận tiền mà không cần bấm F5',
+      value: 'trải nghiệm mượt mà, tỷ lệ bỏ giỏ hàng (Cart Abandonment) giảm xuống dưới 15% vì 100% người dùng Việt Nam đều quen thuộc với quét mã QR ngân hàng',
+      priority: 'must',
+      status: 'done',
+      size: 'M',
+      points: 5,
+      acceptanceCriteria: [
+        {
+          id: 'ac-pay-102-1',
+          given: 'Học viên đang xem bảng giá hoặc bị chặn bởi Paywall',
+          when: 'Bấm Nâng cấp Pro 30K',
+          then: 'Modal hiển thị mã VietQR động, số tiền 30.000đ, 3 nút copy nhanh (STK, Số tiền, Nội dung chuyển khoản).',
+          completed: true
+        },
+        {
+          id: 'ac-pay-102-2',
+          given: 'Học viên vừa chuyển khoản trên điện thoại',
+          when: 'Giao dịch thành công ở ngân hàng',
+          then: 'SSE hoặc Polling mỗi 2 giây nhận tín hiệu thành công, nổ pháo hoa Confetti, tự động mở khóa tính năng Pro mà học viên không cần tải lại trang.',
+          completed: true
+        }
+      ],
+      technicalTasks: [
+        { id: 't-pay-102-1', title: 'Component PaymentCheckoutStudio chuẩn Light Mode (pure white card, VietQR generator, 1-click copy)', category: 'Frontend', completed: true },
+        { id: 't-pay-102-2', title: 'Endpoint SSE/Polling /api/payment/order-status/:orderId phục vụ cập nhật tức thì', category: 'Backend', completed: true },
+        { id: 't-pay-102-3', title: 'Xử lý lưu cache trạng thái hội viên vào LocalStorage và Context để mở khóa UI toàn site', category: 'Frontend', completed: true }
+      ],
+      notes: 'Trực quan hóa live trong UiDesignStudio tab "Cổng Thanh Toán 30K VietQR". Đã tích hợp nút mô phỏng chuyển khoản để kiểm thử ngay trên UI.'
+    },
+    {
+      id: 'PAY-103',
+      epicId: 'epic-backend-infrastructure',
+      title: 'Multi-Cycle Pricing & Retention Strategy (Chiến Lược Gói Tháng 30k vs Gói Năm 299k Giảm Tỷ Lệ Rời Bỏ)',
+      persona: 'Product Growth Manager Cần Đạt Doanh Thu 150 Triệu/Tháng Bền Vững',
+      action: 'thiết lập 3 nấc gói: Tháng (30.000đ), 3 Tháng (85.000đ - tiết kiệm 5%), 1 Năm (299.000đ - chỉ 24.900đ/tháng, tiết kiệm 20% + Tặng trọn bộ Golden Speaker AI & Soi Khẩu Hình)',
+      value: 'chuyển dịch 40% học viên sang trả theo năm, giảm 12 lần công sức thanh toán lại hàng tháng, giảm tỷ lệ rời bỏ (churn) và có nguồn vốn lưu động trả trước để đầu tư hạ tầng GPU',
+      priority: 'should',
+      status: 'todo',
+      size: 'M',
+      points: 5,
+      acceptanceCriteria: [
+        {
+          id: 'ac-pay-103-1',
+          given: 'Bảng giá thanh toán',
+          when: 'Học viên xem gói 1 Năm (299k)',
+          then: 'Hiển thị nhãn nổi bật "Khuyên Dùng · Tiết Kiệm 20%" và huy hiệu quà tặng độc quyền (Golden Speaker + Soi Khẩu Hình 478 điểm).',
+          completed: false
+        },
+        {
+          id: 'ac-pay-103-2',
+          given: 'Học viên thanh toán gói năm thành công',
+          when: 'Cấp quyền',
+          then: 'Hệ thống gán ngày hết hạn expires_at = now() + 365 days và cấp quyền VIP Priority cho hàng đợi nhận dạng giọng nói.',
+          completed: false
+        }
+      ],
+      technicalTasks: [
+        { id: 't-pay-103-1', title: 'Thiết kế bảng pricing_plans linh hoạt hỗ trợ khuyến mãi, mã giảm giá và bundle quà tặng', category: 'Database', completed: false },
+        { id: 't-pay-103-2', title: 'Logic tính toán ngày hết hạn theo gói và phân tầng quyền hạn tính năng', category: 'Backend', completed: false }
+      ],
+      notes: 'Thực tế chứng minh gói năm giúp giữ chân học viên và giảm rủi ro quên chuyển khoản từng tháng đối với phương thức chuyển khoản ngân hàng.'
+    },
+    {
+      id: 'PAY-104',
+      epicId: 'epic-backend-infrastructure',
+      title: 'Automated Grace Period & Expiring Subscription Reminder Bot (Ân Hạn 3 Ngày & Nhắc Gia Hạn Tự Động)',
+      persona: 'Học Viên Trả Phí Hàng Tháng Hay Quên Ngày Hết Hạn',
+      action: 'nhận email và tin nhắn Zalo ZNS nhắc gia hạn tự động trước 3 ngày kèm link VietQR 1 chạm, và được áp dụng chính sách ân hạn (Grace Period) 3 ngày sau khi hết hạn mà không bị ngắt quãng việc học',
+      value: 'giữ chân học viên văn minh, không làm gián đoạn chuỗi ngày học liên tục (streak) và tăng tỷ lệ gia hạn tự nhiên lên trên 75%',
+      priority: 'should',
+      status: 'todo',
+      size: 'S',
+      points: 3,
+      acceptanceCriteria: [
+        {
+          id: 'ac-pay-104-1',
+          given: 'Gói học viên còn 3 ngày nữa hết hạn',
+          when: 'Cron job hàng ngày quét dữ liệu',
+          then: 'Tự động gửi email/Zalo nhắc nhở kèm mã VietQR gia hạn đúng số tiền 30.000đ.',
+          completed: false
+        },
+        {
+          id: 'ac-pay-104-2',
+          given: 'Gói đã hết hạn nhưng chưa quá 3 ngày',
+          when: 'Học viên vào học',
+          then: 'Hiển thị banner nhẹ: "Gói Pro của bạn đã hết hạn, bạn đang trong 3 ngày ân hạn. Bấm để gia hạn chỉ 30k" và cho phép học bình thường.',
+          completed: false
+        }
+      ],
+      technicalTasks: [
+        { id: 't-pay-104-1', title: 'Cron job hàng ngày (Node-cron / Celery) quét các tài khoản đến hạn gia hạn', category: 'Backend', completed: false },
+        { id: 't-pay-104-2', title: 'Tích hợp mẫu email nhắc gia hạn tự động kèm mã QR thanh toán 1 chạm', category: 'Backend', completed: false }
+      ],
+      notes: 'Chính sách Grace Period 3 ngày tăng thiện cảm học viên và giảm tỷ lệ churn đột ngột.'
     }
   ]
 };

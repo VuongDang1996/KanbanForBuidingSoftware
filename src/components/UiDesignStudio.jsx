@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import PronunciationGameStudio from './PronunciationGameStudio';
 import MouthAnatomyStudio from './MouthAnatomyStudio';
 import SoundPracticeEnrichedStudio from './SoundPracticeEnrichedStudio';
+import PaymentCheckoutStudio from './PaymentCheckoutStudio';
+import AiDesignPromptsView from './AiDesignPromptsView';
 import {
   Mic,
   Volume2,
@@ -29,7 +31,8 @@ import {
   Heart,
   Shield,
   Zap,
-  Sword
+  Sword,
+  CreditCard
 } from 'lucide-react';
 
 export default function UiDesignStudio({ project }) {
@@ -258,12 +261,40 @@ export default function UiDesignStudio({ project }) {
                   <Headphones className="w-3.5 h-3.5 text-rose-400" />
                   <span>Luyện Âm Đa Phương Thức</span>
                 </button>
+                <button
+                  onClick={() => { setActiveScreenTab('payment'); setSelectedPhoneme(null); }}
+                  className={`px-3 py-1 rounded-md transition-all flex items-center gap-1.5 ${
+                    activeScreenTab === 'payment' ? 'bg-emerald-600 text-white font-bold shadow-md' : 'text-emerald-400 hover:text-white'
+                  }`}
+                >
+                  <CreditCard className="w-3.5 h-3.5 text-emerald-300" />
+                  <span>Cổng Thanh Toán 30K VietQR</span>
+                </button>
+                <button
+                  onClick={() => { setActiveScreenTab('ai-prompts'); setSelectedPhoneme(null); }}
+                  className={`px-3 py-1 rounded-md transition-all flex items-center gap-1.5 ${
+                    activeScreenTab === 'ai-prompts' ? 'bg-gradient-to-r from-rose-600 to-indigo-600 text-white font-bold shadow-md' : 'text-rose-400 hover:text-white'
+                  }`}
+                >
+                  <Sparkles className="w-3.5 h-3.5 text-rose-300" />
+                  <span>Prompt AI Design (Epic 9)</span>
+                </button>
               </div>
             </div>
 
             {/* Live Interactive UI Content */}
             <div className="p-5 sm:p-7 bg-[#0a0f1d] min-h-[460px] flex flex-col justify-between select-none">
               
+              {/* TAB: Interactive Payment & VietQR Checkout Studio */}
+              {activeScreenTab === 'payment' && (
+                <PaymentCheckoutStudio />
+              )}
+
+              {/* TAB: AI UI/UX Design Prompts Studio */}
+              {activeScreenTab === 'ai-prompts' && (
+                <AiDesignPromptsView />
+              )}
+
               {/* TAB: Enriched Sound Practice Studio (Dictation, Read Aloud, Waveform Compare) */}
               {activeScreenTab === 'sound-practice' && (
                 <SoundPracticeEnrichedStudio />
