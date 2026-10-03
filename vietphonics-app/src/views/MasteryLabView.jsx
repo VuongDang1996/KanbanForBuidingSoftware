@@ -4,10 +4,51 @@ import { useRecorder } from '../lib/audio/useRecorder';
 
 export default function MasteryLabView() {
   const { incrementStreak, triggerPractice } = useApp();
-  const [activeTab, setActiveTab] = useState('minimal-pairs'); // 'minimal-pairs' | 'alternation' | 'saturation' | 'shadowing'
+  const [activeTab, setActiveTab] = useState('minimal-pairs'); // 'minimal-pairs' | 'alternation' | 'saturation' | 'ladder' | 'shadowing'
   const [quizScore, setQuizScore] = useState({ correct: 3, total: 3 });
   const [selectedQuizPair, setSelectedQuizPair] = useState(0);
   const [answeredState, setAnsweredState] = useState(null);
+  const [shadowSpeed, setShadowSpeed] = useState(0.8);
+  const [activeLadderTier, setActiveLadderTier] = useState(0);
+
+  const positionalLadders = [
+    {
+      id: 'ladder-theta',
+      phoneme: '/θ/ Interdental Fricative',
+      tiers: [
+        { level: '1. Initial (Đầu từ - PRON-205)', word: 'Think', ipa: '/θɪŋk/', phrase: 'Think carefully', sentence: 'Think carefully before you make an important decision.' },
+        { level: '2. Medial (Giữa từ - PRON-205)', word: 'Method', ipa: '/ˈmeθəd/', phrase: 'Scientific method', sentence: 'The team follows a rigorous scientific method.' },
+        { level: '3. Final (Cuối từ - PRON-205)', word: 'Breath', ipa: '/breθ/', phrase: 'Deep breath', sentence: 'Take a slow deep breath to release all tension.' }
+      ],
+      progressionNote: 'PRON-206: Tiến trình nối âm từ Cấp Độ Từ -> Cụm Từ -> Câu Hoàn Chỉnh trong ngữ cảnh công sở.'
+    },
+    {
+      id: 'ladder-ks',
+      phoneme: '/ks/ Complex Coda Cluster',
+      tiers: [
+        { level: '1. Monosyllabic (Đầu & Thân)', word: 'Six', ipa: '/sɪks/', phrase: 'Six boxes', sentence: 'There are six boxes left on the delivery truck.' },
+        { level: '2. Infixed (Giữa từ)', word: 'Texture', ipa: '/ˈtekstʃər/', phrase: 'Smooth texture', sentence: 'This pastry has a remarkably smooth texture.' },
+        { level: '3. Plural Inflected (Đuôi phức hợp)', word: 'Tasks', ipa: '/tæsks/', phrase: 'Complex tasks', sentence: 'She completed all complex tasks ahead of deadline.' }
+      ],
+      progressionNote: 'PRON-206: Khắc phục triệt để lỗi nuốt âm đuôi phụ âm kép /ks/ và /sks/ của người Việt.'
+    }
+  ];
+
+  const shadowingLessons = [
+    {
+      id: 'shad-1',
+      phonemeNumber: '#25',
+      phonemeSymbol: '/θ/',
+      name: 'Interdental Voiceless Fricative',
+      spellingRules: [
+        { rule: 'Quy tắc chính: Chữ viết "th"', examples: 'think, marathon, author, bath, breath' },
+        { rule: 'Ngoại lệ danh xưng: Phát âm là /t/', examples: 'Thomas /ˈtɒməs/, Thames /temz/' }
+      ],
+      sentence: 'The healthy author thought thirty thoughts throughout Thursday.',
+      ipa: '/ðə ˈhelθi ˈɔːθər θɔːt ˈθɜːrti θɔːts θruːˈaʊt ˈθɜːrzdeɪ/',
+      coachingTip: 'PRON-210: Khẩu hình cường điệu (Exaggerated Articulation) - thè đầu lưỡi ra ngoài 2mm giữa hai hàm răng trước khi bật luồng hơi xát.'
+    }
+  ];
 
   const minimalPairs = [
     {
@@ -64,7 +105,7 @@ export default function MasteryLabView() {
       id: 'alt-3',
       pair: 'house vs houses',
       noun: { word: 'house', ipa: '/haʊs/', note: 'Số ít: kết thúc bằng /s/' },
-      verb: { word: 'houses', ipa: /ˈhaʊ.zɪz/, note: 'Số nhiều: biến đổi thành /-zɪz/' },
+      verb: { word: 'houses', ipa: '/ˈhaʊ.zɪz/', note: 'Số nhiều: biến đổi thành /-zɪz/' },
       rule: 'Âm /s/ giữa hai nguyên âm biến thành âm /z/'
     }
   ];
@@ -86,12 +127,12 @@ export default function MasteryLabView() {
     }
   ];
 
-  const playWord = (word) => {
+  const playWord = (word, rate = 0.8) => {
     if ('speechSynthesis' in window) {
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(word);
       utterance.lang = 'en-US';
-      utterance.rate = 0.8;
+      utterance.rate = rate;
       window.speechSynthesis.speak(utterance);
     }
   };
@@ -106,7 +147,7 @@ export default function MasteryLabView() {
   };
 
   return (
-    <div className="w-full flex flex-col gap-6 py-4 animate-fade-in">
+    <div className="w-full flex flex-col gap-6 py-4 animate-fade-in max-w-[1440px] mx-auto px-4 md:px-gutter-desktop">
       {/* Top Header */}
       <div className="w-full flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-white border border-slate-200/80 p-5 rounded-2xl shadow-[0_2px_8px_rgba(15,23,42,0.03)]">
         <div className="flex items-center gap-3">
@@ -116,10 +157,10 @@ export default function MasteryLabView() {
           <div>
             <div className="flex items-center gap-2">
               <span className="font-mono text-xs font-bold text-indigo-600 uppercase">
-                Phonics Mastery Lab (PRON-207 to PRON-211)
+                Phonics Mastery Lab (PRON-205 to PRON-211)
               </span>
               <span className="px-2 py-0.5 rounded-full bg-slate-100 border border-slate-200 text-[10px] font-mono font-bold text-slate-600">
-                L1 Articulation Mastery
+                11-Gate Certified
               </span>
             </div>
             <h2 className="text-lg font-black text-slate-900 leading-tight">
@@ -136,7 +177,23 @@ export default function MasteryLabView() {
               activeTab === 'minimal-pairs' ? 'bg-white text-primary shadow-xs' : 'text-slate-600'
             }`}
           >
-            Cặp Âm Tối Thiểu (ELSA-205)
+            Cặp Âm (ELSA-205 & PRON-208)
+          </button>
+          <button aria-label="Chuyển phân hệ học" type="button"
+            onClick={() => setActiveTab('ladder')}
+            className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
+              activeTab === 'ladder' ? 'bg-white text-emerald-700 shadow-xs' : 'text-slate-600'
+            }`}
+          >
+            Bậc Thang Phân Vị (PRON-205 & 206)
+          </button>
+          <button aria-label="Chuyển phân hệ học" type="button"
+            onClick={() => setActiveTab('shadowing')}
+            className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
+              activeTab === 'shadowing' ? 'bg-white text-sky-700 shadow-xs' : 'text-slate-600'
+            }`}
+          >
+            Shadowing & Chính Tả (PRON-209 & 210)
           </button>
           <button aria-label="Chuyển phân hệ học" type="button"
             onClick={() => setActiveTab('alternation')}
@@ -144,7 +201,7 @@ export default function MasteryLabView() {
               activeTab === 'alternation' ? 'bg-white text-secondary shadow-xs' : 'text-slate-600'
             }`}
           >
-            Quy Tắc Biến Đổi Âm (PRON-207)
+            Quy Tắc Biến Đổi (PRON-207)
           </button>
           <button aria-label="Chuyển phân hệ học" type="button"
             onClick={() => setActiveTab('saturation')}
@@ -277,6 +334,155 @@ export default function MasteryLabView() {
               </div>
             ))}
           </div>
+        </div>
+      ) : activeTab === 'ladder' ? (
+        /* PRON-205 & PRON-206: 3-Tier Positional Phoneme Ladder & Progression */
+        <div className="bg-white border border-slate-200/90 rounded-2xl p-6 sm:p-8 shadow-xs space-y-6">
+          <div className="border-b border-slate-100 pb-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+              <span className="font-mono text-xs font-bold text-emerald-700 uppercase">
+                PRON-205 & PRON-206 • 3-Tier Positional Phoneme Ladder
+              </span>
+              <h3 className="text-xl font-black text-slate-900 mt-1">
+                Luyện Âm Phân Vị (Đầu - Giữa - Cuối) & Tiến Trình Nối Âm
+              </h3>
+            </div>
+            <div className="flex items-center gap-1.5 bg-slate-100 p-1 rounded-xl">
+              {positionalLadders.map((lad, idx) => (
+                <button aria-label="Nút tương tác" type="button"
+                  key={lad.id}
+                  onClick={() => setActiveLadderTier(idx)}
+                  className={`px-3 py-1 rounded-lg text-xs font-bold transition-all ${
+                    activeLadderTier === idx ? 'bg-white text-emerald-700 shadow-xs' : 'text-slate-600'
+                  }`}
+                >
+                  {lad.phoneme}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <p className="text-xs text-slate-500">
+            {positionalLadders[activeLadderTier].progressionNote}
+          </p>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            {positionalLadders[activeLadderTier].tiers.map((tier, tIdx) => (
+              <div key={tIdx} className="p-5 rounded-2xl bg-gradient-to-b from-slate-50 to-emerald-50/20 border border-slate-200 flex flex-col justify-between gap-4">
+                <div>
+                  <span className="px-2.5 py-1 rounded-md bg-emerald-100 text-emerald-800 font-mono text-[11px] font-bold inline-block">
+                    {tier.level}
+                  </span>
+                  <div className="mt-3">
+                    <span className="text-xl font-black text-slate-900">{tier.word}</span>
+                    <span className="text-xs font-mono font-bold text-emerald-700 ml-2">{tier.ipa}</span>
+                  </div>
+                  <div className="mt-3 p-3 bg-white rounded-xl border border-slate-200">
+                    <span className="text-[10px] uppercase font-mono text-slate-400 font-bold block">Cấp Độ Cụm Từ</span>
+                    <p className="text-xs font-bold text-slate-800 mt-0.5">"{tier.phrase}"</p>
+                  </div>
+                  <div className="mt-2 p-3 bg-white rounded-xl border border-slate-200">
+                    <span className="text-[10px] uppercase font-mono text-slate-400 font-bold block">Cấp Độ Toàn Câu</span>
+                    <p className="text-xs text-slate-700 mt-0.5">"{tier.sentence}"</p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2 pt-2">
+                  <button aria-label="Phát âm mẫu chuẩn bản ngữ" type="button"
+                    onClick={() => playWord(tier.word)}
+                    className="flex-1 py-2 rounded-xl bg-slate-100 hover:bg-emerald-100 hover:text-emerald-800 text-slate-700 text-xs font-bold flex items-center justify-center gap-1 transition-colors"
+                  >
+                    <span className="material-symbols-outlined text-sm">volume_up</span>
+                    <span>Từ</span>
+                  </button>
+                  <button aria-label="Phát âm mẫu chuẩn bản ngữ" type="button"
+                    onClick={() => playWord(tier.sentence)}
+                    className="flex-1 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center justify-center gap-1 shadow-xs transition-colors"
+                  >
+                    <span className="material-symbols-outlined text-sm">play_arrow</span>
+                    <span>Câu Mẫu</span>
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      ) : activeTab === 'shadowing' ? (
+        /* PRON-209 & PRON-210: Numbered Phonemes & Shadowing Masterclass */
+        <div className="bg-white border border-slate-200/90 rounded-2xl p-6 sm:p-8 shadow-xs space-y-6">
+          <div className="border-b border-slate-100 pb-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <span className="font-mono text-xs font-bold text-sky-700 uppercase">
+                PRON-209 & PRON-210 • Numbered Target Phonemes & Shadowing Masterclass
+              </span>
+              <h3 className="text-xl font-black text-slate-900 mt-1">
+                Hệ Thống Đánh Số Âm Vị IPA & Luyện Shadowing Khẩu Hình Chuẩn
+              </h3>
+            </div>
+            {/* Speed Control */}
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-mono text-slate-500 font-bold">Tốc độ:</span>
+              {[0.5, 0.75, 1.0].map((spd) => (
+                <button aria-label="Chọn tốc độ luyện tập" type="button"
+                  key={spd}
+                  onClick={() => setShadowSpeed(spd)}
+                  className={`px-2.5 py-1 rounded-lg text-xs font-mono font-bold transition-all ${
+                    shadowSpeed === spd ? 'bg-sky-600 text-white shadow-xs' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                  }`}
+                >
+                  {spd}x
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {shadowingLessons.map((les) => (
+            <div key={les.id} className="space-y-5">
+              <div className="flex flex-wrap items-center gap-3">
+                <span className="px-3 py-1 bg-sky-100 text-sky-800 rounded-lg font-mono text-sm font-bold">
+                  Phoneme {les.phonemeNumber}: {les.phonemeSymbol}
+                </span>
+                <span className="text-sm font-semibold text-slate-700">{les.name}</span>
+              </div>
+
+              {/* Orthographic Rules */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {les.spellingRules.map((rule, rIdx) => (
+                  <div key={rIdx} className="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                    <span className="text-xs font-bold text-slate-900 block">{rule.rule}</span>
+                    <span className="text-xs text-sky-700 font-mono mt-1 block">Ví dụ: {rule.examples}</span>
+                  </div>
+                ))}
+              </div>
+
+              {/* Script Sentence Box */}
+              <div className="p-6 rounded-2xl bg-gradient-to-r from-sky-50/70 via-indigo-50/40 to-slate-50 border border-sky-200/80 space-y-4">
+                <span className="text-xs font-mono font-bold text-sky-800 uppercase block">
+                  Đoạn Văn Luyện Shadowing Đồng Bộ ({shadowSpeed}x)
+                </span>
+                <p className="text-xl font-bold text-slate-900 leading-relaxed font-sans">
+                  "{les.sentence}"
+                </p>
+                <div className="p-3 bg-white rounded-xl border border-sky-100 font-mono text-xs text-sky-900">
+                  IPA: {les.ipa}
+                </div>
+                <div className="p-3 bg-amber-50 rounded-xl border border-amber-200 text-xs text-amber-900 flex items-center gap-2">
+                  <span className="material-symbols-outlined text-base text-amber-600 shrink-0">tips_and_updates</span>
+                  <span>{les.coachingTip}</span>
+                </div>
+
+                <div className="flex items-center gap-3 pt-2">
+                  <button aria-label="Phát âm mẫu chuẩn bản ngữ" type="button"
+                    onClick={() => playWord(les.sentence, shadowSpeed)}
+                    className="px-6 py-3 rounded-xl bg-sky-600 hover:bg-sky-700 text-white font-bold text-xs flex items-center gap-2 shadow-sm transition-transform active:scale-95 cursor-pointer"
+                  >
+                    <span className="material-symbols-outlined text-base">record_voice_over</span>
+                    <span>Bắt Đầu Shadowing Theo Giọng Mẫu ({shadowSpeed}x)</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       ) : (
         /* Minimal Pair Auditory Discrimination Quiz (ELSA-205 & PRON-208) */

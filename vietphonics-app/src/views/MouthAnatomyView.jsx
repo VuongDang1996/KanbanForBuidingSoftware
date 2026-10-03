@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import WebcamLipTracker from '../components/WebcamLipTracker';
 
 const PHONEMES = [
   { id: 'theta', symbol: '/θ/', word: 'think', name: 'Interdental Voiceless Fricative', voiced: false, toneFreq: 320, contrastId: 'eth', contrastSym: '/ð/' },
@@ -10,6 +11,7 @@ const PHONEMES = [
 ];
 
 export default function MouthAnatomyView() {
+  const [studioTab, setStudioTab] = useState('webcam'); // 'webcam' (ADV-102) | 'anatomy'
   const [activePhonemeId, setActivePhonemeId] = useState('theta');
   const [isVoiced, setIsVoiced] = useState(false);
   const [tongueElev, setTongueElev] = useState(35);
@@ -108,9 +110,55 @@ export default function MouthAnatomyView() {
         </div>
       </div>
 
-      {/* Main 12-Column Split-View Studio Canvas */}
-      <div className="w-full px-gutter md:px-gutter-desktop py-space-lg">
-        <div className="max-w-[1440px] mx-auto grid grid-cols-1 xl:grid-cols-12 gap-gutter-desktop items-start">
+      {/* Studio Mode Switcher: Webcam AI (ADV-102) vs 2D Sagittal Anatomy */}
+      <div className="w-full bg-slate-50 border-b border-slate-200/80 px-4 md:px-gutter-desktop py-2.5">
+        <div className="max-w-[1440px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
+          <div className="flex items-center gap-2 bg-slate-200/70 p-1 rounded-xl w-full sm:w-auto">
+            <button
+              type="button"
+              aria-label="Chuyển sang chế độ soi khẩu hình bằng Webcam AI"
+              onClick={() => setStudioTab('webcam')}
+              className={`flex-1 sm:flex-initial px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
+                studioTab === 'webcam'
+                  ? 'bg-primary text-white shadow-sm shadow-rose-500/20'
+                  : 'text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              <span className="material-symbols-outlined text-base">videocam</span>
+              <span>📷 1. Soi Khẩu Hình Bằng Webcam AI (ADV-102)</span>
+            </button>
+            <button
+              type="button"
+              aria-label="Chuyển sang mô phỏng sinh học giải phẫu 2D"
+              onClick={() => setStudioTab('anatomy')}
+              className={`flex-1 sm:flex-initial px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
+                studioTab === 'anatomy'
+                  ? 'bg-white text-slate-900 shadow-sm'
+                  : 'text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              <span className="material-symbols-outlined text-base">science</span>
+              <span>🔬 2. Thiết Diện Cắt Dọc 2D (Sagittal Plane)</span>
+            </button>
+          </div>
+
+          <div className="flex items-center gap-2 text-xs font-semibold text-slate-600">
+            <span className="px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 flex items-center gap-1 font-label-mono text-[11px]">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+              MediaPipe 478 Face Mesh Ready
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {studioTab === 'webcam' ? (
+        <div className="w-full px-4 md:px-gutter-desktop py-space-md max-w-[1440px] mx-auto">
+          <WebcamLipTracker />
+        </div>
+      ) : (
+        /* Main 12-Column Split-View Studio Canvas */
+        <div className="w-full px-gutter md:px-gutter-desktop py-space-lg">
+          <div className="max-w-[1440px] mx-auto grid grid-cols-1 xl:grid-cols-12 gap-gutter-desktop items-start">
           {/* LEFT PANE: 8 COLS - Sagittal Cross-Section Vocal Tract Graphic */}
           <div className="xl:col-span-8 flex flex-col gap-space-lg min-w-0">
             {/* Primary Acoustic Stage Box */}
@@ -626,7 +674,8 @@ export default function MouthAnatomyView() {
             </div>
           </div>
         </div>
-      </div>
+        </div>
+      )}
     </div>
   );
 }

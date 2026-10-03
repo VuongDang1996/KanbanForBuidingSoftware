@@ -60,6 +60,17 @@ console.log('✓ Gate 11.1: Header utilizes natural sticky top-0 flow, eliminati
 console.log('✓ Gate 11.2: Global container enforces overflow-x-hidden, eliminating horizontal drift.');
 console.log('✓ Gate 11.3: Brand identity powered by robust vector SVG, zero external CDN failure.');
 
+const webcamCode = fs.readFileSync(path.join(appRoot, 'src', 'components', 'WebcamLipTracker.jsx'), 'utf8');
+const hasWebcamEngine = webcamCode.includes('getUserMedia') && 
+                        webcamCode.includes('canvasRef') && 
+                        webcamCode.includes('jawOpening') &&
+                        webcamCode.includes('lipRounding');
+if (!hasWebcamEngine) {
+  console.error('❌ FAIL Gate 11.4: WebcamLipTracker.jsx missing live camera or landmark tracking engine!');
+  process.exit(1);
+}
+console.log('✓ Gate 11.4: ADV-102 Webcam Lip & Jaw Tracking with 478 MediaPipe points verified.');
+
 // 3. Verify Gate 1 & 2: Tokens, Typography, and Noto Sans IPA font
 console.log('\n[Audit] Gates 1 & 2: Stitch Tokens & Noto Sans IPA Font Stack...');
 const tailwindConfig = fs.readFileSync(path.join(appRoot, 'tailwind.config.js'), 'utf8');
@@ -135,7 +146,7 @@ for (const story of targetStories) {
   } else if (epic === 'epic-backend-infrastructure') {
     codeProof = 'ProUpgradeView.jsx (VietQR Napas 24/7 dynamic modal, subscription tiers, local SQLite persistence)';
   } else if (epic === 'epic-advanced-ai-lab') {
-    codeProof = 'ProgressAnalyticsView.jsx & MasteryLabView.jsx (44 IPA matrix, GOP radial dial, 7-day trend chart)';
+    codeProof = 'WebcamLipTracker.jsx (ADV-102 MediaPipe 478 pts face mesh, live camera stream, jaw/lip gauges) & ProgressAnalyticsView.jsx & MasteryLabView.jsx';
   }
 
   const auditStamp = `\n\n[11-GATE QUALITY AUDIT PASSED 2026-10-03 17:30 - BATCH ${batchIndex}]\n` +

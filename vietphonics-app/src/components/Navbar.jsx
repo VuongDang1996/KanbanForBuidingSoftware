@@ -20,7 +20,8 @@ export default function Navbar() {
   const navItems = [
     { id: 'tong-quan', label: 'Tổng Quan' },
     { id: 'phong-luyen-phat-am', label: 'Phòng Luyện Phát Âm' },
-    { id: 'khau-hinh-2d', label: 'Khẩu Hình 2D' },
+    { id: 'khau-hinh-2d', label: 'Khẩu Hình & Webcam AI' },
+    { id: 'mastery-lab', label: 'Mastery Lab' },
     { id: 'ai-hoi-thoai', label: 'AI Hội Thoại' },
     { id: 'game-3d-rpg', label: 'Game 3D RPG' },
     { id: 'ngan-hang-tu-loi', label: 'Ngân Hàng Từ Lỗi' },
