@@ -59,13 +59,21 @@ INNER_LIP_POLYGON = [78, 191, 80, 81, 82, 13, 312, 311, 310, 415, 308, 324, 318,
 
 def decode_base64_image(image_data_str):
     """Decode base64 string to RGB NumPy array."""
-    if not image_data_str:
+    if not image_data_str or not isinstance(image_data_str, str):
         return None
-    if ',' in image_data_str:
-        image_data_str = image_data_str.split(',', 1)[1]
-    image_bytes = base64.b64decode(image_data_str)
-    pil_img = Image.open(io.BytesIO(image_bytes)).convert('RGB')
-    return np.array(pil_img)
+    try:
+        clean_str = image_data_str.strip()
+        if ',' in clean_str:
+            clean_str = clean_str.split(',', 1)[1]
+        # Pad base64 if characters were truncated
+        padding = len(clean_str) % 4
+        if padding:
+            clean_str += '=' * (4 - padding)
+        image_bytes = base64.b64decode(clean_str)
+        pil_img = Image.open(io.BytesIO(image_bytes)).convert('RGB')
+        return np.array(pil_img)
+    except Exception:
+        return None
 
 
 def calculate_dist(pt1, pt2):
