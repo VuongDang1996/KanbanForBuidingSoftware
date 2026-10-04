@@ -17,8 +17,13 @@ import {
   RefreshCw,
   Award,
   Sparkles,
-  DollarSign
+  DollarSign,
+  Activity,
+  BookOpen
 } from 'lucide-react';
+
+import ApmMonitoringPanel from './ApmMonitoringPanel';
+import CmsSentencesPanel from './CmsSentencesPanel';
 
 export default function ExecutiveAdminDashboardModal({ isOpen, onClose }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -292,6 +297,30 @@ export default function ExecutiveAdminDashboardModal({ isOpen, onClose }) {
               >
                 <History className="w-4 h-4" />
                 <span>Nhật Ký Kiểm Toán (Audit Trail)</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setActiveTab('apm')}
+                className={`pb-3 px-3 border-b-2 font-semibold transition cursor-pointer flex items-center gap-1.5 ${
+                  activeTab === 'apm'
+                    ? 'border-rose-500 text-rose-400 font-bold'
+                    : 'border-transparent text-slate-400 hover:text-slate-200'
+                }`}
+              >
+                <Activity className="w-4 h-4 text-emerald-400" />
+                <span>Giám Sát APM (OPS-102)</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setActiveTab('cms')}
+                className={`pb-3 px-3 border-b-2 font-semibold transition cursor-pointer flex items-center gap-1.5 ${
+                  activeTab === 'cms'
+                    ? 'border-rose-500 text-rose-400 font-bold'
+                    : 'border-transparent text-slate-400 hover:text-slate-200'
+                }`}
+              >
+                <BookOpen className="w-4 h-4 text-indigo-400" />
+                <span>CMS Nội Dung &amp; IPA (OPS-103)</span>
               </button>
             </div>
 
@@ -624,6 +653,20 @@ export default function ExecutiveAdminDashboardModal({ isOpen, onClose }) {
                       </tbody>
                     </table>
                   </div>
+                </div>
+              )}
+
+              {/* TAB 5: APM MONITORING (OPS-102) */}
+              {activeTab === 'apm' && (
+                <div className="bg-slate-950/40 p-4 rounded-xl border border-slate-800">
+                  <ApmMonitoringPanel />
+                </div>
+              )}
+
+              {/* TAB 6: CMS SENTENCES & IPA (OPS-103) */}
+              {activeTab === 'cms' && (
+                <div className="bg-slate-950/40 p-4 rounded-xl border border-slate-800">
+                  <CmsSentencesPanel />
                 </div>
               )}
             </div>

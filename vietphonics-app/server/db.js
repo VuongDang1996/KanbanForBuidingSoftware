@@ -1099,6 +1099,131 @@ export function initAppDatabase() {
     );
     CREATE INDEX IF NOT EXISTS idx_admin_audit_admin ON admin_audit_logs(admin_id, created_at DESC);
     CREATE INDEX IF NOT EXISTS idx_admin_audit_target ON admin_audit_logs(target_account_id, created_at DESC);
+
+    -- OPS-102: Real-Time APM Monitoring & Incident Alerting
+    CREATE TABLE IF NOT EXISTS apm_audit_logs (
+      id TEXT PRIMARY KEY,
+      request_id TEXT NOT NULL,
+      method TEXT NOT NULL,
+      path TEXT NOT NULL,
+      status_code INTEGER NOT NULL,
+      latency_ms REAL NOT NULL,
+      client_ip TEXT,
+      user_agent TEXT,
+      error_message TEXT,
+      created_at TEXT NOT NULL
+    );
+    CREATE INDEX IF NOT EXISTS idx_apm_logs_created ON apm_audit_logs(created_at DESC);
+    CREATE INDEX IF NOT EXISTS idx_apm_logs_status ON apm_audit_logs(status_code);
+
+    CREATE TABLE IF NOT EXISTS apm_client_errors (
+      id TEXT PRIMARY KEY,
+      account_id TEXT,
+      error_message TEXT NOT NULL,
+      stack_trace TEXT,
+      breadcrumbs_json TEXT,
+      user_agent TEXT,
+      release_version TEXT DEFAULT 'v4.2.0',
+      environment TEXT DEFAULT 'production',
+      created_at TEXT NOT NULL
+    );
+    CREATE INDEX IF NOT EXISTS idx_apm_client_errors_time ON apm_client_errors(created_at DESC);
+
+    CREATE TABLE IF NOT EXISTS apm_incident_alerts (
+      id TEXT PRIMARY KEY,
+      rule_name TEXT NOT NULL,
+      severity TEXT NOT NULL,
+      metric_name TEXT NOT NULL,
+      threshold_val REAL NOT NULL,
+      actual_val REAL NOT NULL,
+      message TEXT NOT NULL,
+      status TEXT NOT NULL DEFAULT 'firing',
+      dispatched_channels_json TEXT,
+      resolved_at TEXT,
+      created_at TEXT NOT NULL
+    );
+    CREATE INDEX IF NOT EXISTS idx_apm_alerts_status ON apm_incident_alerts(status, created_at DESC);
+
+    -- OPS-103: Admin Content Management System (CMS)
+    CREATE TABLE IF NOT EXISTS cms_lessons (
+      id TEXT PRIMARY KEY,
+      title TEXT NOT NULL,
+      topic TEXT NOT NULL,
+      cefr_level TEXT NOT NULL,
+      description TEXT,
+      status TEXT NOT NULL DEFAULT 'draft',
+      version INTEGER DEFAULT 1,
+      created_by TEXT NOT NULL DEFAULT 'admin@vietphonics.vn',
+      created_at TEXT NOT NULL,
+      updated_at TEXT NOT NULL
+    );
+    CREATE INDEX IF NOT EXISTS idx_cms_lessons_status ON cms_lessons(status);
+
+    CREATE TABLE IF NOT EXISTS cms_sentences (
+      id TEXT PRIMARY KEY,
+      lesson_id TEXT,
+      sentence_text TEXT NOT NULL,
+      ipa_transcription TEXT NOT NULL,
+      target_phoneme TEXT NOT NULL,
+      stress_pattern TEXT,
+      cefr_level TEXT NOT NULL DEFAULT 'B1',
+      topic TEXT NOT NULL DEFAULT 'Daily',
+      audio_url TEXT,
+      status TEXT NOT NULL DEFAULT 'published',
+      version INTEGER DEFAULT 1,
+      created_by TEXT NOT NULL DEFAULT 'admin@vietphonics.vn',
+      created_at TEXT NOT NULL,
+      updated_at TEXT NOT NULL
+    );
+    CREATE INDEX IF NOT EXISTS idx_cms_sentences_status ON cms_sentences(status, cefr_level);
+    CREATE INDEX IF NOT EXISTS idx_cms_sentences_target ON cms_sentences(target_phoneme);
+
+    CREATE TABLE IF NOT EXISTS cms_minimal_pairs (
+      id TEXT PRIMARY KEY,
+      phoneme_a TEXT NOT NULL,
+      phoneme_b TEXT NOT NULL,
+      word_a TEXT NOT NULL,
+      word_b TEXT NOT NULL,
+      ipa_a TEXT NOT NULL,
+      ipa_b TEXT NOT NULL,
+      vietnamese_trap_note TEXT,
+      status TEXT NOT NULL DEFAULT 'published',
+      created_at TEXT NOT NULL
+    );
+
+    -- OPS-104: Multi-Channel Automated Notification Hub
+    CREATE TABLE IF NOT EXISTS in_app_notifications (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL,
+      title TEXT NOT NULL,
+      message TEXT NOT NULL,
+      type TEXT NOT NULL DEFAULT 'system',
+      action_url TEXT,
+      is_read INTEGER DEFAULT 0,
+      read_at TEXT,
+      created_at TEXT NOT NULL
+    );
+    CREATE INDEX IF NOT EXISTS idx_in_app_notifs_user ON in_app_notifications(user_id, is_read, created_at DESC);
+
+    CREATE TABLE IF NOT EXISTS user_notification_preferences (
+      user_id TEXT PRIMARY KEY,
+      streak_daily_reminder INTEGER DEFAULT 1,
+      weekly_digest_email INTEGER DEFAULT 1,
+      pro_renewal_alert INTEGER DEFAULT 1,
+      marketing_promo INTEGER DEFAULT 1,
+      updated_at TEXT NOT NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS notification_delivery_logs (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL,
+      channel TEXT NOT NULL,
+      type TEXT NOT NULL,
+      title TEXT,
+      status TEXT DEFAULT 'delivered',
+      sent_at TEXT NOT NULL
+    );
+    CREATE INDEX IF NOT EXISTS idx_notif_delivery_user ON notification_delivery_logs(user_id, sent_at DESC);
   `);
 
   // Seed default penalty weights for 3 regions
@@ -1508,6 +1633,83 @@ export function initAppDatabase() {
         datetime('now', '-3 days'), datetime('now', '-3 days')
       )
     `).run(subtotal, vat, xmlMock);
+  }
+
+  // OPS-103: Seed initial CMS sentences and lessons
+  const existingSentences = db.prepare("SELECT COUNT(*) as cnt FROM cms_sentences").get();
+  if (existingSentences.cnt === 0) {
+    const seedSentences = [
+      {
+        id: 'sent_001',
+        text: 'The weather is thought to be thirty degrees tomorrow.',
+        ipa: 'ðə ˈwɛðər ɪz θɔt tu bi ˈθɜrti dɪˈgriz təˈmɑˌroʊ',
+        target: 'θ',
+        stress: '0-1-0-0-0-1-0-1-0-1-0',
+        cefr: 'B1',
+        topic: 'Daily',
+        status: 'published',
+        audio: 'https://cdn.vietphonics.vn/audio/sent_001.mp3'
+      },
+      {
+        id: 'sent_002',
+        text: 'We need to deploy the production microservice architecture safely.',
+        ipa: 'wi nid tu dɪˈplɔɪ ðə prəˈdʌkʃən ˈmaɪkroʊˌsɜrvɪs ˈɑrkəˌtɛktʃər ˈseɪfli',
+        target: 'ʃ',
+        stress: '0-1-0-0-1-0-0-1-0-1-0-1-0-1-0-1-0-1-0',
+        cefr: 'B2',
+        topic: 'IT Standup',
+        status: 'published',
+        audio: 'https://cdn.vietphonics.vn/audio/sent_002.mp3'
+      },
+      {
+        id: 'sent_003',
+        text: 'Substantial economic progress requires sustainable environmental measures.',
+        ipa: 'səbˈstænʃəl ˌɛkəˈnɑmɪk ˈprɑˌgrɛs rɪˈkwaɪərz səˈsteɪnəbəl ɪnˌvaɪrənˈmɛntəl ˈmɛʒərz',
+        target: 'ʒ',
+        stress: '0-1-0-0-0-1-0-1-0-0-1-0-1-0-0-0-1-0-0-1-0',
+        cefr: 'C1',
+        topic: 'IELTS',
+        status: 'published',
+        audio: 'https://cdn.vietphonics.vn/audio/sent_003.mp3'
+      },
+      {
+        id: 'sent_004_draft',
+        text: 'Can you review the pull request on GitHub before our daily standup?',
+        ipa: 'kæn ju rɪˈvju ðə pʊl rɪˈkwɛst ɑn ˈgɪtˌhʌb bɪˈfɔr ˈaʊər ˈdeɪli ˈstændˌʌp',
+        target: 'v',
+        stress: '0-0-0-1-0-1-0-1-0-1-0-0-1-1-1-0-1-0',
+        cefr: 'B1',
+        topic: 'IT Standup',
+        status: 'draft',
+        audio: ''
+      }
+    ];
+
+    for (const s of seedSentences) {
+      db.prepare(`
+        INSERT OR IGNORE INTO cms_sentences (
+          id, sentence_text, ipa_transcription, target_phoneme, stress_pattern,
+          cefr_level, topic, audio_url, status, version, created_by, created_at, updated_at
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 1, 'admin@vietphonics.vn', datetime('now'), datetime('now'))
+      `).run(s.id, s.text, s.ipa, s.target, s.stress, s.cefr, s.topic, s.audio, s.status);
+    }
+  }
+
+  // OPS-104: Seed default in-app notifications & user preferences for default_user
+  const existingNotifs = db.prepare("SELECT COUNT(*) as cnt FROM in_app_notifications WHERE user_id = 'default_user'").get();
+  if (existingNotifs.cnt === 0) {
+    db.prepare(`
+      INSERT OR IGNORE INTO in_app_notifications (id, user_id, title, message, type, action_url, is_read, created_at)
+      VALUES 
+      ('notif_001', 'default_user', '🔥 Chúc Mừng Chuỗi Streak 5 Ngày!', 'Bạn đã kiên trì luyện tập 5 ngày liên tiếp. Nhận ngay 1 Khiên Bảo Vệ!', 'streak', '#streak', 0, datetime('now', '-2 hours')),
+      ('notif_002', 'default_user', '🎯 Báo Cáo Tuần Đã Sẵn Sàng', 'Độ chuẩn xác âm đuôi /s/, /z/ của bạn đã tăng 14% trong tuần qua. Xem phân tích chi tiết!', 'digest', '#tien-do', 0, datetime('now', '-1 day')),
+      ('notif_003', 'default_user', '⭐ Ưu Đãi Gói Pro Sắp Hết Hạn', 'Gói Pro của bạn còn 3 ngày. Gia hạn ngay để tiếp tục tận hưởng AI phân tích thời gian thực không giới hạn.', 'renewal', '#pro-upgrade', 1, datetime('now', '-3 days'))
+    `).run();
+
+    db.prepare(`
+      INSERT OR IGNORE INTO user_notification_preferences (user_id, streak_daily_reminder, weekly_digest_email, pro_renewal_alert, marketing_promo, updated_at)
+      VALUES ('default_user', 1, 1, 1, 0, datetime('now'))
+    `).run();
   }
 }
 

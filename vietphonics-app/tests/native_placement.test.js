@@ -10,23 +10,20 @@ import {
   evaluatePlacementFeedback
 } from '../src/lib/scoring/nativePlacement.js';
 
+const PORT = 3849;
+let server;
+const baseUrl = `http://127.0.0.1:${PORT}`;
+
+before((done) => {
+  server = http.createServer(app);
+  server.listen(PORT, done);
+});
+
+after((done) => {
+  server.close(done);
+});
+
 describe('VN-105: Vietnamese Native-Tongue Mouth & Tongue Placement Guides Tests', () => {
-  let server;
-  const PORT = 3869;
-  const baseUrl = `http://127.0.0.1:${PORT}`;
-
-  before(async () => {
-    await new Promise((resolve) => {
-      server = http.createServer(app);
-      server.listen(PORT, resolve);
-    });
-  });
-
-  after(async () => {
-    await new Promise((resolve) => {
-      server.close(resolve);
-    });
-  });
 
   describe('3-Step Articulatory Guides (AC 1)', () => {
     test('Catalog must contain placement guides for /ð/, /θ/, and /æ/', () => {

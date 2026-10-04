@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import StreakBadge from './gamification/StreakBadge';
 import QuotaUsageBadge from './paywall/QuotaUsageBadge';
+import NotificationBellDropdown from './notifications/NotificationBellDropdown';
 
 export default function Navbar() {
   const {
@@ -228,6 +229,9 @@ export default function Navbar() {
                   <span>{shields} Khiên</span>
                 </div>
               </div>
+
+              {/* Multi-Channel Notification Bell (OPS-104) */}
+              <NotificationBellDropdown />
 
               {/* Account Security & Sessions */}
               <button
