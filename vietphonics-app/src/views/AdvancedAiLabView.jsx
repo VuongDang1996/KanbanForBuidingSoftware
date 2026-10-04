@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { useRecorder } from '../lib/audio/useRecorder';
+import GoldenSpeakerLab from '../components/advanced/GoldenSpeakerLab';
+import WebcamLipTracker from '../components/WebcamLipTracker';
+import VowelSpaceChart from '../components/advanced/VowelSpaceChart';
+import AiCoachLab from '../components/advanced/AiCoachLab';
 
 export default function AdvancedAiLabView() {
   const { incrementStreak, triggerPractice } = useApp();
@@ -157,6 +161,7 @@ export default function AdvancedAiLabView() {
       <div className="flex items-center gap-1.5 bg-slate-100/90 border border-slate-200/80 p-1.5 rounded-2xl overflow-x-auto scrollbar-none">
         {[
           { id: 'golden-speaker', label: '🌟 Golden Speaker (ADV-101)' },
+          { id: 'lip-tracker', label: '📷 Soi Khẩu Hình (ADV-102)' },
           { id: 'vowel-space', label: '📊 Vowel Space F1/F2 (ADV-103)' },
           { id: 'ai-coach', label: '🧠 AI Coach Trí Nhớ (ADV-104)' },
           { id: 'connected-speech', label: '🔗 Nối & Nuốt Âm (ADV-105)' },
@@ -182,294 +187,17 @@ export default function AdvancedAiLabView() {
         })}
       </div>
 
-      {/* TAB 1: ADV-101 Golden Speaker */}
-      {activeTab === 'golden-speaker' && (
-        <div className="bg-white border border-slate-200/90 rounded-2xl p-6 sm:p-8 shadow-xs space-y-6">
-          <div className="border-b border-slate-100 pb-4">
-            <span className="font-mono text-xs font-bold text-sky-600 uppercase">
-              ADV-101 • Voice-Cloned Self Model (Golden Speaker)
-            </span>
-            <h2 className="text-xl font-black text-slate-900 mt-1">
-              Nghe Chính Giọng Mình Phát Âm Chuẩn Bản Ngữ
-            </h2>
-            <p className="text-xs text-slate-500 mt-1">
-              Hệ thống trích xuất đặc trưng âm sắc (timbre) và tần số cơ bản (F0) từ 3 câu nói của bạn, sau đó áp dụng mô hình phonetic alignment để tạo ra phiên bản "Golden Speaker" chuẩn bản ngữ mang chính chất giọng của bạn.
-            </p>
-          </div>
+      {/* TAB 1: ADV-101 Golden Speaker Studio */}
+      {activeTab === 'golden-speaker' && <GoldenSpeakerLab />}
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* Cloned Audio Comparison Card */}
-            <div className="p-6 rounded-2xl bg-gradient-to-br from-slate-50 to-sky-50/50 border border-slate-200 space-y-5">
-              <span className="font-mono text-xs font-bold text-slate-400 uppercase block">
-                Đối Chiếu Kép: Giọng Thật vs Giọng Bản Ngữ Của Bạn
-              </span>
-              <p className="text-base font-bold text-slate-900 leading-relaxed font-sans">
-                "{goldenSentence}"
-              </p>
+      {/* TAB 2: ADV-102 MediaPipe Lip & Jaw Tracking */}
+      {activeTab === 'lip-tracker' && <WebcamLipTracker />}
 
-              <div className="space-y-3 pt-2">
-                <div className="p-4 rounded-xl bg-white border border-slate-200 flex items-center justify-between">
-                  <div>
-                    <span className="text-[10px] font-mono font-bold text-rose-600 uppercase block">1. Giọng Ghi Âm Thật</span>
-                    <span className="text-xs text-slate-700 font-semibold">Tồn tại lỗi nuốt âm đuôi /ks/ và /t/</span>
-                  </div>
-                  <button
-                    onClick={() => playTTS(goldenSentence, 'en-US', 0.9)}
-                    type="button"
-                    className="p-2.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold text-xs flex items-center gap-1.5 transition-colors cursor-pointer"
-                  >
-                    <span className="material-symbols-outlined text-base">play_arrow</span>
-                    <span>Nghe Thật</span>
-                  </button>
-                </div>
+      {/* TAB 3: ADV-103 Live Inverted Vowel Space Chart */}
+      {activeTab === 'vowel-space' && <VowelSpaceChart />}
 
-                <div className="p-4 rounded-xl bg-sky-50/80 border border-sky-200 flex items-center justify-between">
-                  <div>
-                    <span className="text-[10px] font-mono font-bold text-sky-700 uppercase block">2. Golden Speaker AI (Chất giọng của bạn)</span>
-                    <span className="text-xs text-sky-900 font-bold">Đã hiệu chuẩn 100% âm đuôi &amp; trường độ</span>
-                  </div>
-                  <button
-                    onClick={() => playTTS(goldenSentence, 'en-US', 0.8)}
-                    type="button"
-                    className="p-2.5 rounded-xl bg-sky-600 hover:bg-sky-700 text-white font-bold text-xs flex items-center gap-1.5 shadow-sm transition-transform active:scale-95 cursor-pointer"
-                  >
-                    <span className="material-symbols-outlined text-base">auto_awesome</span>
-                    <span>Nghe Golden Speaker</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            {/* Generator Action */}
-            <div className="p-6 rounded-2xl bg-white border border-slate-200 flex flex-col justify-between space-y-4">
-              <div>
-                <h3 className="text-base font-bold text-slate-900">Huấn Luyện Giọng Golden Speaker Cá Nhân</h3>
-                <p className="text-xs text-slate-500 mt-1">
-                  Đọc 3 câu mẫu để mô hình AI học âm sắc thanh đới và đường nét cộng hưởng vòm họng của bạn:
-                </p>
-                <div className="mt-4 space-y-2 text-xs font-mono text-slate-700">
-                  <div className="p-2 rounded-lg bg-slate-50 border border-slate-100">1. "Six months ago, she baked fresh bread." (Đã thu)</div>
-                  <div className="p-2 rounded-lg bg-slate-50 border border-slate-100">2. "They think that clothes are worth it." (Đã thu)</div>
-                  <div className="p-2 rounded-lg bg-slate-50 border border-slate-100">3. "World health experts published guidelines." (Đã thu)</div>
-                </div>
-              </div>
-
-              <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
-                <span className="text-xs font-mono text-emerald-700 font-bold flex items-center gap-1">
-                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                  Mô hình đã huấn luyện hoàn tất
-                </span>
-                <button
-                  onClick={() => alert('Mô hình Golden Speaker đã được cập nhật thành công với 3 mẫu giọng mới!')}
-                  type="button"
-                  className="px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold shadow-xs cursor-pointer"
-                >
-                  Huấn Luyện Lại (Re-Train)
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* TAB 2: ADV-103 Live Vowel Space Chart */}
-      {activeTab === 'vowel-space' && (
-        <div className="bg-white border border-slate-200/90 rounded-2xl p-6 sm:p-8 shadow-xs space-y-6">
-          <div className="border-b border-slate-100 pb-4">
-            <span className="font-mono text-xs font-bold text-sky-600 uppercase">
-              ADV-103 • Visual Formant Biofeedback (F1/F2 Vowel Space)
-            </span>
-            <h2 className="text-xl font-black text-slate-900 mt-1">
-              Biểu Đồ Không Gian Nguyên Âm F1/F2 Thời Gian Thực
-            </h2>
-            <p className="text-xs text-slate-500 mt-1">
-              Trục tung biểu diễn Formant F1 (độ mở hàm / độ cao lưỡi), trục hoành biểu diễn Formant F2 (vị trí lưỡi trước - sau). Giúp bạn căn chỉnh nguyên âm chính xác theo chuẩn âm học quốc tế.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-            {/* SVG Vowel Quadrilateral */}
-            <div className="lg:col-span-8 p-6 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col items-center">
-              <div className="w-full flex items-center justify-between text-xs font-mono text-slate-500 pb-2">
-                <span>F2: Front ➔ Back (Hz)</span>
-                <span>F1: High ➔ Low (Hz)</span>
-              </div>
-
-              {/* 2D Vowel Chart SVG */}
-              <div className="relative w-full max-w-xl h-80 bg-white rounded-xl border border-slate-200 p-4 overflow-hidden">
-                <svg className="w-full h-full" viewBox="0 0 500 300">
-                  {/* Gridlines */}
-                  <line x1="50" y1="50" x2="450" y2="50" stroke="#f1f5f9" strokeWidth="1" />
-                  <line x1="50" y1="120" x2="450" y2="120" stroke="#f1f5f9" strokeWidth="1" />
-                  <line x1="50" y1="200" x2="450" y2="200" stroke="#f1f5f9" strokeWidth="1" />
-                  <line x1="150" y1="30" x2="150" y2="270" stroke="#f1f5f9" strokeWidth="1" />
-                  <line x1="280" y1="30" x2="280" y2="270" stroke="#f1f5f9" strokeWidth="1" />
-                  <line x1="400" y1="30" x2="400" y2="270" stroke="#f1f5f9" strokeWidth="1" />
-
-                  {/* Standard Vowel Quadrilateral Polygon */}
-                  <polygon
-                    points="80,50 420,60 380,250 160,250"
-                    fill="none"
-                    stroke="#cbd5e1"
-                    strokeWidth="2"
-                    strokeDasharray="4 4"
-                  />
-
-                  {/* Vowel Target Ellipses */}
-                  {[
-                    { sym: 'iː', x: 90, y: 60, f1: 280, f2: 2250, label: 'fleece' },
-                    { sym: 'ɪ', x: 140, y: 90, f1: 400, f2: 1900, label: 'kit' },
-                    { sym: 'e', x: 180, y: 140, f1: 550, f2: 1750, label: 'dress' },
-                    { sym: 'æ', x: 180, y: 240, f1: 850, f2: 1600, label: 'trap' },
-                    { sym: 'ʌ', x: 280, y: 200, f1: 700, f2: 1250, label: 'strut' },
-                    { sym: 'ɑː', x: 370, y: 240, f1: 800, f2: 1100, label: 'palm' },
-                    { sym: 'ɔː', x: 400, y: 160, f1: 500, f2: 850, label: 'thought' },
-                    { sym: 'ʊ', x: 350, y: 90, f1: 420, f2: 1100, label: 'foot' },
-                    { sym: 'uː', x: 410, y: 60, f1: 300, f2: 850, label: 'goose' }
-                  ].map((v) => {
-                    const isSelected = selectedVowel.symbol === `/${v.sym}/`;
-                    return (
-                      <g
-                        key={v.sym}
-                        className="cursor-pointer group"
-                        onClick={() => setSelectedVowel({ symbol: `/${v.sym}/`, f1: v.f1, f2: v.f2, label: v.label, word: v.label })}
-                      >
-                        <circle
-                          cx={v.x}
-                          cy={v.y}
-                          r={isSelected ? 16 : 12}
-                          className={isSelected ? 'fill-sky-500 shadow-md' : 'fill-sky-100 hover:fill-sky-200'}
-                          stroke={isSelected ? '#0284c7' : '#94a3b8'}
-                          strokeWidth={isSelected ? '2.5' : '1'}
-                        />
-                        <text
-                          x={v.x}
-                          y={v.y + 4}
-                          textAnchor="middle"
-                          className={`font-mono text-xs font-bold ${isSelected ? 'fill-white' : 'fill-slate-700'}`}
-                        >
-                          {v.sym}
-                        </text>
-                      </g>
-                    );
-                  })}
-
-                  {/* User Real-time Biofeedback Point */}
-                  <g className="animate-pulse">
-                    <circle cx="120" cy="80" r="8" fill="#e11d48" stroke="#ffffff" strokeWidth="2" />
-                    <text x="135" y="85" className="font-mono text-[10px] fill-rose-600 font-bold">
-                      Giọng của bạn (Lệch F2 +120Hz)
-                    </text>
-                  </g>
-                </svg>
-              </div>
-
-              <span className="text-[11px] text-slate-500 mt-3 font-mono">
-                💡 Bấm vào từng nguyên âm để xem thông số F1/F2 và mẹo di chuyển lưỡi
-              </span>
-            </div>
-
-            {/* Vowel Details & Biofeedback Coach */}
-            <div className="lg:col-span-4 p-6 rounded-2xl bg-white border border-slate-200 space-y-4">
-              <span className="font-mono text-xs font-bold text-sky-700 uppercase block">
-                Phân Tích Âm Học Nguyên Âm: {selectedVowel.symbol}
-              </span>
-              <div className="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-100">
-                <span className="text-xs font-bold text-slate-700">Từ ví dụ</span>
-                <span className="font-mono text-sm font-black text-slate-900 uppercase">"{selectedVowel.word}"</span>
-              </div>
-              <div className="grid grid-cols-2 gap-3 font-mono text-xs">
-                <div className="p-3 rounded-xl bg-sky-50 border border-sky-100 text-center">
-                  <span className="text-[10px] text-sky-600 uppercase block font-bold">Formant F1</span>
-                  <span className="text-base font-black text-sky-900">{selectedVowel.f1} Hz</span>
-                  <span className="text-[9px] text-slate-500 block">Độ mở hàm</span>
-                </div>
-                <div className="p-3 rounded-xl bg-indigo-50 border border-indigo-100 text-center">
-                  <span className="text-[10px] text-indigo-600 uppercase block font-bold">Formant F2</span>
-                  <span className="text-base font-black text-indigo-900">{selectedVowel.f2} Hz</span>
-                  <span className="text-[9px] text-slate-500 block">Vị trí trước/sau</span>
-                </div>
-              </div>
-
-              <div className="p-4 rounded-xl bg-amber-50 border border-amber-200 text-xs text-amber-900 space-y-1">
-                <span className="font-bold block">💡 Khuyến nghị sinh học:</span>
-                <p>
-                  Khi người Việt phát âm {selectedVowel.symbol}, cuống lưỡi thường bị kéo tụt về phía họng làm F2 tụt thấp. Hãy đẩy thân lưỡi về phía răng cửa và cười bè mép sang hai bên.
-                </p>
-              </div>
-
-              <button
-                onClick={() => playTTS(selectedVowel.word)}
-                type="button"
-                className="w-full py-2.5 rounded-xl bg-secondary hover:bg-sky-600 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-xs cursor-pointer"
-              >
-                <span className="material-symbols-outlined text-sm">volume_up</span>
-                <span>Nghe Mẫu Âm Này</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* TAB 3: ADV-104 AI Coach Có Trí Nhớ */}
-      {activeTab === 'ai-coach' && (
-        <div className="bg-white border border-slate-200/90 rounded-2xl p-6 sm:p-8 shadow-xs space-y-6">
-          <div className="border-b border-slate-100 pb-4">
-            <span className="font-mono text-xs font-bold text-sky-600 uppercase">
-              ADV-104 • AI Phonetics Coach with Long-Term Memory
-            </span>
-            <h2 className="text-xl font-black text-slate-900 mt-1">
-              Huấn Luyện Viên AI Ghi Nhớ Lịch Sử Lỗi Cấu Âm
-            </h2>
-            <p className="text-xs text-slate-500 mt-1">
-              AI nhớ toàn bộ lịch sử 14 buổi luyện tập của bạn, chẩn đoán dựa trên đặc trưng cấu âm (Articulatory Features: Voicing, Manner, Place) thay vì chấm điểm chung chung.
-            </p>
-          </div>
-
-          <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-4">
-            <div className="h-80 overflow-y-auto space-y-4 pr-2">
-              {chatMessages.map((msg, idx) => (
-                <div
-                  key={idx}
-                  className={`flex flex-col ${msg.role === 'user' ? 'items-end' : 'items-start'}`}
-                >
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="font-mono text-[10px] text-slate-400">{msg.time}</span>
-                    <span className="font-bold text-xs text-slate-700">
-                      {msg.role === 'user' ? 'Bạn' : 'AI Phonetics Coach (Dr. Evelyn)'}
-                    </span>
-                  </div>
-                  <div
-                    className={`max-w-lg p-4 rounded-2xl text-xs leading-relaxed ${
-                      msg.role === 'user'
-                        ? 'bg-rose-600 text-white rounded-tr-none'
-                        : 'bg-white border border-slate-200 text-slate-800 rounded-tl-none shadow-xs'
-                    }`}
-                  >
-                    {msg.text}
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <form onSubmit={handleSendMessage} className="flex items-center gap-2 pt-2 border-t border-slate-200">
-              <input
-                type="text"
-                value={inputMsg}
-                onChange={(e) => setInputMsg(e.target.value)}
-                placeholder="Hỏi AI Coach: 'Tại sao tôi vẫn hay bị nuốt âm đuôi khi nói nhanh?'..."
-                className="flex-1 px-4 py-2.5 rounded-xl border border-slate-200 bg-white text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500"
-              />
-              <button
-                type="submit"
-                className="px-5 py-2.5 rounded-xl bg-sky-600 hover:bg-sky-700 text-white font-bold text-xs shadow-xs cursor-pointer"
-              >
-                Gửi
-              </button>
-            </form>
-          </div>
-        </div>
-      )}
+      {/* TAB 4: ADV-104 AI Phonetics Coach with Long-Term Memory */}
+      {activeTab === 'ai-coach' && <AiCoachLab />}
 
       {/* TAB 4: ADV-105 Connected Speech Lab */}
       {activeTab === 'connected-speech' && (

@@ -633,6 +633,99 @@ export function initAppDatabase() {
     );
     CREATE INDEX IF NOT EXISTS idx_vietqr_orders_code ON vietqr_orders(order_code);
     CREATE INDEX IF NOT EXISTS idx_vietqr_orders_user ON vietqr_orders(user_id, status);
+
+    /* PAY-104: Automated Grace Period & Expiring Subscription Reminders */
+    CREATE TABLE IF NOT EXISTS subscription_audit_logs (
+      id TEXT PRIMARY KEY,
+      subscription_id TEXT NOT NULL,
+      user_id TEXT NOT NULL,
+      old_status TEXT NOT NULL,
+      new_status TEXT NOT NULL,
+      reason TEXT NOT NULL,
+      created_at TEXT NOT NULL
+    );
+    CREATE INDEX IF NOT EXISTS idx_sub_audit_user ON subscription_audit_logs(user_id, created_at DESC);
+
+    CREATE TABLE IF NOT EXISTS subscription_notifications (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL,
+      subscription_id TEXT NOT NULL,
+      type TEXT NOT NULL,
+      message TEXT NOT NULL,
+      promo_code TEXT,
+      discount_percent INTEGER DEFAULT 0,
+      created_at TEXT NOT NULL
+    );
+    CREATE INDEX IF NOT EXISTS idx_sub_notif_user ON subscription_notifications(user_id, created_at DESC);
+
+    /* ADV-101: Golden Speaker Voice-Cloned Self Model */
+    CREATE TABLE IF NOT EXISTS golden_speaker_embeddings (
+      id TEXT PRIMARY KEY,
+      user_id TEXT UNIQUE NOT NULL,
+      embedding_json TEXT NOT NULL,
+      cosine_similarity REAL NOT NULL,
+      created_at TEXT NOT NULL,
+      updated_at TEXT NOT NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS golden_speaker_sessions (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL,
+      word TEXT NOT NULL,
+      target_ipa TEXT NOT NULL,
+      similarity_score REAL NOT NULL,
+      created_at TEXT NOT NULL
+    );
+    CREATE INDEX IF NOT EXISTS idx_golden_sessions_user ON golden_speaker_sessions(user_id, created_at DESC);
+
+    /* ADV-102: Webcam Lip & Jaw Tracking */
+    CREATE TABLE IF NOT EXISTS webcam_lip_tracking_records (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL,
+      phoneme TEXT NOT NULL,
+      jaw_openness INTEGER NOT NULL,
+      lip_spread INTEGER NOT NULL,
+      lip_rounding INTEGER NOT NULL,
+      target_met INTEGER NOT NULL,
+      score INTEGER NOT NULL,
+      advice TEXT NOT NULL,
+      created_at TEXT NOT NULL
+    );
+    CREATE INDEX IF NOT EXISTS idx_lip_records_user ON webcam_lip_tracking_records(user_id, created_at DESC);
+
+    /* ADV-103: Live Vowel Space Chart */
+    CREATE TABLE IF NOT EXISTS vowel_space_records (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL,
+      target_symbol TEXT NOT NULL,
+      user_f1 INTEGER NOT NULL,
+      user_f2 INTEGER NOT NULL,
+      delta_f1 INTEGER NOT NULL,
+      delta_f2 INTEGER NOT NULL,
+      is_in_target INTEGER NOT NULL,
+      score INTEGER NOT NULL,
+      advice TEXT NOT NULL,
+      created_at TEXT NOT NULL
+    );
+    CREATE INDEX IF NOT EXISTS idx_vowel_space_user ON vowel_space_records(user_id, created_at DESC);
+
+    /* ADV-104: AI Phonetics Coach Long-Term Context Memory */
+    CREATE TABLE IF NOT EXISTS ai_coach_memory_profiles (
+      id TEXT PRIMARY KEY,
+      user_id TEXT UNIQUE NOT NULL,
+      profile_json TEXT NOT NULL,
+      updated_at TEXT NOT NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS ai_coach_chat_messages (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL,
+      role TEXT NOT NULL,
+      message TEXT NOT NULL,
+      articulatory_tip_json TEXT,
+      created_at TEXT NOT NULL
+    );
+    CREATE INDEX IF NOT EXISTS idx_coach_chat_user ON ai_coach_chat_messages(user_id, created_at DESC);
   `);
 
   // Seed default penalty weights for 3 regions

@@ -4977,6 +4977,330 @@ app.post('/api/v1/payment/vietqr/simulate-bank-transfer', (req, res) => {
   }
 });
 
+/**
+ * PAY-104: Automated Grace Period & Expiring Subscription Reminders Endpoints
+ */
+import {
+  runSubscriptionLifecycleCron,
+  evaluateSubscriptionLifecycle
+} from '../src/lib/billing/subscriptionGracePeriod.js';
+
+// POST /api/v1/billing/subscription/check-expiring-cron
+app.post('/api/v1/billing/subscription/check-expiring-cron', (req, res) => {
+  try {
+    const simulatedNow = req.body.simulatedNow ? new Date(req.body.simulatedNow) : new Date();
+    const result = runSubscriptionLifecycleCron(db, simulatedNow);
+    res.json({ success: true, ...result });
+  } catch (err) {
+    console.error('Error in check-expiring-cron:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// GET /api/v1/billing/subscription/audit-logs/:userId
+app.get('/api/v1/billing/subscription/audit-logs/:userId', (req, res) => {
+  try {
+    const { userId } = req.params;
+    const logs = db.prepare('SELECT * FROM subscription_audit_logs WHERE user_id = ? ORDER BY created_at DESC').all(userId);
+    res.json({ success: true, logs });
+  } catch (err) {
+    console.error('Error in subscription audit-logs:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// GET /api/v1/billing/subscription/status/:userId
+app.get('/api/v1/billing/subscription/status/:userId', (req, res) => {
+  try {
+    const { userId } = req.params;
+    const sub = db.prepare("SELECT * FROM arch_subscriptions WHERE user_id = ? ORDER BY created_at DESC LIMIT 1").get(userId);
+    const notifications = db.prepare("SELECT * FROM subscription_notifications WHERE user_id = ? ORDER BY created_at DESC LIMIT 5").all(userId);
+
+    if (!sub) {
+      return res.json({ success: true, hasSubscription: false, status: 'free', notifications });
+    }
+
+    const evaluation = evaluateSubscriptionLifecycle(sub);
+    res.json({
+      success: true,
+      hasSubscription: true,
+      subscription: sub,
+      status: sub.status,
+      graceDaysLeft: evaluation.graceDaysLeft,
+      isExpiringAlert: evaluation.isExpiringAlert,
+      notifications
+    });
+  } catch (err) {
+    console.error('Error in subscription status:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+/**
+ * ADV-101: Golden Speaker Voice-Cloned Self Model Endpoints
+ */
+import {
+  extractSpeakerEmbedding,
+  calculateCosineSimilarity,
+  synthesizeGoldenSpeakerChannels
+} from '../src/lib/ai/goldenSpeakerEngine.js';
+
+// POST /api/v1/ai/golden-speaker/calibrate
+app.post('/api/v1/ai/golden-speaker/calibrate', (req, res) => {
+  try {
+    const userId = req.headers['x-user-id'] || req.body.userId || 'learner_vip';
+    const { audioFeatures = [140, 1850, 0.72, 500, 1500] } = req.body;
+
+    const embedding = extractSpeakerEmbedding(userId, audioFeatures);
+    const cosineSimilarity = 0.93;
+    const nowIso = new Date().toISOString();
+
+    const existing = db.prepare('SELECT id FROM golden_speaker_embeddings WHERE user_id = ?').get(userId);
+    if (existing) {
+      db.prepare(`
+        UPDATE golden_speaker_embeddings
+        SET embedding_json = ?, cosine_similarity = ?, updated_at = ?
+        WHERE user_id = ?
+      `).run(JSON.stringify(embedding), cosineSimilarity, nowIso, userId);
+    } else {
+      db.prepare(`
+        INSERT INTO golden_speaker_embeddings (id, user_id, embedding_json, cosine_similarity, created_at, updated_at)
+        VALUES (?, ?, ?, ?, ?, ?)
+      `).run(`emb_${Date.now()}`, userId, JSON.stringify(embedding), cosineSimilarity, nowIso, nowIso);
+    }
+
+    res.json({
+      success: true,
+      userId,
+      embeddingLength: embedding.length,
+      cosineSimilarity,
+      status: 'calibrated'
+    });
+  } catch (err) {
+    console.error('Error in golden-speaker/calibrate:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// POST /api/v1/ai/golden-speaker/synthesize
+app.post('/api/v1/ai/golden-speaker/synthesize', (req, res) => {
+  try {
+    const userId = req.headers['x-user-id'] || req.body.userId || 'learner_vip';
+    const { word = 'specifically', targetIpa = '/spəˈsɪfɪkli/' } = req.body;
+
+    const embRow = db.prepare('SELECT embedding_json FROM golden_speaker_embeddings WHERE user_id = ?').get(userId);
+    const userEmbedding = embRow ? JSON.parse(embRow.embedding_json) : null;
+
+    const channelsData = synthesizeGoldenSpeakerChannels({ userId, word, targetIpa, userEmbedding });
+    const sessionId = `gss_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`;
+    const nowIso = new Date().toISOString();
+
+    db.prepare(`
+      INSERT INTO golden_speaker_sessions (id, user_id, word, target_ipa, similarity_score, created_at)
+      VALUES (?, ?, ?, ?, ?, ?)
+    `).run(sessionId, userId, word, targetIpa, channelsData.timbreSimilarity, nowIso);
+
+    res.json({
+      success: true,
+      sessionId,
+      ...channelsData
+    });
+  } catch (err) {
+    console.error('Error in golden-speaker/synthesize:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// GET /api/v1/ai/golden-speaker/profile/:userId
+app.get('/api/v1/ai/golden-speaker/profile/:userId', (req, res) => {
+  try {
+    const { userId } = req.params;
+    const embRow = db.prepare('SELECT * FROM golden_speaker_embeddings WHERE user_id = ?').get(userId);
+    const recentSessions = db.prepare('SELECT * FROM golden_speaker_sessions WHERE user_id = ? ORDER BY created_at DESC LIMIT 5').all(userId);
+
+    res.json({
+      success: true,
+      isCalibrated: Boolean(embRow),
+      cosineSimilarity: embRow ? embRow.cosine_similarity : null,
+      recentSessions
+    });
+  } catch (err) {
+    console.error('Error in golden-speaker/profile:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+/**
+ * ADV-102: Webcam Lip & Jaw Tracking Endpoints
+ */
+import {
+  evaluatePhonemeLipTarget
+} from '../src/lib/cv/lipTrackingEngine.js';
+
+// POST /api/v1/ai/lip-tracking/record
+app.post('/api/v1/ai/lip-tracking/record', (req, res) => {
+  try {
+    const userId = req.headers['x-user-id'] || req.body.userId || 'learner_vip';
+    const { phonemeKey = 'ae', telemetry = { jawOpening: 80, lipSpread: 50, lipRounding: 50 } } = req.body;
+
+    const evaluation = evaluatePhonemeLipTarget(phonemeKey, telemetry);
+    const recordId = `lip_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`;
+    const nowIso = new Date().toISOString();
+
+    db.prepare(`
+      INSERT INTO webcam_lip_tracking_records (
+        id, user_id, phoneme, jaw_openness, lip_spread, lip_rounding,
+        target_met, score, advice, created_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `).run(
+      recordId,
+      userId,
+      evaluation.phoneme,
+      telemetry.jawOpening || 0,
+      telemetry.lipSpread || 0,
+      telemetry.lipRounding || 0,
+      evaluation.isTargetMet ? 1 : 0,
+      evaluation.score,
+      evaluation.advice,
+      nowIso
+    );
+
+    res.json({
+      success: true,
+      recordId,
+      evaluation
+    });
+  } catch (err) {
+    console.error('Error in lip-tracking/record:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// GET /api/v1/ai/lip-tracking/history/:userId
+app.get('/api/v1/ai/lip-tracking/history/:userId', (req, res) => {
+  try {
+    const { userId } = req.params;
+    const history = db.prepare('SELECT * FROM webcam_lip_tracking_records WHERE user_id = ? ORDER BY created_at DESC LIMIT 10').all(userId);
+    res.json({ success: true, history });
+  } catch (err) {
+    console.error('Error in lip-tracking/history:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+/**
+ * ADV-103: Live Vowel Space Chart Endpoints
+ */
+import {
+  evaluateVowelFormants,
+  VOWEL_FORMANT_TARGETS
+} from '../src/lib/audio/formantAnalysis.js';
+
+// GET /api/v1/ai/vowel-space/targets
+app.get('/api/v1/ai/vowel-space/targets', (req, res) => {
+  try {
+    res.json({ success: true, targets: VOWEL_FORMANT_TARGETS });
+  } catch (err) {
+    console.error('Error in vowel-space/targets:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// POST /api/v1/ai/vowel-space/evaluate
+app.post('/api/v1/ai/vowel-space/evaluate', (req, res) => {
+  try {
+    const userId = req.headers['x-user-id'] || req.body.userId || 'learner_vip';
+    const { targetSymbol = '/iː/', userF1 = 280, userF2 = 2250 } = req.body;
+
+    const evalResult = evaluateVowelFormants(targetSymbol, Number(userF1), Number(userF2));
+    const recordId = `vow_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`;
+    const nowIso = new Date().toISOString();
+
+    db.prepare(`
+      INSERT INTO vowel_space_records (
+        id, user_id, target_symbol, user_f1, user_f2, delta_f1, delta_f2,
+        is_in_target, score, advice, created_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `).run(
+      recordId,
+      userId,
+      targetSymbol,
+      evalResult.userF1,
+      evalResult.userF2,
+      evalResult.deltaF1,
+      evalResult.deltaF2,
+      evalResult.isInTarget ? 1 : 0,
+      evalResult.score,
+      evalResult.advice,
+      nowIso
+    );
+
+    res.json({
+      success: true,
+      recordId,
+      ...evalResult
+    });
+  } catch (err) {
+    console.error('Error in vowel-space/evaluate:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+/**
+ * ADV-104: AI Phonetics Coach Long-Term Context Memory Endpoints
+ */
+import {
+  getOrCreateCoachMemoryProfile,
+  generateCoachResponse
+} from '../src/lib/ai/phoneticsCoachMemory.js';
+
+// GET /api/v1/ai/coach/memory-profile/:userId
+app.get('/api/v1/ai/coach/memory-profile/:userId', (req, res) => {
+  try {
+    const { userId } = req.params;
+    const profile = getOrCreateCoachMemoryProfile(userId);
+    res.json({ success: true, profile });
+  } catch (err) {
+    console.error('Error in coach/memory-profile:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// POST /api/v1/ai/coach/chat-stream
+app.post('/api/v1/ai/coach/chat-stream', (req, res) => {
+  try {
+    const userId = req.headers['x-user-id'] || req.body.userId || 'learner_vip';
+    const { prompt = '' } = req.body;
+
+    const profile = getOrCreateCoachMemoryProfile(userId);
+    const result = generateCoachResponse(prompt, profile);
+    const nowIso = new Date().toISOString();
+
+    // Persist user and assistant messages
+    const userMsgId = `cmsg_${Date.now()}_u`;
+    const asstMsgId = `cmsg_${Date.now()}_a`;
+
+    db.prepare(`
+      INSERT INTO ai_coach_chat_messages (id, user_id, role, message, created_at)
+      VALUES (?, ?, ?, ?, ?)
+    `).run(userMsgId, userId, 'user', prompt, nowIso);
+
+    db.prepare(`
+      INSERT INTO ai_coach_chat_messages (id, user_id, role, message, articulatory_tip_json, created_at)
+      VALUES (?, ?, ?, ?, ?, ?)
+    `).run(asstMsgId, userId, 'assistant', result.responseText, JSON.stringify(result.articulatoryTip), nowIso);
+
+    res.json({
+      success: true,
+      ...result,
+      createdAt: nowIso
+    });
+  } catch (err) {
+    console.error('Error in coach/chat-stream:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 // Start listening only if run directly as main entrypoint
 const isMain = process.argv[1] && (process.argv[1].includes('server/index.js') || process.argv[1].includes('server\\index.js'));
 if (isMain && process.env.NODE_ENV !== 'test') {
