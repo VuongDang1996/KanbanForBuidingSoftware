@@ -11,8 +11,10 @@ import {
   X,
   RefreshCw,
   ExternalLink,
-  ShieldAlert
+  ShieldAlert,
+  FileText
 } from 'lucide-react';
+import EInvoiceRequestModal from './EInvoiceRequestModal';
 
 export default function BillingHistoryReceiptModal({
   isOpen,
@@ -23,6 +25,8 @@ export default function BillingHistoryReceiptModal({
   const [loading, setLoading] = useState(true);
   const [selectedReceipt, setSelectedReceipt] = useState(null);
   const [refundOrder, setRefundOrder] = useState(null);
+  const [showEInvoice, setShowEInvoice] = useState(false);
+  const [selectedEInvoiceOrder, setSelectedEInvoiceOrder] = useState(null);
   const [refundReason, setRefundReason] = useState('Chưa phù hợp với trình độ hiện tại');
   const [submittingRefund, setSubmittingRefund] = useState(false);
   const [refundSuccessMsg, setRefundSuccessMsg] = useState('');
@@ -186,13 +190,25 @@ export default function BillingHistoryReceiptModal({
                         </td>
                         <td className="py-3 px-3 text-right space-x-1.5 whitespace-nowrap">
                           {tx.receiptAvailable && (
-                            <button
-                              onClick={() => handleOpenReceipt(tx.orderCode)}
-                              className="px-2 py-1 rounded-lg bg-indigo-600/20 hover:bg-indigo-600/30 text-indigo-300 border border-indigo-500/30 text-[11px] font-medium transition inline-flex items-center gap-1"
-                              title="Xem &amp; Tải biên lai"
-                            >
-                              <Receipt className="w-3 h-3" /> Biên lai
-                            </button>
+                            <>
+                              <button
+                                onClick={() => handleOpenReceipt(tx.orderCode)}
+                                className="px-2 py-1 rounded-lg bg-indigo-600/20 hover:bg-indigo-600/30 text-indigo-300 border border-indigo-500/30 text-[11px] font-medium transition inline-flex items-center gap-1 cursor-pointer"
+                                title="Xem &amp; Tải biên lai"
+                              >
+                                <Receipt className="w-3 h-3" /> Biên lai
+                              </button>
+                              <button
+                                onClick={() => {
+                                  setSelectedEInvoiceOrder(tx);
+                                  setShowEInvoice(true);
+                                }}
+                                className="px-2 py-1 rounded-lg bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-300 border border-emerald-500/30 text-[11px] font-medium transition inline-flex items-center gap-1 cursor-pointer"
+                                title="Xuất hoá đơn điện tử VAT (Nghị định 123/2020/NĐ-CP)"
+                              >
+                                <FileText className="w-3 h-3" /> HĐĐT VAT
+                              </button>
+                            </>
                           )}
                           {tx.status === 'paid' && !tx.refundStatus && (
                             <button
@@ -368,6 +384,21 @@ export default function BillingHistoryReceiptModal({
           )}
         </div>
       </div>
+
+      {/* PAY-107: E-Invoice VAT Modal */}
+      {showEInvoice && selectedEInvoiceOrder && (
+        <EInvoiceRequestModal
+          isOpen={showEInvoice}
+          onClose={() => {
+            setShowEInvoice(false);
+            setSelectedEInvoiceOrder(null);
+            fetchTransactions();
+          }}
+          orderCode={selectedEInvoiceOrder.orderCode}
+          orderAmount={selectedEInvoiceOrder.amountVnd}
+          accountId={accountId}
+        />
+      )}
     </div>
   );
 }

@@ -1013,6 +1013,92 @@ export function initAppDatabase() {
       verification_url TEXT NOT NULL
     );
     CREATE INDEX IF NOT EXISTS idx_billing_receipts_acc ON billing_receipts(account_id, issued_at DESC);
+
+    -- PAY-107: Automated E-Invoices (Decree 123/2020 & Circular 78/2021)
+    CREATE TABLE IF NOT EXISTS e_invoices (
+      id TEXT PRIMARY KEY,
+      order_code TEXT UNIQUE NOT NULL,
+      account_id TEXT NOT NULL,
+      buyer_type TEXT NOT NULL DEFAULT 'company',
+      buyer_tax_code TEXT NOT NULL,
+      buyer_company_name TEXT NOT NULL,
+      buyer_address TEXT NOT NULL,
+      buyer_email TEXT NOT NULL,
+      template_code TEXT NOT NULL DEFAULT '1/001',
+      invoice_series TEXT NOT NULL DEFAULT '1C26TXX',
+      invoice_no TEXT NOT NULL,
+      cqt_lookup_code TEXT UNIQUE NOT NULL,
+      subtotal_vnd INTEGER NOT NULL,
+      vat_percent INTEGER DEFAULT 8,
+      vat_amount_vnd INTEGER NOT NULL,
+      total_amount_vnd INTEGER NOT NULL,
+      xml_payload TEXT NOT NULL,
+      pdf_url TEXT,
+      status TEXT NOT NULL DEFAULT 'issued',
+      adjustment_for_order TEXT,
+      issued_at TEXT NOT NULL,
+      created_at TEXT NOT NULL
+    );
+    CREATE INDEX IF NOT EXISTS idx_e_invoices_order ON e_invoices(order_code);
+    CREATE INDEX IF NOT EXISTS idx_e_invoices_cqt ON e_invoices(cqt_lookup_code);
+    CREATE INDEX IF NOT EXISTS idx_e_invoices_acc ON e_invoices(account_id);
+
+    -- PAY-108: Discount Coupons & 7-Day Free Trial
+    CREATE TABLE IF NOT EXISTS coupons (
+      id TEXT PRIMARY KEY,
+      code TEXT UNIQUE NOT NULL,
+      discount_type TEXT NOT NULL DEFAULT 'percent',
+      discount_value INTEGER NOT NULL,
+      min_order_amount INTEGER DEFAULT 0,
+      max_uses INTEGER DEFAULT 500,
+      used_count INTEGER DEFAULT 0,
+      valid_from TEXT NOT NULL,
+      valid_to TEXT NOT NULL,
+      applicable_plans_json TEXT DEFAULT '["pro_monthly","pro_quarterly","pro_annual"]',
+      is_active INTEGER DEFAULT 1,
+      created_at TEXT NOT NULL
+    );
+    CREATE INDEX IF NOT EXISTS idx_coupons_code ON coupons(code);
+
+    CREATE TABLE IF NOT EXISTS coupon_redemptions (
+      id TEXT PRIMARY KEY,
+      coupon_id TEXT NOT NULL,
+      coupon_code TEXT NOT NULL,
+      account_id TEXT NOT NULL,
+      order_code TEXT NOT NULL,
+      discount_amount INTEGER NOT NULL,
+      redeemed_at TEXT NOT NULL,
+      UNIQUE(coupon_code, account_id)
+    );
+    CREATE INDEX IF NOT EXISTS idx_redemptions_acc ON coupon_redemptions(account_id);
+
+    CREATE TABLE IF NOT EXISTS user_trial_records (
+      id TEXT PRIMARY KEY,
+      account_id TEXT UNIQUE NOT NULL,
+      normalized_email TEXT NOT NULL,
+      device_fingerprint TEXT NOT NULL,
+      trial_days INTEGER DEFAULT 7,
+      trial_started_at TEXT NOT NULL,
+      trial_ends_at TEXT NOT NULL,
+      is_active INTEGER DEFAULT 1,
+      created_at TEXT NOT NULL
+    );
+    CREATE INDEX IF NOT EXISTS idx_trials_norm_email ON user_trial_records(normalized_email);
+    CREATE INDEX IF NOT EXISTS idx_trials_fingerprint ON user_trial_records(device_fingerprint);
+
+    -- OPS-101: Executive Admin Dashboard & Subscription Console
+    CREATE TABLE IF NOT EXISTS admin_audit_logs (
+      id TEXT PRIMARY KEY,
+      admin_id TEXT NOT NULL,
+      target_account_id TEXT,
+      action TEXT NOT NULL,
+      reason TEXT NOT NULL,
+      ip_address TEXT,
+      details_json TEXT,
+      created_at TEXT NOT NULL
+    );
+    CREATE INDEX IF NOT EXISTS idx_admin_audit_admin ON admin_audit_logs(admin_id, created_at DESC);
+    CREATE INDEX IF NOT EXISTS idx_admin_audit_target ON admin_audit_logs(target_account_id, created_at DESC);
   `);
 
   // Seed default penalty weights for 3 regions
@@ -1367,6 +1453,61 @@ export function initAppDatabase() {
       threeDaysAgo,
       'https://vietphonics.vn/verify/receipt/REC-2026-008821'
     );
+  }
+
+  // PAY-107, PAY-108, OPS-101 Seed Data
+  try {
+    db.prepare("ALTER TABLE auth_accounts ADD COLUMN role TEXT DEFAULT 'learner'").run();
+  } catch {}
+
+  // Seed superadmin account
+  db.prepare(`
+    INSERT OR IGNORE INTO auth_accounts (
+      id, email, password_hash, display_name, l1_dialect, learning_goal,
+      status, tier, role, email_verified_at, created_at, updated_at
+    ) VALUES (
+      'admin_root_01', 'admin@vietphonics.vn',
+      '$argon2id$v=19$m=65536,t=3,p=4$fake_hash_admin',
+      'Ban Quản Trị Hệ Thống (SuperAdmin)', 'bac', 'workplace',
+      'active', 'pro', 'superadmin', datetime('now'), datetime('now'), datetime('now')
+    )
+  `).run();
+
+  // Seed coupons (PAY-108)
+  const defaultCoupons = [
+    { id: 'cpn_50', code: 'VIETPHONICS50', type: 'percent', val: 50, max: 500 },
+    { id: 'cpn_ielts', code: 'IELTS2026', type: 'percent', val: 30, max: 1000 },
+    { id: 'cpn_he', code: 'CHAOHE30', type: 'percent', val: 30, max: 200 }
+  ];
+  for (const c of defaultCoupons) {
+    db.prepare(`
+      INSERT OR IGNORE INTO coupons (id, code, discount_type, discount_value, max_uses, used_count, valid_from, valid_to, created_at)
+      VALUES (?, ?, ?, ?, ?, 0, '2026-01-01', '2026-12-31', datetime('now'))
+    `).run(c.id, c.code, c.type, c.val, c.max);
+  }
+
+  // Seed default e-invoice for 'VP PRO1Y 8821' (PAY-107)
+  const existingEInvoice = db.prepare("SELECT COUNT(*) as cnt FROM e_invoices WHERE order_code = 'VP PRO1Y 8821'").get();
+  if (existingEInvoice.cnt === 0) {
+    const subtotal = Math.round(599000 / 1.08);
+    const vat = 599000 - subtotal;
+    const xmlMock = `<?xml version="1.0" encoding="UTF-8"?><HDon><DLHDon><TTChung><KHieu>1C26TXX</KHieu><SHDon>0000088</SHDon><NLap>2026-10-01</NLap><DVTTe>VND</DVTTe></TTChung><NDHDon><NBan><Ten>Công ty TNHH Công nghệ Giáo dục VietPhonics</Ten><MST>0318992819</MST></NBan><NMua><Ten>Công ty TNHH Giải Pháp Công Nghệ Alpha VN</Ten><MST>0317899123</MST></NMua><TToan><TgTTThue>${subtotal}</TgTTThue><TgTThue>${vat}</TgTThue><TgTTTBSo>${599000}</TgTTTBSo></TToan></NDHDon></DLHDon></HDon>`;
+
+    db.prepare(`
+      INSERT OR IGNORE INTO e_invoices (
+        id, order_code, account_id, buyer_type, buyer_tax_code, buyer_company_name,
+        buyer_address, buyer_email, template_code, invoice_series, invoice_no,
+        cqt_lookup_code, subtotal_vnd, vat_percent, vat_amount_vnd, total_amount_vnd,
+        xml_payload, pdf_url, status, issued_at, created_at
+      ) VALUES (
+        'einv_001', 'VP PRO1Y 8821', 'default_user', 'company', '0317899123',
+        'Công ty TNHH Giải Pháp Công Nghệ Alpha VN', 'Tầng 5, Toà nhà Bitexco, Q.1, TP.HCM',
+        'accounting@alphavn.com', '1/001', '1C26TXX', '0000088',
+        'CQT-2026-0318992819-8821', ?, 8, ?, 599000,
+        ?, 'https://vietphonics.vn/invoices/download/0000088.pdf', 'issued',
+        datetime('now', '-3 days'), datetime('now', '-3 days')
+      )
+    `).run(subtotal, vat, xmlMock);
   }
 }
 

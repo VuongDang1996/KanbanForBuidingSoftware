@@ -88,6 +88,7 @@ export function AppProvider({ children }) {
   const [legalModalTab, setLegalModalTab] = useState('terms');
   const [showBillingModal, setShowBillingModal] = useState(false);
   const [showVoiceConsentModal, setShowVoiceConsentModal] = useState(false);
+  const [showAdminModal, setShowAdminModal] = useState(false);
 
   // Load dialect profile from backend server on mount
   useEffect(() => {
@@ -242,6 +243,8 @@ export function AppProvider({ children }) {
         setShowBillingModal,
         showVoiceConsentModal,
         setShowVoiceConsentModal,
+        showAdminModal,
+        setShowAdminModal,
         currentPracticeItem,
         setCurrentPracticeItem,
         triggerPractice,

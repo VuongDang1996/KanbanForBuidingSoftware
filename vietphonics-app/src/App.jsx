@@ -8,6 +8,7 @@ import UpgradeModal from './components/UpgradeModal';
 import AccountSecurityModal from './components/AccountSecurityModal';
 import LegalDocumentsModal from './components/legal/LegalDocumentsModal';
 import BillingHistoryReceiptModal from './components/billing/BillingHistoryReceiptModal';
+import ExecutiveAdminDashboardModal from './components/admin/ExecutiveAdminDashboardModal';
 
 import DashboardView from './views/DashboardView';
 import PracticeStudioView from './views/PracticeStudioView';
@@ -32,7 +33,9 @@ function MainContent() {
     legalModalTab,
     setLegalModalTab,
     showBillingModal,
-    setShowBillingModal
+    setShowBillingModal,
+    showAdminModal,
+    setShowAdminModal
   } = useApp();
 
   const renderActiveView = () => {
@@ -89,6 +92,10 @@ function MainContent() {
         isOpen={showBillingModal}
         onClose={() => setShowBillingModal(false)}
       />
+      <ExecutiveAdminDashboardModal
+        isOpen={showAdminModal}
+        onClose={() => setShowAdminModal(false)}
+      />
 
       {/* Acoustic Precision & Legal Footer */}
       <footer className="w-full bg-white border-t border-slate-200/80 py-6 px-4 text-center mt-12 text-xs text-slate-500 font-sans">
@@ -142,6 +149,15 @@ function MainContent() {
               className="text-slate-600 hover:text-indigo-600 hover:underline transition cursor-pointer font-medium"
             >
               Lịch Sử Giao Dịch &amp; Biên Lai VAT
+            </button>
+            <span className="text-slate-300">•</span>
+            <button
+              type="button"
+              onClick={() => setShowAdminModal(true)}
+              className="text-indigo-700 bg-indigo-50 border border-indigo-200 px-2 py-0.5 rounded font-semibold hover:bg-indigo-100 transition cursor-pointer flex items-center gap-1"
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-indigo-500"></span>
+              Admin Console (OPS-101)
             </button>
           </div>
         </div>

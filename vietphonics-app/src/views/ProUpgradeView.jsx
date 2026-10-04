@@ -3,6 +3,8 @@ import { useApp } from '../context/AppContext';
 import SpacedRepetitionDeck from '../components/error-bank/SpacedRepetitionDeck';
 import PricingMatrix from '../components/pricing/PricingMatrix';
 import VietQrCheckoutModal from '../components/payment/VietQrCheckoutModal';
+import FreeTrialBanner from '../components/paywall/FreeTrialBanner';
+import CouponInputBox from '../components/paywall/CouponInputBox';
 
 const ERROR_WORDS = [
   {
@@ -314,6 +316,18 @@ export default function ProUpgradeView() {
                   100% Hoàn tiền 7 ngày
                 </span>
               </div>
+            </div>
+
+            {/* PAY-108: 7-Day Pro Free Trial Banner */}
+            <FreeTrialBanner accountId="default_user" />
+
+            {/* PAY-108: Discount Coupon Code Box */}
+            <div className="max-w-md mx-auto w-full pb-2">
+              <CouponInputBox
+                orderAmount={selectedPlan === 'annual' ? 599000 : 30000}
+                planCode={selectedPlan}
+                onCouponApplied={(c) => console.log('Coupon applied:', c)}
+              />
             </div>
 
             {/* PAY-103: Interactive Multi-Cycle Pricing Matrix & Comparison Table */}
