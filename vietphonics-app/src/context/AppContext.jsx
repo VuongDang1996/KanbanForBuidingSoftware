@@ -1,36 +1,9 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { DIALECTS } from '../constants/dialects.js';
+
+export { DIALECTS };
 
 const AppContext = createContext(null);
-
-export const DIALECTS = {
-  bac: {
-    id: 'bac',
-    name: 'Miền Bắc',
-    label: '🇻🇳 Giọng Miền Bắc: /d/-/z/ calibrated',
-    desc: 'Hà Nội & Bắc Bộ: Chuẩn hoá /d/ ➔ /z/, âm đuôi /t/-/d/, tránh lẫn lộn l/n',
-    f0Mean: '215 Hz',
-    f1f2Offset: '-12 Hz',
-    tip: 'Đặc thù Giọng Bắc: Đang cải thiện xuất sắc cặp âm /z/ và /ʒ/, cần tập trung duy trì luồng hơi âm đuôi /t/ & /d/!'
-  },
-  trung: {
-    id: 'trung',
-    name: 'Miền Trung',
-    label: '🇻🇳 Giọng Miền Trung: Tonal Pitch calibrated',
-    desc: 'Nghệ An, Huế, Đà Nẵng: Giải phóng nén thanh quản, mở rộng âm vực nguyên âm /e/-/ɛ/',
-    f0Mean: '198 Hz',
-    f1f2Offset: '+24 Hz',
-    tip: 'Đặc thù Giọng Trung: Ngữ điệu ổn định, cần mở rộng khẩu hình cho các nguyên âm đôi /eə/ và /ɪə/!'
-  },
-  nam: {
-    id: 'nam',
-    name: 'Miền Nam',
-    label: '🇻🇳 Giọng Miền Nam: /v/-/j/ calibrated',
-    desc: 'Sài Gòn & Nam Bộ: Khắc phục biến đổi /v/ ➔ /j/, giữ âm đuôi khép miệng /p/, /k/, /t/',
-    f0Mean: '228 Hz',
-    f1f2Offset: '-5 Hz',
-    tip: 'Đặc thù Giọng Nam: Ngữ điệu mềm mại tự nhiên, cần chú ý phát rõ phụ âm đuôi /k/ và /t/ thay vì nuốt âm!'
-  }
-};
 
 export function AppProvider({ children }) {
   const [activeTab, setActiveTab] = useState('tong-quan');
@@ -41,6 +14,73 @@ export function AppProvider({ children }) {
   const [streak, setStreak] = useState(14);
   const [shields, setShields] = useState(2);
   const [isPro, setIsPro] = useState(false);
+  const [gopScore, setGopScore] = useState(78);
+  const [currentUser, setCurrentUser] = useState(() => {
+    try {
+      const saved = localStorage.getItem('vietphonics_user');
+      return saved ? JSON.parse(saved) : null;
+    } catch {
+      return null;
+    }
+  });
+  const [isGuest, setIsGuest] = useState(() => {
+    try {
+      return !localStorage.getItem('vietphonics_user');
+    } catch {
+      return true;
+    }
+  });
+
+  // Hub sub-tabs
+  const [practiceSubTab, setPracticeSubTab] = useState('coda-sentences'); // 'coda-sentences' | 'khau-hinh-2d' | 'mastery-pairs'
+  const [aiLabSubTab, setAiLabSubTab] = useState('ai-hoi-thoai'); // 'ai-hoi-thoai' | 'speech-lab' | 'game-3d-rpg'
+  const [progressSubTab, setProgressSubTab] = useState('analytics'); // 'analytics' | 'error-bank' | 'pro-upgrade'
+
+  const loginLearner = (user) => {
+    setCurrentUser(user);
+    setIsGuest(false);
+    if (user?.tier === 'pro' || user?.isPro) {
+      setIsPro(true);
+    }
+    try {
+      localStorage.setItem('vietphonics_user', JSON.stringify(user));
+    } catch {}
+  };
+
+  const logoutLearner = () => {
+    setCurrentUser(null);
+    setIsGuest(true);
+    setIsPro(false);
+    try {
+      localStorage.removeItem('vietphonics_user');
+    } catch {}
+  };
+
+  // Smart tab router mapping for backward compatibility
+  const handleSetActiveTab = (tabId) => {
+    if (tabId === 'khau-hinh-2d') {
+      setActiveTab('phong-luyen-phat-am');
+      setPracticeSubTab('khau-hinh-2d');
+    } else if (tabId === 'mastery-lab') {
+      setActiveTab('phong-luyen-phat-am');
+      setPracticeSubTab('mastery-pairs');
+    } else if (tabId === 'ai-hoi-thoai') {
+      setActiveTab('ai-lab');
+      setAiLabSubTab('ai-hoi-thoai');
+    } else if (tabId === 'game-3d-rpg') {
+      setActiveTab('ai-lab');
+      setAiLabSubTab('game-3d-rpg');
+    } else if (tabId === 'ngan-hang-tu-loi') {
+      setActiveTab('tien-do');
+      setProgressSubTab('error-bank');
+    } else if (tabId === 'pro-upgrade') {
+      setActiveTab('tien-do');
+      setProgressSubTab('pro-upgrade');
+    } else {
+      setActiveTab(tabId);
+    }
+  };
+
   const [showDiagnosticModal, setShowDiagnosticModal] = useState(false);
   const [showStreakModal, setShowStreakModal] = useState(false);
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
@@ -153,7 +193,20 @@ export function AppProvider({ children }) {
     <AppContext.Provider
       value={{
         activeTab,
-        setActiveTab,
+        setActiveTab: handleSetActiveTab,
+        rawSetActiveTab: setActiveTab,
+        isGuest,
+        setIsGuest,
+        currentUser,
+        setCurrentUser,
+        loginLearner,
+        logoutLearner,
+        practiceSubTab,
+        setPracticeSubTab,
+        aiLabSubTab,
+        setAiLabSubTab,
+        progressSubTab,
+        setProgressSubTab,
         dialect,
         setDialect: setDialectAndPersist,
         setDialectAndPersist,

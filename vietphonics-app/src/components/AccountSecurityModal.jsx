@@ -16,15 +16,22 @@ import {
   KeyRound
 } from 'lucide-react';
 import { validatePasswordStrength } from '../lib/auth/passwordValidation';
+import { useApp } from '../context/AppContext';
 
 export default function AccountSecurityModal({
   isOpen,
   onClose,
-  initialTab = 'register', // 'register' | 'forgot' | 'devices'
+  initialTab = 'register', // 'login' | 'register' | 'forgot' | 'devices'
   currentUser = null,
   onAuthSuccess = () => {}
 }) {
+  const appContext = useApp ? useApp() : null;
+  const loginLearner = appContext?.loginLearner;
   const [activeTab, setActiveTab] = useState(initialTab);
+
+  // Login States
+  const [loginEmail, setLoginEmail] = useState('');
+  const [loginPassword, setLoginPassword] = useState('');
 
   // USER-106 States
   const [regEmail, setRegEmail] = useState('');
@@ -95,6 +102,41 @@ export default function AccountSecurityModal({
       console.error('Failed to load sessions:', err);
     } finally {
       setLoadingSessions(false);
+    }
+  };
+
+  // 0. Submit Login
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setErrorMsg('');
+    setSuccessMsg('');
+    if (!loginEmail || !loginPassword) {
+      setErrorMsg('Vui lòng nhập đầy đủ email và mật khẩu.');
+      return;
+    }
+    try {
+      setLoading(true);
+      const res = await fetch('http://localhost:3002/api/v1/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: loginEmail, password: loginPassword })
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || 'Đăng nhập thất bại.');
+      }
+      setSuccessMsg('Đăng nhập thành công! Chào mừng bạn quay trở lại.');
+      if (loginLearner && data.user) {
+        loginLearner(data.user);
+      }
+      onAuthSuccess(data);
+      setTimeout(() => {
+        onClose();
+      }, 1000);
+    } catch (err) {
+      setErrorMsg(err.message || 'Lỗi kết nối máy chủ xác thực');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -325,20 +367,30 @@ export default function AccountSecurityModal({
         </div>
 
         {/* Tab Selector */}
-        <div className="flex border-b border-slate-800 bg-slate-950/40 px-6 pt-2">
+        <div className="flex border-b border-slate-800 bg-slate-950/40 px-6 pt-2 overflow-x-auto">
           <button
-            onClick={() => { setActiveTab('register'); setOtpStep(false); setErrorMsg(''); }}
-            className={`pb-3 px-3 text-sm font-medium border-b-2 transition ${
+            onClick={() => { setActiveTab('login'); setErrorMsg(''); setSuccessMsg(''); }}
+            className={`pb-3 px-3 text-sm font-medium border-b-2 transition whitespace-nowrap ${
+              activeTab === 'login'
+                ? 'border-indigo-500 text-indigo-400'
+                : 'border-transparent text-slate-400 hover:text-slate-200'
+            }`}
+          >
+            Đăng Nhập
+          </button>
+          <button
+            onClick={() => { setActiveTab('register'); setOtpStep(false); setErrorMsg(''); setSuccessMsg(''); }}
+            className={`pb-3 px-3 text-sm font-medium border-b-2 transition whitespace-nowrap ${
               activeTab === 'register'
                 ? 'border-indigo-500 text-indigo-400'
                 : 'border-transparent text-slate-400 hover:text-slate-200'
             }`}
           >
-            Đăng Ký & Xác Minh
+            Đăng Ký &amp; Xác Minh
           </button>
           <button
-            onClick={() => { setActiveTab('forgot'); setErrorMsg(''); }}
-            className={`pb-3 px-3 text-sm font-medium border-b-2 transition ${
+            onClick={() => { setActiveTab('forgot'); setErrorMsg(''); setSuccessMsg(''); }}
+            className={`pb-3 px-3 text-sm font-medium border-b-2 transition whitespace-nowrap ${
               activeTab === 'forgot'
                 ? 'border-indigo-500 text-indigo-400'
                 : 'border-transparent text-slate-400 hover:text-slate-200'
@@ -347,14 +399,14 @@ export default function AccountSecurityModal({
             Quên Mật Khẩu
           </button>
           <button
-            onClick={() => { setActiveTab('devices'); setErrorMsg(''); }}
-            className={`pb-3 px-3 text-sm font-medium border-b-2 transition ${
+            onClick={() => { setActiveTab('devices'); setErrorMsg(''); setSuccessMsg(''); }}
+            className={`pb-3 px-3 text-sm font-medium border-b-2 transition whitespace-nowrap ${
               activeTab === 'devices'
                 ? 'border-indigo-500 text-indigo-400'
                 : 'border-transparent text-slate-400 hover:text-slate-200'
             }`}
           >
-            Hồ Sơ & Thiết Bị (Max 2)
+            Hồ Sơ &amp; Thiết Bị (Max 2)
           </button>
         </div>
 
@@ -374,6 +426,70 @@ export default function AccountSecurityModal({
 
         {/* Content Body */}
         <div className="p-6 overflow-y-auto space-y-4">
+          {/* TAB 0: ĐĂNG NHẬP */}
+          {activeTab === 'login' && (
+            <form onSubmit={handleLogin} className="space-y-4">
+              <div>
+                <label className="block text-xs font-medium text-slate-300 mb-1">Email Học Viên *</label>
+                <div className="relative">
+                  <Mail className="w-4 h-4 text-slate-500 absolute left-3 top-3" />
+                  <input
+                    type="email"
+                    required
+                    value={loginEmail}
+                    onChange={(e) => setLoginEmail(e.target.value)}
+                    placeholder="learner@example.com"
+                    className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-9 pr-4 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <div className="flex items-center justify-between mb-1">
+                  <label className="block text-xs font-medium text-slate-300">Mật khẩu *</label>
+                  <button
+                    type="button"
+                    onClick={() => setActiveTab('forgot')}
+                    className="text-xs text-indigo-400 hover:underline"
+                  >
+                    Quên mật khẩu?
+                  </button>
+                </div>
+                <div className="relative">
+                  <Lock className="w-4 h-4 text-slate-500 absolute left-3 top-3" />
+                  <input
+                    type="password"
+                    required
+                    value={loginPassword}
+                    onChange={(e) => setLoginPassword(e.target.value)}
+                    placeholder="••••••••"
+                    className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-9 pr-4 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
+                  />
+                </div>
+              </div>
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-sm transition flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+              >
+                {loading ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Lock className="w-4 h-4" />}
+                <span>{loading ? 'Đang xác thực...' : 'Đăng Nhập'}</span>
+              </button>
+
+              <div className="text-center pt-2 border-t border-slate-800/80">
+                <span className="text-xs text-slate-400">Chưa có tài khoản? </span>
+                <button
+                  type="button"
+                  onClick={() => setActiveTab('register')}
+                  className="text-xs font-semibold text-indigo-400 hover:underline cursor-pointer"
+                >
+                  Đăng ký ngay (Miễn phí)
+                </button>
+              </div>
+            </form>
+          )}
+
           {/* TAB 1: ĐĂNG KÝ EMAIL & XÁC MINH OTP (USER-106) */}
           {activeTab === 'register' && !otpStep && (
             <form onSubmit={handleRegister} className="space-y-4">

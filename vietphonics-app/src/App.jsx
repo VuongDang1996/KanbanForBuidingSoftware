@@ -17,6 +17,7 @@ import ProgressAnalyticsView from './views/ProgressAnalyticsView';
 import OnboardingView from './views/OnboardingView';
 import MasteryLabView from './views/MasteryLabView';
 import AdvancedAiLabView from './views/AdvancedAiLabView';
+import ProgressHubView from './views/ProgressHubView';
 
 function MainContent() {
   const {
@@ -43,9 +44,9 @@ function MainContent() {
       case 'game-3d-rpg':
         return <Game3dView />;
       case 'ngan-hang-tu-loi':
-        return <ProUpgradeView />;
+        return <ProgressHubView />;
       case 'tien-do':
-        return <ProgressAnalyticsView />;
+        return <ProgressHubView />;
       case 'chan-doan':
         return <OnboardingView />;
       default:
