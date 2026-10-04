@@ -1131,12 +1131,12 @@ app.get('/api/v1/pedagogy/minimal-pairs/latest', (req, res) => {
 /**
  * PRON-201: Interactive 2D Anatomical Lip & Tongue Articulation Guide Endpoints
  */
-import { PHONEME_ANATOMY_CATALOG } from '../src/lib/anatomy/phonemeAnatomyData.js';
+import { PHONEME_ANATOMY_CATALOG, ALL_44_PHONEMES_LIST } from '../src/lib/anatomy/phonemeAnatomyData.js';
 
 // GET all anatomy phoneme profiles
 app.get('/api/v1/anatomy/phonemes', (req, res) => {
   try {
-    const list = Object.values(PHONEME_ANATOMY_CATALOG);
+    const list = ALL_44_PHONEMES_LIST || Object.values(PHONEME_ANATOMY_CATALOG);
     res.json({ success: true, phonemes: list });
   } catch (err) {
     console.error('Error in GET anatomy/phonemes:', err);

@@ -4,17 +4,19 @@ import app from '../server/index.js';
 import { db } from '../server/db.js';
 import {
   PHONEME_ANATOMY_CATALOG,
+  ALL_44_PHONEMES_LIST,
   calculateAnatomyTransform
 } from '../src/lib/anatomy/phonemeAnatomyData.js';
 
 describe('PRON-201: Interactive 2D Anatomical Lip & Tongue Articulation Guide Tests', () => {
 
   describe('Static Client Vector Cache & Anatomical Data (AC 1 & AC 4)', () => {
-    test('Must load phoneme catalog locally without server delay', () => {
+    test('Must load phoneme catalog locally without server delay and contain all 44 phonemes', () => {
       assert.ok(PHONEME_ANATOMY_CATALOG['/θ/']);
       assert.ok(PHONEME_ANATOMY_CATALOG['/ð/']);
       assert.ok(PHONEME_ANATOMY_CATALOG['/ʃ/']);
       assert.ok(PHONEME_ANATOMY_CATALOG['/ʒ/']);
+      assert.ok(ALL_44_PHONEMES_LIST.length >= 44);
     });
 
     test('Each anatomical profile must contain SVG tongue path, contact target and L1 mistake', () => {
@@ -81,8 +83,10 @@ describe('PRON-201: Interactive 2D Anatomical Lip & Tongue Articulation Guide Te
       const data = await res.json();
       assert.equal(data.success, true);
       assert.ok(Array.isArray(data.phonemes));
-      assert.ok(data.phonemes.length >= 4);
-      assert.equal(data.phonemes[0].phoneme, '/θ/');
+      assert.ok(data.phonemes.length >= 44);
+      const theta = data.phonemes.find((p) => p.phoneme === '/θ/');
+      assert.ok(theta);
+      assert.equal(theta.phoneme, '/θ/');
     });
 
     test('POST /api/v1/anatomy/calibration should persist slider settings to SQLite', async () => {
