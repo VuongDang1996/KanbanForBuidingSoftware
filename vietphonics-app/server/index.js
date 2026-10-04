@@ -4549,6 +4549,434 @@ app.get('/api/v1/billing/reconcile-status', (req, res) => {
   }
 });
 
+/**
+ * ARCH-104: Tiered Quota Limiter & Entitlement Enforcement Endpoints
+ */
+import {
+  evaluateSlidingWindow,
+  clearSlidingWindowStore,
+  checkTierEntitlement
+} from '../src/lib/security/slidingWindowRateLimiter.js';
+
+// POST /api/v1/security/rate-limit/check
+app.post('/api/v1/security/rate-limit/check', (req, res) => {
+  try {
+    const userId = req.headers['x-user-id'] || req.body.userId || 'default_user';
+    const endpoint = req.body.endpoint || '/api/v1/scoring';
+    const windowMs = Number(req.body.windowMs) || 60000;
+    const maxRequests = Number(req.body.maxRequests) || 10;
+
+    const rateResult = evaluateSlidingWindow(`${userId}:${endpoint}`, { windowMs, maxRequests });
+
+    res.setHeader('X-RateLimit-Limit', maxRequests);
+    res.setHeader('X-RateLimit-Remaining', rateResult.remaining);
+
+    if (!rateResult.allowed) {
+      res.setHeader('Retry-After', rateResult.retryAfterSec);
+      return res.status(429).json({
+        type: 'https://vietphonics.com/errors/rate-limit-exceeded',
+        title: 'Tần Suất Yêu Cầu Vượt Quá Giới Hạn (Rate Limit Exceeded)',
+        status: 429,
+        detail: `Bạn đã thực hiện quá ${maxRequests} yêu cầu trong 60 giây. Vui lòng thử lại sau ${rateResult.retryAfterSec} giây.`,
+        retryAfter: rateResult.retryAfterSec,
+        endpoint
+      });
+    }
+
+    // Persist log into SQLite
+    const now = new Date().toISOString();
+    db.prepare(`
+      INSERT INTO rate_limit_sliding_window_logs (id, user_id, endpoint, timestamp_ms, created_at)
+      VALUES (?, ?, ?, ?, ?)
+    `).run(`rl_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`, userId, endpoint, Date.now(), now);
+
+    res.json({
+      allowed: true,
+      currentCount: rateResult.currentCount,
+      remaining: rateResult.remaining,
+      resetAfterSec: rateResult.resetAfterSec
+    });
+  } catch (err) {
+    console.error('Error in POST /api/v1/security/rate-limit/check:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// GET /api/v1/security/entitlements/:userId
+app.get('/api/v1/security/entitlements/:userId', (req, res) => {
+  try {
+    const { userId } = req.params;
+    const today = new Date().toISOString().split('T')[0];
+
+    // Check user tier
+    let user = db.prepare('SELECT * FROM arch_users WHERE id = ?').get(userId);
+    if (!user) {
+      const learner = db.prepare('SELECT * FROM learner_auth_dashboard_records WHERE user_id = ?').get(userId);
+      user = { id: userId, tier: learner?.tier || 'free' };
+    }
+
+    // Check today's lesson usage
+    const quotaRow = db.prepare('SELECT * FROM freemium_quota_records WHERE user_id = ? AND date_str = ?').get(userId, today);
+    const lessonsToday = quotaRow ? quotaRow.lessons_completed_today : 0;
+
+    const entitlement = checkTierEntitlement(user, lessonsToday);
+
+    if (!entitlement.allowed) {
+      return res.status(429).json(entitlement.problemDetails);
+    }
+
+    res.json({
+      success: true,
+      userId,
+      tier: entitlement.tier,
+      allowed: true,
+      remainingLessons: entitlement.remainingLessons,
+      verificationLatencyMs: entitlement.latencyMs
+    });
+  } catch (err) {
+    console.error('Error in GET /api/v1/security/entitlements:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+/**
+ * ARCH-105: Cloud Object Storage & Ephemeral Audio Retention Endpoints
+ */
+import {
+  R2_CONFIG,
+  createAudioUploadTicket,
+  calculateRetentionPolicy,
+  isAudioObjectExpired,
+  validateCorsOrigin,
+  purgeExpiredAudioObjects
+} from '../src/lib/storage/r2StorageManager.js';
+
+// GET /api/v1/storage/upload-ticket
+app.get('/api/v1/storage/upload-ticket', (req, res) => {
+  try {
+    const userId = req.headers['x-user-id'] || req.query.userId || 'default_user';
+    const extension = req.query.extension || 'opus';
+    const mimeType = req.query.mimeType || 'audio/opus';
+
+    const ticket = createAudioUploadTicket({ userId, extension, mimeType });
+
+    res.json({
+      success: true,
+      ticket
+    });
+  } catch (err) {
+    console.error('Error in GET /api/v1/storage/upload-ticket:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// POST /api/v1/storage/register-uploaded-file
+app.post('/api/v1/storage/register-uploaded-file', (req, res) => {
+  try {
+    const userId = req.headers['x-user-id'] || req.body.userId || 'default_user';
+    const { storageKey, fileSizeBytes = 48200, mimeType = 'audio/opus' } = req.body;
+
+    if (!storageKey) {
+      return res.status(400).json({ success: false, error: 'storageKey is required' });
+    }
+
+    // Determine tier
+    let user = db.prepare('SELECT tier FROM arch_users WHERE id = ?').get(userId);
+    const tier = user ? user.tier : 'free';
+
+    const policy = calculateRetentionPolicy(tier);
+    const now = new Date().toISOString();
+    const objectId = `obj_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`;
+
+    db.prepare(`
+      INSERT INTO storage_audio_objects (
+        id, user_id, storage_key, bucket_name, content_type,
+        file_size_bytes, tier, retention_days, expires_at, created_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `).run(
+      objectId, userId, storageKey, R2_CONFIG.bucketName, mimeType,
+      Number(fileSizeBytes), tier, policy.retentionDays, policy.expiresAt, now
+    );
+
+    res.json({
+      success: true,
+      objectId,
+      storageKey,
+      tier,
+      retentionDays: policy.retentionDays,
+      expiresAt: policy.expiresAt
+    });
+  } catch (err) {
+    console.error('Error in POST /api/v1/storage/register-uploaded-file:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// POST /api/v1/storage/purge-expired
+app.post('/api/v1/storage/purge-expired', (req, res) => {
+  try {
+    const simulatedNowIso = req.body.simulatedNowIso || new Date().toISOString();
+    const result = purgeExpiredAudioObjects(db, simulatedNowIso);
+
+    res.json({
+      success: true,
+      ...result,
+      purgedAt: simulatedNowIso
+    });
+  } catch (err) {
+    console.error('Error in POST /api/v1/storage/purge-expired:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// GET /api/v1/storage/cors-check
+app.get('/api/v1/storage/cors-check', (req, res) => {
+  try {
+    const origin = req.headers['origin'] || req.query.origin || '';
+    const isAllowed = validateCorsOrigin(origin);
+
+    if (!isAllowed) {
+      return res.status(403).json({
+        allowed: false,
+        error: 'Origin rejected by R2 Bucket CORS security policy',
+        origin
+      });
+    }
+
+    res.json({
+      allowed: true,
+      origin,
+      bucket: R2_CONFIG.bucketName
+    });
+  } catch (err) {
+    console.error('Error in GET /api/v1/storage/cors-check:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+/**
+ * PAY-101, PAY-102, PAY-103: Dynamic VietQR Napas & Pricing Matrix Endpoints
+ */
+import {
+  BANK_CONFIG,
+  PRICING_PLANS,
+  FEATURE_COMPARISON,
+  generateVietQrEmvcoString,
+  getVietQrImageUrl,
+  buildBankingDeepLink,
+  generateOrderMemo
+} from '../src/lib/payment/vietQrEmvco.js';
+
+// GET /api/v1/pricing/matrix
+app.get('/api/v1/pricing/matrix', (req, res) => {
+  try {
+    res.json({
+      success: true,
+      plans: PRICING_PLANS,
+      featureComparison: FEATURE_COMPARISON,
+      bankConfig: BANK_CONFIG
+    });
+  } catch (err) {
+    console.error('Error in GET /api/v1/pricing/matrix:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// POST /api/v1/payment/vietqr/create-order
+app.post('/api/v1/payment/vietqr/create-order', (req, res) => {
+  try {
+    const userId = req.headers['x-user-id'] || req.body.userId || 'learner_vip';
+    const planId = req.body.planId || 'pro_annual';
+
+    const selectedPlan = PRICING_PLANS.find(p => p.id === planId) || PRICING_PLANS[1];
+    const orderId = `vqr_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`;
+    const orderCode = generateOrderMemo(userId, selectedPlan.id);
+    const now = new Date();
+    const expiresAt = new Date(now.getTime() + 15 * 60 * 1000).toISOString();
+
+    const qrPayload = generateVietQrEmvcoString({
+      bankBin: BANK_CONFIG.bin,
+      accountNumber: BANK_CONFIG.accountNumber,
+      amount: selectedPlan.price,
+      orderCode
+    });
+
+    const qrImageUrl = getVietQrImageUrl({
+      bankBin: BANK_CONFIG.bin,
+      accountNumber: BANK_CONFIG.accountNumber,
+      amount: selectedPlan.price,
+      orderCode,
+      accountName: BANK_CONFIG.accountName
+    });
+
+    const deepLink = buildBankingDeepLink({
+      bankBin: BANK_CONFIG.bin,
+      accountNumber: BANK_CONFIG.accountNumber,
+      amount: selectedPlan.price,
+      orderCode
+    });
+
+    db.prepare(`
+      INSERT INTO vietqr_orders (
+        id, order_code, user_id, plan_code, amount,
+        bank_bin, account_number, account_name,
+        status, qr_payload, expires_at, created_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `).run(
+      orderId,
+      orderCode,
+      userId,
+      selectedPlan.id,
+      selectedPlan.price,
+      BANK_CONFIG.bin,
+      BANK_CONFIG.accountNumber,
+      BANK_CONFIG.accountName,
+      'pending',
+      qrPayload,
+      expiresAt,
+      now.toISOString()
+    );
+
+    res.json({
+      success: true,
+      order: {
+        id: orderId,
+        orderCode,
+        userId,
+        planId: selectedPlan.id,
+        planName: selectedPlan.name,
+        amount: selectedPlan.price,
+        bankBin: BANK_CONFIG.bin,
+        bankName: BANK_CONFIG.shortName,
+        accountNumber: BANK_CONFIG.accountNumber,
+        accountName: BANK_CONFIG.accountName,
+        qrPayload,
+        qrImageUrl,
+        deepLink,
+        expiresAt,
+        status: 'pending'
+      }
+    });
+  } catch (err) {
+    console.error('Error in POST /api/v1/payment/vietqr/create-order:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// GET /api/v1/payment/vietqr/order/:orderCode/status
+app.get('/api/v1/payment/vietqr/order/:orderCode/status', (req, res) => {
+  try {
+    const { orderCode } = req.params;
+    const order = db.prepare('SELECT * FROM vietqr_orders WHERE order_code = ?').get(orderCode);
+
+    if (!order) {
+      return res.status(404).json({ success: false, error: 'Order not found' });
+    }
+
+    let status = order.status;
+    if (status === 'pending' && new Date(order.expires_at) < new Date()) {
+      status = 'expired';
+      db.prepare('UPDATE vietqr_orders SET status = ? WHERE order_code = ?').run('expired', orderCode);
+    }
+
+    res.json({
+      success: true,
+      orderCode: order.order_code,
+      status,
+      amount: order.amount,
+      planCode: order.plan_code,
+      userId: order.user_id,
+      expiresAt: order.expires_at,
+      paidAt: order.paid_at || null
+    });
+  } catch (err) {
+    console.error('Error in GET /api/v1/payment/vietqr/order/:orderCode/status:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// POST /api/v1/payment/vietqr/simulate-bank-transfer
+app.post('/api/v1/payment/vietqr/simulate-bank-transfer', (req, res) => {
+  try {
+    const { orderCode } = req.body;
+    if (!orderCode) {
+      return res.status(400).json({ success: false, error: 'orderCode is required' });
+    }
+
+    const order = db.prepare('SELECT * FROM vietqr_orders WHERE order_code = ?').get(orderCode);
+    if (!order) {
+      return res.status(404).json({ success: false, error: 'Order not found' });
+    }
+
+    const nowIso = new Date().toISOString();
+
+    if (order.status === 'paid') {
+      return res.json({
+        success: true,
+        alreadyPaid: true,
+        orderCode,
+        status: 'paid',
+        paidAt: order.paid_at
+      });
+    }
+
+    // Mark order as paid
+    db.prepare('UPDATE vietqr_orders SET status = ?, paid_at = ? WHERE order_code = ?').run('paid', nowIso, orderCode);
+
+    // Upsert or update arch_users tier to pro
+    const existingUser = db.prepare('SELECT id FROM arch_users WHERE id = ?').get(order.user_id);
+    if (existingUser) {
+      db.prepare('UPDATE arch_users SET tier = ?, updated_at = ? WHERE id = ?').run('pro', nowIso, order.user_id);
+    } else {
+      db.prepare(`
+        INSERT INTO arch_users (id, email, full_name, dialect_preference, tier, created_at, updated_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+      `).run(order.user_id, `${order.user_id}@vietphonics.com`, 'VietPhonics Pro Learner', 'northern', 'pro', nowIso, nowIso);
+    }
+
+    // Update freemium_quota_records
+    const today = new Date().toISOString().split('T')[0];
+    const existingQuota = db.prepare('SELECT id FROM freemium_quota_records WHERE user_id = ? AND date_str = ?').get(order.user_id, today);
+    if (existingQuota) {
+      db.prepare('UPDATE freemium_quota_records SET is_pro = 1, updated_at = ? WHERE user_id = ? AND date_str = ?').run(nowIso, order.user_id, today);
+    } else {
+      db.prepare(`
+        INSERT INTO freemium_quota_records (id, user_id, is_pro, lessons_completed_today, date_str, updated_at)
+        VALUES (?, ?, 1, 0, ?, ?)
+      `).run(`quota_${Date.now()}`, order.user_id, today, nowIso);
+    }
+
+    // Insert active subscription record
+    const subId = `sub_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`;
+    const periodEnd = new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString();
+    db.prepare(`
+      INSERT INTO arch_subscriptions (id, user_id, plan_code, status, current_period_start, current_period_end, created_at)
+      VALUES (?, ?, ?, ?, ?, ?, ?)
+    `).run(subId, order.user_id, order.plan_code, 'active', nowIso, periodEnd, nowIso);
+
+    // Record webhook log for multi-gateway traceability
+    const txId = `tx_vqr_${Date.now()}`;
+    db.prepare(`
+      INSERT INTO billing_webhook_logs (id, gateway, transaction_id, order_code, user_id, amount, plan_code, status, created_at, reconciled_at)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `).run(`log_${Date.now()}`, 'vietqr', txId, orderCode, order.user_id, order.amount, order.plan_code, 'success', nowIso, nowIso);
+
+    res.json({
+      success: true,
+      orderCode,
+      status: 'paid',
+      activatedTier: 'pro',
+      userId: order.user_id,
+      planCode: order.plan_code,
+      amount: order.amount,
+      paidAt: nowIso
+    });
+  } catch (err) {
+    console.error('Error in POST /api/v1/payment/vietqr/simulate-bank-transfer:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 // Start listening only if run directly as main entrypoint
 const isMain = process.argv[1] && (process.argv[1].includes('server/index.js') || process.argv[1].includes('server\\index.js'));
 if (isMain && process.env.NODE_ENV !== 'test') {

@@ -588,6 +588,51 @@ export function initAppDatabase() {
     );
     CREATE INDEX IF NOT EXISTS idx_billing_webhook_logs_user ON billing_webhook_logs(user_id, created_at DESC);
     CREATE INDEX IF NOT EXISTS idx_billing_webhook_logs_tx ON billing_webhook_logs(transaction_id);
+
+    /* ARCH-104: Tiered Quota Limiter & Entitlement Enforcement */
+    CREATE TABLE IF NOT EXISTS rate_limit_sliding_window_logs (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL,
+      endpoint TEXT NOT NULL,
+      timestamp_ms INTEGER NOT NULL,
+      created_at TEXT NOT NULL
+    );
+    CREATE INDEX IF NOT EXISTS idx_rate_limit_user_ts ON rate_limit_sliding_window_logs(user_id, timestamp_ms DESC);
+
+    /* ARCH-105: Cloud Object Storage & Ephemeral Audio Retention Lifecycle */
+    CREATE TABLE IF NOT EXISTS storage_audio_objects (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL,
+      storage_key TEXT UNIQUE NOT NULL,
+      bucket_name TEXT NOT NULL,
+      content_type TEXT NOT NULL,
+      file_size_bytes INTEGER DEFAULT 0,
+      tier TEXT NOT NULL,
+      retention_days INTEGER NOT NULL,
+      expires_at TEXT NOT NULL,
+      created_at TEXT NOT NULL
+    );
+    CREATE INDEX IF NOT EXISTS idx_storage_audio_expires ON storage_audio_objects(expires_at);
+    CREATE INDEX IF NOT EXISTS idx_storage_audio_user ON storage_audio_objects(user_id, created_at DESC);
+
+    /* PAY-101: Dynamic VietQR Auto-Reconciliation Engine */
+    CREATE TABLE IF NOT EXISTS vietqr_orders (
+      id TEXT PRIMARY KEY,
+      order_code TEXT UNIQUE NOT NULL,
+      user_id TEXT NOT NULL,
+      plan_code TEXT NOT NULL,
+      amount INTEGER NOT NULL,
+      bank_bin TEXT NOT NULL,
+      account_number TEXT NOT NULL,
+      account_name TEXT NOT NULL,
+      status TEXT NOT NULL DEFAULT 'pending',
+      qr_payload TEXT,
+      expires_at TEXT NOT NULL,
+      created_at TEXT NOT NULL,
+      paid_at TEXT
+    );
+    CREATE INDEX IF NOT EXISTS idx_vietqr_orders_code ON vietqr_orders(order_code);
+    CREATE INDEX IF NOT EXISTS idx_vietqr_orders_user ON vietqr_orders(user_id, status);
   `);
 
   // Seed default penalty weights for 3 regions

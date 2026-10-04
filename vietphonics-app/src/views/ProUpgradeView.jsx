@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import SpacedRepetitionDeck from '../components/error-bank/SpacedRepetitionDeck';
+import PricingMatrix from '../components/pricing/PricingMatrix';
+import VietQrCheckoutModal from '../components/payment/VietQrCheckoutModal';
 
 const ERROR_WORDS = [
   {
@@ -314,206 +316,12 @@ export default function ProUpgradeView() {
               </div>
             </div>
 
-            {/* Split Comparison & Pricing Grid */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-center">
-              {/* Left: Scientific Feature Comparison */}
-              <div className="lg:col-span-7 flex flex-col gap-space-md">
-                <div className="flex items-center justify-between">
-                  <span className="font-label-mono text-label-mono text-sky-800 uppercase tracking-widest font-bold">
-                    Bảng So Sánh Quyền Lợi Khoa Học
-                  </span>
-                  <span className="font-label-mono text-label-mono text-slate-500 font-medium">Chuẩn CEFR &amp; L1 Matrix</span>
-                </div>
-                <div className="overflow-x-auto rounded-xl border border-slate-200">
-                  <table className="w-full text-left font-body-sm text-body-sm bg-white">
-                    <thead>
-                      <tr className="bg-slate-50 border-b border-slate-200">
-                        <th className="p-3.5 text-slate-600 font-label-mono text-label-mono uppercase">Tính Năng Cốt Lõi</th>
-                        <th className="p-3.5 text-slate-600 font-label-mono text-label-mono uppercase text-center w-28">Tài Khoản Free</th>
-                        <th className="p-3.5 text-rose-700 font-label-mono text-label-mono uppercase text-center w-40 bg-rose-50/60 font-bold">
-                          VietPhonics PRO
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-slate-100">
-                      <tr>
-                        <td className="py-3 px-3.5">
-                          <div className="font-semibold text-slate-900">AI Speaking Roleplay</div>
-                          <div className="text-slate-500 text-xs">Mô phỏng hội thoại phản xạ trực tiếp</div>
-                        </td>
-                        <td className="py-3 px-3 text-center text-slate-500 font-label-mono">5 lượt/ngày</td>
-                        <td className="py-3 px-3 text-center text-sky-800 font-bold bg-rose-50/20">
-                          Không giới hạn + 120 kịch bản công sở
-                        </td>
-                      </tr>
-                      <tr>
-                        <td className="py-3 px-3.5">
-                          <div className="font-semibold text-slate-900">Soi Giải Phẫu Khẩu Hình 2D</div>
-                          <div className="text-slate-500 text-xs">Cử động vòm họng, môi và độ cong lưỡi</div>
-                        </td>
-                        <td className="py-3 px-3 text-center text-slate-500 font-label-mono">Cơ bản 5 âm</td>
-                        <td className="py-3 px-3 text-center text-sky-800 font-bold bg-rose-50/20">
-                          Đầy đủ 44 âm IPA + Cảm biến 3D
-                        </td>
-                      </tr>
-                      <tr>
-                        <td className="py-3 px-3.5">
-                          <div className="font-semibold text-slate-900">Luyện Đề IELTS Mock Examiner</div>
-                          <div className="text-slate-500 text-xs">Chấm phát âm theo tiêu chí Pronunciation Band</div>
-                        </td>
-                        <td className="py-3 px-3 text-center text-rose-600 font-label-mono font-medium">
-                          <span className="inline-flex items-center gap-1">
-                            <span className="material-symbols-outlined text-base">lock</span> Khóa
-                          </span>
-                        </td>
-                        <td className="py-3 px-3 text-center text-sky-800 font-bold bg-rose-50/20">
-                          Chấm chi tiết IELTS Descriptors
-                        </td>
-                      </tr>
-                      <tr>
-                        <td className="py-3 px-3.5">
-                          <div className="font-semibold text-slate-900">Lộ Trình Sửa Giọng Vùng Miền</div>
-                          <div className="text-slate-500 text-xs">Bù trừ thói quen giọng Bắc, Trung, Nam</div>
-                        </td>
-                        <td className="py-3 px-3 text-center text-slate-500 font-label-mono">Bắc mặc định</td>
-                        <td className="py-3 px-3 text-center text-sky-800 font-bold bg-rose-50/20">
-                          Hiệu chỉnh 3 miền Bắc - Trung - Nam
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-
-                <div className="flex items-center gap-space-sm p-3.5 rounded-lg bg-sky-50 border border-sky-100">
-                  <span className="material-symbols-outlined text-sky-700 text-xl shrink-0">psychology</span>
-                  <p className="font-body-sm text-body-sm text-slate-700 leading-relaxed">
-                    <strong className="text-slate-900">Nghiên cứu thần kinh học ngôn ngữ:</strong> Luyện tập phản hồi âm phổ liên tục trong 21 ngày giúp tăng độ nhạy cơ hàm nói tiếng Anh lên 320% so với phương pháp nghe chép truyền thống.
-                  </p>
-                </div>
-              </div>
-
-              {/* Right: Plan Picker & VietQR Checkout */}
-              <div className="lg:col-span-5 flex flex-col gap-space-md">
-                <span className="font-label-mono text-label-mono text-rose-700 uppercase tracking-widest font-bold">
-                  Chọn Gói Đăng Ký PRO
-                </span>
-
-                <div className="flex flex-col gap-space-sm">
-                  {/* Plan 1: 6 Tháng */}
-                  <label
-                    onClick={() => setSelectedPlan('6m')}
-                    className={`flex items-center justify-between p-4 rounded-xl border cursor-pointer transition-all ${
-                      selectedPlan === '6m' ? 'bg-white border-2 border-rose-500 shadow-md' : 'bg-slate-50 border-slate-200'
-                    }`}
-                  >
-                    <div className="flex items-center gap-3">
-                      <input
-                        type="radio"
-                        name="pro_plan"
-                        checked={selectedPlan === '6m'}
-                        onChange={() => setSelectedPlan('6m')}
-                        className="w-4 h-4 text-rose-600 focus:ring-0 cursor-pointer"
-                      />
-                      <div className="flex flex-col">
-                        <span className="font-headline-sm text-headline-sm text-slate-900 font-bold">Gói 6 Tháng</span>
-                        <span className="font-body-sm text-body-sm text-slate-500">Thanh toán 1 lần 100.000đ</span>
-                      </div>
-                    </div>
-                    <div className="flex flex-col items-end">
-                      <span className="font-headline-md text-headline-md text-slate-900 font-extrabold">100.000đ</span>
-                      <span className="font-label-mono text-label-mono text-slate-500">/ 6 tháng</span>
-                    </div>
-                  </label>
-
-                  {/* Plan 2: Lifetime VIP */}
-                  <label
-                    onClick={() => setSelectedPlan('lifetime')}
-                    className={`relative flex flex-col p-5 rounded-xl border-2 cursor-pointer shadow-md transition-all ${
-                      selectedPlan === 'lifetime' ? 'bg-white border-rose-500' : 'bg-slate-50 border-slate-200'
-                    }`}
-                  >
-                    <div className="absolute -top-3 right-4 px-3 py-0.5 rounded-full bg-gradient-to-r from-rose-600 to-rose-500 text-white font-label-mono text-[10px] font-bold uppercase tracking-wider shadow-sm">
-                      🌟 Khuyên Dùng • Tiết Kiệm 75%
-                    </div>
-                    <div className="flex items-start justify-between">
-                      <div className="flex items-center gap-3">
-                        <input
-                          type="radio"
-                          name="pro_plan"
-                          checked={selectedPlan === 'lifetime'}
-                          onChange={() => setSelectedPlan('lifetime')}
-                          className="w-5 h-5 text-rose-600 focus:ring-0 cursor-pointer"
-                        />
-                        <div className="flex flex-col">
-                          <span className="font-headline-md text-headline-md text-slate-900 font-extrabold">
-                            Gói Trọn Đời (Lifetime VIP)
-                          </span>
-                          <span className="font-body-sm text-body-sm text-rose-600 font-semibold">
-                            Sở hữu vĩnh viễn không gia hạn
-                          </span>
-                        </div>
-                      </div>
-                      <div className="flex flex-col items-end">
-                        <span className="font-headline-lg text-headline-lg text-rose-600 font-black">200.000đ</span>
-                        <span className="line-through font-label-mono text-label-mono text-slate-400">1.299.000đ</span>
-                      </div>
-                    </div>
-
-                    <div className="flex flex-col gap-2 mt-4 pt-3 border-t border-slate-100">
-                      <div className="flex items-center gap-2 font-body-sm text-body-sm text-slate-700">
-                        <span className="material-symbols-outlined text-sm text-emerald-600 font-bold">check_circle</span>
-                        <span>Tặng kèm Bộ 44 Video Khẩu Hình Giảng Viên Anh-Mỹ chuyên sâu</span>
-                      </div>
-                      <div className="flex items-center gap-2 font-body-sm text-body-sm text-slate-700">
-                        <span className="material-symbols-outlined text-sm text-emerald-600 font-bold">check_circle</span>
-                        <span>Kích hoạt Khiên Bảo Vệ Streak Vĩnh Viễn (Không lo mất chuỗi)</span>
-                      </div>
-                    </div>
-                  </label>
-                </div>
-
-                {/* Checkout Button */}
-                <div className="flex flex-col gap-space-xs">
-                  <button aria-label="Nâng cấp gói VietPhonics PRO"
-                    onClick={() => setQrModalOpen(true)}
-                    className="w-full py-4 rounded-xl bg-gradient-to-r from-rose-600 via-rose-500 to-rose-600 text-white font-headline-md text-headline-md font-bold shadow-md hover:shadow-lg hover:from-rose-700 hover:to-rose-600 transition-all transform hover:-translate-y-0.5 flex items-center justify-center gap-2 cursor-pointer"
-                    type="button"
-                  >
-                    <span className="material-symbols-outlined font-bold">bolt</span>
-                    <span>NÂNG CẤP PRO NGAY — KÍCH HOẠT TỨC THÌ</span>
-                  </button>
-                  <div className="flex items-center justify-center gap-2 text-center">
-                    <span className="font-label-mono text-label-mono text-slate-500">
-                      Khóa học được cấp chứng chỉ chuẩn IPA sau 60 giờ thực hành
-                    </span>
-                  </div>
-                </div>
-
-                {/* Payment Methods */}
-                <div className="flex flex-col gap-2 pt-2">
-                  <span className="font-label-mono text-label-mono text-slate-400 uppercase text-center font-bold">
-                    Cổng Thanh Toán Nội Địa &amp; Quốc Tế Hỗ Trợ
-                  </span>
-                  <div className="flex items-center justify-center flex-wrap gap-2">
-                    <span className="px-2.5 py-1.5 rounded-lg bg-slate-50 border border-slate-200/90 font-label-mono text-label-mono text-slate-700 flex items-center gap-1.5 shadow-2xs font-semibold">
-                      <span className="w-2 h-2 rounded-full bg-pink-500"></span> MoMo
-                    </span>
-                    <span className="px-2.5 py-1.5 rounded-lg bg-slate-50 border border-slate-200/90 font-label-mono text-label-mono text-slate-700 flex items-center gap-1.5 shadow-2xs font-semibold">
-                      <span className="w-2 h-2 rounded-full bg-blue-500"></span> ZaloPay
-                    </span>
-                    <span className="px-2.5 py-1.5 rounded-lg bg-sky-50 border border-sky-200 font-label-mono text-label-mono text-sky-800 flex items-center gap-1.5 shadow-2xs font-bold">
-                      <span className="w-2 h-2 rounded-full bg-emerald-500"></span> VietQR (Napas247)
-                    </span>
-                    <span className="px-2.5 py-1.5 rounded-lg bg-slate-50 border border-slate-200/90 font-label-mono text-label-mono text-slate-700 flex items-center gap-1.5 shadow-2xs font-semibold">
-                      💳 Visa / Mastercard
-                    </span>
-                    <span className="px-2.5 py-1.5 rounded-lg bg-slate-50 border border-slate-200/90 font-label-mono text-label-mono text-slate-700 flex items-center gap-1.5 shadow-2xs font-semibold">
-                       Apple Pay
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
+            {/* PAY-103: Interactive Multi-Cycle Pricing Matrix & Comparison Table */}
+            <PricingMatrix
+              selectedPlanId={selectedPlan}
+              onSelectPlan={setSelectedPlan}
+              onUpgradeClick={() => setQrModalOpen(true)}
+            />
 
             {/* Bottom 3 Trust Pillars */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-space-md pt-space-md border-t border-slate-200">
@@ -543,57 +351,16 @@ export default function ProUpgradeView() {
         </section>
       </div>
 
-      {/* VietQR Quick Payment Modal */}
-      {qrModalOpen && (
-        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 relative animate-scale-in">
-            <button aria-label="Nâng cấp gói VietPhonics PRO" type="button"
-              onClick={() => setQrModalOpen(false)}
-              className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center"
-            >
-              <span className="material-symbols-outlined">close</span>
-            </button>
-
-            <div className="flex items-center gap-2 mb-4">
-              <span className="w-3 h-3 rounded-full bg-emerald-500 animate-pulse"></span>
-              <h3 className="font-bold text-lg text-slate-900">Quét Mã VietQR Napas 24/7</h3>
-            </div>
-
-            <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col items-center gap-3">
-              {/* QR Mockup */}
-              <div className="w-56 h-56 bg-white border border-slate-300 rounded-xl p-2 flex flex-col items-center justify-center relative shadow-sm">
-                <img
-                  src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=2|99|0969696969|VIETPHONICS|PRO_LIFETIME|0|0|200000|VP_PRO_SUB"
-                  alt="VietQR Napas247"
-                  className="w-48 h-48 object-contain"
-                />
-              </div>
-
-              <div className="w-full text-center space-y-1">
-                <div className="text-xs text-slate-500 font-mono">Chủ TK: VIETPHONICS AI LAB</div>
-                <div className="text-base font-black text-rose-600">
-                  {selectedPlan === 'lifetime' ? '200.000 VNĐ' : '100.000 VNĐ'}
-                </div>
-                <div className="text-xs font-mono text-slate-700 bg-slate-200/80 px-2 py-1 rounded inline-block">
-                  Cú pháp: <strong className="text-sky-700 font-bold">VP PRO 0969696969</strong>
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-4 flex gap-2">
-              <button aria-label="Nâng cấp gói VietPhonics PRO" type="button"
-                onClick={() => {
-                  setQrModalOpen(false);
-                  alert('Kích hoạt tài khoản VietPhonics PRO thành công! Chúc mừng bạn đã sở hữu trọn đời.');
-                }}
-                className="w-full py-3 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded-xl shadow-md transition-all text-sm"
-              >
-                Tôi Đã Chuyển Khoản Thành Công
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* PAY-101 & PAY-102: VietQR Napas Real-Time Checkout Modal */}
+      <VietQrCheckoutModal
+        isOpen={qrModalOpen}
+        onClose={() => setQrModalOpen(false)}
+        planId={selectedPlan}
+        userId="learner_pro_user"
+        onSuccess={(order) => {
+          console.log('[VietPhonics] Kích hoạt thành công đơn hàng:', order);
+        }}
+      />
     </div>
   );
 }
