@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
+import SpacedRepetitionDeck from '../components/error-bank/SpacedRepetitionDeck';
 
 const ERROR_WORDS = [
   {
@@ -126,6 +127,9 @@ export default function ProUpgradeView() {
               </div>
             </div>
           </div>
+
+          {/* ELSA-402: Automated Error Bank with Spaced Repetition (SM-2) Deck */}
+          <SpacedRepetitionDeck />
 
           {/* Filter Tabs */}
           <div className="flex items-center justify-between gap-space-md overflow-x-auto pb-1">

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useApp } from '../context/AppContext';
 import IeltsBandEstimator from '../components/dashboard/IeltsBandEstimator';
+import DailyPathCard from '../components/dashboard/DailyPathCard';
 
 export default function DashboardView() {
   const { dialect, dialectConfig, gopScore, setActiveTab, triggerPractice, setShowDiagnosticModal } = useApp();
@@ -294,6 +295,9 @@ export default function DashboardView() {
             </button>
           </div>
         </div>
+
+        {/* ELSA-401: 10-Minute Daily Personalized Practice Path (Adaptive Curriculum) */}
+        <DailyPathCard />
 
         {/* Primary Section: 10-Minute Daily Personalized Curriculum Path */}
         <div className="w-full bg-white border border-slate-200/90 rounded-xl p-space-lg lg:p-space-xl shadow-[0_6px_24px_rgba(15,23,42,0.05)] flex flex-col gap-space-lg relative overflow-hidden">

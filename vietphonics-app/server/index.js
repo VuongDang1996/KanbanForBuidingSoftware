@@ -3147,6 +3147,692 @@ app.get('/api/v1/game/boss/latest', (req, res) => {
   }
 });
 
+/**
+ * GAME-104: Zero-Latency Web Audio API Sound Synthesizer Endpoints
+ */
+import { getSynthSfxCatalog, getSynthSfxById } from '../src/lib/audio/soundSynthesizer.js';
+
+// GET all 8 procedural synthesizer effects
+app.get('/api/v1/audio/sfx-catalog', (req, res) => {
+  try {
+    const sfxList = getSynthSfxCatalog();
+    res.json({ success: true, sfxCatalog: sfxList });
+  } catch (err) {
+    console.error('Error in GET /api/v1/audio/sfx-catalog:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// POST save user audio & reduced-motion settings
+app.post('/api/v1/audio/settings', (req, res) => {
+  try {
+    const userId = req.headers['x-user-id'] || req.body.userId || 'default_user';
+    const { sfxVolume, bgmVolume, reducedMotion, muted, playedIncrement } = req.body;
+
+    const safeSfx = sfxVolume !== undefined ? Math.max(0, Math.min(1.0, Number(sfxVolume))) : 0.8;
+    const safeBgm = bgmVolume !== undefined ? Math.max(0, Math.min(1.0, Number(bgmVolume))) : 0.6;
+    const isReduced = Boolean(reducedMotion) ? 1 : 0;
+    const isMuted = Boolean(muted) ? 1 : 0;
+    const incPlayed = Number(playedIncrement) || 0;
+    const now = new Date().toISOString();
+
+    const existing = db.prepare('SELECT * FROM sound_synthesizer_records WHERE user_id = ?').get(userId);
+
+    if (existing) {
+      db.prepare(`
+        UPDATE sound_synthesizer_records
+        SET sfx_volume = ?, bgm_volume = ?, reduced_motion = ?, muted = ?,
+            sfx_played_count = sfx_played_count + ?, updated_at = ?
+        WHERE user_id = ?
+      `).run(safeSfx, safeBgm, isReduced, isMuted, incPlayed, now, userId);
+    } else {
+      const recordId = `audio-set-${Date.now()}`;
+      db.prepare(`
+        INSERT INTO sound_synthesizer_records (id, user_id, sfx_volume, bgm_volume, reduced_motion, muted, sfx_played_count, updated_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+      `).run(recordId, userId, safeSfx, safeBgm, isReduced, isMuted, incPlayed, now);
+    }
+
+    const updated = db.prepare('SELECT * FROM sound_synthesizer_records WHERE user_id = ?').get(userId);
+    res.json({
+      success: true,
+      userId,
+      settings: {
+        sfxVolume: updated.sfx_volume,
+        bgmVolume: updated.bgm_volume,
+        reducedMotion: Boolean(updated.reduced_motion),
+        muted: Boolean(updated.muted),
+        sfxPlayedCount: updated.sfx_played_count,
+        updatedAt: updated.updated_at
+      }
+    });
+  } catch (err) {
+    console.error('Error in POST /api/v1/audio/settings:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// GET latest user audio settings
+app.get('/api/v1/audio/settings/latest', (req, res) => {
+  try {
+    const userId = req.headers['x-user-id'] || 'default_user';
+    const row = db.prepare('SELECT * FROM sound_synthesizer_records WHERE user_id = ?').get(userId);
+
+    if (!row) {
+      return res.json({
+        success: true,
+        settings: {
+          sfxVolume: 0.8,
+          bgmVolume: 0.6,
+          reducedMotion: false,
+          muted: false,
+          sfxPlayedCount: 0
+        }
+      });
+    }
+
+    res.json({
+      success: true,
+      settings: {
+        sfxVolume: row.sfx_volume,
+        bgmVolume: row.bgm_volume,
+        reducedMotion: Boolean(row.reduced_motion),
+        muted: Boolean(row.muted),
+        sfxPlayedCount: row.sfx_played_count,
+        updatedAt: row.updated_at
+      }
+    });
+  } catch (err) {
+    console.error('Error in GET /api/v1/audio/settings/latest:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+/**
+ * GAME-105: RPG Equipment Inventory & University Leaderboard Endpoints
+ */
+import {
+  getPerkCatalog,
+  getUniversitiesList,
+  buyPerkItem,
+  computeUniversityLeaderboard
+} from '../src/lib/scoring/rpgInventoryLeaderboard.js';
+
+// GET user inventory & gems
+app.get('/api/v1/game/inventory', (req, res) => {
+  try {
+    const userId = req.headers['x-user-id'] || 'default_user';
+    let row = db.prepare('SELECT * FROM rpg_inventory_records WHERE user_id = ?').get(userId);
+
+    if (!row) {
+      const recordId = `inv-${Date.now()}`;
+      const now = new Date().toISOString();
+      db.prepare(`
+        INSERT INTO rpg_inventory_records (id, user_id, gems_balance, items_json, updated_at)
+        VALUES (?, ?, 500, '[]', ?)
+      `).run(recordId, userId, now);
+      row = { id: recordId, user_id: userId, gems_balance: 500, items_json: '[]', updated_at: now };
+    }
+
+    res.json({
+      success: true,
+      gemsBalance: row.gems_balance,
+      inventory: JSON.parse(row.items_json),
+      catalog: getPerkCatalog()
+    });
+  } catch (err) {
+    console.error('Error in GET /api/v1/game/inventory:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// POST purchase item
+app.post('/api/v1/game/inventory/buy', (req, res) => {
+  try {
+    const userId = req.headers['x-user-id'] || req.body.userId || 'default_user';
+    const { itemId } = req.body;
+
+    let row = db.prepare('SELECT * FROM rpg_inventory_records WHERE user_id = ?').get(userId);
+    if (!row) {
+      const recordId = `inv-${Date.now()}`;
+      const now = new Date().toISOString();
+      db.prepare(`
+        INSERT INTO rpg_inventory_records (id, user_id, gems_balance, items_json, updated_at)
+        VALUES (?, ?, 500, '[]', ?)
+      `).run(recordId, userId, now);
+      row = { id: recordId, user_id: userId, gems_balance: 500, items_json: '[]', updated_at: now };
+    }
+
+    const currentGems = row.gems_balance;
+    const currentInventory = JSON.parse(row.items_json);
+
+    const result = buyPerkItem({ currentGems, inventory: currentInventory, itemId });
+    if (!result.success) {
+      return res.status(400).json(result);
+    }
+
+    const now = new Date().toISOString();
+    db.prepare(`
+      UPDATE rpg_inventory_records
+      SET gems_balance = ?, items_json = ?, updated_at = ?
+      WHERE user_id = ?
+    `).run(result.newGems, JSON.stringify(result.newInventory), now, userId);
+
+    res.json({
+      success: true,
+      gemsBalance: result.newGems,
+      purchasedItem: result.purchasedItem,
+      inventory: result.newInventory
+    });
+  } catch (err) {
+    console.error('Error in POST /api/v1/game/inventory/buy:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// GET university leaderboard
+app.get('/api/v1/leaderboard/university', (req, res) => {
+  try {
+    const userId = req.headers['x-user-id'] || 'default_user';
+    const userUni = req.query.universityId || 'HUST';
+
+    const records = db.prepare('SELECT * FROM university_leaderboard_records').all();
+    const leaderboard = computeUniversityLeaderboard(records, userUni);
+
+    res.json({
+      success: true,
+      podium: leaderboard.podium,
+      rankings: leaderboard.rankings,
+      personalRank: leaderboard.personalRank
+    });
+  } catch (err) {
+    console.error('Error in GET /api/v1/leaderboard/university:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// POST submit XP to university leaderboard
+app.post('/api/v1/leaderboard/submit-xp', (req, res) => {
+  try {
+    const userId = req.headers['x-user-id'] || req.body.userId || 'default_user';
+    const { userName, universityId, universityName, xp } = req.body;
+
+    const safeXp = Math.max(1, Number(xp) || 50);
+    const uniId = universityId || 'HUST';
+    const uniName = universityName || 'ĐH Bách Khoa Hà Nội';
+    const uName = userName || 'Học viên Bách Khoa';
+    const recordId = `uni-xp-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
+    const now = new Date().toISOString();
+
+    db.prepare(`
+      INSERT INTO university_leaderboard_records (id, user_id, user_name, university_id, university_name, xp, created_at)
+      VALUES (?, ?, ?, ?, ?, ?, ?)
+    `).run(recordId, userId, uName, uniId, uniName, safeXp, now);
+
+    const records = db.prepare('SELECT * FROM university_leaderboard_records').all();
+    const leaderboard = computeUniversityLeaderboard(records, uniId);
+
+    res.json({
+      success: true,
+      submittedXp: safeXp,
+      universityId: uniId,
+      podium: leaderboard.podium,
+      personalRank: leaderboard.personalRank
+    });
+  } catch (err) {
+    console.error('Error in POST /api/v1/leaderboard/submit-xp:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+/**
+ * ELSA-401: 10-Minute Daily Personalized Practice Path Endpoints
+ */
+import {
+  getDailyPathCurriculum,
+  processStepCompletion
+} from '../src/lib/scoring/dailyPersonalizedPath.js';
+
+// GET daily path for user (initializes if none for today)
+app.get('/api/v1/curriculum/daily-path', (req, res) => {
+  try {
+    const userId = req.headers['x-user-id'] || req.query.userId || 'default_user';
+    const dialect = req.query.dialect || 'nam';
+    const today = new Date().toISOString().split('T')[0];
+
+    let row = db.prepare(`
+      SELECT * FROM daily_practice_path_records
+      WHERE user_id = ? AND date_str = ?
+      ORDER BY updated_at DESC LIMIT 1
+    `).get(userId, today);
+
+    if (!row) {
+      const curriculum = getDailyPathCurriculum(dialect);
+      const recordId = `path-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`;
+      const now = new Date().toISOString();
+
+      db.prepare(`
+        INSERT INTO daily_practice_path_records (
+          id, user_id, dialect, total_steps, completed_steps,
+          current_step_order, remaining_minutes, path_json, date_str, updated_at
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `).run(
+        recordId, userId, dialect, curriculum.totalSteps, 0,
+        1, curriculum.totalMinutes, JSON.stringify(curriculum), today, now
+      );
+
+      row = db.prepare('SELECT * FROM daily_practice_path_records WHERE id = ?').get(recordId);
+    }
+
+    const pathData = JSON.parse(row.path_json);
+    res.json({
+      success: true,
+      pathId: row.id,
+      userId: row.user_id,
+      dialect: row.dialect,
+      totalSteps: row.total_steps,
+      completedSteps: row.completed_steps,
+      currentStepOrder: row.current_step_order,
+      remainingMinutes: row.remaining_minutes,
+      dateStr: row.date_str,
+      curriculum: pathData
+    });
+  } catch (err) {
+    console.error('Error in GET /api/v1/curriculum/daily-path:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// POST complete a micro-step
+app.post('/api/v1/curriculum/step-complete', (req, res) => {
+  try {
+    const userId = req.headers['x-user-id'] || req.body.userId || 'default_user';
+    const { stepOrder } = req.body;
+    const today = new Date().toISOString().split('T')[0];
+
+    const row = db.prepare(`
+      SELECT * FROM daily_practice_path_records
+      WHERE user_id = ? AND date_str = ?
+      ORDER BY updated_at DESC LIMIT 1
+    `).get(userId, today);
+
+    if (!row) {
+      return res.status(404).json({ success: false, error: 'Không tìm thấy lộ trình học hôm nay.' });
+    }
+
+    const updateCalc = processStepCompletion({
+      currentCompletedSteps: row.completed_steps,
+      targetOrder: Number(stepOrder) || (row.completed_steps + 1),
+      totalSteps: row.total_steps
+    });
+
+    const now = new Date().toISOString();
+    db.prepare(`
+      UPDATE daily_practice_path_records
+      SET completed_steps = ?, current_step_order = ?, remaining_minutes = ?, updated_at = ?
+      WHERE id = ?
+    `).run(updateCalc.completedSteps, updateCalc.nextStepOrder, updateCalc.remainingMinutes, now, row.id);
+
+    const updated = db.prepare('SELECT * FROM daily_practice_path_records WHERE id = ?').get(row.id);
+    const pathData = JSON.parse(updated.path_json);
+
+    res.json({
+      success: true,
+      pathId: updated.id,
+      completedSteps: updated.completed_steps,
+      currentStepOrder: updated.current_step_order,
+      remainingMinutes: updated.remaining_minutes,
+      isAllCompleted: updateCalc.isAllCompleted,
+      progressPercent: updateCalc.progressPercent,
+      curriculum: pathData
+    });
+  } catch (err) {
+    console.error('Error in POST /api/v1/curriculum/step-complete:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// GET latest daily path state
+app.get('/api/v1/curriculum/daily-path/latest', (req, res) => {
+  try {
+    const userId = req.headers['x-user-id'] || 'default_user';
+    const row = db.prepare(`
+      SELECT * FROM daily_practice_path_records
+      WHERE user_id = ?
+      ORDER BY updated_at DESC LIMIT 1
+    `).get(userId);
+
+    if (!row) {
+      return res.json({ success: true, dailyPath: null });
+    }
+
+    res.json({
+      success: true,
+      dailyPath: {
+        id: row.id,
+        dialect: row.dialect,
+        totalSteps: row.total_steps,
+        completedSteps: row.completed_steps,
+        currentStepOrder: row.current_step_order,
+        remainingMinutes: row.remaining_minutes,
+        curriculum: JSON.parse(row.path_json),
+        updatedAt: row.updated_at
+      }
+    });
+  } catch (err) {
+    console.error('Error in GET /api/v1/curriculum/daily-path/latest:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+/**
+ * ELSA-402: Automated Error Bank with Spaced Repetition (SM-2) Endpoints
+ */
+import {
+  getInitialCards,
+  calculateSM2
+} from '../src/lib/scoring/spacedRepetitionSM2.js';
+
+// GET due cards for user (seeds if empty)
+app.get('/api/v1/error-bank/due-cards', (req, res) => {
+  try {
+    const userId = req.headers['x-user-id'] || 'default_user';
+    let rows = db.prepare('SELECT * FROM error_bank_sm2_records WHERE user_id = ?').all(userId);
+
+    if (rows.length === 0) {
+      const initialCards = getInitialCards();
+      const insertStmt = db.prepare(`
+        INSERT INTO error_bank_sm2_records (
+          id, user_id, word, ipa, phoneme_error, past_audio,
+          muscle_tip, easiness_factor, interval_days, repetitions,
+          consecutive_high_scores, last_score, status, category,
+          next_review_date, updated_at
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `);
+
+      const now = new Date().toISOString();
+      for (const card of initialCards) {
+        insertStmt.run(
+          `${card.id}-${userId}`,
+          userId,
+          card.word,
+          card.ipa,
+          card.phonemeError,
+          card.pastUserAudio,
+          card.muscleTip,
+          card.easinessFactor,
+          card.intervalDays,
+          card.repetitions,
+          card.consecutiveHighScores,
+          card.lastScore,
+          card.status,
+          card.category,
+          now,
+          now
+        );
+      }
+      rows = db.prepare('SELECT * FROM error_bank_sm2_records WHERE user_id = ?').all(userId);
+    }
+
+    res.json({
+      success: true,
+      dueCards: rows.filter((r) => r.status === 'due' || r.status === 'learning'),
+      allCards: rows
+    });
+  } catch (err) {
+    console.error('Error in GET /api/v1/error-bank/due-cards:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// POST review card with SM-2 rating
+app.post('/api/v1/error-bank/review', (req, res) => {
+  try {
+    const userId = req.headers['x-user-id'] || req.body.userId || 'default_user';
+    const { cardId, quality, score } = req.body;
+
+    const row = db.prepare('SELECT * FROM error_bank_sm2_records WHERE id = ? AND user_id = ?').get(cardId, userId);
+    if (!row) {
+      return res.status(404).json({ success: false, error: 'Không tìm thấy thẻ từ vựng.' });
+    }
+
+    const sm2Result = calculateSM2({
+      quality: Number(quality) || 4,
+      currentEF: row.easiness_factor,
+      currentInterval: row.interval_days,
+      repetitions: row.repetitions,
+      score: Number(score) || 80,
+      consecutiveHighScores: row.consecutive_high_scores
+    });
+
+    const newStatus = sm2Result.isMastered ? 'mastered' : 'learning';
+    const now = new Date().toISOString();
+
+    db.prepare(`
+      UPDATE error_bank_sm2_records
+      SET easiness_factor = ?, interval_days = ?, repetitions = ?,
+          consecutive_high_scores = ?, last_score = ?, status = ?,
+          next_review_date = ?, updated_at = ?
+      WHERE id = ? AND user_id = ?
+    `).run(
+      sm2Result.easinessFactor,
+      sm2Result.intervalDays,
+      sm2Result.repetitions,
+      sm2Result.consecutiveHighScores,
+      Number(score) || 80,
+      newStatus,
+      sm2Result.nextReviewDate,
+      now,
+      cardId,
+      userId
+    );
+
+    const updated = db.prepare('SELECT * FROM error_bank_sm2_records WHERE id = ?').get(cardId);
+
+    res.json({
+      success: true,
+      cardId,
+      sm2: sm2Result,
+      updatedCard: updated
+    });
+  } catch (err) {
+    console.error('Error in POST /api/v1/error-bank/review:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// GET error bank stats
+app.get('/api/v1/error-bank/stats', (req, res) => {
+  try {
+    const userId = req.headers['x-user-id'] || 'default_user';
+    const rows = db.prepare('SELECT * FROM error_bank_sm2_records WHERE user_id = ?').all(userId);
+
+    const dueCount = rows.filter((r) => r.status === 'due').length;
+    const learningCount = rows.filter((r) => r.status === 'learning').length;
+    const masteredCount = rows.filter((r) => r.status === 'mastered').length;
+
+    res.json({
+      success: true,
+      totalCards: rows.length,
+      dueCount,
+      learningCount,
+      masteredCount
+    });
+  } catch (err) {
+    console.error('Error in GET /api/v1/error-bank/stats:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+/**
+ * ELSA-601: Daily Practice Streak Counter & Streak Freeze Shield Endpoints
+ */
+import {
+  evaluateStreakVisuals,
+  processMidnightStreakProtection,
+  buyStreakFreeze
+} from '../src/lib/scoring/streakFreezeShield.js';
+
+// GET user streak and shields status
+app.get('/api/v1/streak/status', (req, res) => {
+  try {
+    const userId = req.headers['x-user-id'] || 'default_user';
+    let row = db.prepare('SELECT * FROM user_streak_shield_records WHERE user_id = ?').get(userId);
+
+    if (!row) {
+      const recordId = `streak-${Date.now()}`;
+      const now = new Date().toISOString();
+      db.prepare(`
+        INSERT INTO user_streak_shield_records (
+          id, user_id, streak_count, freeze_shields_count, is_frozen,
+          hours_inactive, saved_modal_pending, last_active_date, updated_at
+        ) VALUES (?, ?, 7, 1, 0, 0, 0, ?, ?)
+      `).run(recordId, userId, now, now);
+      row = db.prepare('SELECT * FROM user_streak_shield_records WHERE id = ?').get(recordId);
+    }
+
+    const visuals = evaluateStreakVisuals({ streak: row.streak_count, isFrozen: Boolean(row.is_frozen) });
+
+    res.json({
+      success: true,
+      userId: row.user_id,
+      streakCount: row.streak_count,
+      freezeShieldsCount: row.freeze_shields_count,
+      isFrozen: Boolean(row.is_frozen),
+      hoursInactive: row.hours_inactive,
+      savedModalPending: Boolean(row.saved_modal_pending),
+      visuals,
+      lastActiveDate: row.last_active_date
+    });
+  } catch (err) {
+    console.error('Error in GET /api/v1/streak/status:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// POST simulate midnight streak protection
+app.post('/api/v1/streak/consume-freeze', (req, res) => {
+  try {
+    const userId = req.headers['x-user-id'] || req.body.userId || 'default_user';
+    const { hoursInactive = 25 } = req.body;
+
+    let row = db.prepare('SELECT * FROM user_streak_shield_records WHERE user_id = ?').get(userId);
+    if (!row) {
+      const recordId = `streak-${Date.now()}`;
+      const now = new Date().toISOString();
+      db.prepare(`
+        INSERT INTO user_streak_shield_records (
+          id, user_id, streak_count, freeze_shields_count, is_frozen,
+          hours_inactive, saved_modal_pending, last_active_date, updated_at
+        ) VALUES (?, ?, 7, 1, 0, 0, 0, ?, ?)
+      `).run(recordId, userId, now, now);
+      row = db.prepare('SELECT * FROM user_streak_shield_records WHERE id = ?').get(recordId);
+    }
+
+    const protection = processMidnightStreakProtection({
+      streak: row.streak_count,
+      shields: row.freeze_shields_count,
+      hoursInactive: Number(hoursInactive)
+    });
+
+    const now = new Date().toISOString();
+    db.prepare(`
+      UPDATE user_streak_shield_records
+      SET streak_count = ?, freeze_shields_count = ?, is_frozen = ?,
+          hours_inactive = ?, saved_modal_pending = ?, updated_at = ?
+      WHERE user_id = ?
+    `).run(
+      protection.streakMaintained,
+      protection.shieldsRemaining,
+      protection.isFrozen ? 1 : 0,
+      Number(hoursInactive),
+      protection.shieldConsumed ? 1 : 0,
+      now,
+      userId
+    );
+
+    const updated = db.prepare('SELECT * FROM user_streak_shield_records WHERE user_id = ?').get(userId);
+    const visuals = evaluateStreakVisuals({ streak: updated.streak_count, isFrozen: Boolean(updated.is_frozen) });
+
+    res.json({
+      success: true,
+      protection,
+      streakCount: updated.streak_count,
+      freezeShieldsCount: updated.freeze_shields_count,
+      isFrozen: Boolean(updated.is_frozen),
+      savedModalPending: Boolean(updated.saved_modal_pending),
+      visuals
+    });
+  } catch (err) {
+    console.error('Error in POST /api/v1/streak/consume-freeze:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// POST purchase streak freeze shield for 200 gems
+app.post('/api/v1/streak/buy-freeze', (req, res) => {
+  try {
+    const userId = req.headers['x-user-id'] || req.body.userId || 'default_user';
+
+    // Get gems from rpg_inventory_records if available, else 500
+    let invRow = db.prepare('SELECT * FROM rpg_inventory_records WHERE user_id = ?').get(userId);
+    let gems = invRow ? invRow.gems_balance : 500;
+
+    let streakRow = db.prepare('SELECT * FROM user_streak_shield_records WHERE user_id = ?').get(userId);
+    let currentShields = streakRow ? streakRow.freeze_shields_count : 1;
+
+    const buyResult = buyStreakFreeze({ gemsBalance: gems, currentShields, costGems: 200 });
+    if (!buyResult.success) {
+      return res.status(400).json(buyResult);
+    }
+
+    const now = new Date().toISOString();
+
+    // Update gems
+    if (invRow) {
+      db.prepare('UPDATE rpg_inventory_records SET gems_balance = ?, updated_at = ? WHERE user_id = ?')
+        .run(buyResult.gemsBalance, now, userId);
+    }
+
+    // Update shields
+    if (streakRow) {
+      db.prepare('UPDATE user_streak_shield_records SET freeze_shields_count = ?, updated_at = ? WHERE user_id = ?')
+        .run(buyResult.shields, now, userId);
+    } else {
+      const recordId = `streak-${Date.now()}`;
+      db.prepare(`
+        INSERT INTO user_streak_shield_records (
+          id, user_id, streak_count, freeze_shields_count, is_frozen,
+          hours_inactive, saved_modal_pending, last_active_date, updated_at
+        ) VALUES (?, ?, 7, ?, 0, 0, 0, ?, ?)
+      `).run(recordId, userId, buyResult.shields, now, now);
+    }
+
+    res.json({
+      success: true,
+      gemsBalance: buyResult.gemsBalance,
+      freezeShieldsCount: buyResult.shields,
+      message: buyResult.message
+    });
+  } catch (err) {
+    console.error('Error in POST /api/v1/streak/buy-freeze:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// POST dismiss saved streak modal
+app.post('/api/v1/streak/dismiss-saved-modal', (req, res) => {
+  try {
+    const userId = req.headers['x-user-id'] || 'default_user';
+    db.prepare('UPDATE user_streak_shield_records SET saved_modal_pending = 0, is_frozen = 0 WHERE user_id = ?')
+      .run(userId);
+    res.json({ success: true, message: 'Băng đã tan! Tiếp tục phát huy chuỗi học tập!' });
+  } catch (err) {
+    console.error('Error in POST /api/v1/streak/dismiss-saved-modal:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 // Start listening only if run directly as main entrypoint
 const isMain = process.argv[1] && (process.argv[1].includes('server/index.js') || process.argv[1].includes('server\\index.js'));
 if (isMain && process.env.NODE_ENV !== 'test') {

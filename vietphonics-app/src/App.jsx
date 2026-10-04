@@ -2,6 +2,7 @@ import React from 'react';
 import { AppProvider, useApp } from './context/AppContext';
 import Navbar from './components/Navbar';
 import StreakModal from './components/StreakModal';
+import StreakSavedModal from './components/gamification/StreakSavedModal';
 import DiagnosticModal from './components/DiagnosticModal';
 import UpgradeModal from './components/UpgradeModal';
 
@@ -56,6 +57,7 @@ function MainContent() {
 
       {/* Global Modals */}
       <StreakModal />
+      <StreakSavedModal />
       <DiagnosticModal />
       <UpgradeModal />
 

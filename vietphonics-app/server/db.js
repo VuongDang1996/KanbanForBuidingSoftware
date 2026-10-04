@@ -404,6 +404,79 @@ export function initAppDatabase() {
       magnifier_tip TEXT NOT NULL,
       created_at TEXT NOT NULL
     );
+
+    CREATE TABLE IF NOT EXISTS sound_synthesizer_records (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL UNIQUE,
+      sfx_volume REAL NOT NULL DEFAULT 0.8,
+      bgm_volume REAL NOT NULL DEFAULT 0.6,
+      reduced_motion INTEGER NOT NULL DEFAULT 0,
+      muted INTEGER NOT NULL DEFAULT 0,
+      sfx_played_count INTEGER NOT NULL DEFAULT 0,
+      updated_at TEXT NOT NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS rpg_inventory_records (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL UNIQUE,
+      gems_balance INTEGER NOT NULL DEFAULT 500,
+      items_json TEXT NOT NULL DEFAULT '[]',
+      updated_at TEXT NOT NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS university_leaderboard_records (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL,
+      user_name TEXT NOT NULL,
+      university_id TEXT NOT NULL,
+      university_name TEXT NOT NULL,
+      xp INTEGER NOT NULL,
+      created_at TEXT NOT NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS daily_practice_path_records (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL,
+      dialect TEXT NOT NULL,
+      total_steps INTEGER NOT NULL DEFAULT 5,
+      completed_steps INTEGER NOT NULL DEFAULT 0,
+      current_step_order INTEGER NOT NULL DEFAULT 1,
+      remaining_minutes INTEGER NOT NULL DEFAULT 10,
+      path_json TEXT NOT NULL,
+      date_str TEXT NOT NULL,
+      updated_at TEXT NOT NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS error_bank_sm2_records (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL,
+      word TEXT NOT NULL,
+      ipa TEXT NOT NULL,
+      phoneme_error TEXT NOT NULL,
+      past_audio TEXT,
+      muscle_tip TEXT NOT NULL,
+      easiness_factor REAL NOT NULL DEFAULT 2.5,
+      interval_days INTEGER NOT NULL DEFAULT 1,
+      repetitions INTEGER NOT NULL DEFAULT 0,
+      consecutive_high_scores INTEGER NOT NULL DEFAULT 0,
+      last_score INTEGER NOT NULL DEFAULT 50,
+      status TEXT NOT NULL DEFAULT 'due',
+      category TEXT NOT NULL DEFAULT 'general',
+      next_review_date TEXT NOT NULL,
+      updated_at TEXT NOT NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS user_streak_shield_records (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL UNIQUE,
+      streak_count INTEGER NOT NULL DEFAULT 7,
+      freeze_shields_count INTEGER NOT NULL DEFAULT 1,
+      is_frozen INTEGER NOT NULL DEFAULT 0,
+      hours_inactive INTEGER NOT NULL DEFAULT 0,
+      saved_modal_pending INTEGER NOT NULL DEFAULT 0,
+      last_active_date TEXT NOT NULL,
+      updated_at TEXT NOT NULL
+    );
   `);
 
   // Seed default penalty weights for 3 regions

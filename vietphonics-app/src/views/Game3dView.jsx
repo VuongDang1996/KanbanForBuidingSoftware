@@ -4,11 +4,15 @@ import { useRecorder } from '../lib/audio/useRecorder';
 import WorldMapStageSelect from '../components/game/WorldMapStageSelect';
 import VoiceControllerHUD from '../components/game/VoiceControllerHUD';
 import BossArenaBattle from '../components/game/BossArenaBattle';
+import SoundSynthesizerSettings from '../components/game/SoundSynthesizerSettings';
+import RpgInventoryLeaderboard from '../components/game/RpgInventoryLeaderboard';
 
 export default function Game3dView() {
   const { incrementStreak } = useApp();
   const [showWorldMap, setShowWorldMap] = useState(false);
   const [showBossArena, setShowBossArena] = useState(false);
+  const [showSoundSettings, setShowSoundSettings] = useState(false);
+  const [showLeaderboard, setShowLeaderboard] = useState(false);
   const [bossHp, setBossHp] = useState(1250);
   const maxBossHp = 3000;
   const [combo, setCombo] = useState(4);
@@ -148,6 +152,24 @@ export default function Game3dView() {
               >
                 <span className="material-symbols-outlined text-sm">swords</span>
                 <span>Đấu Trường Trùm Minimal Pair (GAME-103)</span>
+              </button>
+              <button
+                onClick={() => setShowSoundSettings(true)}
+                className="px-3 py-1 rounded-lg bg-slate-800 hover:bg-slate-900 text-white font-label-mono text-[11px] font-semibold flex items-center gap-1.5 transition-colors cursor-pointer shadow-xs"
+                type="button"
+                data-testid="open-sound-settings"
+              >
+                <span className="material-symbols-outlined text-sm">graphic_eq</span>
+                <span>Âm Thanh Thủ Tục (GAME-104)</span>
+              </button>
+              <button
+                onClick={() => setShowLeaderboard(true)}
+                className="px-3 py-1 rounded-lg bg-amber-600 hover:bg-amber-700 text-white font-label-mono text-[11px] font-semibold flex items-center gap-1.5 transition-colors cursor-pointer shadow-xs"
+                type="button"
+                data-testid="open-leaderboard-inventory"
+              >
+                <span className="material-symbols-outlined text-sm">trophy</span>
+                <span>Bảng Xếp Hạng & Túi Đồ (GAME-105)</span>
               </button>
             </div>
           </div>
@@ -556,6 +578,18 @@ export default function Game3dView() {
         <BossArenaBattle
           isOpen={showBossArena}
           onClose={() => setShowBossArena(false)}
+        />
+
+        {/* GAME-104 Zero-Latency Sound Synthesizer Modal */}
+        <SoundSynthesizerSettings
+          isOpen={showSoundSettings}
+          onClose={() => setShowSoundSettings(false)}
+        />
+
+        {/* GAME-105 RPG Inventory & University Leaderboard Modal */}
+        <RpgInventoryLeaderboard
+          isOpen={showLeaderboard}
+          onClose={() => setShowLeaderboard(false)}
         />
       </main>
     </div>
