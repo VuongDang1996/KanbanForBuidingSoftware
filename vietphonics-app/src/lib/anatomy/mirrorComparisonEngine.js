@@ -760,7 +760,10 @@ export function evaluateMouthSnapshot(phoneme, clientMetrics = {}) {
       teethDeltaMm,
       interdentalTongueDetected: userTongueDetected,
       tongueRequired: benchmark.tongueInterdentalRequired,
-      landmarkBox
+      landmarkBox,
+      jawOpenScore: clientMetrics.jawOpenScore ?? null,
+      mouthPuckerScore: clientMetrics.mouthPuckerScore ?? null,
+      provider: clientMetrics.provider ?? 'client_vision'
     },
     feedback: {
       summary,

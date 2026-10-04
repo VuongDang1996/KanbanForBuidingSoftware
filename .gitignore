@@ -26,8 +26,8 @@ dist-ssr
 # SQLite temporary WAL/SHM locks
 *.db-wal
 *.db-shm
-data/*.db-wal
-data/*.db-shm
+**/*.db-wal
+**/*.db-shm
 
 # Python
 __pycache__/

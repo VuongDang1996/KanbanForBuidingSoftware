@@ -1291,6 +1291,8 @@ app.post('/api/v1/anatomy/mirror-analyze', async (req, res) => {
               teethGapMm: pyData.teeth_gap_mm,
               tongueProtrusionDetected: Boolean(pyData.tongue_detected),
               landmarkBox: pyData.landmark_box,
+              jawOpenScore: pyData.jaw_open_blendshape,
+              mouthPuckerScore: pyData.mouth_pucker_blendshape,
               provider: pyData.provider
             };
             aiProvider = pyData.provider || 'python_mediapipe_1_0';

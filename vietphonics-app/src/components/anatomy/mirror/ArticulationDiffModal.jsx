@@ -64,6 +64,12 @@ export default function ArticulationDiffModal({
           </div>
 
           <div className="flex items-center gap-3">
+            {/* AI Provider Badge */}
+            <span className="hidden sm:flex font-mono text-[11px] px-2.5 py-1 rounded-xl bg-indigo-500/20 text-indigo-300 border border-indigo-500/40 font-bold items-center gap-1.5 shadow-sm">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              {analysisResult.provider?.includes('python') ? 'Google MediaPipe 1.0 AI' : 'Vision Engine'}
+            </span>
+
             {/* Score Pill */}
             <div
               className={`px-3 py-1.5 rounded-2xl font-black text-xs flex items-center gap-1.5 shadow-sm border ${
@@ -105,7 +111,7 @@ export default function ArticulationDiffModal({
                 </span>
               </div>
 
-              <div className="relative w-full h-48 bg-slate-950 rounded-2xl overflow-hidden border-2 border-amber-400 shadow-inner flex items-center justify-center">
+              <div className="relative w-full h-52 md:h-56 bg-slate-950 rounded-2xl overflow-hidden border-2 border-amber-400 shadow-inner flex items-center justify-center">
                 {snapshotImage ? (
                   <img
                     src={snapshotImage}
@@ -164,7 +170,7 @@ export default function ArticulationDiffModal({
                 </span>
               </div>
 
-              <div className="relative w-full h-48 bg-slate-50 rounded-2xl overflow-hidden border-2 border-emerald-500 shadow-inner flex items-center justify-center p-3">
+              <div className="relative w-full h-52 md:h-56 bg-slate-50 rounded-2xl overflow-hidden border-2 border-emerald-500 shadow-inner flex items-center justify-center p-3">
                 {/* Coronal Lip Graphic representation */}
                 <svg viewBox="0 0 280 140" className="w-full h-full object-contain">
                   <ellipse
@@ -246,7 +252,12 @@ export default function ArticulationDiffModal({
                   {apertureDeltaMm >= 0 ? `+${apertureDeltaMm}` : apertureDeltaMm} mm
                 </span>
               </div>
-              <span className="text-[10px] text-slate-400 mt-1">Chuẩn: {targetApertureMm} mm</span>
+              <div className="mt-1 flex items-center justify-between text-[10px]">
+                <span className="text-slate-400">Chuẩn: {targetApertureMm} mm</span>
+                {typeof metrics.jawOpenScore === 'number' && (
+                  <span className="text-indigo-600 font-mono font-bold">Hạ hàm {(metrics.jawOpenScore * 100).toFixed(0)}%</span>
+                )}
+              </div>
             </div>
 
             {/* Metric 2: Lip Ratio (Spread vs Puckered) */}
@@ -268,7 +279,12 @@ export default function ArticulationDiffModal({
                   Δ {ratioDelta}
                 </span>
               </div>
-              <span className="text-[10px] text-slate-400 mt-1">Chuẩn: {targetRatio}</span>
+              <div className="mt-1 flex items-center justify-between text-[10px]">
+                <span className="text-slate-400">Chuẩn: {targetRatio}</span>
+                {typeof metrics.mouthPuckerScore === 'number' && (
+                  <span className="text-indigo-600 font-mono font-bold">Chu môi {(metrics.mouthPuckerScore * 100).toFixed(0)}%</span>
+                )}
+              </div>
             </div>
 
             {/* Metric 3: Teeth Gap */}

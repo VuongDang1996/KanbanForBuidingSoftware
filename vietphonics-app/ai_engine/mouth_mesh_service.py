@@ -14,6 +14,7 @@ import math
 import numpy as np
 from PIL import Image
 import cv2
+import traceback
 from flask import Flask, request, jsonify
 
 # Ensure UTF-8 output on Windows consoles to prevent UnicodeEncodeError with IPA symbols like /θ/
@@ -89,12 +90,15 @@ def analyze_mouth_biometrics(rgb_image, target_phoneme='/θ/'):
         except Exception as e:
             pass
 
+    is_flipped = False
     # Multi-pass 3: If still not detected, try horizontal flip
     if not detection_result.face_landmarks:
         try:
             flipped_rgb = cv2.flip(rgb_image, 1)
             mp_flipped = mp.Image(image_format=mp.ImageFormat.SRGB, data=flipped_rgb)
             detection_result = detector.detect(mp_flipped)
+            if detection_result.face_landmarks:
+                is_flipped = True
         except Exception as e:
             pass
 
@@ -117,9 +121,12 @@ def analyze_mouth_biometrics(rgb_image, target_phoneme='/θ/'):
             "provider": "python_mediapipe_fallback"
         }
 
-    # Extract 3D landmarks
+    # Extract 3D landmarks (un-flip if detected from horizontally flipped frame)
     face_landmarks = detection_result.face_landmarks[0]
-    landmarks_px = [(lm.x * width, lm.y * height) for lm in face_landmarks]
+    if is_flipped:
+        landmarks_px = [((1.0 - lm.x) * width, lm.y * height) for lm in face_landmarks]
+    else:
+        landmarks_px = [(lm.x * width, lm.y * height) for lm in face_landmarks]
 
     # Extract blendshapes
     blendshapes = {}
@@ -276,11 +283,13 @@ def analyze_mouth():
 
         result = analyze_mouth_biometrics(rgb_image, phoneme)
         try:
-            print(f"[AI Engine] POST /analyze-mouth [{phoneme}] -> face={result.get('face_detected')}, aperture={result.get('jaw_aperture_mm')}mm, ratio={result.get('lip_width_height_ratio')}, tongue={result.get('tongue_detected')}, pucker={result.get('mouth_pucker_blendshape', 0)}", flush=True)
+            safe_ph = str(phoneme).encode('ascii', 'backslashreplace').decode('ascii')
+            print(f"[AI Engine] POST /analyze-mouth [{safe_ph}] -> face={result.get('face_detected')}, aperture={result.get('jaw_aperture_mm')}mm, ratio={result.get('lip_width_height_ratio')}, tongue={result.get('tongue_detected')}, pucker={result.get('mouth_pucker_blendshape', 0)}", flush=True)
         except Exception:
             pass
         return jsonify(result)
     except Exception as exc:
+        traceback.print_exc()
         return jsonify({
             "success": False,
             "error": f"Lỗi phân tích AI: {str(exc)}"
