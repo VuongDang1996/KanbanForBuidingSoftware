@@ -5301,6 +5301,297 @@ app.post('/api/v1/ai/coach/chat-stream', (req, res) => {
   }
 });
 
+/**
+ * ADV-105: Connected Speech Lab Endpoints
+ */
+import {
+  CONNECTED_SPEECH_DRILLS,
+  evaluateConnectedSpeechFlow
+} from '../src/lib/audio/connectedSpeechEngine.js';
+
+// GET /api/v1/ai/connected-speech/sentences
+app.get('/api/v1/ai/connected-speech/sentences', (req, res) => {
+  try {
+    res.json({ success: true, drills: CONNECTED_SPEECH_DRILLS });
+  } catch (err) {
+    console.error('Error in connected-speech/sentences:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// POST /api/v1/ai/connected-speech/evaluate
+app.post('/api/v1/ai/connected-speech/evaluate', (req, res) => {
+  try {
+    const userId = req.headers['x-user-id'] || req.body.userId || 'learner_vip';
+    const { drillId = 'cs_hold_on', measuredBoundaries = [] } = req.body;
+
+    const evalResult = evaluateConnectedSpeechFlow(drillId, measuredBoundaries);
+    const recordId = `cs_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`;
+    const nowIso = new Date().toISOString();
+
+    db.prepare(`
+      INSERT INTO connected_speech_records (
+        id, user_id, drill_id, sentence, flow_score, staccato_count, evaluation_json, created_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    `).run(
+      recordId,
+      userId,
+      evalResult.drillId,
+      evalResult.sentence,
+      evalResult.flowScore,
+      evalResult.staccatoCount,
+      JSON.stringify(evalResult.evaluatedPairs),
+      nowIso
+    );
+
+    res.json({
+      success: true,
+      recordId,
+      ...evalResult
+    });
+  } catch (err) {
+    console.error('Error in connected-speech/evaluate:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// GET /api/v1/ai/connected-speech/history/:userId
+app.get('/api/v1/ai/connected-speech/history/:userId', (req, res) => {
+  try {
+    const { userId } = req.params;
+    const rows = db.prepare('SELECT * FROM connected_speech_records WHERE user_id = ? ORDER BY created_at DESC LIMIT 10').all(userId);
+    res.json({ success: true, history: rows });
+  } catch (err) {
+    console.error('Error in connected-speech/history:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+/**
+ * ADV-106: Intelligibility Score & Multi-ASR Listener Panel Endpoints
+ */
+import {
+  SEMANTIC_RISK_DICTIONARY,
+  VIRTUAL_LISTENERS,
+  evaluateIntelligibility
+} from '../src/lib/ai/intelligibilityEngine.js';
+
+// GET /api/v1/ai/intelligibility/semantic-risk-pairs
+app.get('/api/v1/ai/intelligibility/semantic-risk-pairs', (req, res) => {
+  try {
+    res.json({ success: true, riskDictionary: SEMANTIC_RISK_DICTIONARY, listeners: VIRTUAL_LISTENERS });
+  } catch (err) {
+    console.error('Error in intelligibility/semantic-risk-pairs:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// POST /api/v1/ai/intelligibility/evaluate
+app.post('/api/v1/ai/intelligibility/evaluate', (req, res) => {
+  try {
+    const userId = req.headers['x-user-id'] || req.body.userId || 'learner_vip';
+    const { spokenText = '', mispronouncedWords = [] } = req.body;
+
+    const evalResult = evaluateIntelligibility({ spokenText, mispronouncedWords });
+    const recordId = `intel_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`;
+    const nowIso = new Date().toISOString();
+
+    db.prepare(`
+      INSERT INTO intelligibility_evaluations (
+        id, user_id, spoken_text, global_score, listener_scores_json, semantic_risks_json, has_high_risk, created_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    `).run(
+      recordId,
+      userId,
+      evalResult.spokenText,
+      evalResult.globalIntelligibility,
+      JSON.stringify(evalResult.listenerScores),
+      JSON.stringify(evalResult.semanticRisks),
+      evalResult.hasHighRiskAlert ? 1 : 0,
+      nowIso
+    );
+
+    res.json({
+      success: true,
+      recordId,
+      ...evalResult
+    });
+  } catch (err) {
+    console.error('Error in intelligibility/evaluate:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// GET /api/v1/ai/intelligibility/history/:userId
+app.get('/api/v1/ai/intelligibility/history/:userId', (req, res) => {
+  try {
+    const { userId } = req.params;
+    const rows = db.prepare('SELECT * FROM intelligibility_evaluations WHERE user_id = ? ORDER BY created_at DESC LIMIT 10').all(userId);
+    res.json({ success: true, history: rows });
+  } catch (err) {
+    console.error('Error in intelligibility/history:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+/**
+ * ADV-107: Spontaneous Speech Voice Journal Endpoints
+ */
+import {
+  VOICE_JOURNAL_PROMPTS,
+  evaluateSpontaneousJournalEntry
+} from '../src/lib/audio/voiceJournalEngine.js';
+
+// GET /api/v1/ai/voice-journal/prompts
+app.get('/api/v1/ai/voice-journal/prompts', (req, res) => {
+  try {
+    res.json({ success: true, prompts: VOICE_JOURNAL_PROMPTS });
+  } catch (err) {
+    console.error('Error in voice-journal/prompts:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// POST /api/v1/ai/voice-journal/entry
+app.post('/api/v1/ai/voice-journal/entry', (req, res) => {
+  try {
+    const userId = req.headers['x-user-id'] || req.body.userId || 'learner_vip';
+    const {
+      promptId = 'vj_p1',
+      rawTranscript = '',
+      durationSeconds = 45,
+      baselineReadAloudScore = 85
+    } = req.body;
+
+    const evalResult = evaluateSpontaneousJournalEntry({
+      promptId,
+      rawTranscript,
+      durationSeconds: Number(durationSeconds),
+      baselineReadAloudScore: Number(baselineReadAloudScore)
+    });
+
+    const recordId = `vj_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`;
+    const nowIso = new Date().toISOString();
+
+    db.prepare(`
+      INSERT INTO voice_journal_entries (
+        id, user_id, prompt_id, transcript, duration_seconds, wpm,
+        baseline_score, spontaneous_score, transfer_gap, aligned_words_json, fillers_json, created_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `).run(
+      recordId,
+      userId,
+      evalResult.promptId,
+      evalResult.transcript,
+      evalResult.durationSeconds,
+      evalResult.wpm,
+      evalResult.baselineReadAloudScore,
+      evalResult.spontaneousScore,
+      evalResult.transferGap,
+      JSON.stringify(evalResult.alignedWords),
+      JSON.stringify(evalResult.detectedFillers),
+      nowIso
+    );
+
+    res.json({
+      success: true,
+      recordId,
+      ...evalResult
+    });
+  } catch (err) {
+    console.error('Error in voice-journal/entry:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// GET /api/v1/ai/voice-journal/history/:userId
+app.get('/api/v1/ai/voice-journal/history/:userId', (req, res) => {
+  try {
+    const { userId } = req.params;
+    const rows = db.prepare('SELECT * FROM voice_journal_entries WHERE user_id = ? ORDER BY created_at DESC LIMIT 10').all(userId);
+    res.json({ success: true, history: rows });
+  } catch (err) {
+    console.error('Error in voice-journal/history:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+/**
+ * ADV-108: Accent Explorer & Target Dialect Selector Endpoints
+ */
+import {
+  TARGET_DIALECTS,
+  ACCENT_CONTRAST_WORDS,
+  evaluateDialectProximity
+} from '../src/lib/audio/accentExplorerEngine.js';
+
+// GET /api/v1/ai/accent-explorer/dialects
+app.get('/api/v1/ai/accent-explorer/dialects', (req, res) => {
+  try {
+    res.json({
+      success: true,
+      dialects: TARGET_DIALECTS,
+      contrastWords: ACCENT_CONTRAST_WORDS
+    });
+  } catch (err) {
+    console.error('Error in accent-explorer/dialects:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// POST /api/v1/ai/accent-explorer/select-target
+app.post('/api/v1/ai/accent-explorer/select-target', (req, res) => {
+  try {
+    const userId = req.headers['x-user-id'] || req.body.userId || 'learner_vip';
+    const { dialectCode = 'us', userTelemetry = {} } = req.body;
+
+    const evalResult = evaluateDialectProximity(dialectCode, userTelemetry);
+    const nowIso = new Date().toISOString();
+    const recordId = `dial_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`;
+
+    db.prepare(`
+      INSERT INTO user_target_dialects (id, user_id, dialect_code, proximity_score, updated_at)
+      VALUES (?, ?, ?, ?, ?)
+      ON CONFLICT(user_id) DO UPDATE SET
+        dialect_code = excluded.dialect_code,
+        proximity_score = excluded.proximity_score,
+        updated_at = excluded.updated_at
+    `).run(recordId, userId, dialectCode, evalResult.proximityPercent, nowIso);
+
+    res.json({
+      success: true,
+      userId,
+      dialectCode,
+      ...evalResult,
+      updatedAt: nowIso
+    });
+  } catch (err) {
+    console.error('Error in accent-explorer/select-target:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// GET /api/v1/ai/accent-explorer/user-target/:userId
+app.get('/api/v1/ai/accent-explorer/user-target/:userId', (req, res) => {
+  try {
+    const { userId } = req.params;
+    const row = db.prepare('SELECT * FROM user_target_dialects WHERE user_id = ?').get(userId);
+    const dialectCode = row ? row.dialect_code : 'us';
+    const evalResult = evaluateDialectProximity(dialectCode);
+
+    res.json({
+      success: true,
+      userId,
+      selectedDialectCode: dialectCode,
+      proximityScore: row ? row.proximity_score : evalResult.proximityPercent,
+      ...evalResult
+    });
+  } catch (err) {
+    console.error('Error in accent-explorer/user-target:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 // Start listening only if run directly as main entrypoint
 const isMain = process.argv[1] && (process.argv[1].includes('server/index.js') || process.argv[1].includes('server\\index.js'));
 if (isMain && process.env.NODE_ENV !== 'test') {

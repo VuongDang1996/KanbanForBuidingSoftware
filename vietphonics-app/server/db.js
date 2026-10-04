@@ -726,6 +726,58 @@ export function initAppDatabase() {
       created_at TEXT NOT NULL
     );
     CREATE INDEX IF NOT EXISTS idx_coach_chat_user ON ai_coach_chat_messages(user_id, created_at DESC);
+
+    /* ADV-105: Connected Speech Lab */
+    CREATE TABLE IF NOT EXISTS connected_speech_records (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL,
+      drill_id TEXT NOT NULL,
+      sentence TEXT NOT NULL,
+      flow_score INTEGER NOT NULL,
+      staccato_count INTEGER NOT NULL,
+      evaluation_json TEXT NOT NULL,
+      created_at TEXT NOT NULL
+    );
+    CREATE INDEX IF NOT EXISTS idx_connected_speech_user ON connected_speech_records(user_id, created_at DESC);
+
+    /* ADV-106: Intelligibility Score & Multi-ASR Panel */
+    CREATE TABLE IF NOT EXISTS intelligibility_evaluations (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL,
+      spoken_text TEXT NOT NULL,
+      global_score INTEGER NOT NULL,
+      listener_scores_json TEXT NOT NULL,
+      semantic_risks_json TEXT NOT NULL,
+      has_high_risk INTEGER NOT NULL,
+      created_at TEXT NOT NULL
+    );
+    CREATE INDEX IF NOT EXISTS idx_intelligibility_user ON intelligibility_evaluations(user_id, created_at DESC);
+
+    /* ADV-107: Spontaneous Speech Voice Journal */
+    CREATE TABLE IF NOT EXISTS voice_journal_entries (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL,
+      prompt_id TEXT NOT NULL,
+      transcript TEXT NOT NULL,
+      duration_seconds INTEGER NOT NULL,
+      wpm INTEGER NOT NULL,
+      baseline_score INTEGER NOT NULL,
+      spontaneous_score INTEGER NOT NULL,
+      transfer_gap INTEGER NOT NULL,
+      aligned_words_json TEXT NOT NULL,
+      fillers_json TEXT NOT NULL,
+      created_at TEXT NOT NULL
+    );
+    CREATE INDEX IF NOT EXISTS idx_voice_journal_user ON voice_journal_entries(user_id, created_at DESC);
+
+    /* ADV-108: Accent Explorer & Target Dialect Selector */
+    CREATE TABLE IF NOT EXISTS user_target_dialects (
+      id TEXT PRIMARY KEY,
+      user_id TEXT UNIQUE NOT NULL,
+      dialect_code TEXT NOT NULL,
+      proximity_score INTEGER NOT NULL DEFAULT 75,
+      updated_at TEXT NOT NULL
+    );
   `);
 
   // Seed default penalty weights for 3 regions

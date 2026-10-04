@@ -235,7 +235,7 @@ export const gamifiedStories = [
     action: 'trang bị các vật phẩm RPG (Khiên Đóng Băng Chuỗi, Đũa Phép Bật Âm, Tai Nghe Vàng) và tích lũy điểm kinh nghiệm XP để đưa trường đại học của mình lên top 1 bảng xếp hạng',
     value: 'kích hoạt hiệu ứng tâm lý thi đua lành mạnh và lòng tự hào trường học, tạo ra động lực nội tại mạnh mẽ giúp học viên vào app luyện nói mỗi ngày',
     priority: 'should',
-    status: 'in-progress',
+    status: 'done',
     size: 'L',
     points: 8,
     uiMockupUrl: '/src/ui-reference/game_3d_rpg_chi_n_luy_n_ph_t_m_light_mode/code.html',
