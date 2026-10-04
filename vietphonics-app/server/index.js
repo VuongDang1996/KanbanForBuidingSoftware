@@ -1294,10 +1294,13 @@ app.post('/api/v1/anatomy/mirror-analyze', async (req, res) => {
               provider: pyData.provider
             };
             aiProvider = pyData.provider || 'python_mediapipe_1_0';
+            console.log(`[Mirror Analyze] Python AI Success: aperture=${pyData.jaw_aperture_mm}mm, ratio=${pyData.lip_width_height_ratio}, tongue=${pyData.tongue_detected}, pucker=${pyData.mouth_pucker_blendshape}`);
+          } else {
+            console.warn('[Mirror Analyze] Python AI returned face_detected=false, falling back to client vision metrics');
           }
         }
       } catch (pyErr) {
-        // Fallback to client metrics if Python service is busy or offline
+        console.warn('[Mirror Analyze] Python AI request error:', pyErr.message);
       }
     }
 

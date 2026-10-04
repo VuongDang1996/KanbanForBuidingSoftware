@@ -16,6 +16,14 @@ from PIL import Image
 import cv2
 from flask import Flask, request, jsonify
 
+# Ensure UTF-8 output on Windows consoles to prevent UnicodeEncodeError with IPA symbols like /θ/
+if sys.platform.startswith('win'):
+    try:
+        sys.stdout.reconfigure(encoding='utf-8')
+        sys.stderr.reconfigure(encoding='utf-8')
+    except Exception:
+        pass
+
 # MediaPipe 1.0 Tasks Vision API
 import mediapipe as mp
 from mediapipe.tasks.python import vision
@@ -32,6 +40,8 @@ options = vision.FaceLandmarkerOptions(
     base_options=base_options,
     output_face_blendshapes=True,
     output_facial_transformation_matrixes=True,
+    min_face_detection_confidence=0.15,
+    min_face_presence_confidence=0.15,
     num_faces=1
 )
 detector = vision.FaceLandmarker.create_from_options(options)
@@ -67,6 +77,27 @@ def analyze_mouth_biometrics(rgb_image, target_phoneme='/θ/'):
 
     detection_result = detector.detect(mp_image)
 
+    # Multi-pass 2: If dim/dark webcam frame, apply adaptive histogram equalization (CLAHE)
+    if not detection_result.face_landmarks:
+        try:
+            gray = cv2.cvtColor(rgb_image, cv2.COLOR_RGB2GRAY)
+            clahe = cv2.createCLAHE(clipLimit=2.5, tileGridSize=(8, 8))
+            enhanced_gray = clahe.apply(gray)
+            enhanced_rgb = cv2.cvtColor(enhanced_gray, cv2.COLOR_GRAY2RGB)
+            mp_enhanced = mp.Image(image_format=mp.ImageFormat.SRGB, data=enhanced_rgb)
+            detection_result = detector.detect(mp_enhanced)
+        except Exception as e:
+            pass
+
+    # Multi-pass 3: If still not detected, try horizontal flip
+    if not detection_result.face_landmarks:
+        try:
+            flipped_rgb = cv2.flip(rgb_image, 1)
+            mp_flipped = mp.Image(image_format=mp.ImageFormat.SRGB, data=flipped_rgb)
+            detection_result = detector.detect(mp_flipped)
+        except Exception as e:
+            pass
+
     # Fallback if no face was detected
     if not detection_result.face_landmarks:
         return {
@@ -74,9 +105,9 @@ def analyze_mouth_biometrics(rgb_image, target_phoneme='/θ/'):
             "face_detected": False,
             "landmark_box": {
                 "leftPercent": 50.0,
-                "topPercent": 68.0,
-                "widthPercent": 32.0,
-                "heightPercent": 18.0
+                "topPercent": 50.0,
+                "widthPercent": 26.0,
+                "heightPercent": 15.0
             },
             "jaw_aperture_mm": 3.5,
             "lip_width_height_ratio": 2.2,
@@ -153,7 +184,14 @@ def analyze_mouth_biometrics(rgb_image, target_phoneme='/θ/'):
     else:
         teeth_gap_mm = round(max(0.8, jaw_aperture_mm * 0.75), 1)
 
-    lip_ratio = round(mouth_width_px / max(1.0, lip_height_px), 2)
+    # Calculate lip aspect ratio: incorporate raw pixel ratio and FACS mouthPucker blendshape
+    raw_ratio = mouth_width_px / max(1.0, lip_height_px)
+    if mouth_pucker_score > 0.35:
+        # User is puckering lips into an 'O' or 'U' shape!
+        # The visual shape becomes circular / oval, reducing the ratio from flat 2.0+ down to 0.9 - 1.25
+        lip_ratio = round(max(0.85, min(raw_ratio, 2.2 * (1.0 - mouth_pucker_score * 0.6))), 2)
+    else:
+        lip_ratio = round(raw_ratio, 2)
 
     # 4. Interdental Tongue Protrusion Detection via OpenCV HSV Segmentation:
     tongue_detected = False
@@ -237,6 +275,10 @@ def analyze_mouth():
             }), 400
 
         result = analyze_mouth_biometrics(rgb_image, phoneme)
+        try:
+            print(f"[AI Engine] POST /analyze-mouth [{phoneme}] -> face={result.get('face_detected')}, aperture={result.get('jaw_aperture_mm')}mm, ratio={result.get('lip_width_height_ratio')}, tongue={result.get('tongue_detected')}, pucker={result.get('mouth_pucker_blendshape', 0)}", flush=True)
+        except Exception:
+            pass
         return jsonify(result)
     except Exception as exc:
         return jsonify({

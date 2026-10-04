@@ -28,3 +28,7 @@ dist-ssr
 *.db-shm
 data/*.db-wal
 data/*.db-shm
+
+# Python
+__pycache__/
+*.py[cod]

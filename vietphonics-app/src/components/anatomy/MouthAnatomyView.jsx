@@ -1375,7 +1375,7 @@ export default function MouthAnatomyView({ initialPhoneme = '/θ/' }) {
                       </div>
                       <div
                         className="absolute w-32 h-16 border-2 border-dashed border-emerald-400 rounded-2xl bg-emerald-500/10 shadow-lg flex items-center justify-center transition-all"
-                        style={{ top: '68%', left: '50%', transform: 'translate(-50%, -50%)' }}
+                        style={{ top: '52%', left: '50%', transform: 'translate(-50%, -50%)' }}
                       >
                         <span className="text-[9px] font-mono text-emerald-300 font-bold bg-slate-900/90 px-1.5 py-0.5 rounded border border-emerald-500/40">
                           Khung ngắm môi

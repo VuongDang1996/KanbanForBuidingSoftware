@@ -195,7 +195,7 @@ export function getBenchmarkMetrics(phoneme) {
  * @returns {object} Biometric measurements and responsive landmark bounding box percentages
  */
 export function analyzeMouthCanvas(canvas, targetPhoneme = '/θ/') {
-  const fallbackBox = { leftPercent: 50, topPercent: 68, widthPercent: 32, heightPercent: 18 };
+  const fallbackBox = { leftPercent: 50, topPercent: 52, widthPercent: 26, heightPercent: 15 };
 
   if (!canvas || typeof canvas.getContext !== 'function') {
     return {
@@ -215,11 +215,11 @@ export function analyzeMouthCanvas(canvas, targetPhoneme = '/θ/') {
     const data = imgData.data;
 
     // Search region for mouth in standard selfie portrait:
-    // Horizontally centered (22% to 78%), vertically lower half (48% to 84%)
+    // Horizontally centered (22% to 78%), vertically middle-face (38% to 72%)
     const minX = Math.floor(width * 0.22);
     const maxX = Math.floor(width * 0.78);
-    const minY = Math.floor(height * 0.48);
-    const maxY = Math.floor(height * 0.84);
+    const minY = Math.floor(height * 0.38);
+    const maxY = Math.floor(height * 0.72);
 
     let sumLipX = 0;
     let sumLipY = 0;
@@ -230,7 +230,7 @@ export function analyzeMouthCanvas(canvas, targetPhoneme = '/θ/') {
     let minLipY = maxY;
     let maxLipY = minY;
 
-    // Pass 1: Detect lip boundary & center via Red Chrominance Contrast
+    // Pass 1: Detect lip boundary & center via Red Chrominance Contrast (tolerant to low-light)
     for (let y = minY; y < maxY; y += 2) {
       for (let x = minX; x < maxX; x += 2) {
         const idx = (y * width + x) * 4;
@@ -240,9 +240,9 @@ export function analyzeMouthCanvas(canvas, targetPhoneme = '/θ/') {
 
         // Red-dominant lip metric
         const lipChrominance = (2.0 * r - g - b) / (r + g + b + 1);
-        const isRedDominant = r > 70 && (r > g * 1.22) && (r > b * 1.25);
+        const isRedDominant = r > 45 && (r > g * 1.12) && (r > b * 1.15);
 
-        if (isRedDominant && lipChrominance > 0.12) {
+        if (isRedDominant && lipChrominance > 0.08) {
           sumLipX += x;
           sumLipY += y;
           lipPixelCount++;
@@ -255,9 +255,9 @@ export function analyzeMouthCanvas(canvas, targetPhoneme = '/θ/') {
     }
 
     let mouthCenterX = width * 0.5;
-    let mouthCenterY = height * 0.68;
-    let mouthW = width * 0.30;
-    let mouthH = height * 0.16;
+    let mouthCenterY = height * 0.50;
+    let mouthW = width * 0.28;
+    let mouthH = height * 0.15;
 
     if (lipPixelCount > 35) {
       mouthCenterX = sumLipX / lipPixelCount;
@@ -372,7 +372,7 @@ export function evaluateMouthSnapshot(phoneme, clientMetrics = {}) {
     : (clientMetrics.teethGapPx ? clientMetrics.teethGapPx * 0.35 : 2.5);
 
   const userTongueDetected = Boolean(clientMetrics.tongueProtrusionDetected);
-  const landmarkBox = clientMetrics.landmarkBox || { leftPercent: 50, topPercent: 68, widthPercent: 32, heightPercent: 18 };
+  const landmarkBox = clientMetrics.landmarkBox || { leftPercent: 50, topPercent: 50, widthPercent: 26, heightPercent: 15 };
 
   // Compute absolute deltas
   const apertureDeltaMm = Math.round((userAperture - benchmark.targetApertureMm) * 10) / 10;

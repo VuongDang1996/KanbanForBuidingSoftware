@@ -116,11 +116,11 @@ export default function ArticulationDiffModal({
                   <div className="text-slate-500 text-xs">Không có ảnh chụp</div>
                 )}
 
-                {/* Detected Landmark Bounding Box Overlay anchored to real mouth position */}
+                {/* Detected Landmark Bounding Box Overlay anchored to real mouth position (mirrored to match selfie view) */}
                 <div
                   className="absolute border-2 border-dashed border-amber-400 rounded-2xl pointer-events-none transition-all shadow-md flex items-center justify-center"
                   style={{
-                    left: `${landmarkBox.leftPercent}%`,
+                    left: `${100 - landmarkBox.leftPercent}%`,
                     top: `${landmarkBox.topPercent}%`,
                     width: `${Math.min(55, Math.max(22, landmarkBox.widthPercent))}%`,
                     height: `${Math.min(45, Math.max(14, landmarkBox.heightPercent))}%`,
@@ -137,7 +137,7 @@ export default function ArticulationDiffModal({
                   <div
                     className="absolute border-2 border-emerald-400 rounded-2xl bg-emerald-500/15 shadow-xl animate-pulse pointer-events-none transition-all flex items-center justify-center"
                     style={{
-                      left: `${landmarkBox.leftPercent}%`,
+                      left: `${100 - landmarkBox.leftPercent}%`,
                       top: `${landmarkBox.topPercent}%`,
                       width: `${Math.min(55, Math.max(20, landmarkBox.widthPercent * (targetRatio / Math.max(0.1, userRatio))))}%`,
                       height: `${Math.min(45, Math.max(12, landmarkBox.heightPercent * (targetApertureMm / Math.max(1, userApertureMm))))}%`,
@@ -181,19 +181,29 @@ export default function ArticulationDiffModal({
                     ry={Math.min(38, Math.max(10, targetApertureMm * 1.1))}
                     fill="#1e293b"
                   />
-                  {/* Teeth */}
-                  <rect x="122" y="58" width="16" height="12" fill="#ffffff" rx="1" />
-                  <rect x="142" y="58" width="16" height="12" fill="#ffffff" rx="1" />
+                  {/* Upper Teeth */}
+                  <rect x="122" y="54" width="16" height="12" fill="#ffffff" rx="1.5" />
+                  <rect x="142" y="54" width="16" height="12" fill="#ffffff" rx="1.5" />
 
-                  {/* Tongue tip for dental */}
-                  {tongueRequired && (
-                    <ellipse cx="140" cy="74" rx="18" ry="8" fill="#f43f5e" />
-                  )}
+                  {/* Interdental Tongue Tip visibly protruding between teeth for /θ/, /ð/ */}
+                  {tongueRequired ? (
+                    <g>
+                      <ellipse cx="140" cy="70" rx="24" ry="11" fill="#f43f5e" stroke="#e11d48" strokeWidth="1.5" />
+                      <path d="M 125 70 Q 140 78 155 70" fill="none" stroke="#be123c" strokeWidth="1.5" />
+                      <text x="140" y="73" textAnchor="middle" fill="#ffffff" fontSize="8" fontWeight="bold" fontFamily="monospace">
+                        LƯỠI KẸP RĂNG
+                      </text>
+                    </g>
+                  ) : null}
+
+                  {/* Lower Teeth */}
+                  <rect x="125" y="76" width="14" height="10" fill="#ffffff" rx="1.5" opacity="0.9" />
+                  <rect x="141" y="76" width="14" height="10" fill="#ffffff" rx="1.5" opacity="0.9" />
                 </svg>
 
-                <div className="absolute bottom-2 left-3 right-3 flex items-center justify-between text-[10px] font-mono font-bold text-slate-600 bg-white/90 backdrop-blur px-2.5 py-1 rounded-xl border border-slate-200">
-                  <span>Hình thái: {phonemeProfile.lipShape?.label || 'Chuẩn Quốc Tế'}</span>
-                  <span className="text-emerald-700">Độ khép răng: {targetTeethGapMm}mm</span>
+                <div className="absolute bottom-2 left-3 right-3 flex items-center justify-between text-[10px] font-mono font-bold text-slate-700 bg-white/95 backdrop-blur px-2.5 py-1 rounded-xl border border-slate-200">
+                  <span className="truncate max-w-[62%]">Hình thái: {phonemeProfile.lipShape?.label || 'Chuẩn Quốc Tế'}</span>
+                  <span className="text-emerald-700 shrink-0">Hở răng: {targetTeethGapMm}mm</span>
                 </div>
               </div>
             </div>
