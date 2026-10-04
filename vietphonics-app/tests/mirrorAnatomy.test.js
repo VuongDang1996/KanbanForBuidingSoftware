@@ -5,6 +5,7 @@ import { db } from '../server/db.js';
 import {
   evaluateMouthSnapshot,
   getBenchmarkMetrics,
+  analyzeMouthCanvas,
   PHONEME_BENCHMARK_PROFILES
 } from '../src/lib/anatomy/mirrorComparisonEngine.js';
 
@@ -68,6 +69,30 @@ describe('PRON-212: Webcam Mirror Snapshot & Articulatory Feature Comparison Tes
 
       assert.equal(result.feedback.l1ErrorFlag, 'INSUFFICIENT_JAW_DROP');
       assert.ok(result.feedback.actionAdvice.includes('hạ cằm'));
+    });
+
+    test('L1 Error Detection: Flag EXCESSIVE_JAW_DROP when mouth is opened too wide for /θ/ (Image 1 test case)', () => {
+      const result = evaluateMouthSnapshot('/θ/', {
+        jawApertureMm: 9.3, // target is 3.5mm (+5.8mm delta)
+        lipWidthHeightRatio: 1.43,
+        teethGapMm: 3.0,
+        tongueProtrusionDetected: true
+      });
+
+      assert.equal(result.status, 'NEEDS_ADJUSTMENT');
+      assert.equal(result.feedback.l1ErrorFlag, 'EXCESSIVE_JAW_DROP');
+      assert.ok(result.feedback.summary.includes('rộng'));
+      assert.ok(result.feedback.actionAdvice.includes('há miệng hơi rộng'));
+    });
+
+    test('analyzeMouthCanvas should return valid biometric measurements and landmark box', () => {
+      const biometrics = analyzeMouthCanvas(null, '/θ/');
+      assert.ok(biometrics.landmarkBox);
+      assert.equal(typeof biometrics.landmarkBox.leftPercent, 'number');
+      assert.equal(typeof biometrics.landmarkBox.topPercent, 'number');
+      assert.ok(biometrics.landmarkBox.topPercent > 50); // lower half for mouth
+      assert.equal(typeof biometrics.jawApertureMm, 'number');
+      assert.equal(typeof biometrics.tongueProtrusionDetected, 'boolean');
     });
   });
 

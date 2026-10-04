@@ -29,6 +29,7 @@ export default function ArticulationDiffModal({
   const teethDeltaMm = metrics.teethDeltaMm ?? 0;
   const tongueRequired = Boolean(metrics.tongueRequired);
   const interdentalTongueDetected = Boolean(metrics.interdentalTongueDetected);
+  const landmarkBox = metrics.landmarkBox || { leftPercent: 50, topPercent: 68, widthPercent: 32, heightPercent: 18 };
 
   const isExcellent = status === 'EXCELLENT';
   const isNeedsAdjustment = status === 'NEEDS_ADJUSTMENT';
@@ -115,29 +116,36 @@ export default function ArticulationDiffModal({
                   <div className="text-slate-500 text-xs">Không có ảnh chụp</div>
                 )}
 
-                {/* Simulated Landmark Bounding Box Overlay */}
-                <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
-                  <div
-                    className="border-2 border-dashed border-amber-400/90 rounded-2xl"
-                    style={{
-                      width: `${Math.min(220, Math.max(90, userRatio * 55))}px`,
-                      height: `${Math.min(140, Math.max(45, userApertureMm * 4.2))}px`
-                    }}
-                  />
+                {/* Detected Landmark Bounding Box Overlay anchored to real mouth position */}
+                <div
+                  className="absolute border-2 border-dashed border-amber-400 rounded-2xl pointer-events-none transition-all shadow-md flex items-center justify-center"
+                  style={{
+                    left: `${landmarkBox.leftPercent}%`,
+                    top: `${landmarkBox.topPercent}%`,
+                    width: `${Math.min(55, Math.max(22, landmarkBox.widthPercent))}%`,
+                    height: `${Math.min(45, Math.max(14, landmarkBox.heightPercent))}%`,
+                    transform: 'translate(-50%, -50%)'
+                  }}
+                >
+                  <span className="absolute -top-5 left-1/2 -translate-x-1/2 px-1.5 py-0.5 rounded bg-amber-500 text-slate-950 font-mono text-[9px] font-black uppercase whitespace-nowrap shadow-sm">
+                    Vùng Cơ Môi Đo Đạc
+                  </span>
                 </div>
 
-                {/* Ghost Overlay mode: Project reference contour over user photo */}
+                {/* Ghost Overlay mode: Project reference contour over user mouth */}
                 {isGhostOverlayActive && (
-                  <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
-                    <div
-                      className="border-2 border-emerald-400 rounded-2xl bg-emerald-500/10 shadow-lg animate-pulse"
-                      style={{
-                        width: `${Math.min(220, Math.max(90, targetRatio * 55))}px`,
-                        height: `${Math.min(140, Math.max(45, targetApertureMm * 4.2))}px`
-                      }}
-                    />
-                    <span className="absolute top-2 right-2 px-2 py-0.5 rounded bg-emerald-900/90 text-[10px] font-bold text-emerald-300 font-mono">
-                      Khung Chuẩn (Xanh)
+                  <div
+                    className="absolute border-2 border-emerald-400 rounded-2xl bg-emerald-500/15 shadow-xl animate-pulse pointer-events-none transition-all flex items-center justify-center"
+                    style={{
+                      left: `${landmarkBox.leftPercent}%`,
+                      top: `${landmarkBox.topPercent}%`,
+                      width: `${Math.min(55, Math.max(20, landmarkBox.widthPercent * (targetRatio / Math.max(0.1, userRatio))))}%`,
+                      height: `${Math.min(45, Math.max(12, landmarkBox.heightPercent * (targetApertureMm / Math.max(1, userApertureMm))))}%`,
+                      transform: 'translate(-50%, -50%)'
+                    }}
+                  >
+                    <span className="absolute -bottom-5 left-1/2 -translate-x-1/2 px-1.5 py-0.5 rounded bg-emerald-600 text-white font-mono text-[9px] font-bold uppercase whitespace-nowrap shadow-sm">
+                      Khung Khẩu Hình Chuẩn
                     </span>
                   </div>
                 )}
@@ -306,21 +314,27 @@ export default function ArticulationDiffModal({
           {/* C. VIETNAMESE ACTIONABLE FEEDBACK CARD */}
           <div
             className={`p-4 rounded-2xl border-l-4 shadow-sm flex items-start gap-3 ${
-              feedback.l1ErrorFlag
-                ? 'bg-rose-50 border-rose-200 border-l-rose-500 text-rose-950'
-                : 'bg-emerald-50 border-emerald-200 border-l-emerald-600 text-emerald-950'
+              isExcellent
+                ? 'bg-emerald-50 border-emerald-200 border-l-emerald-600 text-emerald-950'
+                : isNeedsAdjustment
+                ? 'bg-amber-50 border-amber-200 border-l-amber-500 text-amber-950'
+                : 'bg-rose-50 border-rose-200 border-l-rose-500 text-rose-950'
             }`}
           >
             <span
               className={`material-symbols-outlined text-xl shrink-0 mt-0.5 ${
-                feedback.l1ErrorFlag ? 'text-rose-600' : 'text-emerald-700'
+                isExcellent
+                  ? 'text-emerald-700'
+                  : isNeedsAdjustment
+                  ? 'text-amber-600'
+                  : 'text-rose-600'
               }`}
             >
-              {feedback.l1ErrorFlag ? 'warning' : 'check_circle'}
+              {isExcellent ? 'check_circle' : isNeedsAdjustment ? 'info' : 'warning'}
             </span>
             <div>
               <strong className="text-xs font-black uppercase tracking-wider block">
-                {feedback.summary}:
+                {feedback.summary || (isExcellent ? 'Khẩu hình đạt chuẩn y khoa' : 'Khẩu hình cần điều chỉnh')}:
               </strong>
               <p className="text-xs mt-1 leading-relaxed">{feedback.actionAdvice}</p>
             </div>

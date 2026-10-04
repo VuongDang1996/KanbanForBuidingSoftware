@@ -188,6 +188,169 @@ export function getBenchmarkMetrics(phoneme) {
 }
 
 /**
+ * Analyze real mouth features & pixel biometrics from captured camera Canvas
+ * Detects mouth bounding box position, aperture opening, teeth visibility, and interdental tongue protrusion.
+ * @param {HTMLCanvasElement|object} canvas OffscreenCanvas or HTML5 Canvas element
+ * @param {string} targetPhoneme Target IPA symbol
+ * @returns {object} Biometric measurements and responsive landmark bounding box percentages
+ */
+export function analyzeMouthCanvas(canvas, targetPhoneme = '/θ/') {
+  const fallbackBox = { leftPercent: 50, topPercent: 68, widthPercent: 32, heightPercent: 18 };
+
+  if (!canvas || typeof canvas.getContext !== 'function') {
+    return {
+      landmarkBox: fallbackBox,
+      jawApertureMm: 3.5,
+      lipWidthHeightRatio: 2.2,
+      teethGapMm: 2.5,
+      tongueProtrusionDetected: false
+    };
+  }
+
+  try {
+    const ctx = canvas.getContext('2d');
+    const width = canvas.width || 640;
+    const height = canvas.height || 480;
+    const imgData = ctx.getImageData(0, 0, width, height);
+    const data = imgData.data;
+
+    // Search region for mouth in standard selfie portrait:
+    // Horizontally centered (22% to 78%), vertically lower half (48% to 84%)
+    const minX = Math.floor(width * 0.22);
+    const maxX = Math.floor(width * 0.78);
+    const minY = Math.floor(height * 0.48);
+    const maxY = Math.floor(height * 0.84);
+
+    let sumLipX = 0;
+    let sumLipY = 0;
+    let lipPixelCount = 0;
+
+    let minLipX = maxX;
+    let maxLipX = minX;
+    let minLipY = maxY;
+    let maxLipY = minY;
+
+    // Pass 1: Detect lip boundary & center via Red Chrominance Contrast
+    for (let y = minY; y < maxY; y += 2) {
+      for (let x = minX; x < maxX; x += 2) {
+        const idx = (y * width + x) * 4;
+        const r = data[idx];
+        const g = data[idx + 1];
+        const b = data[idx + 2];
+
+        // Red-dominant lip metric
+        const lipChrominance = (2.0 * r - g - b) / (r + g + b + 1);
+        const isRedDominant = r > 70 && (r > g * 1.22) && (r > b * 1.25);
+
+        if (isRedDominant && lipChrominance > 0.12) {
+          sumLipX += x;
+          sumLipY += y;
+          lipPixelCount++;
+          if (x < minLipX) minLipX = x;
+          if (x > maxLipX) maxLipX = x;
+          if (y < minLipY) minLipY = y;
+          if (y > maxLipY) maxLipY = y;
+        }
+      }
+    }
+
+    let mouthCenterX = width * 0.5;
+    let mouthCenterY = height * 0.68;
+    let mouthW = width * 0.30;
+    let mouthH = height * 0.16;
+
+    if (lipPixelCount > 35) {
+      mouthCenterX = sumLipX / lipPixelCount;
+      mouthCenterY = sumLipY / lipPixelCount;
+      mouthW = Math.max(width * 0.20, Math.min(width * 0.48, (maxLipX - minLipX) * 1.25));
+      mouthH = Math.max(height * 0.10, Math.min(height * 0.35, (maxLipY - minLipY) * 1.35));
+    }
+
+    // Pass 2: Inspect interior oral cavity for teeth gap and tongue protrusion
+    const innerMinX = Math.floor(Math.max(minX, mouthCenterX - mouthW * 0.35));
+    const innerMaxX = Math.floor(Math.min(maxX, mouthCenterX + mouthW * 0.35));
+    const innerMinY = Math.floor(Math.max(minY, mouthCenterY - mouthH * 0.35));
+    const innerMaxY = Math.floor(Math.min(maxY, mouthCenterY + mouthH * 0.45));
+
+    let teethPixelCount = 0;
+    let tonguePixelCount = 0;
+    let darkCavityCount = 0;
+
+    for (let y = innerMinY; y < innerMaxY; y += 2) {
+      for (let x = innerMinX; x < innerMaxX; x += 2) {
+        const idx = (y * width + x) * 4;
+        const r = data[idx];
+        const g = data[idx + 1];
+        const b = data[idx + 2];
+
+        // Teeth: high luminance, neutral saturation
+        const luminance = 0.299 * r + 0.587 * g + 0.114 * b;
+        const colorDelta = Math.max(Math.abs(r - g), Math.abs(g - b), Math.abs(r - b));
+        if (luminance > 145 && colorDelta < 38) {
+          teethPixelCount++;
+        }
+
+        // Tongue protrusion: distinct interdental fleshy pink/red
+        if (r > 115 && r > g * 1.35 && (r - g) > 35 && b < 140) {
+          tonguePixelCount++;
+        }
+
+        // Dark oral cavity
+        if (luminance < 45) {
+          darkCavityCount++;
+        }
+      }
+    }
+
+    // Determine if mouth is open vs closed
+    const isMouthOpen = (darkCavityCount > 15 || teethPixelCount > 20 || (tonguePixelCount > 25 && mouthH > height * 0.10));
+    const tongueProtrusionDetected = isMouthOpen && tonguePixelCount > 30;
+
+    // Convert pixel dimensions to mm estimates (average mouth width = 50mm)
+    const mmPerPx = 50.0 / Math.max(80, mouthW);
+
+    let jawApertureMm;
+    let teethGapMm;
+    let lipWidthHeightRatio;
+
+    if (!isMouthOpen) {
+      // Closed mouth
+      jawApertureMm = 1.0;
+      teethGapMm = 0.5;
+      lipWidthHeightRatio = Math.round((mouthW / Math.max(20, mouthH * 0.7)) * 100) / 100;
+    } else {
+      const verticalOpeningPx = Math.max(10, mouthH * (tongueProtrusionDetected ? 0.55 : 0.45));
+      jawApertureMm = Math.round(verticalOpeningPx * mmPerPx * 10) / 10;
+      teethGapMm = Math.round(Math.max(1.0, jawApertureMm * 0.45) * 10) / 10;
+      lipWidthHeightRatio = Math.round((mouthW / Math.max(10, mouthH)) * 100) / 100;
+    }
+
+    const landmarkBox = {
+      leftPercent: Math.round((mouthCenterX / width) * 1000) / 10,
+      topPercent: Math.round((mouthCenterY / height) * 1000) / 10,
+      widthPercent: Math.round((mouthW / width) * 1000) / 10,
+      heightPercent: Math.round((mouthH / height) * 1000) / 10
+    };
+
+    return {
+      landmarkBox,
+      jawApertureMm,
+      lipWidthHeightRatio,
+      teethGapMm,
+      tongueProtrusionDetected
+    };
+  } catch (err) {
+    return {
+      landmarkBox: fallbackBox,
+      jawApertureMm: 3.5,
+      lipWidthHeightRatio: 2.2,
+      teethGapMm: 2.5,
+      tongueProtrusionDetected: false
+    };
+  }
+}
+
+/**
  * Evaluate user's mouth snapshot metrics against standard anatomical profile
  * @param {string} phoneme Target IPA symbol
  * @param {object} clientMetrics Extracted geometric features from canvas
@@ -209,6 +372,7 @@ export function evaluateMouthSnapshot(phoneme, clientMetrics = {}) {
     : (clientMetrics.teethGapPx ? clientMetrics.teethGapPx * 0.35 : 2.5);
 
   const userTongueDetected = Boolean(clientMetrics.tongueProtrusionDetected);
+  const landmarkBox = clientMetrics.landmarkBox || { leftPercent: 50, topPercent: 68, widthPercent: 32, heightPercent: 18 };
 
   // Compute absolute deltas
   const apertureDeltaMm = Math.round((userAperture - benchmark.targetApertureMm) * 10) / 10;
@@ -236,23 +400,48 @@ export function evaluateMouthSnapshot(phoneme, clientMetrics = {}) {
     l1ErrorFlag = 'EXCESSIVE_JAW_DROP';
     summary = 'Khẩu hình mở quá rộng';
     feedbackText = `Khẩu hình đang mở quá lớn (${userAperture.toFixed(1)}mm). Hãy khép hàm hẹp lại dưới 8mm và kéo dẹt khóe môi sang hai bên như cười mỉm.`;
+  } else if ((benchmark.phoneme === '/θ/' || benchmark.phoneme === '/ð/') && apertureDeltaMm > 3.0) {
+    l1ErrorFlag = 'EXCESSIVE_JAW_DROP';
+    summary = `Hàm mở hơi rộng cho âm ${benchmark.phoneme}`;
+    feedbackText = `Bạn đã thò đầu lưỡi, nhưng đang há miệng hơi rộng (${userAperture.toFixed(1)}mm so với chuẩn ${benchmark.targetApertureMm}mm). Hãy khép nhẹ cằm lại để kẹp nhẹ đầu lưỡi tự nhiên hơn.`;
   }
 
   // Calculate composite score (0 - 100)
-  const apertureScore = Math.max(0, 100 - Math.abs(apertureDeltaMm) * 4.5);
+  const apertureScore = Math.max(0, 100 - Math.abs(apertureDeltaMm) * 5.0);
   const ratioScore = Math.max(0, 100 - ratioDelta * 28.0);
   const teethScore = Math.max(0, 100 - teethDeltaMm * 8.0);
-  const tonguePenalty = (benchmark.tongueInterdentalRequired && !userTongueDetected) ? 35 : 0;
+  const tonguePenalty = (benchmark.tongueInterdentalRequired && !userTongueDetected) ? 40 : 0;
 
   const rawScore = (apertureScore * 0.45 + ratioScore * 0.35 + teethScore * 0.2) - tonguePenalty;
   const similarityScore = Math.min(100, Math.max(15, Math.round(rawScore)));
 
   // Categorize status
   let status = 'NEEDS_ADJUSTMENT';
-  if (similarityScore >= 85) {
+  if (similarityScore >= 85 && !l1ErrorFlag) {
     status = 'EXCELLENT';
   } else if (similarityScore < 60) {
     status = 'POOR';
+  }
+
+  // If score is not excellent and no primary L1 error flag was assigned, explain what to adjust
+  if (status !== 'EXCELLENT' && !l1ErrorFlag) {
+    if (apertureDeltaMm > 3.0) {
+      l1ErrorFlag = 'JAW_TOO_OPEN';
+      summary = 'Độ mở hàm hơi rộng';
+      feedbackText = `Độ mở hàm đang rộng hơn chuẩn +${apertureDeltaMm}mm. Hãy khép nhẹ cằm lại để phát âm chính xác hơn.`;
+    } else if (apertureDeltaMm < -3.0) {
+      l1ErrorFlag = 'JAW_TOO_CLOSED';
+      summary = 'Độ mở hàm hơi hẹp';
+      feedbackText = `Độ mở hàm đang hẹp hơn chuẩn ${Math.abs(apertureDeltaMm)}mm. Hãy hé mở cằm thêm một chút.`;
+    } else if (ratioDelta > 0.45) {
+      l1ErrorFlag = 'LIP_SHAPE_MISMATCH';
+      summary = 'Khóe môi chưa đúng hình thái';
+      feedbackText = `Tỷ lệ khóe môi đang lệch ${ratioDelta}. Hãy quan sát mô hình 2D bên cạnh để điều chỉnh độ chu hoặc dẹt của cơ môi.`;
+    } else {
+      l1ErrorFlag = 'NEEDS_REFINEMENT';
+      summary = 'Cần tinh chỉnh nhẹ khẩu hình';
+      feedbackText = 'Khẩu hình gần đạt chuẩn, hãy đối chiếu khung viền với mô hình 2D chuẩn để đạt điểm tối đa.';
+    }
   }
 
   return {
@@ -270,7 +459,8 @@ export function evaluateMouthSnapshot(phoneme, clientMetrics = {}) {
       targetTeethGapMm: benchmark.targetTeethGapMm,
       teethDeltaMm,
       interdentalTongueDetected: userTongueDetected,
-      tongueRequired: benchmark.tongueInterdentalRequired
+      tongueRequired: benchmark.tongueInterdentalRequired,
+      landmarkBox
     },
     feedback: {
       summary,

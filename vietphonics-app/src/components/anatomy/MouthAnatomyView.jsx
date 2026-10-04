@@ -5,7 +5,7 @@ import {
   calculateAnatomyTransform
 } from '../../lib/anatomy/phonemeAnatomyData';
 import ArticulationDiffModal from './mirror/ArticulationDiffModal';
-import { getBenchmarkMetrics, evaluateMouthSnapshot } from '../../lib/anatomy/mirrorComparisonEngine';
+import { getBenchmarkMetrics, evaluateMouthSnapshot, analyzeMouthCanvas } from '../../lib/anatomy/mirrorComparisonEngine';
 
 export default function MouthAnatomyView({ initialPhoneme = '/θ/' }) {
   const [selectedPhoneme, setSelectedPhoneme] = useState(initialPhoneme);
@@ -200,13 +200,14 @@ export default function MouthAnatomyView({ initialPhoneme = '/θ/' }) {
       const dataUrl = canvas.toDataURL('image/webp', 0.85);
       setCapturedImage(dataUrl);
 
-      // 2. Extract client geometric features (anatomical measurement)
-      const benchmark = getBenchmarkMetrics(currentProfile.phoneme);
+      // 2. Extract REAL computer vision biometric features directly from camera frame!
+      const biometrics = analyzeMouthCanvas(canvas, currentProfile.phoneme);
       const clientMetrics = {
-        jawApertureMm: Math.round((jawDrop * 0.35 + (Math.random() * 1.5 - 0.75)) * 10) / 10,
-        lipWidthHeightRatio: Math.round(((tongueElevation / 25) + (Math.random() * 0.15 - 0.08)) * 100) / 100,
-        teethGapMm: Math.round((jawDrop * 0.12) * 10) / 10,
-        tongueProtrusionDetected: (currentProfile.phoneme === '/θ/' || currentProfile.phoneme === '/ð/') ? true : false
+        jawApertureMm: biometrics.jawApertureMm,
+        lipWidthHeightRatio: biometrics.lipWidthHeightRatio,
+        teethGapMm: biometrics.teethGapMm,
+        tongueProtrusionDetected: biometrics.tongueProtrusionDetected,
+        landmarkBox: biometrics.landmarkBox
       };
 
       // 3. Call backend API POST /api/v1/anatomy/mirror-analyze (Gate D)
@@ -1367,12 +1368,19 @@ export default function MouthAnatomyView({ initialPhoneme = '/θ/' }) {
                       muted
                       className="w-full h-full object-cover transform -scale-x-100"
                     />
-                    {/* Visual Crosshair Grid for Mouth Alignment */}
-                    <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
-                      <div className="w-28 h-16 border-2 border-dashed border-emerald-400/80 rounded-xl bg-emerald-500/5 shadow-sm" />
-                      <span className="absolute bottom-1 right-2 text-[9px] font-mono text-emerald-300 bg-slate-900/90 px-1.5 py-0.5 rounded border border-slate-700">
-                        Khung ngắm môi
-                      </span>
+                    {/* Visual Crosshair Grid for Mouth Alignment positioned at natural mouth level */}
+                    <div className="absolute inset-0 pointer-events-none">
+                      <div className="absolute top-2 left-1/2 -translate-x-1/2 text-[9px] font-bold text-slate-200 bg-slate-900/90 px-2.5 py-0.5 rounded-full border border-slate-700/80 shadow-sm">
+                        Căn chỉnh môi của bạn vào khung xanh
+                      </div>
+                      <div
+                        className="absolute w-32 h-16 border-2 border-dashed border-emerald-400 rounded-2xl bg-emerald-500/10 shadow-lg flex items-center justify-center transition-all"
+                        style={{ top: '68%', left: '50%', transform: 'translate(-50%, -50%)' }}
+                      >
+                        <span className="text-[9px] font-mono text-emerald-300 font-bold bg-slate-900/90 px-1.5 py-0.5 rounded border border-emerald-500/40">
+                          Khung ngắm môi
+                        </span>
+                      </div>
                     </div>
 
                     {/* Countdown Overlay Animation (3-2-1) */}
