@@ -15,6 +15,11 @@ import MinimalPairQuiz from '../components/articulation/MinimalPairQuiz';
 import MouthAnatomyView from '../components/anatomy/MouthAnatomyView';
 import AudioDictationCard from '../components/articulation/AudioDictationCard';
 import TargetSoundSentenceView from '../components/articulation/TargetSoundSentenceView';
+import DualTrackStudio from '../components/articulation/DualTrackStudio';
+import PositionalLadder from '../components/articulation/PositionalLadder';
+import ConnectedProgression from '../components/articulation/ConnectedProgression';
+import VoicingRuleMastery from '../components/articulation/VoicingRuleMastery';
+import CrossTransitionDrill from '../components/articulation/CrossTransitionDrill';
 
 export default function PracticeStudioView() {
   const { setActiveTab } = useApp();
@@ -350,6 +355,31 @@ export default function PracticeStudioView() {
         {/* 3f. Targeted Sound Read-Aloud & Contextual Fluency Drills (PRON-203) */}
         <TargetSoundSentenceView
           initialSentenceId="sat_theta_01"
+        />
+
+        {/* 3g. Dual-Track Audio Recording & Native Speaker Waveform Comparison (PRON-204) */}
+        <DualTrackStudio
+          initialWord="thought"
+        />
+
+        {/* 3h. 3-Tier Positional Phoneme Ladder (PRON-205) */}
+        <PositionalLadder
+          initialPhoneme="/z/"
+        />
+
+        {/* 3i. Connected Speech Positional Progression (PRON-206) */}
+        <ConnectedProgression
+          initialProgressionId="prog_breathe"
+        />
+
+        {/* 3j. Phonetic Exception Words & Grammatical Voicing Alternations (PRON-207) */}
+        <VoicingRuleMastery
+          initialCategory="s_es_endings"
+        />
+
+        {/* 3k. L1 Confusion-Trap Cross-Transition Drills (PRON-208) */}
+        <CrossTransitionDrill
+          initialTrapId="trap_s_sh"
         />
 
         {/* 4. Bottom Recording Dock & Live Audio Visualizer */}

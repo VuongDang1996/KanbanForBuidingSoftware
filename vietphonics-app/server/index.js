@@ -1419,6 +1419,524 @@ app.get('/api/v1/scoring/targeted-sound/latest', (req, res) => {
   }
 });
 
+/**
+ * PRON-204: Dual-Track Audio Recording & Native Speaker Waveform Comparison Endpoints
+ */
+import {
+  DUAL_TRACK_BENCHMARKS,
+  compareDualTrackWaveforms
+} from '../src/lib/audio/dualTrackWaveform.js';
+
+// GET all dual-track benchmark targets (AC 1)
+app.get('/api/v1/acoustic/dual-track/targets', (req, res) => {
+  try {
+    const list = Object.values(DUAL_TRACK_BENCHMARKS);
+    res.json({ success: true, targets: list });
+  } catch (err) {
+    console.error('Error in GET dual-track/targets:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// POST compare user audio waveform against native track (AC 2, AC 3, Gate D)
+app.post('/api/v1/acoustic/dual-track/compare', (req, res) => {
+  try {
+    const userId = req.headers['x-user-id'] || req.body.userId || 'default_user';
+    const { word, userDurationMs = 460, userPeaks = null } = req.body;
+
+    if (!word || typeof word !== 'string' || !word.trim()) {
+      return res.status(400).json({
+        success: false,
+        error: 'Missing required field: word'
+      });
+    }
+
+    const comparison = compareDualTrackWaveforms(word.trim().toLowerCase(), userDurationMs, userPeaks);
+    const now = new Date().toISOString();
+    const recordId = `dtw-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
+
+    // Persist in SQLite
+    db.prepare(`
+      INSERT INTO dual_track_recording_records (
+        id, user_id, word, native_duration_ms, user_duration_ms,
+        duration_difference_ms, vowel_nucleus_ms, correlation_score,
+        duration_warning, created_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `).run(
+      recordId,
+      userId,
+      comparison.word,
+      comparison.nativeDurationMs,
+      comparison.userDurationMs,
+      comparison.durationDiff,
+      comparison.nativeVowelNucleusMs,
+      comparison.correlationScore,
+      comparison.durationWarning,
+      now
+    );
+
+    res.json({
+      success: true,
+      recordId,
+      userId,
+      comparison,
+      createdAt: now
+    });
+  } catch (err) {
+    console.error('Error in POST dual-track/compare:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// GET latest dual-track comparison record for user
+app.get('/api/v1/acoustic/dual-track/latest', (req, res) => {
+  try {
+    const userId = req.headers['x-user-id'] || 'default_user';
+    const row = db.prepare('SELECT * FROM dual_track_recording_records WHERE user_id = ? ORDER BY created_at DESC LIMIT 1').get(userId);
+
+    if (!row) {
+      return res.json({ success: true, comparison: null });
+    }
+
+    res.json({
+      success: true,
+      recordId: row.id,
+      userId: row.user_id,
+      word: row.word,
+      nativeDurationMs: row.native_duration_ms,
+      userDurationMs: row.user_duration_ms,
+      durationDifferenceMs: row.duration_difference_ms,
+      vowelNucleusMs: row.vowel_nucleus_ms,
+      correlationScore: row.correlation_score,
+      durationWarning: row.duration_warning,
+      createdAt: row.created_at
+    });
+  } catch (err) {
+    console.error('Error in GET dual-track/latest:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+/**
+ * PRON-205: 3-Tier Positional Phoneme Ladder Endpoints
+ */
+import {
+  POSITIONAL_LADDER_CATALOG,
+  calculateTierStars,
+  evaluateLadderProgression
+} from '../src/lib/scoring/positionalLadder.js';
+
+// GET all positional ladder phoneme profiles (AC 1 & AC 2)
+app.get('/api/v1/practice/positional-ladder/catalog', (req, res) => {
+  try {
+    const catalog = Object.values(POSITIONAL_LADDER_CATALOG);
+    res.json({ success: true, catalog });
+  } catch (err) {
+    console.error('Error in GET positional-ladder/catalog:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// POST submit score for a specific tier & update unlock state (AC 1, AC 4, Gate D)
+app.post('/api/v1/practice/positional-ladder/submit', (req, res) => {
+  try {
+    const userId = req.headers['x-user-id'] || req.body.userId || 'default_user';
+    const { phoneme, tier, word, score = 0 } = req.body;
+
+    if (!phoneme || tier === undefined || !word) {
+      return res.status(400).json({
+        success: false,
+        error: 'Missing required fields: phoneme, tier, or word'
+      });
+    }
+
+    const tierNumber = Number(tier);
+    const numericScore = Number(score);
+    const stars = calculateTierStars(numericScore);
+    const tierLabels = { 1: 'Initial (Đầu)', 2: 'Medial (Giữa)', 3: 'Final (Cuối)' };
+    const tierLabel = tierLabels[tierNumber] || `Tier ${tierNumber}`;
+    const now = new Date().toISOString();
+    const recordId = `pos-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
+
+    // Persist in SQLite
+    db.prepare(`
+      INSERT INTO positional_ladder_records (
+        id, user_id, phoneme, tier, tier_label, word, score,
+        stars, is_unlocked, created_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `).run(
+      recordId,
+      userId,
+      phoneme,
+      tierNumber,
+      tierLabel,
+      word,
+      numericScore,
+      stars,
+      1,
+      now
+    );
+
+    // Calculate progression across tiers for this phoneme
+    const recentRecords = db.prepare(`
+      SELECT tier, MAX(score) as max_score FROM positional_ladder_records
+      WHERE user_id = ? AND phoneme = ?
+      GROUP BY tier
+    `).all(userId, phoneme);
+
+    let t1Max = 0, t2Max = 0, t3Max = 0;
+    recentRecords.forEach(r => {
+      if (r.tier === 1) t1Max = r.max_score;
+      if (r.tier === 2) t2Max = r.max_score;
+      if (r.tier === 3) t3Max = r.max_score;
+    });
+
+    const progression = evaluateLadderProgression(t1Max, t2Max, t3Max);
+
+    res.json({
+      success: true,
+      recordId,
+      userId,
+      phoneme,
+      tier: tierNumber,
+      word,
+      score: numericScore,
+      stars,
+      progression,
+      createdAt: now
+    });
+  } catch (err) {
+    console.error('Error in POST positional-ladder/submit:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// GET user status & progression for a phoneme
+app.get('/api/v1/practice/positional-ladder/status', (req, res) => {
+  try {
+    const userId = req.headers['x-user-id'] || 'default_user';
+    const phoneme = req.query.phoneme || '/z/';
+
+    const records = db.prepare(`
+      SELECT tier, MAX(score) as max_score FROM positional_ladder_records
+      WHERE user_id = ? AND phoneme = ?
+      GROUP BY tier
+    `).all(userId, phoneme);
+
+    let t1Max = 85, t2Max = 75, t3Max = 0; // sensible defaults for demo
+    records.forEach(r => {
+      if (r.tier === 1) t1Max = r.max_score;
+      if (r.tier === 2) t2Max = r.max_score;
+      if (r.tier === 3) t3Max = r.max_score;
+    });
+
+    const progression = evaluateLadderProgression(t1Max, t2Max, t3Max);
+    res.json({
+      success: true,
+      userId,
+      phoneme,
+      progression
+    });
+  } catch (err) {
+    console.error('Error in GET positional-ladder/status:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+/**
+ * PRON-206: Connected Speech Positional Progression Endpoints
+ */
+import {
+  CONNECTED_PROGRESSIONS,
+  evaluateProgressionStep
+} from '../src/lib/scoring/connectedProgression.js';
+
+// GET all progression tracks (AC 1 & AC 2)
+app.get('/api/v1/practice/progression/catalog', (req, res) => {
+  try {
+    const catalog = Object.values(CONNECTED_PROGRESSIONS);
+    res.json({ success: true, catalog });
+  } catch (err) {
+    console.error('Error in GET progression/catalog:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// POST evaluate progression step and detect degradation (AC 1, AC 3, AC 4, Gate D)
+app.post('/api/v1/practice/progression-tier', (req, res) => {
+  try {
+    const userId = req.headers['x-user-id'] || req.body.userId || 'default_user';
+    const { progressionId, stepIndex, score = 85, baselineScore = null } = req.body;
+
+    if (!progressionId || stepIndex === undefined || stepIndex === null) {
+      return res.status(400).json({
+        success: false,
+        error: 'Missing required fields: progressionId or stepIndex'
+      });
+    }
+
+    const evaluation = evaluateProgressionStep({
+      progressionId,
+      stepIndex: Number(stepIndex),
+      score: Number(score),
+      baselineScore: baselineScore !== null ? Number(baselineScore) : null
+    });
+
+    const now = new Date().toISOString();
+    const recordId = `csp-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
+
+    // Persist in SQLite
+    db.prepare(`
+      INSERT INTO connected_progression_records (
+        id, user_id, progression_id, target_phoneme, step_index,
+        step_type, text_prompt, score, baseline_score, has_degradation, created_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `).run(
+      recordId,
+      userId,
+      progressionId,
+      evaluation.targetPhoneme,
+      evaluation.stepIndex,
+      evaluation.stepType,
+      evaluation.text,
+      evaluation.score,
+      baselineScore !== null ? Number(baselineScore) : null,
+      evaluation.hasDegradation ? 1 : 0,
+      now
+    );
+
+    res.json({
+      success: true,
+      recordId,
+      userId,
+      evaluation,
+      createdAt: now
+    });
+  } catch (err) {
+    console.error('Error in POST progression-tier:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// GET latest progression submission for user
+app.get('/api/v1/practice/progression/latest', (req, res) => {
+  try {
+    const userId = req.headers['x-user-id'] || 'default_user';
+    const row = db.prepare('SELECT * FROM connected_progression_records WHERE user_id = ? ORDER BY created_at DESC LIMIT 1').get(userId);
+
+    if (!row) {
+      return res.json({ success: true, record: null });
+    }
+
+    res.json({
+      success: true,
+      recordId: row.id,
+      userId: row.user_id,
+      progressionId: row.progression_id,
+      targetPhoneme: row.target_phoneme,
+      stepIndex: row.step_index,
+      stepType: row.step_type,
+      textPrompt: row.text_prompt,
+      score: row.score,
+      baselineScore: row.baseline_score,
+      hasDegradation: Boolean(row.has_degradation),
+      createdAt: row.created_at
+    });
+  } catch (err) {
+    console.error('Error in GET progression/latest:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+/**
+ * PRON-207: Phonetic Exception Words & Grammatical Voicing Alternations Endpoints
+ */
+import {
+  VOICING_RULE_CATALOG,
+  evaluateVoicingCheck
+} from '../src/lib/scoring/voicingRules.js';
+
+// GET all voicing rule categories and mnemonics (AC 1 & AC 3)
+app.get('/api/v1/grammar/voicing-rules/catalog', (req, res) => {
+  try {
+    const catalog = Object.values(VOICING_RULE_CATALOG);
+    res.json({ success: true, catalog });
+  } catch (err) {
+    console.error('Error in GET voicing-rules/catalog:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// POST validate voicing classification submissions (AC 2, AC 4, Gate D)
+app.post('/api/v1/grammar/voicing-check', (req, res) => {
+  try {
+    const userId = req.headers['x-user-id'] || req.body.userId || 'default_user';
+    const { category = 's_es_endings', submissions = [] } = req.body;
+
+    if (!category || !Array.isArray(submissions) || submissions.length === 0) {
+      return res.status(400).json({
+        success: false,
+        error: 'Missing required fields: category and non-empty submissions array'
+      });
+    }
+
+    const evaluation = evaluateVoicingCheck(category, submissions);
+    const now = new Date().toISOString();
+    const recordId = `vce-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
+
+    // Persist in SQLite
+    db.prepare(`
+      INSERT INTO grammatical_voicing_records (
+        id, user_id, category, total_words, correct_count, score, results_json, created_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    `).run(
+      recordId,
+      userId,
+      category,
+      evaluation.totalWords,
+      evaluation.correctCount,
+      evaluation.score,
+      JSON.stringify(evaluation.results),
+      now
+    );
+
+    res.json({
+      success: true,
+      recordId,
+      userId,
+      evaluation,
+      createdAt: now
+    });
+  } catch (err) {
+    console.error('Error in POST voicing-check:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// GET latest voicing check record for user
+app.get('/api/v1/grammar/voicing-check/latest', (req, res) => {
+  try {
+    const userId = req.headers['x-user-id'] || 'default_user';
+    const row = db.prepare('SELECT * FROM grammatical_voicing_records WHERE user_id = ? ORDER BY created_at DESC LIMIT 1').get(userId);
+
+    if (!row) {
+      return res.json({ success: true, record: null });
+    }
+
+    res.json({
+      success: true,
+      recordId: row.id,
+      userId: row.user_id,
+      category: row.category,
+      totalWords: row.total_words,
+      correctCount: row.correct_count,
+      score: row.score,
+      results: JSON.parse(row.results_json),
+      createdAt: row.created_at
+    });
+  } catch (err) {
+    console.error('Error in GET voicing-check/latest:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+/**
+ * PRON-208: L1 Confusion-Trap Cross-Transition Drills Endpoints
+ */
+import {
+  CONFUSION_TRAP_DRILLS,
+  evaluateConfusionTrap
+} from '../src/lib/scoring/crossTransition.js';
+
+// GET all confusion trap drills (AC 1)
+app.get('/api/v1/practice/confusion-trap/drills', (req, res) => {
+  try {
+    const drills = Object.values(CONFUSION_TRAP_DRILLS);
+    res.json({ success: true, drills });
+  } catch (err) {
+    console.error('Error in GET confusion-trap/drills:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// POST evaluate speech for assimilation and agility score (AC 2, AC 4, Gate D)
+app.post('/api/v1/practice/confusion-trap', (req, res) => {
+  try {
+    const userId = req.headers['x-user-id'] || req.body.userId || 'default_user';
+    const { trapId, detectedWordPhonemes = {} } = req.body;
+
+    if (!trapId) {
+      return res.status(400).json({
+        success: false,
+        error: 'Missing required field: trapId'
+      });
+    }
+
+    const evaluation = evaluateConfusionTrap(trapId, detectedWordPhonemes);
+    const now = new Date().toISOString();
+    const recordId = `ctd-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
+
+    // Persist in SQLite
+    db.prepare(`
+      INSERT INTO cross_transition_drill_records (
+        id, user_id, trap_id, phoneme_a, phoneme_b, sentence_text,
+        agility_score, transition_matrix_json, detected_assimilations_json, created_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `).run(
+      recordId,
+      userId,
+      trapId,
+      evaluation.phonemeA,
+      evaluation.phonemeB,
+      evaluation.sentence,
+      evaluation.agilityScore,
+      JSON.stringify(evaluation.matrix),
+      JSON.stringify(evaluation.assimilations),
+      now
+    );
+
+    res.json({
+      success: true,
+      recordId,
+      userId,
+      evaluation,
+      createdAt: now
+    });
+  } catch (err) {
+    console.error('Error in POST confusion-trap:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// GET latest cross-transition drill result for user
+app.get('/api/v1/practice/confusion-trap/latest', (req, res) => {
+  try {
+    const userId = req.headers['x-user-id'] || 'default_user';
+    const row = db.prepare('SELECT * FROM cross_transition_drill_records WHERE user_id = ? ORDER BY created_at DESC LIMIT 1').get(userId);
+
+    if (!row) {
+      return res.json({ success: true, drill: null });
+    }
+
+    res.json({
+      success: true,
+      recordId: row.id,
+      userId: row.user_id,
+      trapId: row.trap_id,
+      phonemeA: row.phoneme_a,
+      phonemeB: row.phoneme_b,
+      sentenceText: row.sentence_text,
+      agilityScore: row.agility_score,
+      matrix: JSON.parse(row.transition_matrix_json),
+      assimilations: JSON.parse(row.detected_assimilations_json || '[]'),
+      createdAt: row.created_at
+    });
+  } catch (err) {
+    console.error('Error in GET confusion-trap/latest:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 // Start listening only if run directly as main entrypoint
 const isMain = process.argv[1] && (process.argv[1].includes('server/index.js') || process.argv[1].includes('server\\index.js'));
 if (isMain && process.env.NODE_ENV !== 'test') {

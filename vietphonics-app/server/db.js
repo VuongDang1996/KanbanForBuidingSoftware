@@ -193,6 +193,70 @@ export function initAppDatabase() {
       detected_substitutions_json TEXT,
       created_at TEXT NOT NULL
     );
+
+    CREATE TABLE IF NOT EXISTS dual_track_recording_records (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL,
+      word TEXT NOT NULL,
+      native_duration_ms INTEGER NOT NULL,
+      user_duration_ms INTEGER NOT NULL,
+      duration_difference_ms INTEGER NOT NULL,
+      vowel_nucleus_ms INTEGER NOT NULL,
+      correlation_score INTEGER NOT NULL,
+      duration_warning TEXT,
+      created_at TEXT NOT NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS positional_ladder_records (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL,
+      phoneme TEXT NOT NULL,
+      tier INTEGER NOT NULL,
+      tier_label TEXT NOT NULL,
+      word TEXT NOT NULL,
+      score INTEGER NOT NULL,
+      stars INTEGER NOT NULL,
+      is_unlocked INTEGER NOT NULL,
+      created_at TEXT NOT NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS connected_progression_records (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL,
+      progression_id TEXT NOT NULL,
+      target_phoneme TEXT NOT NULL,
+      step_index INTEGER NOT NULL,
+      step_type TEXT NOT NULL,
+      text_prompt TEXT NOT NULL,
+      score INTEGER NOT NULL,
+      baseline_score INTEGER,
+      has_degradation INTEGER NOT NULL,
+      created_at TEXT NOT NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS grammatical_voicing_records (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL,
+      category TEXT NOT NULL,
+      total_words INTEGER NOT NULL,
+      correct_count INTEGER NOT NULL,
+      score INTEGER NOT NULL,
+      results_json TEXT NOT NULL,
+      created_at TEXT NOT NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS cross_transition_drill_records (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL,
+      trap_id TEXT NOT NULL,
+      phoneme_a TEXT NOT NULL,
+      phoneme_b TEXT NOT NULL,
+      sentence_text TEXT NOT NULL,
+      agility_score INTEGER NOT NULL,
+      transition_matrix_json TEXT NOT NULL,
+      detected_assimilations_json TEXT,
+      created_at TEXT NOT NULL
+    );
   `);
 
   // Seed default penalty weights for 3 regions
