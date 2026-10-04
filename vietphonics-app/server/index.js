@@ -3833,6 +3833,722 @@ app.post('/api/v1/streak/dismiss-saved-modal', (req, res) => {
   }
 });
 
+/**
+ * ELSA-602: Freemium 5-Lesson Daily Limit & Pro Subscription Paywall Endpoints
+ */
+import {
+  evaluateUserQuota,
+  getCountdownUntilMidnight,
+  getProBenefits,
+  FREE_DAILY_LESSON_LIMIT
+} from '../src/lib/scoring/freemiumQuota.js';
+
+// GET quota status for active user
+app.get('/api/v1/quota/status', (req, res) => {
+  try {
+    const userId = req.headers['x-user-id'] || 'default_user';
+    const today = new Date().toISOString().split('T')[0];
+
+    let row = db.prepare('SELECT * FROM freemium_quota_records WHERE user_id = ? AND date_str = ?').get(userId, today);
+    if (!row) {
+      const recordId = `quota-${Date.now()}`;
+      const now = new Date().toISOString();
+      db.prepare(`
+        INSERT INTO freemium_quota_records (id, user_id, is_pro, lessons_completed_today, date_str, updated_at)
+        VALUES (?, ?, 0, 0, ?, ?)
+      `).run(recordId, userId, today, now);
+      row = db.prepare('SELECT * FROM freemium_quota_records WHERE id = ?').get(recordId);
+    }
+
+    const quota = evaluateUserQuota({
+      lessonsCompletedToday: row.lessons_completed_today,
+      isPro: Boolean(row.is_pro)
+    });
+    const countdown = getCountdownUntilMidnight();
+
+    res.json({
+      success: true,
+      userId: row.user_id,
+      dateStr: row.date_str,
+      quota,
+      countdown,
+      benefits: getProBenefits()
+    });
+  } catch (err) {
+    console.error('Error in GET /api/v1/quota/status:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// POST consume a free lesson
+app.post('/api/v1/quota/consume-lesson', (req, res) => {
+  try {
+    const userId = req.headers['x-user-id'] || req.body.userId || 'default_user';
+    const today = new Date().toISOString().split('T')[0];
+
+    let row = db.prepare('SELECT * FROM freemium_quota_records WHERE user_id = ? AND date_str = ?').get(userId, today);
+    if (!row) {
+      const recordId = `quota-${Date.now()}`;
+      const now = new Date().toISOString();
+      db.prepare(`
+        INSERT INTO freemium_quota_records (id, user_id, is_pro, lessons_completed_today, date_str, updated_at)
+        VALUES (?, ?, 0, 0, ?, ?)
+      `).run(recordId, userId, today, now);
+      row = db.prepare('SELECT * FROM freemium_quota_records WHERE id = ?').get(recordId);
+    }
+
+    const currentQuota = evaluateUserQuota({
+      lessonsCompletedToday: row.lessons_completed_today,
+      isPro: Boolean(row.is_pro)
+    });
+
+    if (!currentQuota.canAccessLesson) {
+      return res.status(403).json({
+        success: false,
+        error: 'Đã hết định ngạch bài học miễn phí hôm nay. Vui lòng nâng cấp Pro để học không giới hạn.',
+        quota: currentQuota,
+        countdown: getCountdownUntilMidnight()
+      });
+    }
+
+    const now = new Date().toISOString();
+    const newCount = row.lessons_completed_today + 1;
+    db.prepare('UPDATE freemium_quota_records SET lessons_completed_today = ?, updated_at = ? WHERE id = ?')
+      .run(newCount, now, row.id);
+
+    const updated = db.prepare('SELECT * FROM freemium_quota_records WHERE id = ?').get(row.id);
+    const updatedQuota = evaluateUserQuota({
+      lessonsCompletedToday: updated.lessons_completed_today,
+      isPro: Boolean(updated.is_pro)
+    });
+
+    res.json({
+      success: true,
+      quota: updatedQuota,
+      countdown: getCountdownUntilMidnight()
+    });
+  } catch (err) {
+    console.error('Error in POST /api/v1/quota/consume-lesson:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// POST upgrade to Pro account
+app.post('/api/v1/quota/upgrade-pro', (req, res) => {
+  try {
+    const userId = req.headers['x-user-id'] || req.body.userId || 'default_user';
+    const today = new Date().toISOString().split('T')[0];
+    const now = new Date().toISOString();
+
+    let row = db.prepare('SELECT * FROM freemium_quota_records WHERE user_id = ? AND date_str = ?').get(userId, today);
+    if (row) {
+      db.prepare('UPDATE freemium_quota_records SET is_pro = 1, updated_at = ? WHERE user_id = ?')
+        .run(now, userId);
+    } else {
+      const recordId = `quota-${Date.now()}`;
+      db.prepare(`
+        INSERT INTO freemium_quota_records (id, user_id, is_pro, lessons_completed_today, date_str, updated_at)
+        VALUES (?, ?, 1, 0, ?, ?)
+      `).run(recordId, userId, today, now);
+    }
+
+    res.json({
+      success: true,
+      isPro: true,
+      message: 'Chúc mừng bạn đã nâng cấp thành công tài khoản Pro!'
+    });
+  } catch (err) {
+    console.error('Error in POST /api/v1/quota/upgrade-pro:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+/**
+ * USER-101: Learner Authentication, Pronunciation Mastery Dashboard & Skill Radar Endpoints
+ */
+import {
+  generateAuthToken,
+  verifyAuthToken,
+  computeRadarPoints,
+  calculateAverageRadarScore,
+  getRadarColorTheme
+} from '../src/lib/scoring/learnerDashboardAuth.js';
+
+// POST /api/v1/auth/login
+app.post('/api/v1/auth/login', (req, res) => {
+  try {
+    const { email, password, provider = 'email', name } = req.body;
+    if (!email) {
+      return res.status(400).json({ success: false, error: 'Email is required' });
+    }
+
+    const cleanEmail = email.trim().toLowerCase();
+    let user = db.prepare('SELECT * FROM learner_auth_dashboard_records WHERE email = ?').get(cleanEmail);
+
+    const now = new Date().toISOString();
+    if (!user) {
+      const userId = `usr_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`;
+      const userName = name || cleanEmail.split('@')[0];
+      const token = generateAuthToken(userId, cleanEmail);
+
+      db.prepare(`
+        INSERT INTO learner_auth_dashboard_records (
+          id, user_id, name, email, role, tier, token_hash,
+          phonemes_score, stress_score, intonation_score, ending_sounds_score, fluency_score,
+          total_practice_minutes, mastered_phonemes_count, error_bank_count, predicted_ielts,
+          created_at, updated_at
+        ) VALUES (?, ?, ?, ?, 'learner', 'free', ?, 75, 70, 68, 80, 72, 60, 15, 2, 6.0, ?, ?)
+      `).run(
+        `learner-${Date.now()}`, userId, userName, cleanEmail, token, now, now
+      );
+      user = db.prepare('SELECT * FROM learner_auth_dashboard_records WHERE user_id = ?').get(userId);
+    }
+
+    const token = generateAuthToken(user.user_id, user.email);
+    db.prepare('UPDATE learner_auth_dashboard_records SET token_hash = ?, updated_at = ? WHERE user_id = ?')
+      .run(token, now, user.user_id);
+
+    res.json({
+      success: true,
+      token,
+      user: {
+        id: user.user_id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        tier: user.tier,
+        streak: 7
+      }
+    });
+  } catch (err) {
+    console.error('Error in POST /api/v1/auth/login:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// GET /api/v1/user/profile-dashboard
+app.get('/api/v1/user/profile-dashboard', (req, res) => {
+  try {
+    const authHeader = req.headers['authorization'];
+    let userId = req.headers['x-user-id'];
+
+    if (authHeader && authHeader.startsWith('Bearer ')) {
+      const payload = verifyAuthToken(authHeader);
+      if (payload && payload.sub) {
+        userId = payload.sub;
+      }
+    }
+
+    if (!userId) {
+      userId = 'default_user';
+    }
+
+    let record = db.prepare('SELECT * FROM learner_auth_dashboard_records WHERE user_id = ?').get(userId);
+    if (!record) {
+      // Fallback to default user if not found
+      record = db.prepare("SELECT * FROM learner_auth_dashboard_records WHERE user_id = 'default_user'").get();
+    }
+
+    if (!record) {
+      return res.status(404).json({ success: false, error: 'User profile not found' });
+    }
+
+    const radarScores = {
+      phonemes: record.phonemes_score,
+      stress: record.stress_score,
+      intonation: record.intonation_score,
+      endingSounds: record.ending_sounds_score,
+      fluency: record.fluency_score
+    };
+
+    const stats = {
+      totalPracticeMinutes: record.total_practice_minutes,
+      masteredPhonemesCount: record.mastered_phonemes_count,
+      errorBankCount: record.error_bank_count,
+      predictedIelts: record.predicted_ielts
+    };
+
+    const averageRadarScore = calculateAverageRadarScore(radarScores);
+    const radarTheme = getRadarColorTheme(averageRadarScore);
+    const radarPoints = computeRadarPoints(radarScores);
+
+    res.json({
+      success: true,
+      user: {
+        id: record.user_id,
+        name: record.name,
+        email: record.email,
+        tier: record.tier,
+        streak: 7
+      },
+      radarScores,
+      stats,
+      averageRadarScore,
+      radarTheme,
+      radarPoints
+    });
+  } catch (err) {
+    console.error('Error in GET /api/v1/user/profile-dashboard:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// POST /api/v1/user/profile-dashboard/update-scores
+app.post('/api/v1/user/profile-dashboard/update-scores', (req, res) => {
+  try {
+    const userId = req.headers['x-user-id'] || 'default_user';
+    const { radarScores = {}, stats = {} } = req.body;
+    const now = new Date().toISOString();
+
+    const record = db.prepare('SELECT * FROM learner_auth_dashboard_records WHERE user_id = ?').get(userId);
+    if (!record) {
+      return res.status(404).json({ success: false, error: 'Learner profile not found' });
+    }
+
+    const newPhonemes = radarScores.phonemes ?? record.phonemes_score;
+    const newStress = radarScores.stress ?? record.stress_score;
+    const newIntonation = radarScores.intonation ?? record.intonation_score;
+    const newEnding = radarScores.endingSounds ?? record.ending_sounds_score;
+    const newFluency = radarScores.fluency ?? record.fluency_score;
+
+    const newMinutes = stats.totalPracticeMinutes ?? record.total_practice_minutes;
+    const newMastered = stats.masteredPhonemesCount ?? record.mastered_phonemes_count;
+    const newErrors = stats.errorBankCount ?? record.error_bank_count;
+    const newIelts = stats.predictedIelts ?? record.predicted_ielts;
+
+    db.prepare(`
+      UPDATE learner_auth_dashboard_records SET
+        phonemes_score = ?,
+        stress_score = ?,
+        intonation_score = ?,
+        ending_sounds_score = ?,
+        fluency_score = ?,
+        total_practice_minutes = ?,
+        mastered_phonemes_count = ?,
+        error_bank_count = ?,
+        predicted_ielts = ?,
+        updated_at = ?
+      WHERE user_id = ?
+    `).run(
+      newPhonemes, newStress, newIntonation, newEnding, newFluency,
+      newMinutes, newMastered, newErrors, newIelts, now, userId
+    );
+
+    res.json({
+      success: true,
+      message: 'Learner scores & stats updated successfully'
+    });
+  } catch (err) {
+    console.error('Error in POST /api/v1/user/profile-dashboard/update-scores:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+/**
+ * ARCH-101: Relational Database Schema & Range Partitioning Endpoints
+ */
+import {
+  SCHEMA_TABLES,
+  getPartitionNameForDate,
+  getMonthBoundaries,
+  evaluateConnectionPoolHealth,
+  ensureMonthlyPartition,
+  routeInsertPhonemeScore
+} from '../src/lib/database/relationalSchemaManager.js';
+
+// GET /api/v1/arch/schema-status
+app.get('/api/v1/arch/schema-status', (req, res) => {
+  try {
+    const poolHealth = evaluateConnectionPoolHealth({
+      maxClientConn: 5000,
+      activeClients: 1420,
+      defaultPoolSize: 50,
+      poolMode: 'transaction'
+    });
+
+    const currentPartition = getPartitionNameForDate(new Date());
+
+    res.json({
+      success: true,
+      tables: SCHEMA_TABLES,
+      currentPartition,
+      poolHealth,
+      partitionMode: 'Range Partitioning by Month'
+    });
+  } catch (err) {
+    console.error('Error in GET /api/v1/arch/schema-status:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// POST /api/v1/arch/records
+app.post('/api/v1/arch/records', (req, res) => {
+  try {
+    const { userId, phonemeSymbol, score, durationMs, audioUrl } = req.body;
+    if (!userId || !phonemeSymbol || score === undefined) {
+      return res.status(400).json({ success: false, error: 'Missing required fields' });
+    }
+
+    const recordId = `ps_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`;
+    const routeResult = routeInsertPhonemeScore(db, {
+      id: recordId,
+      user_id: userId,
+      phoneme_symbol: phonemeSymbol,
+      score: Number(score),
+      duration_ms: Number(durationMs || 300),
+      audio_r2_url: audioUrl || null
+    });
+
+    res.json({
+      success: true,
+      recordId,
+      partitionTable: routeResult.partitionTable,
+      createdAt: routeResult.createdAt
+    });
+  } catch (err) {
+    console.error('Error in POST /api/v1/arch/records:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// GET /api/v1/arch/user-history/:userId
+app.get('/api/v1/arch/user-history/:userId', (req, res) => {
+  try {
+    const { userId } = req.params;
+    const limit = Number(req.query.limit) || 20;
+
+    const scores = db.prepare(
+      'SELECT * FROM arch_phoneme_scores WHERE user_id = ? ORDER BY created_at DESC LIMIT ?'
+    ).all(userId, limit);
+
+    const subscription = db.prepare(
+      'SELECT * FROM arch_subscriptions WHERE user_id = ? AND status = ?'
+    ).get(userId, 'active');
+
+    res.json({
+      success: true,
+      userId,
+      hasActiveSubscription: Boolean(subscription),
+      historyCount: scores.length,
+      scores
+    });
+  } catch (err) {
+    console.error('Error in GET /api/v1/arch/user-history:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// POST /api/v1/arch/partition/ensure
+app.post('/api/v1/arch/partition/ensure', (req, res) => {
+  try {
+    const targetDate = req.body.date ? new Date(req.body.date) : new Date();
+    const tableName = ensureMonthlyPartition(db, targetDate);
+
+    res.json({
+      success: true,
+      partitionTable: tableName,
+      date: targetDate.toISOString()
+    });
+  } catch (err) {
+    console.error('Error in POST /api/v1/arch/partition/ensure:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+/**
+ * ARCH-102: Asynchronous Audio Ingestion & GPU Worker Queue Pipeline Endpoints
+ */
+import {
+  detectAudioFormat,
+  FFMPEG_NORMALIZATION_SPEC,
+  verifyAudioNormalization,
+  calculateKedaGpuScale,
+  evaluateJobRetryPolicy
+} from '../src/lib/audio/asyncAudioQueuePipeline.js';
+
+// POST /api/v1/audio/ingest
+app.post('/api/v1/audio/ingest', (req, res) => {
+  const startTime = performance.now();
+  try {
+    const { audioData, mimeType, isPro, forceError } = req.body;
+    const userId = req.headers['x-user-id'] || req.body.userId || 'default_user';
+
+    if (!audioData) {
+      return res.status(400).json({ success: false, error: 'Missing audioData payload' });
+    }
+
+    // Magic bytes detection in under 15ms
+    const formatInfo = detectAudioFormat(audioData);
+    if (!formatInfo.valid) {
+      return res.status(400).json({
+        success: false,
+        error: 'Invalid or unsupported audio binary format. Expected WAV, WebM, or Ogg.'
+      });
+    }
+
+    const priority = isPro ? 1 : 0;
+    const jobId = `job_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
+    const now = new Date().toISOString();
+
+    db.prepare(`
+      INSERT INTO audio_worker_jobs (
+        id, user_id, status, priority, mime_type, sample_rate_hz, channels, attempts,
+        result_json, error_message, created_at, updated_at
+      ) VALUES (?, ?, 'queued', ?, ?, 16000, 1, 0, NULL, ?, ?, ?)
+    `).run(
+      jobId, userId, priority, formatInfo.mimeType,
+      forceError ? 'FORCE_DECODE_ERROR' : null, now, now
+    );
+
+    const validationDurationMs = Math.round((performance.now() - startTime) * 100) / 100;
+
+    res.status(202).json({
+      status: 'accepted',
+      jobId,
+      statusUrl: `/api/v1/jobs/${jobId}/status`,
+      detectedFormat: formatInfo.format,
+      mimeType: formatInfo.mimeType,
+      priority: priority === 1 ? 'high_priority_vip' : 'standard',
+      validationDurationMs,
+      message: 'Audio binary accepted into GPU queue'
+    });
+  } catch (err) {
+    console.error('Error in POST /api/v1/audio/ingest:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// GET /api/v1/jobs/:jobId/status
+app.get('/api/v1/jobs/:jobId/status', (req, res) => {
+  try {
+    const { jobId } = req.params;
+    let job = db.prepare('SELECT * FROM audio_worker_jobs WHERE id = ?').get(jobId);
+
+    if (!job) {
+      return res.status(404).json({ success: false, error: 'Job not found' });
+    }
+
+    const now = new Date().toISOString();
+
+    // Simulate worker processing if queued
+    if (job.status === 'queued') {
+      if (job.error_message === 'FORCE_DECODE_ERROR') {
+        const retryPolicy = evaluateJobRetryPolicy(job.attempts, 'Corrupted Opus audio stream');
+        if (retryPolicy.moveToDlq) {
+          db.prepare(`
+            UPDATE audio_worker_jobs SET
+              status = 'dlq',
+              attempts = ?,
+              error_message = ?,
+              updated_at = ?
+            WHERE id = ?
+          `).run(retryPolicy.nextAttempt, retryPolicy.dlqReason, now, jobId);
+        } else {
+          db.prepare(`
+            UPDATE audio_worker_jobs SET
+              attempts = ?,
+              updated_at = ?
+            WHERE id = ?
+          `).run(retryPolicy.nextAttempt, now, jobId);
+        }
+      } else {
+        // Successful processing through FFmpeg normalization and GPU Whisper/Kaldi
+        const normInfo = verifyAudioNormalization({ sampleRateHz: 16000, channels: 1, bitDepth: 16 });
+        const mockResult = {
+          transcription: 'Six months ago, she baked fresh bread.',
+          overallGop: 88,
+          phonemeAccuracy: 91.5,
+          normalized: normInfo.normalized,
+          filterPipeline: normInfo.appliedFilters,
+          gpuExecutionMs: 142
+        };
+
+        db.prepare(`
+          UPDATE audio_worker_jobs SET
+            status = 'completed',
+            attempts = 1,
+            result_json = ?,
+            updated_at = ?
+          WHERE id = ?
+        `).run(JSON.stringify(mockResult), now, jobId);
+      }
+
+      job = db.prepare('SELECT * FROM audio_worker_jobs WHERE id = ?').get(jobId);
+    }
+
+    res.json({
+      success: true,
+      jobId: job.id,
+      userId: job.user_id,
+      status: job.status,
+      priority: job.priority,
+      attempts: job.attempts,
+      result: job.result_json ? JSON.parse(job.result_json) : null,
+      errorMessage: job.error_message,
+      createdAt: job.created_at,
+      updatedAt: job.updated_at
+    });
+  } catch (err) {
+    console.error('Error in GET /api/v1/jobs/:jobId/status:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// GET /api/v1/jobs/pipeline-metrics
+app.get('/api/v1/jobs/pipeline-metrics', (req, res) => {
+  try {
+    const queuedCount = db.prepare("SELECT COUNT(*) as cnt FROM audio_worker_jobs WHERE status = 'queued'").get().cnt;
+    const dlqCount = db.prepare("SELECT COUNT(*) as cnt FROM audio_worker_jobs WHERE status = 'dlq'").get().cnt;
+    const completedCount = db.prepare("SELECT COUNT(*) as cnt FROM audio_worker_jobs WHERE status = 'completed'").get().cnt;
+
+    const kedaAutoscale = calculateKedaGpuScale(queuedCount, 2, 2, 16);
+
+    res.json({
+      success: true,
+      queueDepth: queuedCount,
+      dlqCount,
+      completedCount,
+      kedaAutoscale,
+      normalizationSpec: FFMPEG_NORMALIZATION_SPEC
+    });
+  } catch (err) {
+    console.error('Error in GET /api/v1/jobs/pipeline-metrics:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+/**
+ * ARCH-103: Multi-Gateway Subscription Billing & Webhook Reconciliation Endpoints
+ */
+import {
+  GATEWAY_SECRETS,
+  generateHmacSha256,
+  verifyHmacSha256,
+  normalizeGatewayPayload,
+  calculateSubscriptionExtension,
+  runBankReconciliation
+} from '../src/lib/billing/multiGatewayReconciliation.js';
+
+// POST /api/v1/billing/webhook/:gateway
+app.post('/api/v1/billing/webhook/:gateway', (req, res) => {
+  try {
+    const { gateway } = req.params;
+    const signature = req.headers['x-signature'];
+    const secret = GATEWAY_SECRETS[gateway] || GATEWAY_SECRETS.vietqr;
+
+    // Verify HMAC-SHA256 signature
+    const isValid = verifyHmacSha256(req.body, signature, secret);
+    if (!isValid) {
+      return res.status(401).json({ error: 'Invalid HMAC signature' });
+    }
+
+    const tx = normalizeGatewayPayload(gateway, req.body);
+    const now = new Date().toISOString();
+
+    // Idempotency check: see if transactionId has already been recorded
+    const existing = db.prepare('SELECT * FROM billing_webhook_logs WHERE transaction_id = ?').get(tx.transactionId);
+    if (existing) {
+      return res.status(200).json({
+        status: 'already_processed',
+        transactionId: tx.transactionId,
+        message: 'Idempotent duplicate request recognized; no changes applied'
+      });
+    }
+
+    // Atomic transaction for subscription activation
+    const currentSub = db.prepare('SELECT * FROM arch_subscriptions WHERE user_id = ?').get(tx.userId);
+    const newExpiresAt = calculateSubscriptionExtension(currentSub?.current_period_end, tx.planCode);
+
+    db.prepare(`
+      INSERT INTO billing_webhook_logs (
+        id, gateway, transaction_id, order_code, user_id, amount,
+        plan_code, status, signature, created_at, reconciled_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, 'processed', ?, ?, ?)
+    `).run(
+      `log_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+      gateway,
+      tx.transactionId,
+      tx.orderCode,
+      tx.userId,
+      tx.amount,
+      tx.planCode,
+      signature,
+      now,
+      now
+    );
+
+    // Update arch_users
+    db.prepare("UPDATE arch_users SET tier = 'pro', updated_at = ? WHERE id = ?").run(now, tx.userId);
+
+    // Update or insert arch_subscriptions
+    if (currentSub) {
+      db.prepare(`
+        UPDATE arch_subscriptions SET
+          status = 'active',
+          plan_code = ?,
+          current_period_end = ?
+        WHERE user_id = ?
+      `).run(tx.planCode, newExpiresAt, tx.userId);
+    } else {
+      db.prepare(`
+        INSERT INTO arch_subscriptions (id, user_id, plan_code, status, current_period_start, current_period_end, created_at)
+        VALUES (?, ?, ?, 'active', ?, ?, ?)
+      `).run(`sub_${tx.userId}_${Date.now()}`, tx.userId, tx.planCode, now, newExpiresAt, now);
+    }
+
+    // Update learner_auth_dashboard_records
+    db.prepare("UPDATE learner_auth_dashboard_records SET tier = 'pro', updated_at = ? WHERE user_id = ?").run(now, tx.userId);
+
+    res.status(200).json({
+      status: 'activated_success',
+      transactionId: tx.transactionId,
+      userId: tx.userId,
+      gateway,
+      planCode: tx.planCode,
+      expiresAt: newExpiresAt
+    });
+  } catch (err) {
+    console.error('Error in POST /api/v1/billing/webhook:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// POST /api/v1/billing/reconcile-cron
+app.post('/api/v1/billing/reconcile-cron', (req, res) => {
+  try {
+    const transactions = req.body.transactions || [];
+    const result = runBankReconciliation(db, transactions);
+
+    res.json({
+      success: true,
+      message: 'Bank reconciliation cron completed',
+      ...result
+    });
+  } catch (err) {
+    console.error('Error in POST /api/v1/billing/reconcile-cron:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// GET /api/v1/billing/reconcile-status
+app.get('/api/v1/billing/reconcile-status', (req, res) => {
+  try {
+    const totalCount = db.prepare('SELECT COUNT(*) as cnt FROM billing_webhook_logs').get().cnt;
+    const totalAmount = db.prepare('SELECT COALESCE(SUM(amount), 0) as total FROM billing_webhook_logs').get().total;
+    const recentLogs = db.prepare('SELECT * FROM billing_webhook_logs ORDER BY created_at DESC LIMIT 10').all();
+
+    res.json({
+      success: true,
+      totalCount,
+      totalAmount,
+      recentLogs
+    });
+  } catch (err) {
+    console.error('Error in GET /api/v1/billing/reconcile-status:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 // Start listening only if run directly as main entrypoint
 const isMain = process.argv[1] && (process.argv[1].includes('server/index.js') || process.argv[1].includes('server\\index.js'));
 if (isMain && process.env.NODE_ENV !== 'test') {

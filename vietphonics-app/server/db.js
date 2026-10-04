@@ -477,6 +477,117 @@ export function initAppDatabase() {
       last_active_date TEXT NOT NULL,
       updated_at TEXT NOT NULL
     );
+
+    CREATE TABLE IF NOT EXISTS freemium_quota_records (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL,
+      is_pro INTEGER NOT NULL DEFAULT 0,
+      lessons_completed_today INTEGER NOT NULL DEFAULT 0,
+      date_str TEXT NOT NULL,
+      updated_at TEXT NOT NULL,
+      UNIQUE(user_id, date_str)
+    );
+
+    CREATE TABLE IF NOT EXISTS learner_auth_dashboard_records (
+      id TEXT PRIMARY KEY,
+      user_id TEXT UNIQUE NOT NULL,
+      name TEXT NOT NULL,
+      email TEXT UNIQUE NOT NULL,
+      role TEXT DEFAULT 'learner',
+      tier TEXT DEFAULT 'free',
+      token_hash TEXT,
+      phonemes_score REAL DEFAULT 85,
+      stress_score REAL DEFAULT 78,
+      intonation_score REAL DEFAULT 70,
+      ending_sounds_score REAL DEFAULT 92,
+      fluency_score REAL DEFAULT 80,
+      total_practice_minutes INTEGER DEFAULT 340,
+      mastered_phonemes_count INTEGER DEFAULT 32,
+      error_bank_count INTEGER DEFAULT 6,
+      predicted_ielts REAL DEFAULT 7.0,
+      created_at TEXT NOT NULL,
+      updated_at TEXT NOT NULL
+    );
+
+    /* ARCH-101: 3NF Relational Database Schema & Compound Indexes */
+    CREATE TABLE IF NOT EXISTS arch_users (
+      id TEXT PRIMARY KEY,
+      email TEXT UNIQUE NOT NULL,
+      full_name TEXT NOT NULL,
+      dialect_preference TEXT DEFAULT 'northern',
+      tier TEXT DEFAULT 'free',
+      created_at TEXT NOT NULL,
+      updated_at TEXT NOT NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS arch_subscriptions (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL REFERENCES arch_users(id) ON DELETE CASCADE,
+      plan_code TEXT NOT NULL,
+      status TEXT NOT NULL,
+      current_period_start TEXT NOT NULL,
+      current_period_end TEXT NOT NULL,
+      created_at TEXT NOT NULL
+    );
+    CREATE INDEX IF NOT EXISTS idx_arch_subscriptions_user_status ON arch_subscriptions(user_id, status);
+
+    CREATE TABLE IF NOT EXISTS arch_phoneme_scores (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL REFERENCES arch_users(id) ON DELETE CASCADE,
+      phoneme_symbol TEXT NOT NULL,
+      score REAL NOT NULL,
+      duration_ms INTEGER NOT NULL,
+      audio_r2_url TEXT,
+      created_at TEXT NOT NULL
+    );
+    CREATE INDEX IF NOT EXISTS idx_arch_phoneme_scores_user_sym ON arch_phoneme_scores(user_id, phoneme_symbol);
+    CREATE INDEX IF NOT EXISTS idx_arch_phoneme_scores_user_time ON arch_phoneme_scores(user_id, created_at DESC);
+
+    CREATE TABLE IF NOT EXISTS arch_audio_records (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL REFERENCES arch_users(id) ON DELETE CASCADE,
+      session_id TEXT,
+      file_size_bytes INTEGER NOT NULL,
+      sample_rate_hz INTEGER NOT NULL DEFAULT 16000,
+      duration_ms INTEGER NOT NULL,
+      r2_url TEXT,
+      created_at TEXT NOT NULL
+    );
+    CREATE INDEX IF NOT EXISTS idx_arch_audio_records_user ON arch_audio_records(user_id, created_at DESC);
+
+    /* ARCH-102: Asynchronous Audio Ingestion & GPU Worker Queue Pipeline */
+    CREATE TABLE IF NOT EXISTS audio_worker_jobs (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL,
+      status TEXT NOT NULL DEFAULT 'queued',
+      priority INTEGER NOT NULL DEFAULT 0,
+      mime_type TEXT NOT NULL,
+      sample_rate_hz INTEGER NOT NULL DEFAULT 16000,
+      channels INTEGER NOT NULL DEFAULT 1,
+      attempts INTEGER NOT NULL DEFAULT 0,
+      result_json TEXT,
+      error_message TEXT,
+      created_at TEXT NOT NULL,
+      updated_at TEXT NOT NULL
+    );
+    CREATE INDEX IF NOT EXISTS idx_audio_worker_jobs_status ON audio_worker_jobs(status, priority DESC, created_at ASC);
+
+    /* ARCH-103: Multi-Gateway Subscription Billing & Webhook Reconciliation */
+    CREATE TABLE IF NOT EXISTS billing_webhook_logs (
+      id TEXT PRIMARY KEY,
+      gateway TEXT NOT NULL,
+      transaction_id TEXT UNIQUE NOT NULL,
+      order_code TEXT NOT NULL,
+      user_id TEXT NOT NULL,
+      amount INTEGER NOT NULL,
+      plan_code TEXT NOT NULL,
+      status TEXT NOT NULL,
+      signature TEXT,
+      created_at TEXT NOT NULL,
+      reconciled_at TEXT
+    );
+    CREATE INDEX IF NOT EXISTS idx_billing_webhook_logs_user ON billing_webhook_logs(user_id, created_at DESC);
+    CREATE INDEX IF NOT EXISTS idx_billing_webhook_logs_tx ON billing_webhook_logs(transaction_id);
   `);
 
   // Seed default penalty weights for 3 regions
@@ -554,4 +665,43 @@ export function initAppDatabase() {
       );
     }
   }
+
+  // Seed default learner dashboard profile if not exists
+  const existingLearner = db.prepare("SELECT * FROM learner_auth_dashboard_records WHERE user_id = 'default_user'").get();
+  if (!existingLearner) {
+    const now = new Date().toISOString();
+    db.prepare(`
+      INSERT INTO learner_auth_dashboard_records (
+        id, user_id, name, email, role, tier, token_hash,
+        phonemes_score, stress_score, intonation_score, ending_sounds_score, fluency_score,
+        total_practice_minutes, mastered_phonemes_count, error_bank_count, predicted_ielts,
+        created_at, updated_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `).run(
+      'learner-default', 'default_user', 'Đặng Vương', 'vuong@vietphonics.vn', 'learner', 'pro',
+      'demo_session_token_default', 85, 78, 70, 92, 80, 340, 32, 6, 7.0, now, now
+    );
+  }
+
+  // Seed default arch_users record if not exists
+  const existingArchUser = db.prepare("SELECT * FROM arch_users WHERE id = 'usr_arch_default'").get();
+  if (!existingArchUser) {
+    const now = new Date().toISOString();
+    db.prepare(`
+      INSERT INTO arch_users (id, email, full_name, dialect_preference, tier, created_at, updated_at)
+      VALUES (?, ?, ?, ?, ?, ?, ?)
+    `).run('usr_arch_default', 'vuong@vietphonics.vn', 'Đặng Vương', 'northern', 'pro', now, now);
+
+    db.prepare(`
+      INSERT INTO arch_subscriptions (id, user_id, plan_code, status, current_period_start, current_period_end, created_at)
+      VALUES (?, ?, ?, ?, ?, ?, ?)
+    `).run('sub_arch_default', 'usr_arch_default', 'pro_annual_unlimited', 'active', now, '2027-10-04T00:00:00.000Z', now);
+
+    db.prepare(`
+      INSERT INTO arch_phoneme_scores (id, user_id, phoneme_symbol, score, duration_ms, audio_r2_url, created_at)
+      VALUES (?, ?, ?, ?, ?, ?, ?)
+    `).run('ps_arch_001', 'usr_arch_default', '/ks/', 92.5, 340, 'https://r2.vietphonics.vn/audio/sample_ks.wav', now);
+  }
 }
+
+

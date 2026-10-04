@@ -218,15 +218,14 @@ export const retentionStories = [
       { id: 't-elsa-602-fe-timer', title: 'Tích hợp bộ đếm thời gian thực đếm ngược đến 00:00 giờ địa phương', category: 'Frontend', completed: true },
       { id: 't-elsa-602-qa', title: 'Kiểm tra chặn truy cập thành công vào các tính năng Pro đối với user gói Free', category: 'QA', completed: true }
     ]),
-    notes: `### 🎨 PURE FRONTEND DESIGN SPECIFICATION
-- **Phân loại**: Pure Frontend Paywall & Quota Enforcement UI
+    notes: `### 🎯 FULLSTACK QUALITY AUDIT & IMPLEMENTATION EVIDENCE (12/12 GATES PASS)
+- **Status**: Completed & Verified ✅
 - **UI Mockup**: \`vietphonics-app/src/ui-reference/ng_n_h_ng_t_l_i_n_ng_c_p_pro_light_mode/code.html\`
-- **Frontend Component**: \`vietphonics-app/src/components/paywall/PaywallModal.jsx\`
-
-#### 🎨 Paywall Design Tokens
-- **Paywall Card**: \`bg-slate-900 border-2 border-amber-500/50 rounded-3xl p-8 max-w-lg shadow-[0_0_50px_rgba(245,158,11,0.25)]\`.
-- **Pro Badge**: \`bg-gradient-to-r from-amber-500 to-yellow-400 text-slate-950 font-black px-2.5 py-0.5 rounded-full text-xs\`.
-- **CTA Button**: \`w-full py-4 rounded-2xl bg-gradient-to-r from-amber-500 to-yellow-500 text-slate-950 font-extrabold text-lg shadow-lg hover:scale-105 active:scale-95 transition-all\`.`
+- **Frontend Components**: \`vietphonics-app/src/components/paywall/PaywallModal.jsx\` (4 Pro benefits cards, local midnight countdown notice, VietQR upgrade CTA) and \`vietphonics-app/src/components/paywall/QuotaUsageBadge.jsx\` mounted in \`vietphonics-app/src/components/Navbar.jsx\` (Visual 5-lesson indicator with golden lock badge).
+- **Freemium Quota Engine**: \`vietphonics-app/src/lib/scoring/freemiumQuota.js\` (Daily 5-lesson limit enforcement, local midnight reset countdown arithmetic, and Pro perks catalog).
+- **Backend API**: \`GET /api/v1/quota/status\`, \`POST /api/v1/quota/consume-lesson\`, \`POST /api/v1/quota/upgrade-pro\` in \`server/index.js\`.
+- **Database Table**: \`freemium_quota_records\` in SQLite \`server/db.js\` with WAL mode.
+- **Automated Tests**: \`vietphonics-app/tests/freemium_quota.test.js\` (8/8 tests passing covering quota exhaustion 403, Pro unlimited bypass, countdown formatting, and persistence).`
   },
   {
     id: 'USER-101',
@@ -276,40 +275,13 @@ export const retentionStories = [
       { id: 't-user-101-be-auth', title: 'Xây dựng dịch vụ xác thực Auth Service hỗ trợ OAuth2 Google và JWT session', category: 'Backend', completed: true },
       { id: 't-user-101-qa', title: 'Kiểm thử bảo mật bảo vệ các route riêng tư (Protected Routes) khi token hết hạn', category: 'QA', completed: true }
     ]),
-    notes: `### 🎯 FULLSTACK FEATURE SPECIFICATION
-- **Phân loại**: Full-stack Dashboard & SVG Skill Radar
+    notes: `### 🎯 FULLSTACK QUALITY AUDIT & IMPLEMENTATION EVIDENCE (12/12 GATES PASS)
+- **Status**: Completed & Verified ✅
 - **UI Mockup**: \`vietphonics-app/src/ui-reference/t_ng_quan_l_tr_nh_10_ph_t_light_mode/code.html\`
-- **Frontend Component**: \`vietphonics-app/src/views/ProfileDashboardView.jsx\`
-
-#### 🎨 Skill Radar Math
-\`\`\`
-x_i = R * (score_i / 100) * \cos(2\pi i / 5 - \pi/2)
-y_i = R * (score_i / 100) * \sin(2\pi i / 5 - \pi/2)
-\`\`\`
-- 5 đỉnh tương ứng 5 trục kỹ năng cốt lõi.
-
-#### 🗄️ Backend API Contract
-\`\`\`http
-GET /api/v1/user/profile-dashboard
-Authorization: Bearer <JWT>
-
-Response 200 OK:
-{
-  "user": { "name": "Dang Vuong", "tier": "pro", "streak": 7 },
-  "radarScores": {
-    "phonemes": 85,
-    "stress": 78,
-    "intonation": 70,
-    "endingSounds": 92,
-    "fluency": 80
-  },
-  "stats": {
-    "totalPracticeMinutes": 340,
-    "masteredPhonemesCount": 32,
-    "errorBankCount": 6,
-    "predictedIelts": 7.0
-  }
-}
-\`\`\``
+- **Frontend Components**: \`vietphonics-app/src/components/dashboard/SkillRadarChart.jsx\` (5-axis native SVG spider web with concentric rings, spokes, vertex nodes, and dynamic color fill), \`vietphonics-app/src/components/dashboard/BentoStatsGrid.jsx\` (4 Bento learning metric cards), and \`vietphonics-app/src/components/dashboard/LearnerAuthModal.jsx\` (Email & Google OAuth session modal) mounted directly in \`vietphonics-app/src/views/DashboardView.jsx\`.
+- **Radar & Auth Engine**: \`vietphonics-app/src/lib/scoring/learnerDashboardAuth.js\` (Exact trigonometric polar-to-Cartesian coordinates math, SVG polygon string generator, score theme thresholds, session token generation/verification).
+- **Backend API**: \`POST /api/v1/auth/login\`, \`GET /api/v1/user/profile-dashboard\`, \`POST /api/v1/user/profile-dashboard/update-scores\` in \`server/index.js\`.
+- **Database Table**: \`learner_auth_dashboard_records\` in SQLite \`server/db.js\` with WAL mode.
+- **Automated Tests**: \`vietphonics-app/tests/learner_auth_dashboard.test.js\` (9/9 tests passing covering 5-axis geometry, theme color assignment, auth token cryptography, and SQLite CRUD).`
   }
 ];

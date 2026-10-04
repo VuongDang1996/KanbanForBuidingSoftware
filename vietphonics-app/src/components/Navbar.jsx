@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import StreakBadge from './gamification/StreakBadge';
+import QuotaUsageBadge from './paywall/QuotaUsageBadge';
 
 export default function Navbar() {
   const {
@@ -167,6 +168,7 @@ export default function Navbar() {
         {/* Right Status Counters & Profile */}
         <div className="flex items-center gap-space-sm shrink-0">
           <div className="hidden md:flex items-center gap-space-xs">
+            <QuotaUsageBadge />
             <StreakBadge />
             <div className="flex items-center gap-1 px-3 py-1 bg-sky-50 border border-sky-200/80 rounded-full font-label-mono text-label-mono text-secondary font-bold">
               <span className="text-xs">🛡️</span>

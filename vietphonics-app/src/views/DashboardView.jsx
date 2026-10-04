@@ -1,10 +1,26 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
 import IeltsBandEstimator from '../components/dashboard/IeltsBandEstimator';
 import DailyPathCard from '../components/dashboard/DailyPathCard';
+import SkillRadarChart from '../components/dashboard/SkillRadarChart';
+import BentoStatsGrid from '../components/dashboard/BentoStatsGrid';
+import LearnerAuthModal from '../components/dashboard/LearnerAuthModal';
 
 export default function DashboardView() {
   const { dialect, dialectConfig, gopScore, setActiveTab, triggerPractice, setShowDiagnosticModal } = useApp();
+  const [profileData, setProfileData] = useState(null);
+  const [showAuthModal, setShowAuthModal] = useState(false);
+
+  useEffect(() => {
+    fetch('/api/v1/user/profile-dashboard')
+      .then(res => res.ok ? res.json() : null)
+      .then(data => {
+        if (data && data.success) {
+          setProfileData(data);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   const playWord = (word) => {
     if ('speechSynthesis' in window) {
@@ -58,11 +74,18 @@ export default function DashboardView() {
             >
               Chẩn đoán L1
             </button>
-            <span className="px-2 py-0.5 rounded bg-indigo-50 border border-indigo-100 font-label-mono text-label-mono text-indigo-700 font-semibold">
-              Session #48
-            </span>
+            <button
+              onClick={() => setShowAuthModal(true)}
+              className="px-2.5 py-1 rounded bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 font-label-mono text-label-mono text-indigo-700 font-semibold transition-colors cursor-pointer flex items-center gap-1"
+            >
+              <span className="material-symbols-outlined text-xs">account_circle</span>
+              <span>{profileData?.user?.name || 'Học Viên'} ({profileData?.user?.tier?.toUpperCase() || 'PRO'})</span>
+            </button>
           </div>
         </div>
+
+        {/* USER-101: Learner Mastery Dashboard & Bento Statistics Grid */}
+        <BentoStatsGrid stats={profileData?.stats} />
 
         {/* 4-Pillar Vietnamese Phonetic Radar & High-Echelon Diagnostic Hero Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-12 gap-6 items-stretch">
@@ -298,6 +321,11 @@ export default function DashboardView() {
 
         {/* ELSA-401: 10-Minute Daily Personalized Practice Path (Adaptive Curriculum) */}
         <DailyPathCard />
+
+        {/* USER-101: 5-Pillar Pronunciation Skill Radar Chart */}
+        <div className="w-full">
+          <SkillRadarChart scores={profileData?.radarScores} />
+        </div>
 
         {/* Primary Section: 10-Minute Daily Personalized Curriculum Path */}
         <div className="w-full bg-white border border-slate-200/90 rounded-xl p-space-lg lg:p-space-xl shadow-[0_6px_24px_rgba(15,23,42,0.05)] flex flex-col gap-space-lg relative overflow-hidden">
@@ -658,6 +686,16 @@ export default function DashboardView() {
             </div>
           </div>
         </div>
+
+        {/* USER-101: Learner Authentication Modal */}
+        <LearnerAuthModal
+          isOpen={showAuthModal}
+          onClose={() => setShowAuthModal(false)}
+          currentUser={profileData?.user}
+          onLoginSuccess={(data) => {
+            setProfileData(prev => ({ ...prev, user: data.user }));
+          }}
+        />
       </div>
     </div>
   );
