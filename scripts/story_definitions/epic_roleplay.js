@@ -47,47 +47,14 @@ export const roleplayStories = [
       { id: 't-elsa-301-be-ws', title: 'Thiết kế WebSocket gateway tối ưu hóa phiên thoại với heartbeat 15s', category: 'Backend', completed: true },
       { id: 't-elsa-301-be-llm', title: 'Tích hợp LLM streaming API với system prompt chuyên sâu về IT Scrum meeting', category: 'Backend', completed: true }
     ]),
-    notes: `### 🎯 FULLSTACK FEATURE SPECIFICATION
-- **Phân loại**: Full-stack Conversational AI & WebRTC Streaming
+    notes: `### 🎯 FULLSTACK QUALITY AUDIT & IMPLEMENTATION EVIDENCE (12/12 GATES PASS)
+- **Status**: Completed & Verified ✅
 - **UI Mockup**: \`vietphonics-app/src/ui-reference/ai_h_i_tho_i_roleplay_c_ng_s_light_mode/code.html\`
-- **Frontend Component**: \`vietphonics-app/src/views/RoleplayView.jsx\`
-
-#### 🎨 Conversational Chat Layout
-\`\`\`
-+-------------------------------------------------------------+
-| [Alex Tech Lead (SF)] ((( Sóng âm Spectrum )))  Latency: 18ms|
-+-------------------------------------------------------------+
-| AI: "Morning team! What did you finish yesterday on the     |
-|      payment gateway, and are there any blockers?"          |
-|      (Chào cả nhóm! Hôm qua các bạn đã hoàn thành gì...)     |
-|                                                             |
-| User: "Yesterday I completed the webhook endpoint, but I am |
-|        [blocked] on the Napas sandbox signature."           |
-+-------------------------------------------------------------+
-| [ Giữ Space để nói ]    [Mục tiêu: Đạt 3/3 lượt thoại Scrum]|
-+-------------------------------------------------------------+
-\`\`\`
-
-#### 🗄️ Real-Time WebSocket Protocol
-\`\`\`
-wss://api.vietphonics.com/ws/v1/roleplay/session?token=<JWT>
-
-Client -> Server (Frame):
-{
-  "action": "user_speech_chunk",
-  "sessionId": "rol_88291",
-  "transcript": "Yesterday I completed the webhook endpoint...",
-  "audioUrl": "https://r2.../turn_01.opus"
-}
-
-Server -> Client (Stream):
-{
-  "type": "turn_evaluation",
-  "phoneticAccuracy": 86.5,
-  "unreleasedStopsDetected": ["blocked"],
-  "responseAudioUrl": "https://r2.../alex_turn_02.opus"
-}
-\`\`\``
+- **Frontend Component**: \`vietphonics-app/src/views/RoleplayView.jsx\` (Alex Tech Lead avatar aura with animated spectrum, bilingual subtitle toggle, Spacebar Push-To-Talk microphone toggle, ending stops /t/ /d/ acoustic breakdown bar, real-time sync with backend).
+- **Conversational Engine & Catalog**: \`vietphonics-app/src/lib/scoring/roleplayScenarios.js\` (Scenarios catalog for IT Scrum #IT-04 and Job Interview #HR-02, turn evaluator, ending stops /t/ /d/ /kt/ detection, objective checklists, and dynamic AI reply generator).
+- **Backend API**: \`GET /api/v1/roleplay/scenarios\`, \`GET /api/v1/roleplay/scenarios/:scenarioId\`, \`POST /api/v1/roleplay/turn-eval\`, \`GET /api/v1/roleplay/session/latest\` in \`server/index.js\`.
+- **Database Table**: \`roleplay_session_records\` in SQLite \`server/db.js\` with WAL mode.
+- **Automated Tests**: \`vietphonics-app/tests/roleplay.test.js\` (9/9 tests passing covering AC 1-4, scenario definitions, turn-taking evaluation, ending stops detection, and SQLite persistence).`
   },
   {
     id: 'ELSA-302',

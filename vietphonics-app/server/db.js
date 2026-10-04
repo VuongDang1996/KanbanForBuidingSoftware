@@ -257,6 +257,70 @@ export function initAppDatabase() {
       detected_assimilations_json TEXT,
       created_at TEXT NOT NULL
     );
+
+    CREATE TABLE IF NOT EXISTS spelling_map_quiz_records (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL,
+      phoneme_id TEXT NOT NULL,
+      symbol TEXT NOT NULL,
+      score INTEGER NOT NULL,
+      total_questions INTEGER NOT NULL,
+      correct_count INTEGER NOT NULL,
+      passed INTEGER NOT NULL,
+      results_json TEXT NOT NULL,
+      created_at TEXT NOT NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS masterclass_progress_records (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL,
+      lesson_id TEXT NOT NULL,
+      phoneme TEXT NOT NULL,
+      camera_angle TEXT NOT NULL,
+      playback_rate REAL NOT NULL,
+      loop_enabled INTEGER NOT NULL,
+      watch_duration_sec REAL NOT NULL,
+      completion_percentage INTEGER NOT NULL,
+      is_completed INTEGER NOT NULL,
+      created_at TEXT NOT NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS sound_saturation_records (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL,
+      sentence_id TEXT NOT NULL,
+      target_phoneme TEXT NOT NULL,
+      total_occurrences INTEGER NOT NULL,
+      correct_occurrences INTEGER NOT NULL,
+      accuracy_percentage INTEGER NOT NULL,
+      saturation_meter_level INTEGER NOT NULL,
+      is_mastered INTEGER NOT NULL,
+      detected_traps_json TEXT,
+      created_at TEXT NOT NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS native_placement_feedback_records (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL,
+      guide_id TEXT NOT NULL,
+      phoneme TEXT NOT NULL,
+      rating INTEGER NOT NULL,
+      is_helpful INTEGER NOT NULL,
+      feedback_note TEXT,
+      created_at TEXT NOT NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS roleplay_session_records (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL,
+      scenario_id TEXT NOT NULL,
+      user_transcript TEXT NOT NULL,
+      ai_response TEXT NOT NULL,
+      phonetic_accuracy INTEGER NOT NULL,
+      unreleased_stops_json TEXT,
+      is_blocker_resolved INTEGER NOT NULL,
+      created_at TEXT NOT NULL
+    );
   `);
 
   // Seed default penalty weights for 3 regions

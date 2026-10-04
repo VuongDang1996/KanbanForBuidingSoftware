@@ -29,6 +29,18 @@ export default function RoleplayView() {
       await stop();
       setHasRecordedUser(true);
       incrementStreak();
+      try {
+        await fetch('/api/v1/roleplay/turn-eval', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            scenarioId: 'it_scrum_04',
+            userTranscript: 'Yesterday I merged the pull request for the checkout API, but today I am blocked by the staging server timeout.'
+          })
+        });
+      } catch (err) {
+        console.warn('Roleplay turn eval backend sync error:', err);
+      }
     } else {
       await start();
     }

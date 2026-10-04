@@ -20,6 +20,10 @@ import PositionalLadder from '../components/articulation/PositionalLadder';
 import ConnectedProgression from '../components/articulation/ConnectedProgression';
 import VoicingRuleMastery from '../components/articulation/VoicingRuleMastery';
 import CrossTransitionDrill from '../components/articulation/CrossTransitionDrill';
+import MultiSpellingSoundMap from '../components/articulation/MultiSpellingSoundMap';
+import VideoMasterclassPlayer from '../components/articulation/VideoMasterclassPlayer';
+import SoundSaturationDrill from '../components/articulation/SoundSaturationDrill';
+import NativeTonguePlacementGuide from '../components/articulation/NativeTonguePlacementGuide';
 
 export default function PracticeStudioView() {
   const { setActiveTab } = useApp();
@@ -380,6 +384,26 @@ export default function PracticeStudioView() {
         {/* 3k. L1 Confusion-Trap Cross-Transition Drills (PRON-208) */}
         <CrossTransitionDrill
           initialTrapId="trap_s_sh"
+        />
+
+        {/* 3l. Numbered Target Phoneme System & Multi-Spelling Sound Maps (PRON-209) */}
+        <MultiSpellingSoundMap
+          initialPhoneme="sound_09_f"
+        />
+
+        {/* 3m. Video-Synchronized Masterclass & Exaggerated Articulation Modeling (PRON-210) */}
+        <VideoMasterclassPlayer
+          initialLessonId="mc_theta_01"
+        />
+
+        {/* 3n. Dense Target Sound Saturation Sentences (PRON-211) */}
+        <SoundSaturationDrill
+          initialSentenceId="sat_dj_01"
+        />
+
+        {/* 3o. Vietnamese Native-Tongue Mouth & Tongue Placement Guides (VN-105) */}
+        <NativeTonguePlacementGuide
+          initialPhoneme="/ð/"
         />
 
         {/* 4. Bottom Recording Dock & Live Audio Visualizer */}

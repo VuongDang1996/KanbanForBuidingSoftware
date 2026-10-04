@@ -1937,6 +1937,620 @@ app.get('/api/v1/practice/confusion-trap/latest', (req, res) => {
   }
 });
 
+/**
+ * PRON-209: Numbered Target Phoneme System & Multi-Spelling Sound Maps Endpoints
+ */
+import {
+  getSpellingMapCatalog,
+  getSpellingMapByPhoneme,
+  evaluateSpellingQuiz
+} from '../src/lib/scoring/spellingMaps.js';
+
+// GET all multi-spelling sound maps
+app.get('/api/v1/phonetics/spelling-maps', (req, res) => {
+  try {
+    const catalog = getSpellingMapCatalog();
+    res.json({ success: true, count: catalog.length, maps: catalog });
+  } catch (err) {
+    console.error('Error in GET spelling-maps:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// GET specific phoneme spelling map
+app.get('/api/v1/phonetics/spelling-maps/:phonemeId', (req, res) => {
+  try {
+    const map = getSpellingMapByPhoneme(req.params.phonemeId);
+    if (!map) {
+      return res.status(404).json({ success: false, error: `Spelling map not found for ${req.params.phonemeId}` });
+    }
+    res.json({ success: true, map });
+  } catch (err) {
+    console.error('Error in GET spelling-maps/:phonemeId:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// POST evaluate spelling quiz answers and persist to SQLite
+app.post('/api/v1/phonetics/spelling-quiz', (req, res) => {
+  try {
+    const userId = req.headers['x-user-id'] || req.body.userId || 'default_user';
+    const { phonemeId, answers } = req.body;
+
+    if (!phonemeId || typeof phonemeId !== 'string') {
+      return res.status(400).json({
+        success: false,
+        error: 'Missing or invalid required field: phonemeId'
+      });
+    }
+
+    if (!Array.isArray(answers) || answers.length === 0) {
+      return res.status(400).json({
+        success: false,
+        error: 'Missing required field: answers (must be non-empty array)'
+      });
+    }
+
+    const evaluation = evaluateSpellingQuiz(phonemeId, answers);
+    if (!evaluation.success) {
+      return res.status(400).json(evaluation);
+    }
+
+    const now = new Date().toISOString();
+    const recordId = `spm-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
+
+    db.prepare(`
+      INSERT INTO spelling_map_quiz_records (
+        id, user_id, phoneme_id, symbol, score, total_questions, correct_count, passed, results_json, created_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `).run(
+      recordId,
+      userId,
+      evaluation.phonemeId,
+      evaluation.symbol,
+      evaluation.scorePercent,
+      evaluation.totalQuestions,
+      evaluation.correctCount,
+      evaluation.passed ? 1 : 0,
+      JSON.stringify(evaluation.results),
+      now
+    );
+
+    res.json({
+      success: true,
+      recordId,
+      userId,
+      evaluation,
+      createdAt: now
+    });
+  } catch (err) {
+    console.error('Error in POST spelling-quiz:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// GET latest spelling quiz record for user
+app.get('/api/v1/phonetics/spelling-quiz/latest', (req, res) => {
+  try {
+    const userId = req.headers['x-user-id'] || 'default_user';
+    const row = db.prepare('SELECT * FROM spelling_map_quiz_records WHERE user_id = ? ORDER BY created_at DESC LIMIT 1').get(userId);
+
+    if (!row) {
+      return res.json({ success: true, quiz: null });
+    }
+
+    res.json({
+      success: true,
+      recordId: row.id,
+      userId: row.user_id,
+      phonemeId: row.phoneme_id,
+      symbol: row.symbol,
+      score: row.score,
+      totalQuestions: row.total_questions,
+      correctCount: row.correct_count,
+      passed: Boolean(row.passed),
+      results: JSON.parse(row.results_json),
+      createdAt: row.created_at
+    });
+  } catch (err) {
+    console.error('Error in GET spelling-quiz/latest:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+/**
+ * PRON-210: Video-Synchronized Masterclass & Exaggerated Articulation Modeling Endpoints
+ */
+import {
+  getMasterclassCatalog,
+  getMasterclassLesson,
+  evaluateMasterclassSession
+} from '../src/lib/scoring/videoMasterclass.js';
+
+// GET all masterclass lessons
+app.get('/api/v1/masterclass/videos', (req, res) => {
+  try {
+    const catalog = getMasterclassCatalog();
+    res.json({ success: true, count: catalog.length, lessons: catalog });
+  } catch (err) {
+    console.error('Error in GET masterclass/videos:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// GET specific masterclass lesson
+app.get('/api/v1/masterclass/videos/:lessonId', (req, res) => {
+  try {
+    const lesson = getMasterclassLesson(req.params.lessonId);
+    if (!lesson) {
+      return res.status(404).json({ success: false, error: `Lesson not found for ${req.params.lessonId}` });
+    }
+    res.json({ success: true, lesson });
+  } catch (err) {
+    console.error('Error in GET masterclass/videos/:lessonId:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// POST save user masterclass watch progress & completion
+app.post('/api/v1/masterclass/progress', (req, res) => {
+  try {
+    const userId = req.headers['x-user-id'] || req.body.userId || 'default_user';
+    const { lessonId, watchDurationSec, cameraAngle, playbackRate, loopEnabled } = req.body;
+
+    if (!lessonId || typeof lessonId !== 'string') {
+      return res.status(400).json({
+        success: false,
+        error: 'Missing or invalid required field: lessonId'
+      });
+    }
+
+    if (watchDurationSec === undefined || watchDurationSec === null || typeof watchDurationSec !== 'number') {
+      return res.status(400).json({
+        success: false,
+        error: 'Missing or invalid required field: watchDurationSec (number)'
+      });
+    }
+
+    const evaluation = evaluateMasterclassSession({
+      lessonId,
+      watchDurationSec,
+      cameraAngle: cameraAngle || 'frontal',
+      playbackRate: typeof playbackRate === 'number' ? playbackRate : 1.0,
+      loopEnabled: Boolean(loopEnabled)
+    });
+
+    if (!evaluation.success) {
+      return res.status(400).json(evaluation);
+    }
+
+    const now = new Date().toISOString();
+    const recordId = `mcp-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
+
+    db.prepare(`
+      INSERT INTO masterclass_progress_records (
+        id, user_id, lesson_id, phoneme, camera_angle, playback_rate, loop_enabled,
+        watch_duration_sec, completion_percentage, is_completed, created_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `).run(
+      recordId,
+      userId,
+      evaluation.lessonId,
+      evaluation.phoneme,
+      evaluation.cameraAngle,
+      evaluation.playbackRate,
+      evaluation.loopEnabled ? 1 : 0,
+      evaluation.watchDurationSec,
+      evaluation.completionPercentage,
+      evaluation.isCompleted ? 1 : 0,
+      now
+    );
+
+    res.json({
+      success: true,
+      recordId,
+      userId,
+      progress: evaluation,
+      createdAt: now
+    });
+  } catch (err) {
+    console.error('Error in POST masterclass/progress:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// GET latest masterclass progress record for user
+app.get('/api/v1/masterclass/progress/latest', (req, res) => {
+  try {
+    const userId = req.headers['x-user-id'] || 'default_user';
+    const row = db.prepare('SELECT * FROM masterclass_progress_records WHERE user_id = ? ORDER BY created_at DESC LIMIT 1').get(userId);
+
+    if (!row) {
+      return res.json({ success: true, progress: null });
+    }
+
+    res.json({
+      success: true,
+      recordId: row.id,
+      userId: row.user_id,
+      lessonId: row.lesson_id,
+      phoneme: row.phoneme,
+      cameraAngle: row.camera_angle,
+      playbackRate: row.playback_rate,
+      loopEnabled: Boolean(row.loop_enabled),
+      watchDurationSec: row.watch_duration_sec,
+      completionPercentage: row.completion_percentage,
+      isCompleted: Boolean(row.is_completed),
+      createdAt: row.created_at
+    });
+  } catch (err) {
+    console.error('Error in GET masterclass/progress/latest:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+/**
+ * PRON-211: Dense Target Sound Saturation Sentences Endpoints
+ */
+import {
+  getSaturationSentences,
+  getSaturationSentence,
+  evaluateSaturationSpeech
+} from '../src/lib/scoring/soundSaturation.js';
+
+// GET all saturation sentences
+app.get('/api/v1/practice/saturation/sentences', (req, res) => {
+  try {
+    const sentences = getSaturationSentences();
+    res.json({ success: true, count: sentences.length, sentences });
+  } catch (err) {
+    console.error('Error in GET saturation/sentences:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// GET specific saturation sentence
+app.get('/api/v1/practice/saturation/sentences/:id', (req, res) => {
+  try {
+    const sentence = getSaturationSentence(req.params.id);
+    if (!sentence) {
+      return res.status(404).json({ success: false, error: `Sentence not found for ${req.params.id}` });
+    }
+    res.json({ success: true, sentence });
+  } catch (err) {
+    console.error('Error in GET saturation/sentences/:id:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// POST evaluate saturation sentence reading and persist to SQLite
+app.post('/api/v1/scoring/saturation-sentence', (req, res) => {
+  try {
+    const userId = req.headers['x-user-id'] || req.body.userId || 'default_user';
+    const { sentenceId, correctOccurrences, detectedSubstitutions } = req.body;
+
+    if (!sentenceId || typeof sentenceId !== 'string') {
+      return res.status(400).json({
+        success: false,
+        error: 'Missing or invalid required field: sentenceId'
+      });
+    }
+
+    const evaluation = evaluateSaturationSpeech({
+      sentenceId,
+      correctOccurrences: typeof correctOccurrences === 'number' ? correctOccurrences : null,
+      detectedSubstitutions: Array.isArray(detectedSubstitutions) ? detectedSubstitutions : []
+    });
+
+    if (!evaluation.success) {
+      return res.status(400).json(evaluation);
+    }
+
+    const now = new Date().toISOString();
+    const recordId = `sat-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
+
+    db.prepare(`
+      INSERT INTO sound_saturation_records (
+        id, user_id, sentence_id, target_phoneme, total_occurrences, correct_occurrences,
+        accuracy_percentage, saturation_meter_level, is_mastered, detected_traps_json, created_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `).run(
+      recordId,
+      userId,
+      evaluation.sentenceId,
+      evaluation.targetPhoneme,
+      evaluation.totalOccurrences,
+      evaluation.correctOccurrences,
+      evaluation.accuracyPercent,
+      evaluation.saturationMeterLevel,
+      evaluation.isMastered ? 1 : 0,
+      JSON.stringify(evaluation.detectedTraps),
+      now
+    );
+
+    res.json({
+      success: true,
+      recordId,
+      userId,
+      evaluation,
+      createdAt: now
+    });
+  } catch (err) {
+    console.error('Error in POST saturation-sentence:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// GET latest saturation sentence record for user
+app.get('/api/v1/scoring/saturation-sentence/latest', (req, res) => {
+  try {
+    const userId = req.headers['x-user-id'] || 'default_user';
+    const row = db.prepare('SELECT * FROM sound_saturation_records WHERE user_id = ? ORDER BY created_at DESC LIMIT 1').get(userId);
+
+    if (!row) {
+      return res.json({ success: true, drill: null });
+    }
+
+    res.json({
+      success: true,
+      recordId: row.id,
+      userId: row.user_id,
+      sentenceId: row.sentence_id,
+      targetPhoneme: row.target_phoneme,
+      totalOccurrences: row.total_occurrences,
+      correctOccurrences: row.correct_occurrences,
+      accuracyPercentage: row.accuracy_percentage,
+      saturationMeterLevel: row.saturation_meter_level,
+      isMastered: Boolean(row.is_mastered),
+      detectedTraps: JSON.parse(row.detected_traps_json || '[]'),
+      createdAt: row.created_at
+    });
+  } catch (err) {
+    console.error('Error in GET saturation-sentence/latest:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+/**
+ * VN-105: Vietnamese Native-Tongue Mouth & Tongue Placement Guides Endpoints
+ */
+import {
+  getPlacementGuidesCatalog,
+  getPlacementGuideByPhoneme,
+  evaluatePlacementFeedback
+} from '../src/lib/scoring/nativePlacement.js';
+
+// GET all native placement guides
+app.get('/api/v1/pedagogy/placement-guides', (req, res) => {
+  try {
+    const guides = getPlacementGuidesCatalog();
+    res.json({ success: true, count: guides.length, guides });
+  } catch (err) {
+    console.error('Error in GET placement-guides:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// GET specific placement guide by phoneme
+app.get('/api/v1/pedagogy/placement-guides/:phoneme', (req, res) => {
+  try {
+    const guide = getPlacementGuideByPhoneme(req.params.phoneme);
+    if (!guide) {
+      return res.status(404).json({ success: false, error: `Placement guide not found for ${req.params.phoneme}` });
+    }
+    res.json({ success: true, guide });
+  } catch (err) {
+    console.error('Error in GET placement-guides/:phoneme:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// POST save user feedback on placement guide helpfulness and persist to SQLite
+app.post('/api/v1/pedagogy/placement-feedback', (req, res) => {
+  try {
+    const userId = req.headers['x-user-id'] || req.body.userId || 'default_user';
+    const { phoneme, rating, feedbackNote } = req.body;
+
+    if (!phoneme || typeof phoneme !== 'string') {
+      return res.status(400).json({
+        success: false,
+        error: 'Missing or invalid required field: phoneme'
+      });
+    }
+
+    const evaluation = evaluatePlacementFeedback({
+      phoneme,
+      rating: typeof rating === 'number' ? rating : 5,
+      feedbackNote: typeof feedbackNote === 'string' ? feedbackNote : ''
+    });
+
+    if (!evaluation.success) {
+      return res.status(400).json(evaluation);
+    }
+
+    const now = new Date().toISOString();
+    const recordId = `plf-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
+
+    db.prepare(`
+      INSERT INTO native_placement_feedback_records (
+        id, user_id, guide_id, phoneme, rating, is_helpful, feedback_note, created_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    `).run(
+      recordId,
+      userId,
+      evaluation.guideId,
+      evaluation.phoneme,
+      evaluation.rating,
+      evaluation.isHelpful ? 1 : 0,
+      evaluation.feedbackNote,
+      now
+    );
+
+    res.json({
+      success: true,
+      recordId,
+      userId,
+      feedback: evaluation,
+      createdAt: now
+    });
+  } catch (err) {
+    console.error('Error in POST placement-feedback:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// GET latest placement feedback record for user
+app.get('/api/v1/pedagogy/placement-feedback/latest', (req, res) => {
+  try {
+    const userId = req.headers['x-user-id'] || 'default_user';
+    const row = db.prepare('SELECT * FROM native_placement_feedback_records WHERE user_id = ? ORDER BY created_at DESC LIMIT 1').get(userId);
+
+    if (!row) {
+      return res.json({ success: true, feedback: null });
+    }
+
+    res.json({
+      success: true,
+      recordId: row.id,
+      userId: row.user_id,
+      guideId: row.guide_id,
+      phoneme: row.phoneme,
+      rating: row.rating,
+      isHelpful: Boolean(row.is_helpful),
+      feedbackNote: row.feedback_note,
+      createdAt: row.created_at
+    });
+  } catch (err) {
+    console.error('Error in GET placement-feedback/latest:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+/**
+ * ELSA-301: Dynamic Scenario AI Speaking Roleplay Endpoints
+ */
+import {
+  getRoleplayScenarios,
+  getRoleplayScenario,
+  evaluateRoleplayTurn
+} from '../src/lib/scoring/roleplayScenarios.js';
+
+// GET all roleplay scenarios
+app.get('/api/v1/roleplay/scenarios', (req, res) => {
+  try {
+    const scenarios = getRoleplayScenarios();
+    res.json({ success: true, count: scenarios.length, scenarios });
+  } catch (err) {
+    console.error('Error in GET roleplay/scenarios:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// GET specific roleplay scenario
+app.get('/api/v1/roleplay/scenarios/:scenarioId', (req, res) => {
+  try {
+    const scenario = getRoleplayScenario(req.params.scenarioId);
+    if (!scenario) {
+      return res.status(404).json({ success: false, error: `Scenario not found for ${req.params.scenarioId}` });
+    }
+    res.json({ success: true, scenario });
+  } catch (err) {
+    console.error('Error in GET roleplay/scenarios/:scenarioId:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// POST evaluate roleplay speech turn and persist to SQLite
+app.post('/api/v1/roleplay/turn-eval', (req, res) => {
+  try {
+    const userId = req.headers['x-user-id'] || req.body.userId || 'default_user';
+    const { scenarioId, userTranscript, detectedPhonemeErrors } = req.body;
+
+    if (!scenarioId || typeof scenarioId !== 'string') {
+      return res.status(400).json({
+        success: false,
+        error: 'Missing or invalid required field: scenarioId'
+      });
+    }
+
+    if (!userTranscript || typeof userTranscript !== 'string' || !userTranscript.trim()) {
+      return res.status(400).json({
+        success: false,
+        error: 'Missing required field: userTranscript (must be non-empty string)'
+      });
+    }
+
+    const evaluation = evaluateRoleplayTurn({
+      scenarioId,
+      userTranscript: userTranscript.trim(),
+      detectedPhonemeErrors: Array.isArray(detectedPhonemeErrors) ? detectedPhonemeErrors : []
+    });
+
+    if (!evaluation.success) {
+      return res.status(400).json(evaluation);
+    }
+
+    const now = new Date().toISOString();
+    const recordId = `rol-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
+
+    db.prepare(`
+      INSERT INTO roleplay_session_records (
+        id, user_id, scenario_id, user_transcript, ai_response, phonetic_accuracy,
+        unreleased_stops_json, is_blocker_resolved, created_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `).run(
+      recordId,
+      userId,
+      evaluation.scenarioId,
+      evaluation.userTranscript,
+      evaluation.aiResponse,
+      evaluation.phoneticAccuracy,
+      JSON.stringify(evaluation.unreleasedStops),
+      evaluation.isBlockerResolved ? 1 : 0,
+      now
+    );
+
+    res.json({
+      success: true,
+      recordId,
+      userId,
+      evaluation,
+      createdAt: now
+    });
+  } catch (err) {
+    console.error('Error in POST roleplay/turn-eval:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// GET latest roleplay session record for user
+app.get('/api/v1/roleplay/session/latest', (req, res) => {
+  try {
+    const userId = req.headers['x-user-id'] || 'default_user';
+    const row = db.prepare('SELECT * FROM roleplay_session_records WHERE user_id = ? ORDER BY created_at DESC LIMIT 1').get(userId);
+
+    if (!row) {
+      return res.json({ success: true, session: null });
+    }
+
+    res.json({
+      success: true,
+      recordId: row.id,
+      userId: row.user_id,
+      scenarioId: row.scenario_id,
+      userTranscript: row.user_transcript,
+      aiResponse: row.ai_response,
+      phoneticAccuracy: row.phonetic_accuracy,
+      unreleasedStops: JSON.parse(row.unreleased_stops_json || '[]'),
+      isBlockerResolved: Boolean(row.is_blocker_resolved),
+      createdAt: row.created_at
+    });
+  } catch (err) {
+    console.error('Error in GET roleplay/session/latest:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 // Start listening only if run directly as main entrypoint
 const isMain = process.argv[1] && (process.argv[1].includes('server/index.js') || process.argv[1].includes('server\\index.js'));
 if (isMain && process.env.NODE_ENV !== 'test') {
