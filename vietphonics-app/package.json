@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "concurrently -k -n \"api,web\" -c \"magenta,cyan\" \"npm run server\" \"npm run web\"",
     "web": "vite --port 5174",
-    "server": "node server/index.js",
+    "server": "node --watch server/index.js",
     "test": "node --test-concurrency=1 --test tests/**/*.test.js",
     "build": "vite build",
     "preview": "vite preview --port 5174"

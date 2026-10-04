@@ -12,7 +12,23 @@ export default function ArticulationDiffModal({
 
   if (!isOpen || !analysisResult) return null;
 
-  const { score, status, metrics, feedback, quota } = analysisResult;
+  const score = analysisResult.score ?? 0;
+  const status = analysisResult.status || 'NEEDS_ADJUSTMENT';
+  const metrics = analysisResult.metrics || {};
+  const feedback = analysisResult.feedback || {};
+  const quota = analysisResult.quota;
+
+  const userApertureMm = metrics.userApertureMm ?? 0;
+  const targetApertureMm = metrics.targetApertureMm ?? 0;
+  const apertureDeltaMm = metrics.apertureDeltaMm ?? 0;
+  const userRatio = metrics.userRatio ?? 1.0;
+  const targetRatio = metrics.targetRatio ?? 1.0;
+  const ratioDelta = metrics.ratioDelta ?? 0;
+  const userTeethGapMm = metrics.userTeethGapMm ?? 0;
+  const targetTeethGapMm = metrics.targetTeethGapMm ?? 0;
+  const teethDeltaMm = metrics.teethDeltaMm ?? 0;
+  const tongueRequired = Boolean(metrics.tongueRequired);
+  const interdentalTongueDetected = Boolean(metrics.interdentalTongueDetected);
 
   const isExcellent = status === 'EXCELLENT';
   const isNeedsAdjustment = status === 'NEEDS_ADJUSTMENT';
@@ -84,7 +100,7 @@ export default function ArticulationDiffModal({
                   Ảnh Chụp Khẩu Hình Thật Của Bạn
                 </span>
                 <span className="text-[11px] font-mono text-slate-500">
-                  {metrics.userApertureMm}mm • Tỷ lệ {metrics.userRatio}
+                  {userApertureMm}mm • Tỷ lệ {userRatio}
                 </span>
               </div>
 
@@ -104,8 +120,8 @@ export default function ArticulationDiffModal({
                   <div
                     className="border-2 border-dashed border-amber-400/90 rounded-2xl"
                     style={{
-                      width: `${Math.min(220, Math.max(90, metrics.userRatio * 55))}px`,
-                      height: `${Math.min(140, Math.max(45, metrics.userApertureMm * 4.2))}px`
+                      width: `${Math.min(220, Math.max(90, userRatio * 55))}px`,
+                      height: `${Math.min(140, Math.max(45, userApertureMm * 4.2))}px`
                     }}
                   />
                 </div>
@@ -116,8 +132,8 @@ export default function ArticulationDiffModal({
                     <div
                       className="border-2 border-emerald-400 rounded-2xl bg-emerald-500/10 shadow-lg animate-pulse"
                       style={{
-                        width: `${Math.min(220, Math.max(90, metrics.targetRatio * 55))}px`,
-                        height: `${Math.min(140, Math.max(45, metrics.targetApertureMm * 4.2))}px`
+                        width: `${Math.min(220, Math.max(90, targetRatio * 55))}px`,
+                        height: `${Math.min(140, Math.max(45, targetApertureMm * 4.2))}px`
                       }}
                     />
                     <span className="absolute top-2 right-2 px-2 py-0.5 rounded bg-emerald-900/90 text-[10px] font-bold text-emerald-300 font-mono">
@@ -136,7 +152,7 @@ export default function ArticulationDiffModal({
                   Mô Hình Khẩu Hình Chuẩn Y Khoa 2D
                 </span>
                 <span className="text-[11px] font-mono text-slate-500">
-                  {metrics.targetApertureMm}mm • Tỷ lệ {metrics.targetRatio}
+                  {targetApertureMm}mm • Tỷ lệ {targetRatio}
                 </span>
               </div>
 
@@ -146,15 +162,15 @@ export default function ArticulationDiffModal({
                   <ellipse
                     cx="140"
                     cy="70"
-                    rx={Math.min(95, Math.max(40, metrics.targetRatio * 32))}
-                    ry={Math.min(55, Math.max(20, metrics.targetApertureMm * 1.8))}
+                    rx={Math.min(95, Math.max(40, targetRatio * 32))}
+                    ry={Math.min(55, Math.max(20, targetApertureMm * 1.8))}
                     fill="#fb7185"
                   />
                   <ellipse
                     cx="140"
                     cy="70"
-                    rx={Math.min(75, Math.max(25, metrics.targetRatio * 22))}
-                    ry={Math.min(38, Math.max(10, metrics.targetApertureMm * 1.1))}
+                    rx={Math.min(75, Math.max(25, targetRatio * 22))}
+                    ry={Math.min(38, Math.max(10, targetApertureMm * 1.1))}
                     fill="#1e293b"
                   />
                   {/* Teeth */}
@@ -162,14 +178,14 @@ export default function ArticulationDiffModal({
                   <rect x="142" y="58" width="16" height="12" fill="#ffffff" rx="1" />
 
                   {/* Tongue tip for dental */}
-                  {metrics.tongueRequired && (
+                  {tongueRequired && (
                     <ellipse cx="140" cy="74" rx="18" ry="8" fill="#f43f5e" />
                   )}
                 </svg>
 
                 <div className="absolute bottom-2 left-3 right-3 flex items-center justify-between text-[10px] font-mono font-bold text-slate-600 bg-white/90 backdrop-blur px-2.5 py-1 rounded-xl border border-slate-200">
                   <span>Hình thái: {phonemeProfile.lipShape?.label || 'Chuẩn Quốc Tế'}</span>
-                  <span className="text-emerald-700">Độ khép răng: {metrics.targetTeethGapMm}mm</span>
+                  <span className="text-emerald-700">Độ khép răng: {targetTeethGapMm}mm</span>
                 </div>
               </div>
             </div>
@@ -200,19 +216,19 @@ export default function ArticulationDiffModal({
               </span>
               <div className="mt-2 flex items-baseline justify-between">
                 <span className="text-lg font-black text-slate-900 font-mono">
-                  {metrics.userApertureMm} <span className="text-xs font-sans font-normal text-slate-500">mm</span>
+                  {userApertureMm} <span className="text-xs font-sans font-normal text-slate-500">mm</span>
                 </span>
                 <span
                   className={`text-[11px] font-mono font-bold px-1.5 py-0.5 rounded ${
-                    Math.abs(metrics.apertureDeltaMm) <= 2.5
+                    Math.abs(apertureDeltaMm) <= 2.5
                       ? 'bg-emerald-100 text-emerald-800'
                       : 'bg-rose-100 text-rose-800'
                   }`}
                 >
-                  {metrics.apertureDeltaMm >= 0 ? `+${metrics.apertureDeltaMm}` : metrics.apertureDeltaMm} mm
+                  {apertureDeltaMm >= 0 ? `+${apertureDeltaMm}` : apertureDeltaMm} mm
                 </span>
               </div>
-              <span className="text-[10px] text-slate-400 mt-1">Chuẩn: {metrics.targetApertureMm} mm</span>
+              <span className="text-[10px] text-slate-400 mt-1">Chuẩn: {targetApertureMm} mm</span>
             </div>
 
             {/* Metric 2: Lip Ratio (Spread vs Puckered) */}
@@ -222,19 +238,19 @@ export default function ArticulationDiffModal({
               </span>
               <div className="mt-2 flex items-baseline justify-between">
                 <span className="text-lg font-black text-slate-900 font-mono">
-                  {metrics.userRatio} <span className="text-xs font-sans font-normal text-slate-500">W/H</span>
+                  {userRatio} <span className="text-xs font-sans font-normal text-slate-500">W/H</span>
                 </span>
                 <span
                   className={`text-[11px] font-mono font-bold px-1.5 py-0.5 rounded ${
-                    metrics.ratioDelta <= 0.4
+                    ratioDelta <= 0.4
                       ? 'bg-emerald-100 text-emerald-800'
                       : 'bg-amber-100 text-amber-800'
                   }`}
                 >
-                  Δ {metrics.ratioDelta}
+                  Δ {ratioDelta}
                 </span>
               </div>
-              <span className="text-[10px] text-slate-400 mt-1">Chuẩn: {metrics.targetRatio}</span>
+              <span className="text-[10px] text-slate-400 mt-1">Chuẩn: {targetRatio}</span>
             </div>
 
             {/* Metric 3: Teeth Gap */}
@@ -244,19 +260,19 @@ export default function ArticulationDiffModal({
               </span>
               <div className="mt-2 flex items-baseline justify-between">
                 <span className="text-lg font-black text-slate-900 font-mono">
-                  {metrics.userTeethGapMm} <span className="text-xs font-sans font-normal text-slate-500">mm</span>
+                  {userTeethGapMm} <span className="text-xs font-sans font-normal text-slate-500">mm</span>
                 </span>
                 <span
                   className={`text-[11px] font-mono font-bold px-1.5 py-0.5 rounded ${
-                    metrics.teethDeltaMm <= 1.5
+                    teethDeltaMm <= 1.5
                       ? 'bg-emerald-100 text-emerald-800'
                       : 'bg-rose-100 text-rose-800'
                   }`}
                 >
-                  Δ {metrics.teethDeltaMm} mm
+                  Δ {teethDeltaMm} mm
                 </span>
               </div>
-              <span className="text-[10px] text-slate-400 mt-1">Chuẩn: {metrics.targetTeethGapMm} mm</span>
+              <span className="text-[10px] text-slate-400 mt-1">Chuẩn: {targetTeethGapMm} mm</span>
             </div>
 
             {/* Metric 4: Interdental Tongue Presence */}
@@ -267,22 +283,22 @@ export default function ArticulationDiffModal({
               <div className="mt-2 flex items-baseline justify-between">
                 <span
                   className={`text-xs font-bold px-2 py-1 rounded-xl ${
-                    metrics.tongueRequired
-                      ? metrics.interdentalTongueDetected
+                    tongueRequired
+                      ? interdentalTongueDetected
                         ? 'bg-emerald-100 text-emerald-800'
                         : 'bg-rose-100 text-rose-800'
                       : 'bg-slate-200 text-slate-700'
                   }`}
                 >
-                  {metrics.tongueRequired
-                    ? metrics.interdentalTongueDetected
+                  {tongueRequired
+                    ? interdentalTongueDetected
                       ? '✓ Đã Thò Lưỡi'
                       : '✗ Chưa Thò Lưỡi'
                     : 'Không Yêu Cầu'}
                 </span>
               </div>
               <span className="text-[10px] text-slate-400 mt-1">
-                {metrics.tongueRequired ? 'Bắt buộc với /θ/, /ð/' : 'Âm miệng thông thường'}
+                {tongueRequired ? 'Bắt buộc với /θ/, /ð/' : 'Âm miệng thông thường'}
               </span>
             </div>
           </div>
