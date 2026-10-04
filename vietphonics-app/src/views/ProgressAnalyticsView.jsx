@@ -3,6 +3,7 @@ import { useApp } from '../context/AppContext';
 import IpaMatrixGrid from '../components/phonemes/IpaMatrixGrid';
 import HistoryTimeseriesChart from '../components/progress/HistoryTimeseriesChart';
 import BeforeAfterComparisonCard from '../components/progress/BeforeAfterComparisonCard';
+import WeeklyReportCard from '../components/progress/WeeklyReportCard';
 
 export default function ProgressAnalyticsView() {
   const { setActiveTab } = useApp();
@@ -404,7 +405,10 @@ export default function ProgressAnalyticsView() {
           </div>
         </div>
 
-        {/* MODULE 3: PROG-101 Server-Persisted Historical Timeseries Chart (7/30/90 Days) */}
+        {/* MODULE 3A: PROG-103 Automated Weekly Progress Report Digest */}
+        <WeeklyReportCard accountId="default_user" />
+
+        {/* MODULE 3B: PROG-101 Server-Persisted Historical Timeseries Chart (7/30/90 Days) */}
         <HistoryTimeseriesChart accountId="default_user" />
 
         {/* MODULE 3B: PROG-102 Before vs After Audio Comparison (Day 1 Baseline vs Today) */}

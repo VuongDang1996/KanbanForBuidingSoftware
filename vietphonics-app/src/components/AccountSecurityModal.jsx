@@ -719,9 +719,30 @@ export default function AccountSecurityModal({
                   onChange={(e) => setConsentedToTerms(e.target.checked)}
                   className="mt-1 rounded bg-slate-950 border-slate-700 text-indigo-500 focus:ring-0"
                 />
-                <label htmlFor="consent" className="text-xs text-slate-400">
-                  Tôi đồng ý với <span className="text-indigo-400 hover:underline">Điều khoản dịch vụ</span> và{' '}
-                  <span className="text-indigo-400 hover:underline">Chính sách bảo vệ dữ liệu cá nhân</span> theo Nghị định 13/2023/NĐ-CP.
+                <label htmlFor="consent" className="text-xs text-slate-400 select-none">
+                  Tôi đồng ý với{' '}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      appContext?.setLegalModalTab('terms');
+                      appContext?.setShowLegalModal(true);
+                    }}
+                    className="text-indigo-400 hover:underline font-medium cursor-pointer inline"
+                  >
+                    Điều khoản dịch vụ
+                  </button>{' '}
+                  và{' '}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      appContext?.setLegalModalTab('privacy');
+                      appContext?.setShowLegalModal(true);
+                    }}
+                    className="text-indigo-400 hover:underline font-medium cursor-pointer inline"
+                  >
+                    Chính sách bảo vệ dữ liệu cá nhân
+                  </button>{' '}
+                  theo Nghị định 13/2023/NĐ-CP.
                 </label>
               </div>
 
@@ -1003,11 +1024,23 @@ export default function AccountSecurityModal({
             <div className="space-y-6">
               {/* Section 1: Data Portability */}
               <div className="p-4 rounded-xl bg-slate-950/60 border border-slate-800 space-y-3">
-                <div className="flex items-center gap-2 text-indigo-400">
-                  <FileDown className="w-4 h-4 shrink-0" />
-                  <h4 className="text-xs font-semibold text-slate-200 uppercase tracking-wider">
-                    1. Trích Xuất Dữ Liệu Cá Nhân (Data Portability)
-                  </h4>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2 text-indigo-400">
+                    <FileDown className="w-4 h-4 shrink-0" />
+                    <h4 className="text-xs font-semibold text-slate-200 uppercase tracking-wider">
+                      1. Trích Xuất Dữ Liệu Cá Nhân (Data Portability)
+                    </h4>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      appContext?.setLegalModalTab('privacy');
+                      appContext?.setShowLegalModal(true);
+                    }}
+                    className="text-[11px] text-indigo-400 hover:text-indigo-300 hover:underline flex items-center gap-1 cursor-pointer font-medium"
+                  >
+                    <span>Xem Văn Bản NĐ 13</span>
+                  </button>
                 </div>
                 <p className="text-xs text-slate-400 leading-relaxed">
                   Theo Điều 9 &amp; 14 Nghị định 13/2023/NĐ-CP, bạn có toàn quyền trích xuất dữ liệu học tập cá nhân, bao gồm: hồ sơ người dùng, ma trận điểm âm học 44 IPA, lịch sử chuỗi ngày luyện tập và liên kết các bản ghi âm đối chiếu.

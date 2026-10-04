@@ -17,7 +17,9 @@ export default function Navbar() {
     setShowDiagnosticModal,
     setShowUpgradeModal,
     setShowAccountModal,
-    setAccountModalTab
+    setAccountModalTab,
+    setShowBillingModal,
+    setShowLegalModal
   } = useApp();
 
   const [dialectOpen, setDialectOpen] = useState(false);
@@ -241,6 +243,28 @@ export default function Navbar() {
                 <svg className="w-4 h-4 text-slate-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                 </svg>
+              </button>
+
+              {/* Billing History & Receipts (PAY-106) */}
+              <button
+                onClick={() => setShowBillingModal(true)}
+                className="p-2 rounded-full text-slate-500 hover:text-emerald-600 hover:bg-emerald-50 transition cursor-pointer flex items-center justify-center border border-slate-200"
+                title="Lịch sử giao dịch, biên lai & hoàn tiền (PAY-106)"
+                aria-label="Lịch sử giao dịch & Biên lai"
+                type="button"
+              >
+                <span className="material-symbols-outlined text-base text-slate-700">receipt_long</span>
+              </button>
+
+              {/* Legal & Privacy Policy (LEG-101) */}
+              <button
+                onClick={() => setShowLegalModal(true)}
+                className="p-2 rounded-full text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 transition cursor-pointer flex items-center justify-center border border-slate-200"
+                title="Điều khoản & Quyền riêng tư NĐ 13/2023 (LEG-101)"
+                aria-label="Điều khoản & Quyền riêng tư"
+                type="button"
+              >
+                <span className="material-symbols-outlined text-base text-slate-700">gavel</span>
               </button>
 
               {/* Profile Avatar / Pro Upgrade */}

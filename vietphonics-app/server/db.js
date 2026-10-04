@@ -915,6 +915,104 @@ export function initAppDatabase() {
       UNIQUE(account_id, sentence_id)
     );
     CREATE INDEX IF NOT EXISTS idx_baseline_comp_acc ON baseline_comparison_records(account_id);
+
+    -- PROG-103: Automated Weekly Progress Reports & Preferences
+    CREATE TABLE IF NOT EXISTS weekly_progress_reports (
+      id TEXT PRIMARY KEY,
+      account_id TEXT NOT NULL,
+      week_number INTEGER NOT NULL,
+      year INTEGER NOT NULL,
+      week_start_date TEXT NOT NULL,
+      week_end_date TEXT NOT NULL,
+      total_practice_minutes INTEGER DEFAULT 0,
+      minutes_delta_percent REAL DEFAULT 0,
+      practiced_days_count INTEGER DEFAULT 0,
+      current_streak INTEGER DEFAULT 0,
+      average_gop_score REAL DEFAULT 0,
+      top_improved_phonemes_json TEXT NOT NULL,
+      priority_focus_phonemes_json TEXT NOT NULL,
+      tier TEXT NOT NULL DEFAULT 'free',
+      predicted_ielts_score REAL,
+      is_inactive_encouragement INTEGER DEFAULT 0,
+      sent_to_email INTEGER DEFAULT 0,
+      opened_at TEXT,
+      created_at TEXT NOT NULL,
+      UNIQUE(account_id, week_number, year)
+    );
+    CREATE INDEX IF NOT EXISTS idx_weekly_reports_acc ON weekly_progress_reports(account_id, year, week_number);
+
+    CREATE TABLE IF NOT EXISTS user_report_preferences (
+      account_id TEXT PRIMARY KEY,
+      email_weekly_report INTEGER DEFAULT 1,
+      inapp_weekly_report INTEGER DEFAULT 1,
+      unsubscribed_at TEXT,
+      updated_at TEXT NOT NULL
+    );
+
+    -- LEG-101: Terms of Service, Privacy Policy & Voice Biometric Consents
+    CREATE TABLE IF NOT EXISTS user_legal_consents (
+      id TEXT PRIMARY KEY,
+      account_id TEXT NOT NULL,
+      consent_type TEXT NOT NULL,
+      policy_version TEXT NOT NULL DEFAULT 'v1.2_ND13',
+      is_granted INTEGER NOT NULL DEFAULT 1,
+      ip_address TEXT,
+      user_agent TEXT,
+      consented_at TEXT NOT NULL,
+      withdrawn_at TEXT,
+      created_at TEXT NOT NULL
+    );
+    CREATE INDEX IF NOT EXISTS idx_user_consents_acc_type ON user_legal_consents(account_id, consent_type);
+
+    CREATE TABLE IF NOT EXISTS legal_policy_documents (
+      id TEXT PRIMARY KEY,
+      policy_type TEXT UNIQUE NOT NULL,
+      title TEXT NOT NULL,
+      version TEXT NOT NULL,
+      effective_date TEXT NOT NULL,
+      content_markdown TEXT NOT NULL,
+      created_at TEXT NOT NULL
+    );
+
+    -- PAY-106: Billing Receipts & 7-Day Refund Requests
+    CREATE TABLE IF NOT EXISTS billing_refund_requests (
+      id TEXT PRIMARY KEY,
+      account_id TEXT NOT NULL,
+      order_code TEXT UNIQUE NOT NULL,
+      amount INTEGER NOT NULL,
+      reason TEXT NOT NULL,
+      status TEXT NOT NULL DEFAULT 'pending_review',
+      evaluations_used_count INTEGER DEFAULT 0,
+      days_since_purchase INTEGER DEFAULT 0,
+      is_auto_eligible INTEGER DEFAULT 0,
+      rejection_reason TEXT,
+      decided_at TEXT,
+      decided_by TEXT,
+      refund_tx_hash TEXT,
+      created_at TEXT NOT NULL
+    );
+    CREATE INDEX IF NOT EXISTS idx_refund_req_acc ON billing_refund_requests(account_id, status);
+
+    CREATE TABLE IF NOT EXISTS billing_receipts (
+      id TEXT PRIMARY KEY,
+      receipt_number TEXT UNIQUE NOT NULL,
+      order_code TEXT UNIQUE NOT NULL,
+      account_id TEXT NOT NULL,
+      buyer_name TEXT NOT NULL,
+      buyer_email TEXT NOT NULL,
+      seller_name TEXT NOT NULL DEFAULT 'Công ty TNHH Công nghệ Giáo dục VietPhonics',
+      seller_tax_code TEXT NOT NULL DEFAULT '0318992819',
+      seller_address TEXT NOT NULL DEFAULT 'Tầng 12, Tòa nhà Innovation, Khu Công nghệ Cao, TP.HCM',
+      plan_name TEXT NOT NULL,
+      subtotal_vnd INTEGER NOT NULL,
+      vat_percent INTEGER DEFAULT 8,
+      vat_amount_vnd INTEGER NOT NULL,
+      total_amount_vnd INTEGER NOT NULL,
+      payment_method TEXT DEFAULT 'VietQR Napas 247',
+      issued_at TEXT NOT NULL,
+      verification_url TEXT NOT NULL
+    );
+    CREATE INDEX IF NOT EXISTS idx_billing_receipts_acc ON billing_receipts(account_id, issued_at DESC);
   `);
 
   // Seed default penalty weights for 3 regions
@@ -1120,6 +1218,154 @@ export function initAppDatabase() {
       1,
       today,
       today
+    );
+  }
+
+  // Seed default weekly report for demo user (PROG-103)
+  const existingReport = db.prepare("SELECT * FROM weekly_progress_reports WHERE account_id = 'default_user'").get();
+  if (!existingReport) {
+    const now = new Date();
+    const weekStart = new Date(now.getTime() - 7 * 86400000).toISOString().split('T')[0];
+    const weekEnd = now.toISOString().split('T')[0];
+
+    db.prepare(`
+      INSERT OR IGNORE INTO weekly_progress_reports (
+        id, account_id, week_number, year, week_start_date, week_end_date,
+        total_practice_minutes, minutes_delta_percent, practiced_days_count, current_streak,
+        average_gop_score, top_improved_phonemes_json, priority_focus_phonemes_json,
+        tier, predicted_ielts_score, is_inactive_encouragement, sent_to_email, opened_at, created_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, 1, ?, ?)
+    `).run(
+      'wrep_default_2026_w40',
+      'default_user',
+      40,
+      2026,
+      weekStart,
+      weekEnd,
+      145,
+      22.5,
+      6,
+      12,
+      82.5,
+      JSON.stringify([
+        { phoneme: '/θ/', delta: '+18%', before: 52, after: 70, label: 'Âm xát kẹp răng' },
+        { phoneme: '/ks/', delta: '+14%', before: 68, after: 82, label: 'Cụm xát đuôi "Six"' },
+        { phoneme: '/æ/', delta: '+11%', before: 71, after: 82, label: 'Nguyên âm bẹt' }
+      ]),
+      JSON.stringify([
+        { phoneme: '/t/', currentScore: 56, reason: 'L1 bẫy nuốt âm bật vô thanh đuôi' },
+        { phoneme: '/v/', currentScore: 58, reason: 'Lẫn lộn /v/ thành /j/ phương ngữ Nam' },
+        { phoneme: '/dʒ/', currentScore: 62, reason: 'Tắc xát hữu thanh cần hạ hàm chuẩn' }
+      ]),
+      'pro',
+      7.0,
+      now.toISOString(),
+      now.toISOString()
+    );
+
+    db.prepare(`
+      INSERT OR IGNORE INTO user_report_preferences (account_id, email_weekly_report, inapp_weekly_report, updated_at)
+      VALUES ('default_user', 1, 1, ?)
+    `).run(now.toISOString());
+  }
+
+  // Seed default legal policy documents & user consents (LEG-101)
+  const existingPolicy = db.prepare("SELECT COUNT(*) as cnt FROM legal_policy_documents").get();
+  if (existingPolicy.cnt === 0) {
+    const now = new Date().toISOString();
+    const insertPolicy = db.prepare(`
+      INSERT INTO legal_policy_documents (id, policy_type, title, version, effective_date, content_markdown, created_at)
+      VALUES (?, ?, ?, ?, ?, ?, ?)
+    `);
+
+    insertPolicy.run(
+      'doc_terms_v12',
+      'terms',
+      'Điều Khoản Sử Dụng Dịch Vụ VietPhonics',
+      'v1.2_ND13_2023',
+      '2026-01-01',
+      `# ĐIỀU KHOẢN DỊCH VỤ VIETPHONICS\n\n**Đơn vị chủ quản:** Công ty TNHH Công nghệ Giáo dục VietPhonics\n**Mã số thuế:** 0318992819\n**Địa chỉ:** Tầng 12, Tòa nhà Innovation, Khu Công nghệ Cao, TP.HCM\n**Email hỗ trợ:** support@vietphonics.vn\n\n1. **Quyền & Trách nhiệm:** Học viên cam kết sử dụng dịch vụ cho mục đích học tập cá nhân...\n2. **Gói cước & Bản quyền:** Mọi tài nguyên âm học và thuật toán thuộc sở hữu trí tuệ của VietPhonics...\n3. **Cam kết bảo mật:** Dữ liệu giọng nói được bảo vệ theo Nghị định 13/2023/NĐ-CP.`,
+      now
+    );
+
+    insertPolicy.run(
+      'doc_privacy_v12',
+      'privacy',
+      'Chính Sách Bảo Vệ Dữ Liệu Cá Nhân (Nghị định 13/2023/NĐ-CP)',
+      'v1.2_ND13_2023',
+      '2026-01-01',
+      `# CHÍNH SÁCH BẢO VỆ DỮ LIỆU CÁ NHÂN\n\n**Đơn vị chủ quản:** Công ty TNHH Công nghệ Giáo dục VietPhonics\n**Mã số thuế:** 0318992819\n\nTheo Nghị định 13/2023/NĐ-CP về bảo vệ dữ liệu cá nhân:\n\n1. **Phân loại dữ liệu:** Bao gồm dữ liệu cơ bản (email, họ tên) và dữ liệu sinh trắc học âm thanh giọng nói.\n2. **Mục đích xử lý:** Chỉ phục vụ phân tích độ chính xác phát âm tiếng Anh và cá nhân hóa lộ trình học.\n3. **Quyền của chủ thể dữ liệu:** Học viên có quyền rút lại sự đồng ý (rút lại đồng thuận), yêu cầu trích xuất dữ liệu (Data Portability) hoặc yêu cầu xóa vĩnh viễn (Right to Erasure) bất kỳ lúc nào.\n4. **Lưu trữ & Bảo mật:** Dữ liệu giọng nói được mã hóa at-rest (AES-256) trên máy chủ nội địa Việt Nam.`,
+      now
+    );
+
+    insertPolicy.run(
+      'doc_refund_v10',
+      'refund',
+      'Chính Sách Hoàn Tiền 7 Ngày VietPhonics',
+      'v1.0_2026',
+      '2026-01-01',
+      `# CHÍNH SÁCH HOÀN TIỀN & ĐẢM BẢO HÀI LÒNG 7 NGÀY\n\n**Đơn vị chủ quản:** Công ty TNHH Công nghệ Giáo dục VietPhonics\n**Mã số thuế:** 0318992819\n\n1. **Cam kết 100%:** Trong vòng 7 ngày kể từ ngày thanh toán gói Pro, nếu học viên chưa hài lòng và số lượt chấm điểm AI < 30 bài, VietPhonics sẽ hoàn tiền 100%.\n2. **Thời gian xử lý:** Tiền được hoàn trả qua số tài khoản ngân hàng nội địa trong vòng 2 ngày làm việc.\n3. **Kênh thanh toán:** Áp dụng cho các giao dịch chuyển khoản Napas 24/7 VietQR.`,
+      now
+    );
+
+    // Default consents for default_user
+    db.prepare(`
+      INSERT OR IGNORE INTO user_legal_consents (id, account_id, consent_type, policy_version, is_granted, ip_address, user_agent, consented_at, created_at)
+      VALUES
+        ('cns_def_terms', 'default_user', 'terms_and_privacy', 'v1.2_ND13_2023', 1, '127.0.0.1', 'Mozilla/5.0 Chrome/130', ?, ?),
+        ('cns_def_voice', 'default_user', 'voice_biometrics', 'v1.2_ND13_2023', 1, '127.0.0.1', 'Mozilla/5.0 Chrome/130', ?, ?),
+        ('cns_def_train', 'default_user', 'ai_model_training', 'v1.2_ND13_2023', 1, '127.0.0.1', 'Mozilla/5.0 Chrome/130', ?, ?)
+    `).run(now, now, now, now, now, now);
+  }
+
+  // Always sync legal documents to ensure latest Decree 13/2023 and corporate entity disclosures
+  db.prepare(`
+    UPDATE legal_policy_documents
+    SET content_markdown = '# CHÍNH SÁCH BẢO VỆ DỮ LIỆU CÁ NHÂN\n\n**Đơn vị chủ quản:** Công ty TNHH Công nghệ Giáo dục VietPhonics\n**Mã số thuế:** 0318992819\n\nTheo Nghị định 13/2023/NĐ-CP về bảo vệ dữ liệu cá nhân:\n\n1. **Phân loại dữ liệu:** Bao gồm dữ liệu cơ bản (email, họ tên) và dữ liệu sinh trắc học âm thanh giọng nói.\n2. **Mục đích xử lý:** Chỉ phục vụ phân tích độ chính xác phát âm tiếng Anh và cá nhân hóa lộ trình học.\n3. **Quyền của chủ thể dữ liệu:** Học viên có quyền rút lại sự đồng ý (rút lại đồng thuận), yêu cầu trích xuất dữ liệu (Data Portability) hoặc yêu cầu xóa vĩnh viễn (Right to Erasure) bất kỳ lúc nào.\n4. **Lưu trữ & Bảo mật:** Dữ liệu giọng nói được mã hóa at-rest (AES-256) trên máy chủ nội địa Việt Nam.'
+    WHERE policy_type = 'privacy'
+  `).run();
+
+  db.prepare(`
+    UPDATE legal_policy_documents
+    SET content_markdown = '# CHÍNH SÁCH HOÀN TIỀN & ĐẢM BẢO HÀI LÒNG 7 NGÀY\n\n**Đơn vị chủ quản:** Công ty TNHH Công nghệ Giáo dục VietPhonics\n**Mã số thuế:** 0318992819\n\n1. **Cam kết 100%:** Trong vòng 7 ngày kể từ ngày thanh toán gói Pro, nếu học viên chưa hài lòng và số lượt chấm điểm AI < 30 bài, VietPhonics sẽ hoàn tiền 100%.\n2. **Thời gian xử lý:** Tiền được hoàn trả qua số tài khoản ngân hàng nội địa trong vòng 2 ngày làm việc.\n3. **Kênh thanh toán:** Áp dụng cho các giao dịch chuyển khoản Napas 24/7 VietQR.'
+    WHERE policy_type = 'refund'
+  `).run();
+
+  // Seed default billing orders & receipts for default_user (PAY-106)
+  const existingReceipts = db.prepare("SELECT COUNT(*) as cnt FROM billing_receipts WHERE account_id = 'default_user'").get();
+  if (existingReceipts.cnt === 0) {
+    const now = new Date();
+    const threeDaysAgo = new Date(now.getTime() - 3 * 86400000).toISOString();
+    const orderCode = 'VP PRO1Y 8821';
+
+    // Seed in vietqr_orders
+    db.prepare(`
+      INSERT OR IGNORE INTO vietqr_orders (
+        id, order_code, user_id, plan_code, amount, bank_bin, account_number, account_name,
+        status, qr_payload, expires_at, created_at, paid_at
+      ) VALUES (?, ?, 'default_user', 'pro_annual', 599000, '970422', '0988123456', 'CONG TY VIETPHONICS',
+        'paid', '000201010212...', ?, ?, ?)
+    `).run('order_def_001', orderCode, threeDaysAgo, threeDaysAgo, threeDaysAgo);
+
+    // Seed in billing_receipts
+    const subtotal = Math.round(599000 / 1.08);
+    const vat = 599000 - subtotal;
+    db.prepare(`
+      INSERT OR IGNORE INTO billing_receipts (
+        id, receipt_number, order_code, account_id, buyer_name, buyer_email,
+        plan_name, subtotal_vnd, vat_percent, vat_amount_vnd, total_amount_vnd,
+        payment_method, issued_at, verification_url
+      ) VALUES (?, ?, ?, 'default_user', 'Đặng Vương', 'vuong@vietphonics.vn',
+        'Gói Học Pro 1 Năm (Không Giới Hạn)', ?, 8, ?, 599000,
+        'VietQR Napas 247', ?, ?)
+    `).run(
+      'rec_def_001',
+      'REC-2026-008821',
+      orderCode,
+      subtotal,
+      vat,
+      threeDaysAgo,
+      'https://vietphonics.vn/verify/receipt/REC-2026-008821'
     );
   }
 }

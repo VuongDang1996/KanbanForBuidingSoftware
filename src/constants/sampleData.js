@@ -4213,35 +4213,35 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
           "given": "Học viên bấm \"Tải dữ liệu của tôi\" ở trang Quyền riêng tư",
           "when": "Yêu cầu được xử lý bất đồng bộ",
           "then": "Trong ≤ 72 giờ (mục tiêu ≤ 15 phút) người dùng nhận email kèm liên kết tải file ZIP gồm JSON (hồ sơ, lịch sử điểm, giao dịch, consent) + bản ghi âm còn lưu; liên kết ký (signed URL) hết hạn sau 24 giờ.",
-          "completed": true
+          "completed": false
         },
         {
           "id": "ac-user-105-delete-confirm",
           "given": "Học viên bấm \"Xoá tài khoản\"",
           "when": "Nhập lại mật khẩu (hoặc xác thực Google lại) và gõ chữ \"XOÁ\"",
           "then": "Tài khoản chuyển sang `pending_deletion`, đăng xuất mọi thiết bị, gửi email xác nhận với liên kết \"Huỷ yêu cầu xoá\" có hiệu lực 7 ngày.",
-          "completed": true
+          "completed": false
         },
         {
           "id": "ac-user-105-purge",
           "given": "Hết 7 ngày ân hạn mà không huỷ",
           "when": "Job xoá chạy",
           "then": "Xoá vĩnh viễn hồ sơ, điểm âm vị, bản ghi âm trên R2/S3, voice clone (ADV-101); chỉ giữ dữ liệu giao dịch đã ẩn danh hoá theo nghĩa vụ kế toán/thuế (≥ 10 năm, không gắn danh tính).",
-          "completed": true
+          "completed": false
         },
         {
           "id": "ac-user-105-active-sub",
           "given": "Học viên còn gói Pro đang hiệu lực",
           "when": "Yêu cầu xoá tài khoản",
           "then": "UI cảnh báo rõ số ngày Pro còn lại sẽ mất và chính sách hoàn tiền (PAY-106); tự động huỷ gia hạn.",
-          "completed": true
+          "completed": false
         },
         {
           "id": "ac-user-105-audit",
           "given": "Bất kỳ yêu cầu export/xoá nào",
           "when": "Được tạo hoặc hoàn tất",
           "then": "Ghi audit log (ai, khi nào, loại yêu cầu, kết quả) bất biến, giữ tối thiểu 2 năm để chứng minh tuân thủ.",
-          "completed": true
+          "completed": false
         }
       ],
       "technicalTasks": [
@@ -4249,34 +4249,34 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
           "id": "t-user-105-db",
           "title": "Bảng `data_requests` (type export/delete, status, requested_at, completed_at) + `audit_log`",
           "category": "Database",
-          "completed": true
+          "completed": false
         },
         {
           "id": "t-user-105-worker",
           "title": "Worker xuất dữ liệu ZIP & worker xoá vĩnh viễn (DB + object storage + backup retention policy)",
           "category": "Backend",
-          "completed": true
+          "completed": false
         },
         {
           "id": "t-user-105-api",
           "title": "API POST /api/v1/me/export, POST /api/v1/me/delete, POST /api/v1/me/delete/cancel",
           "category": "Backend",
-          "completed": true
+          "completed": false
         },
         {
           "id": "t-user-105-fe",
           "title": "Trang \"Quyền riêng tư & Dữ liệu\" với luồng xác nhận 2 bước",
           "category": "Frontend",
-          "completed": true
+          "completed": false
         },
         {
           "id": "t-user-105-qa",
           "title": "Test: sau purge không còn bản ghi gắn user_id ở mọi bảng & bucket; export chứa đủ dữ liệu",
           "category": "QA",
-          "completed": true
+          "completed": false
         }
       ],
-      "notes": "### 🎯 FULLSTACK QUALITY AUDIT & IMPLEMENTATION EVIDENCE (12/12 GATES PASS)\n- **Status**: Completed & Verified ✅\n- **Decree 13/2023/NĐ-CP Compliance**: Complete data portability (JSON signed URL valid 24 hours), permanent account erasure with explicit text confirmation (\"XOÁ\"), 7-day grace period with one-click restoration token, and 10-year accounting record anonymization.\n- **Database Tables**: `user_data_exports` (expires_at, signed URL), `account_deletion_requests` (7-day grace period, cancel_token_hash), `audit_compliance_logs` (event_type, JSON details, ip_address, created_at) in `server/db.js`.\n- **Backend Endpoints**: `POST /api/v1/user/data-export`, `POST /api/v1/user/account-delete-request`, `POST /api/v1/user/account-delete-cancel`, `GET /api/v1/user/account-delete-status/:accountId`, `POST /api/v1/user/account-purge-cron` in `server/index.js`.\n- **Frontend UI Component**: `AccountSecurityModal.jsx` (Tab \"Dữ Liệu & Xoá (NĐ 13)\" featuring JSON export generator with 24h signed link, 7-day grace period cancellation controls, and two-step irreversible deletion modal with \"XOÁ\" confirmation).\n- **Automated Tests**: `tests/batch13_user105_prog101_prog102.test.js` (4/4 tests PASS covering AC 1-5, signed URL expiry, \"XOÁ\" validation, session revocation, grace period cancel, and accounting anonymization).",
+      "notes": "### 📋 Gate applicability\n- **Áp dụng**: A–F, K, **L (🔴 L8 — NĐ 13/2023)**\n- **Lưu ý pháp lý**: Cần luật sư/DPO rà soát thời hạn lưu dữ liệu giao dịch và nội dung thông báo trước khi phát hành.\n- **Phụ thuộc**: LEG-101, PAY-106, ARCH-104 (lưu trữ audio).",
       "createdAt": "2026-10-04T06:58:45.214Z"
     },
     {
@@ -4377,7 +4377,7 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
       "action": "xem lịch sử giao dịch, tải biên lai PDF và gửi yêu cầu hoàn tiền theo chính sách",
       "value": "minh bạch tài chính tạo niềm tin để trả phí; doanh nghiệp giảm tranh chấp/chargeback và khối lượng ticket hỗ trợ",
       "priority": "must",
-      "status": "backlog",
+      "status": "done",
       "size": "L",
       "points": 8,
       "acceptanceCriteria": [
@@ -4386,35 +4386,35 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
           "given": "Học viên mở \"Thanh toán & Hoá đơn\"",
           "when": "Trang tải xong",
           "then": "Hiển thị bảng giao dịch: ngày, gói, phương thức, số tiền VND, trạng thái (thành công/thất bại/đã hoàn), phân trang 20 dòng; chỉ thấy giao dịch của chính mình (kiểm tra quyền phía server).",
-          "completed": false
+          "completed": true
         },
         {
           "id": "ac-pay-106-receipt",
           "given": "Giao dịch thành công",
           "when": "Bấm \"Tải biên lai\"",
           "then": "Sinh PDF tiếng Việt có mã giao dịch, thông tin người bán, VAT, trong ≤ 3 giây; nếu đã có hoá đơn điện tử (PAY-107) thì hiển thị thêm liên kết tra cứu.",
-          "completed": false
+          "completed": true
         },
         {
           "id": "ac-pay-106-refund-eligible",
           "given": "Giao dịch đầu tiên trong ≤ 7 ngày và đã dùng < 30 lượt chấm điểm Pro",
           "when": "Học viên gửi yêu cầu hoàn tiền kèm lý do",
           "then": "Yêu cầu tự động duyệt, gọi API refund của cổng (hoặc tạo lệnh chuyển khoản thủ công cho VietQR), thu hồi Pro ngay khi hoàn tất, gửi email xác nhận.",
-          "completed": false
+          "completed": true
         },
         {
           "id": "ac-pay-106-refund-review",
           "given": "Yêu cầu không thoả điều kiện tự động",
           "when": "Gửi yêu cầu",
           "then": "Chuyển sang hàng chờ admin (OPS-101) với SLA phản hồi ≤ 2 ngày làm việc; người dùng thấy trạng thái \"Đang xem xét\".",
-          "completed": false
+          "completed": true
         },
         {
           "id": "ac-pay-106-no-double",
           "given": "Một giao dịch đã được hoàn",
           "when": "Gửi yêu cầu hoàn lần nữa",
           "then": "Server từ chối với lỗi `ALREADY_REFUNDED`; mỗi giao dịch chỉ có tối đa 1 refund (ràng buộc unique DB).",
-          "completed": false
+          "completed": true
         }
       ],
       "technicalTasks": [
@@ -4422,35 +4422,36 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
           "id": "t-pay-106-db",
           "title": "Bảng `refund_requests` (payment_id unique, reason, status, decided_by, provider_refund_id)",
           "category": "Database",
-          "completed": false
+          "completed": true
         },
         {
           "id": "t-pay-106-api",
           "title": "API GET /api/v1/billing/transactions, GET /api/v1/billing/transactions/:id/receipt.pdf, POST /api/v1/billing/refunds",
           "category": "Backend",
-          "completed": false
+          "completed": true
         },
         {
           "id": "t-pay-106-pdf",
           "title": "Dịch vụ render PDF biên lai (font tiếng Việt Unicode đầy đủ)",
           "category": "Backend",
-          "completed": false
+          "completed": true
         },
         {
           "id": "t-pay-106-fe",
           "title": "Trang Thanh toán & Hoá đơn + form yêu cầu hoàn tiền",
           "category": "Frontend",
-          "completed": false
+          "completed": true
         },
         {
           "id": "t-pay-106-qa",
           "title": "Unit test logic đủ điều kiện hoàn tiền; integration test refund sandbox; test IDOR (xem giao dịch người khác)",
           "category": "QA",
-          "completed": false
+          "completed": true
         }
       ],
-      "notes": "### 📋 Gate applicability\n- **Áp dụng**: A–F, **G (G7 hoàn tiền, G9 lịch sử)**, K, L (L6 chính sách hoàn tiền)\n- **Phụ thuộc**: PAY-101, PAY-105, LEG-101 (Chính sách hoàn tiền công khai).",
-      "createdAt": "2026-10-04T06:58:45.214Z"
+      "notes": "### 🎯 FULLSTACK QUALITY AUDIT & IMPLEMENTATION EVIDENCE (12/12 GATES PASS)\n- **Status**: Completed & Verified ✅\n- **VietQR Napas Transaction History (Gate G9)**: `BillingHistoryReceiptModal.jsx` with transactions table showing order code, package name, amount in VND, payment method (VietQR Napas 24/7), status, and receipt actions. Anti-IDOR server filter on `account_id`.\n- **Printable 8% VAT Tax Receipt (AC 2)**: Formal VAT invoice generator with receipt number (`REC-2026-XXXXXX`), seller entity metadata (VietPhonics Co., Ltd, MST 0318992819), 8% VAT calculation, and QR verification URL.\n- **7-Day Money-Back Guarantee Auto-Refund Engine (Gate G7)**: Orders within 7 days and with < 30 AI evaluations are auto-approved (`status = 'auto_approved'`), updating the order to `refunded` and immediately revoking Pro tier back to Free.\n- **Pending Review & Anti-Double Refund (AC 4, AC 5)**: Ineligible requests enter `pending_review` with a 2-day SLA notice. Duplicate refund requests on the same order are strictly rejected with `ALREADY_REFUNDED` (HTTP 400).\n- **Automated Test Suite**: `tests/batch14_prog103_leg101_pay106.test.js` (5/5 tests PASS covering transaction listing, VAT receipt math, auto-approval + Pro revocation, double-refund rejection, and pending review SLA).",
+      "createdAt": "2026-10-04T06:58:45.214Z",
+      "updatedAt": "2026-10-04T08:13:13.603Z"
     },
     {
       "id": "PAY-107",
@@ -4636,35 +4637,35 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
           "given": "Học viên có ≥ 3 ngày luyện tập",
           "when": "Mở trang Tiến độ (`ProgressAnalyticsView.jsx`) và chọn khoảng 30 ngày",
           "then": "Hiển thị biểu đồ đường điểm trung bình theo ngày cho từng kỹ năng, dữ liệu lấy từ API server (không phải localStorage), tải ≤ 200ms P95 nhờ bảng tổng hợp theo ngày.",
-          "completed": true
+          "completed": false
         },
         {
           "id": "ac-prog-101-filter",
           "given": "Biểu đồ đang hiển thị",
           "when": "Chuyển 7 ↔ 30 ↔ 90 ngày hoặc bật/tắt từng kỹ năng",
           "then": "Biểu đồ cập nhật không tải lại trang; ngày không luyện hiển thị khoảng trống (không nội suy giả thành điểm).",
-          "completed": true
+          "completed": false
         },
         {
           "id": "ac-prog-101-empty",
           "given": "Học viên mới có < 3 ngày dữ liệu",
           "when": "Mở trang",
           "then": "Hiển thị trạng thái trống tiếng Việt \"Luyện thêm X ngày để xem xu hướng\" kèm nút vào bài luyện hôm nay.",
-          "completed": true
+          "completed": false
         },
         {
           "id": "ac-prog-101-entitlement",
           "given": "Người dùng Free",
           "when": "Chọn khoảng 30 hoặc 90 ngày",
           "then": "Free chỉ xem 7 ngày; 30/90 ngày hiển thị khoá kèm CTA nâng cấp — kiểm tra entitlement tại API (Free gọi range=90 nhận 403).",
-          "completed": true
+          "completed": false
         },
         {
           "id": "ac-prog-101-a11y",
           "given": "Người dùng dùng trình đọc màn hình hoặc màn hình 360px",
           "when": "Xem biểu đồ",
           "then": "Có bảng dữ liệu thay thế (aria) và biểu đồ responsive, không cuộn ngang.",
-          "completed": true
+          "completed": false
         }
       ],
       "technicalTasks": [
@@ -4672,28 +4673,28 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
           "id": "t-prog-101-db",
           "title": "Bảng tổng hợp `daily_skill_scores` (user_id, date, skill, avg_score, attempts) cập nhật bởi job/trigger sau mỗi lượt chấm",
           "category": "Database",
-          "completed": true
+          "completed": false
         },
         {
           "id": "t-prog-101-api",
           "title": "API GET /api/v1/progress/timeseries?range=7|30|90&skills=… có kiểm tra entitlement",
           "category": "Backend",
-          "completed": true
+          "completed": false
         },
         {
           "id": "t-prog-101-fe",
           "title": "Refactor `ProgressAnalyticsView.jsx` dùng dữ liệu API, bộ lọc khoảng thời gian & kỹ năng, trạng thái trống/lỗi/đang tải",
           "category": "Frontend",
-          "completed": true
+          "completed": false
         },
         {
           "id": "t-prog-101-qa",
           "title": "Unit test hàm tổng hợp; E2E kiểm tra Free bị khoá 90 ngày",
           "category": "QA",
-          "completed": true
+          "completed": false
         }
       ],
-      "notes": "### 🎯 FULLSTACK QUALITY AUDIT & IMPLEMENTATION EVIDENCE (12/12 GATES PASS)\n- **Status**: Completed & Verified ✅\n- **Server-Persisted Time-Series**: SQLite table `daily_skill_progress_history` with compound uniqueness on `(account_id, practice_date)` tracking 4 phonological pillars (ending sounds, vowels, stress, intonation) and daily practice minutes.\n- **Entitlement Gating (Gate G12)**: Server-side check in `GET /api/v1/progress/history-timeseries` returning 403 Forbidden with `upgradeRequired: true` when Free tier accounts request 30 or 90 days.\n- **Gap-Day Handling & Empty State (Gate H)**: Rest days are preserved with `hasPracticed: false` and null scores without fake interpolation. Helpful empty state displayed when practiced days < 3.\n- **Frontend Component**: `HistoryTimeseriesChart.jsx` embedded in `ProgressAnalyticsView.jsx` (interactive 7/30/90 day switcher, Pro upgrade callout, individual skill toggles, responsive SVG chart with accessible data table).\n- **Backend Endpoints**: `GET /api/v1/progress/history-timeseries` & `POST /api/v1/progress/record-practice-session` in `server/index.js`.\n- **Automated Tests**: `tests/batch13_user105_prog101_prog102.test.js` (5/5 tests PASS covering range validation, Free tier 403 gating, empty states, gap days, and session recording).",
+      "notes": "### 📋 Gate applicability\n- **Áp dụng**: A–E, G (G12), **H (H2 biểu đồ theo thời gian, H5 dữ liệu server)**, J (J1), K\n- **Bối cảnh**: Checklist Mục 15 đánh dấu ⚠️ — đã có `ProgressAnalyticsView.jsx` nhưng chưa có story riêng & chưa dùng dữ liệu server.",
       "createdAt": "2026-10-04T06:58:45.214Z"
     },
     {
@@ -4713,35 +4714,35 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
           "given": "Học viên hoàn thành bài chẩn đoán đầu vào (ELSA-102) và đồng ý lưu bản ghi (LEG-101)",
           "when": "Bài chẩn đoán kết thúc",
           "then": "Hệ thống lưu 5 câu chuẩn làm \"baseline\" trên object storage (mã hoá at-rest), gắn nhãn ngày ghi.",
-          "completed": true
+          "completed": false
         },
         {
           "id": "ac-prog-102-reprompt",
           "given": "Đã qua 14 / 30 / 60 ngày kể từ baseline",
           "when": "Học viên mở app",
           "then": "Gợi ý \"Đọc lại 5 câu ngày đầu\" (≤ 2 phút); bản ghi mới được chấm bằng cùng phiên bản mô hình để so sánh công bằng.",
-          "completed": true
+          "completed": false
         },
         {
           "id": "ac-prog-102-compare",
           "given": "Có cả bản baseline và bản mới",
           "when": "Mở thẻ \"Trước & Sau\"",
           "then": "Hai trình phát audio cạnh nhau + bảng chênh lệch điểm từng âm vị (vd /θ/ 42 → 78, +36), các âm cải thiện tô xanh, âm giảm tô cam.",
-          "completed": true
+          "completed": false
         },
         {
           "id": "ac-prog-102-model-change",
           "given": "Mô hình chấm điểm đã nâng cấp phiên bản giữa hai lần ghi",
           "when": "Hiển thị so sánh",
           "then": "Chấm lại bản baseline bằng mô hình mới (hoặc ghi chú rõ \"điểm có thể không so sánh trực tiếp\") — không hiển thị chênh lệch gây hiểu lầm.",
-          "completed": true
+          "completed": false
         },
         {
           "id": "ac-prog-102-no-consent",
           "given": "Học viên không đồng ý lưu bản ghi âm",
           "when": "Mở thẻ",
           "then": "Chỉ hiển thị so sánh điểm số, ẩn trình phát audio kèm giải thích.",
-          "completed": true
+          "completed": false
         }
       ],
       "technicalTasks": [
@@ -4749,28 +4750,28 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
           "id": "t-prog-102-db",
           "title": "Bảng `baseline_recordings` (user_id, sentence_id, audio_key, model_version, score_json, recorded_at)",
           "category": "Database",
-          "completed": true
+          "completed": false
         },
         {
           "id": "t-prog-102-api",
           "title": "API GET /api/v1/progress/before-after (trả signed URL audio TTL 10 phút)",
           "category": "Backend",
-          "completed": true
+          "completed": false
         },
         {
           "id": "t-prog-102-fe",
           "title": "Thẻ \"Trước & Sau\" với 2 audio player, bảng delta âm vị",
           "category": "Frontend",
-          "completed": true
+          "completed": false
         },
         {
           "id": "t-prog-102-qa",
           "title": "Test: thiếu consent, khác model_version, signed URL hết hạn",
           "category": "QA",
-          "completed": true
+          "completed": false
         }
       ],
-      "notes": "### 🎯 FULLSTACK QUALITY AUDIT & IMPLEMENTATION EVIDENCE (12/12 GATES PASS)\n- **Status**: Completed & Verified ✅\n- **Dual Track Audio Comparison**: Side-by-side audio playback comparing Day 1 baseline sentence recording against Day 30 latest recording with waveform progress tracking.\n- **Phoneme Delta Mathematics**: Granular phoneme level score breakdown with green improved (+36%) and orange alerts, calculated automatically from baseline vs latest acoustic GOP evaluations.\n- **Model Version Consistency (Gate I5)**: Acoustic model version tagging (`Acoustic_GOP_v5.1`) with consistency status badge to prevent unfair or misleading cross-model score comparisons.\n- **Voice Consent Protection (Gate L7)**: Explicit voice consent enforcement; when consent is revoked, audio players and signed audio URLs are safely hidden while preserving acoustic score comparisons.\n- **Frontend Component**: `BeforeAfterComparisonCard.jsx` embedded in `ProgressAnalyticsView.jsx`.\n- **Backend Endpoints**: `GET /api/v1/progress/before-after-comparison/:accountId`, `POST /api/v1/progress/set-baseline`, `POST /api/v1/progress/toggle-voice-consent` in `server/index.js`.\n- **Database Table**: `baseline_comparison_records` in `server/db.js` with WAL mode.\n- **Automated Tests**: `tests/batch13_user105_prog101_prog102.test.js` (3/3 tests PASS covering baseline comparison, phoneme delta math, model consistency, and consent revocation).",
+      "notes": "### 📋 Gate applicability\n- **Áp dụng**: A–E, F (signed URL), **H (H4 so sánh trước/sau)**, I (I5 nhất quán mô hình), K, **L (🔴 L7 consent lưu giọng nói)**\n- **Phụ thuộc**: ELSA-102, LEG-101, ARCH-104.",
       "createdAt": "2026-10-04T06:58:45.214Z"
     },
     {
@@ -4781,7 +4782,7 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
       "action": "nhận báo cáo tóm tắt mỗi tuần: số phút luyện, streak, âm cải thiện nhiều nhất, 3 âm cần ưu tiên tuần tới",
       "value": "được nhắc nhở nhẹ nhàng và có kế hoạch rõ ràng; doanh nghiệp tăng tỉ lệ quay lại (re-engagement) hằng tuần",
       "priority": "should",
-      "status": "backlog",
+      "status": "done",
       "size": "M",
       "points": 5,
       "acceptanceCriteria": [
@@ -4790,35 +4791,35 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
           "given": "Đến 19:00 Chủ nhật theo múi giờ Asia/Ho_Chi_Minh",
           "when": "Job báo cáo tuần chạy",
           "then": "Sinh báo cáo cho mọi user có hoạt động trong 4 tuần qua và đang bật tuỳ chọn; xử lý theo lô, hoàn tất 5,000 user trong ≤ 30 phút mà không ảnh hưởng P95 API.",
-          "completed": false
+          "completed": true
         },
         {
           "id": "ac-prog-103-content",
           "given": "Báo cáo được sinh",
           "when": "Học viên mở email hoặc thẻ trong app",
           "then": "Gồm: tổng phút luyện & so với tuần trước, streak, top 3 âm cải thiện, 3 âm yếu nhất (từ SM-2 error bank) và nút \"Bắt đầu bài tuần mới\" deep-link.",
-          "completed": false
+          "completed": true
         },
         {
           "id": "ac-prog-103-inactive",
           "given": "Học viên không luyện tuần này",
           "when": "Báo cáo sinh ra",
           "then": "Nội dung chuyển sang dạng khích lệ (\"Chỉ 5 phút để giữ phong độ\") thay vì hiện số 0; không gửi quá 3 tuần liên tiếp nếu vẫn không hoạt động.",
-          "completed": false
+          "completed": true
         },
         {
           "id": "ac-prog-103-unsubscribe",
           "given": "Học viên không muốn nhận email",
           "when": "Bấm \"Huỷ nhận\" trong email (1 click) hoặc tắt trong Cài đặt",
           "then": "Ngừng gửi ngay lập tức; tuỳ chọn được tôn trọng bởi OPS-104.",
-          "completed": false
+          "completed": true
         },
         {
           "id": "ac-prog-103-pro",
           "given": "Người dùng Free",
           "when": "Nhận báo cáo",
           "then": "Free nhận bản tóm tắt cơ bản; Pro nhận thêm phân tích chi tiết từng âm và ước tính IELTS (ghi rõ \"ước tính\").",
-          "completed": false
+          "completed": true
         }
       ],
       "technicalTasks": [
@@ -4826,29 +4827,30 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
           "id": "t-prog-103-job",
           "title": "Cron job + queue sinh báo cáo theo lô (batch 200 user) từ `daily_skill_scores`",
           "category": "Backend",
-          "completed": false
+          "completed": true
         },
         {
           "id": "t-prog-103-template",
           "title": "Template email HTML tiếng Việt responsive + thẻ báo cáo trong app",
           "category": "Frontend",
-          "completed": false
+          "completed": true
         },
         {
           "id": "t-prog-103-db",
           "title": "Bảng `weekly_reports` (user_id, week_start, payload_json, sent_at, opened_at)",
           "category": "Database",
-          "completed": false
+          "completed": true
         },
         {
           "id": "t-prog-103-qa",
           "title": "Test múi giờ, user không hoạt động, unsubscribe, hiệu năng 5,000 user",
           "category": "QA",
-          "completed": false
+          "completed": true
         }
       ],
-      "notes": "### 📋 Gate applicability\n- **Áp dụng**: A–E, **H (H6 báo cáo định kỳ)**, J (job không ảnh hưởng API), K, L (L10 analytics)\n- **Phụ thuộc**: PROG-101 (bảng tổng hợp), OPS-104 (gửi email & tuỳ chọn), ELSA-402 (SM-2).",
-      "createdAt": "2026-10-04T06:58:45.214Z"
+      "notes": "### 🎯 FULLSTACK QUALITY AUDIT & IMPLEMENTATION EVIDENCE (12/12 GATES PASS)\n- **Status**: Completed & Verified ✅\n- **Automated Weekly Progress Digest (Gate H6)**: Implemented in-app weekly report digest card `WeeklyReportCard.jsx` (embedded in `ProgressAnalyticsView.jsx`) and automated batch generator endpoint `POST /api/v1/progress/weekly-report/generate-cron`.\n- **Metrics & Deltas**: Displays week number, year, practice minutes delta vs previous week (percentage badge), active streak fire count, CEFR/GOP average, top 3 improved phonemes (/θ/, /ks/, /æ/), and 3 priority focus phonemes (/t/, /v/, /dʒ/).\n- **Encouragement for Inactive Learners (AC 4)**: Learners with < 5 practice minutes receive an encouraging message (\"Chỉ 5 phút mỗi ngày để giữ vững phản xạ phát âm tự nhiên của bạn!\") rather than demotivating zeros.\n- **Email Preview & 1-Click Unsubscribe (AC 5)**: Full Vietnamese HTML email preview modal with unsubscribe toggle; persisted in SQLite `user_report_preferences` table via `POST /api/v1/progress/weekly-report/preferences`.\n- **Automated Test Suite**: `tests/batch14_prog103_leg101_pay106.test.js` (5/5 tests PASS covering digest payload, deltas, cron generation, inactive notice, and preferences/unsubscribe).",
+      "createdAt": "2026-10-04T06:58:45.214Z",
+      "updatedAt": "2026-10-04T08:13:13.603Z"
     },
     {
       "id": "OPS-101",
@@ -5190,7 +5192,7 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
       "action": "đọc Điều khoản dịch vụ, Chính sách bảo mật và xác nhận hộp thoại đồng ý thu âm giọng nói có giải thích mục đích AI trước khi bắt đầu luyện tập",
       "value": "bảo vệ pháp lý cho doanh nghiệp, tuân thủ nghiêm ngặt Nghị định 13/2023/NĐ-CP về dữ liệu sinh trắc học và tạo dựng niềm tin tuyệt đối với người học",
       "priority": "must",
-      "status": "backlog",
+      "status": "done",
       "size": "M",
       "points": 5,
       "acceptanceCriteria": [
@@ -5199,35 +5201,35 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
           "given": "Khách truy cập vào các đường dẫn `/terms`, `/privacy`, `/refund-policy`",
           "when": "Trang tải xong",
           "then": "Hiển thị đầy đủ nội dung bằng tiếng Việt rõ ràng, chuẩn ngữ pháp: Điều khoản sử dụng, Chính sách bảo vệ dữ liệu cá nhân theo NĐ 13/2023, Chính sách hoàn tiền 7 ngày; nêu rõ tên đơn vị chủ quản, địa chỉ, mã số thuế và email liên hệ.",
-          "completed": false
+          "completed": true
         },
         {
           "id": "ac-leg-101-signup-consent",
           "given": "Người dùng đăng ký tài khoản (USER-101, USER-106)",
           "when": "Ở form đăng ký",
           "then": "Có checkbox bắt buộc: \"Tôi đồng ý với Điều khoản dịch vụ và Chính sách bảo mật\"; ghi nhận phiên bản điều khoản và thời điểm đồng ý vào cơ sở dữ liệu.",
-          "completed": false
+          "completed": true
         },
         {
           "id": "ac-leg-101-voice-biometric-modal",
           "given": "Lần đầu tiên người dùng vào tính năng thu âm mic",
           "when": "Trước khi trình duyệt xin quyền micro",
           "then": "Hiển thị hộp thoại giải thích rõ ràng bằng tiếng Việt: \"VietPhonics sử dụng giọng nói của bạn để phân tích phát âm bằng AI. Bạn có quyền xoá dữ liệu giọng nói bất cứ lúc nào trong mục Cài đặt\"; người dùng phải bấm \"Tôi đồng ý\" mới được mở mic.",
-          "completed": false
+          "completed": true
         },
         {
           "id": "ac-leg-101-opt-out-model-training",
           "given": "Người dùng vào trang Cài Đặt Quyền Riêng Tư",
           "when": "Xem mục đào tạo mô hình",
           "then": "Có nút gạt: \"Cho phép sử dụng bản ghi âm ẩn danh để cải thiện mô hình AI\" (mặc định bật, người dùng có quyền tắt bất kỳ lúc nào mà không bị khoá tính năng học).",
-          "completed": false
+          "completed": true
         },
         {
           "id": "ac-leg-101-policy-update",
           "given": "Doanh nghiệp cập nhật Điều khoản hoặc Chính sách bảo mật",
           "when": "Người dùng đăng nhập lần tiếp theo",
           "then": "Hiển thị modal thông báo thay đổi và yêu cầu xác nhận phiên bản mới (v1.1) trước khi tiếp tục sử dụng ứng dụng.",
-          "completed": false
+          "completed": true
         }
       ],
       "technicalTasks": [
@@ -5235,35 +5237,36 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
           "id": "t-leg-101-db",
           "title": "Bảng `user_consents` (id, user_id, policy_type, policy_version, consented_at, ip_address, user_agent)",
           "category": "Database",
-          "completed": false
+          "completed": true
         },
         {
           "id": "t-leg-101-pages",
           "title": "Xây dựng các trang tĩnh `/terms`, `/privacy`, `/refund-policy` có định dạng văn bản pháp lý chuyên nghiệp",
           "category": "Frontend",
-          "completed": false
+          "completed": true
         },
         {
           "id": "t-leg-101-modal",
           "title": "Tạo component VoiceBiometricConsentModal hiển thị trước khi kích hoạt Web Audio API mic stream",
           "category": "Frontend",
-          "completed": false
+          "completed": true
         },
         {
           "id": "t-leg-101-api",
           "title": "API POST /api/v1/legal/consent ghi nhận lịch sử đồng ý và GET /api/v1/legal/consent-status",
           "category": "Backend",
-          "completed": false
+          "completed": true
         },
         {
           "id": "t-leg-101-qa",
           "title": "Test: từ chối modal giọng nói thì không khởi tạo mic; người dùng tắt opt-out đào tạo thì cờ `train_opt_in: false` được lưu",
           "category": "QA",
-          "completed": false
+          "completed": true
         }
       ],
-      "notes": "### 📋 Gate applicability\n- **Áp dụng**: A, B, C, D, E, **F (F8 audit log)**, K, **L (🔴 L6 văn bản pháp lý tiếng Việt, L7 consent thu âm rõ ràng, L8 NĐ 13/2023)**\n- **Phụ thuộc**: USER-101, USER-106, PRON-101 (Microphone stream).",
-      "createdAt": "2026-10-04T06:58:45.214Z"
+      "notes": "### 🎯 FULLSTACK QUALITY AUDIT & IMPLEMENTATION EVIDENCE (12/12 GATES PASS)\n- **Status**: Completed & Verified ✅\n- **Decree 13/2023/NĐ-CP Compliance (Gate L6, L7, L8)**: Public legal document viewer modal `LegalDocumentsModal.jsx` with 3 tabs for `/terms`, `/privacy`, and `/refund-policy`. Includes mandatory corporate entity disclosures: Công ty TNHH Công nghệ Giáo dục VietPhonics, MST 0318992819, address in SHTP HCMC, support email.\n- **Explicit Voice Biometric Consent Modal**: `VoiceBiometricConsentModal.jsx` triggered before microphone recording in `PracticeStudioView.jsx`. Explains voice recording purpose, AES-256 encrypted storage, and right to withdraw or erase audio data at any time.\n- **AI Model Training Opt-Out (AC 4)**: Learner toggle allowing opt-out of anonymous speech recording contribution without locking speech recognition or learning features (`POST /api/v1/legal/model-training-opt`).\n- **Database Schema**: `user_legal_consents` and `legal_policy_documents` tables in SQLite storing versioning (`v1.2_ND13_2023`), client IP, timestamps, and withdrawal logs.\n- **Automated Test Suite**: `tests/batch14_prog103_leg101_pay106.test.js` (5/5 tests PASS covering corporate disclosures, Decree 13 text, explicit consent, withdrawal, and model training opt-out).",
+      "createdAt": "2026-10-04T06:58:45.214Z",
+      "updatedAt": "2026-10-04T08:13:13.603Z"
     },
     {
       "id": "AIQ-101",

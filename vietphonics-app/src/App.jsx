@@ -6,6 +6,8 @@ import StreakSavedModal from './components/gamification/StreakSavedModal';
 import DiagnosticModal from './components/DiagnosticModal';
 import UpgradeModal from './components/UpgradeModal';
 import AccountSecurityModal from './components/AccountSecurityModal';
+import LegalDocumentsModal from './components/legal/LegalDocumentsModal';
+import BillingHistoryReceiptModal from './components/billing/BillingHistoryReceiptModal';
 
 import DashboardView from './views/DashboardView';
 import PracticeStudioView from './views/PracticeStudioView';
@@ -24,7 +26,13 @@ function MainContent() {
     activeTab,
     showAccountModal,
     setShowAccountModal,
-    accountModalTab
+    accountModalTab,
+    showLegalModal,
+    setShowLegalModal,
+    legalModalTab,
+    setLegalModalTab,
+    showBillingModal,
+    setShowBillingModal
   } = useApp();
 
   const renderActiveView = () => {
@@ -72,20 +80,69 @@ function MainContent() {
         onClose={() => setShowAccountModal(false)}
         initialTab={accountModalTab}
       />
+      <LegalDocumentsModal
+        isOpen={showLegalModal}
+        onClose={() => setShowLegalModal(false)}
+        initialTab={legalModalTab}
+      />
+      <BillingHistoryReceiptModal
+        isOpen={showBillingModal}
+        onClose={() => setShowBillingModal(false)}
+      />
 
-      {/* Acoustic Precision Footer */}
-      <footer className="w-full bg-white border-t border-slate-200/80 py-6 px-4 text-center mt-12 text-xs text-slate-500 font-mono">
-        <div className="max-w-[1440px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-secondary animate-pulse" />
-            <span className="font-bold text-slate-800">VietPhonics.AI Acoustic L1 Lab</span>
-            <span>•</span>
-            <span>Audio Engine v4.2 Precision Ready</span>
+      {/* Acoustic Precision & Legal Footer */}
+      <footer className="w-full bg-white border-t border-slate-200/80 py-6 px-4 text-center mt-12 text-xs text-slate-500 font-sans">
+        <div className="max-w-[1440px] mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="flex flex-col sm:flex-row items-center gap-2 font-mono">
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-secondary animate-pulse" />
+              <span className="font-bold text-slate-800">VietPhonics.AI Acoustic L1 Lab</span>
+            </div>
+            <span className="hidden sm:inline text-slate-300">•</span>
+            <span className="text-slate-600">Audio Engine v4.2 Precision Ready</span>
           </div>
-          <div className="flex items-center gap-4 text-slate-400">
-            <span>Branch: pronunciation-app</span>
-            <span>•</span>
-            <span>VietQR Napas 24/7 (30.000đ/tháng)</span>
+
+          <div className="flex flex-wrap items-center justify-center gap-4 text-xs">
+            <button
+              type="button"
+              onClick={() => {
+                setLegalModalTab('terms');
+                setShowLegalModal(true);
+              }}
+              className="text-slate-600 hover:text-indigo-600 hover:underline transition cursor-pointer"
+            >
+              Điều Khoản Dịch Vụ
+            </button>
+            <span className="text-slate-300">•</span>
+            <button
+              type="button"
+              onClick={() => {
+                setLegalModalTab('privacy');
+                setShowLegalModal(true);
+              }}
+              className="text-slate-600 hover:text-indigo-600 hover:underline transition cursor-pointer font-medium"
+            >
+              Quyền Riêng Tư (NĐ 13/2023)
+            </button>
+            <span className="text-slate-300">•</span>
+            <button
+              type="button"
+              onClick={() => {
+                setLegalModalTab('refund');
+                setShowLegalModal(true);
+              }}
+              className="text-slate-600 hover:text-indigo-600 hover:underline transition cursor-pointer"
+            >
+              Chính Sách Hoàn Tiền 7 Ngày
+            </button>
+            <span className="text-slate-300">•</span>
+            <button
+              type="button"
+              onClick={() => setShowBillingModal(true)}
+              className="text-slate-600 hover:text-indigo-600 hover:underline transition cursor-pointer font-medium"
+            >
+              Lịch Sử Giao Dịch &amp; Biên Lai VAT
+            </button>
           </div>
         </div>
       </footer>

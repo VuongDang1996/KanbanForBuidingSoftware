@@ -24,6 +24,7 @@ import MultiSpellingSoundMap from '../components/articulation/MultiSpellingSound
 import VideoMasterclassPlayer from '../components/articulation/VideoMasterclassPlayer';
 import SoundSaturationDrill from '../components/articulation/SoundSaturationDrill';
 import NativeTonguePlacementGuide from '../components/articulation/NativeTonguePlacementGuide';
+import VoiceBiometricConsentModal from '../components/legal/VoiceBiometricConsentModal';
 
 export default function PracticeStudioView() {
   const { setActiveTab, practiceSubTab, setPracticeSubTab } = useApp();
@@ -34,6 +35,14 @@ export default function PracticeStudioView() {
   const [dictationAnswer, setDictationAnswer] = useState('');
   const [dictationChecked, setDictationChecked] = useState(false);
   const [showPermissionModal, setShowPermissionModal] = useState(false);
+  const [showVoiceConsentModal, setShowVoiceConsentModal] = useState(false);
+  const [isVoiceConsented, setIsVoiceConsented] = useState(() => {
+    try {
+      return localStorage.getItem('vietphonics_voice_biometric_consented') === 'true';
+    } catch {
+      return false;
+    }
+  });
 
   const targetSentence = "Six months ago, she baked fresh bread for breakfast on the street.";
   const [alignmentData, setAlignmentData] = useState(() => alignSentencePhonemes(targetSentence));
@@ -86,15 +95,22 @@ export default function PracticeStudioView() {
     }
   }, [isPermissionDenied]);
 
-  // AC 3: Push-to-Talk via Space key with debouncing
+  // AC 3: Push-to-Talk via Space key with debouncing (requires voice biometric consent LEG-101)
   usePushToTalk({
-    onStart: start,
+    onStart: () => {
+      if (!isVoiceConsented) {
+        setShowVoiceConsentModal(true);
+        return;
+      }
+      start();
+    },
     onStop: async () => {
+      if (!isVoiceConsented) return;
       await stop();
       await evaluateSpeech();
     },
     isRecording,
-    disabled: showPermissionModal
+    disabled: showPermissionModal || showVoiceConsentModal
   });
 
   const playAudio = (text, rate = 1.0) => {
@@ -112,6 +128,10 @@ export default function PracticeStudioView() {
       await stop();
       await evaluateSpeech();
     } else {
+      if (!isVoiceConsented) {
+        setShowVoiceConsentModal(true);
+        return;
+      }
       await start();
     }
   };
@@ -542,6 +562,20 @@ export default function PracticeStudioView() {
         isOpen={showPermissionModal}
         onClose={() => setShowPermissionModal(false)}
         onPermissionGranted={start}
+      />
+
+      {/* LEG-101 Voice Biometric Consent Modal (Nghị định 13/2023/NĐ-CP) */}
+      <VoiceBiometricConsentModal
+        isOpen={showVoiceConsentModal}
+        onClose={() => setShowVoiceConsentModal(false)}
+        onConsentGranted={() => {
+          setIsVoiceConsented(true);
+          try {
+            localStorage.setItem('vietphonics_voice_biometric_consented', 'true');
+          } catch {}
+          start();
+        }}
+        accountId="default_user"
       />
     </div>
   );
