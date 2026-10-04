@@ -1458,6 +1458,21 @@ export function initAppDatabase() {
     `).run('ps_arch_001', 'usr_arch_default', '/ks/', 92.5, 340, 'https://r2.vietphonics.vn/audio/sample_ks.wav', now);
   }
 
+  // Seed default_user as Pro VIP with unlimited subscription for seamless testing
+  const existingDefaultUser = db.prepare("SELECT * FROM arch_users WHERE id = 'default_user'").get();
+  if (!existingDefaultUser) {
+    const now = new Date().toISOString();
+    db.prepare(`
+      INSERT OR REPLACE INTO arch_users (id, email, full_name, dialect_preference, tier, created_at, updated_at)
+      VALUES (?, ?, ?, ?, ?, ?, ?)
+    `).run('default_user', 'pro_tester@vietphonics.vn', 'Đặng Vương (Pro VIP Tester)', 'northern', 'pro', now, now);
+
+    db.prepare(`
+      INSERT OR REPLACE INTO arch_subscriptions (id, user_id, plan_code, status, current_period_start, current_period_end, created_at)
+      VALUES (?, ?, ?, ?, ?, ?, ?)
+    `).run('sub_default_user_pro', 'default_user', 'pro_unlimited_vip', 'active', now, '2028-12-31T23:59:59.000Z', now);
+  }
+
   // Seed default 30-day skill progress history for demo user (PROG-101)
   const existingHistory = db.prepare("SELECT COUNT(*) as cnt FROM daily_skill_progress_history WHERE account_id = 'default_user'").get();
   if (existingHistory.cnt === 0) {
