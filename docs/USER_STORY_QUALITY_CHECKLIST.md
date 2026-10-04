@@ -350,32 +350,33 @@ Then   API trả 429 kèm { code: "QUOTA_EXCEEDED", resetAt }, UI mở PaywallMo
 
 ## 15. Danh sách story BẮT BUỘC cho web trả phí
 
-Đối chiếu với 54 story hiện có. ✅ = đã có story, ⚠️ = có nhưng thiếu phần, ❌ = **chưa có story, cần viết thêm**.
+Đối chiếu với 72 story trong backlog (54 story ban đầu + 18 story bổ sung). ✅ = đã có story hoàn chỉnh trong backlog.
 
-| Nhóm | Story cần có | Hiện trạng |
+| Nhóm | Story cần có | Hiện trạng & Story ID |
 | :--- | :--- | :--- |
-| **Tài khoản** | Đăng ký email + xác minh | ⚠️ gộp trong USER-101, chưa có AC xác minh email |
-| | Đăng nhập Google | ⚠️ USER-101 |
-| | Quên / đặt lại mật khẩu | ❌ |
-| | Quản lý hồ sơ & thiết bị đăng nhập | ❌ |
-| | Xoá tài khoản & xuất dữ liệu (NĐ 13/2023) | ❌ |
-| **Thanh toán** | Bảng giá, chu kỳ | ✅ PAY-103 |
-| | VietQR + webhook + đối soát | ✅ PAY-101, ARCH-103 |
-| | Ví / thẻ (MoMo, VNPay, Stripe) | ❌ |
-| | Lịch sử giao dịch, hoá đơn, hoàn tiền | ❌ |
-| | Hoá đơn điện tử | ❌ |
-| | Mã giảm giá / dùng thử | ❌ |
-| **Progress** | Dashboard & radar kỹ năng | ✅ USER-101 |
-| | Biểu đồ tiến độ theo thời gian | ⚠️ có `ProgressAnalyticsView.jsx` nhưng chưa có story riêng |
-| | So sánh trước / sau | ❌ |
-| | Báo cáo tuần | ❌ |
-| **Vận hành** | Trang admin (user, doanh thu, nội dung) | ❌ |
-| | Giám sát & cảnh báo | ❌ |
-| | CMS quản lý bài học / câu luyện | ❌ |
-| | Hệ thống thông báo (email / push) | ❌ |
-| **Pháp lý** | Điều khoản, chính sách, consent thu âm | ❌ |
-| **Chất lượng AI** | Bộ dữ liệu đánh giá giọng Việt & báo cáo độ chính xác | ❌ |
-| **Scale** | Load test 1,500 phiên đồng thời | ❌ |
+| **Tài khoản** | Đăng ký email + xác minh | ✅ **USER-106** (Xác minh OTP/Magic link, Argon2id, chống bot/disposable mail) |
+| | Đăng nhập Google | ✅ **USER-101** (Google OAuth, JWT HttpOnly, CSRF token) |
+| | Quên / đặt lại mật khẩu | ✅ **USER-103** (Token 1 lần 30 phút, SHA-256, thu hồi mọi phiên) |
+| | Quản lý hồ sơ & thiết bị đăng nhập | ✅ **USER-104** (Tối đa 2 phiên đồng thời, thu hồi từ xa, profile L1) |
+| | Xoá tài khoản & xuất dữ liệu (NĐ 13/2023) | ✅ **USER-105** (Quyền lãng quên, xuất file ZIP JSON, ân hạn 7 ngày) |
+| **Thanh toán** | Bảng giá, chu kỳ | ✅ **PAY-103** (Tháng 299k, Năm 1.499k, Trọn đời, so sánh ROI) |
+| | VietQR + webhook + đối soát | ✅ **PAY-101**, **ARCH-103** (Tự động đối soát, kích hoạt Pro ≤ 3s) |
+| | Ví / thẻ (MoMo, VNPay, Stripe) | ✅ **PAY-105** (Đa kênh MoMo, ZaloPay, VNPay, Stripe cards, HMAC-SHA256) |
+| | Lịch sử giao dịch, hoá đơn, hoàn tiền | ✅ **PAY-106** (Bảng giao dịch, tải biên lai PDF, tự yêu cầu hoàn tiền 7 ngày) |
+| | Hoá đơn điện tử (NĐ 123/2020) | ✅ **PAY-107** (Xuất HĐĐT tự động qua MISA/VNPT/Viettel, xác thực MST) |
+| | Mã giảm giá / dùng thử 7 ngày | ✅ **PAY-108** (Dùng thử 7 ngày không cần thẻ, engine coupon, auto-downgrade) |
+| **Progress** | Dashboard & radar kỹ năng | ✅ **USER-101** (Radar 5 trục ngữ âm, CEFR, IELTS ước tính) |
+| | Biểu đồ tiến độ theo thời gian | ✅ **PROG-101** (Chuỗi thời gian 7/30/90 ngày, daily velocity, heatmap) |
+| | So sánh trước / sau | ✅ **PROG-102** (Đối chiếu audio Day 1 vs Day 30, spectrogram delta) |
+| | Báo cáo tuần tự động | ✅ **PROG-103** (Bản tin email tuần, top 3 âm yếu, deep-link 1-click) |
+| **Vận hành** | Trang admin (user, doanh thu, nội dung) | ✅ **OPS-101** (Bảng điều khiển MRR, Churn rate, tra cứu user, quota override) |
+| | Giám sát & cảnh báo | ✅ **OPS-102** (APM Sentry, Prometheus P95, bot Telegram/Slack On-Call) |
+| | CMS quản lý bài học / câu luyện | ✅ **OPS-103** (Quản trị câu luyện, kiểm tra cú pháp IPA, upload audio R2) |
+| | Hệ thống thông báo (email / push) | ✅ **OPS-104** (Trung tâm thông báo in-app, nhắc nhở streak 20:30, email) |
+| **Pháp lý** | Điều khoản, chính sách, consent thu âm | ✅ **LEG-101** (ToS, Privacy Policy NĐ 13/2023, modal chấp thuận mic & giọng nói) |
+| **Chất lượng AI** | Bộ dữ liệu đánh giá giọng Việt & báo cáo độ chính xác | ✅ **AIQ-101** (200 mẫu 3 miền, dán nhãn 2 chuyên gia, tương quan r ≥ 0.85) |
+| **Scale** | Load test 1,500 phiên đồng thời | ✅ **SCL-101** (Kịch bản k6 1,500 VUs, P95 < 2s, 5xx < 0.5%, RAM/CPU ổn định) |
+
 
 ---
 

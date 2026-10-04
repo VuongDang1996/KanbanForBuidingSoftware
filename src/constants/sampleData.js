@@ -177,6 +177,13 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
       "description": "Next-gen features from 2025-2026 CAPT research & competitors (ELSA, BoldVoice, Speechace): Golden Speaker voice cloning, webcam lip tracking, live F1/F2 vowel chart, LLM articulatory coach with memory, connected speech lab, intelligibility scoring.",
       "color": "violet",
       "order": 9
+    },
+    {
+      "id": "epic-operations-compliance",
+      "title": "Operations, Admin CMS & Legal Compliance",
+      "description": "Bảng điều khiển quản trị (MRR, Churn rate, active Pro count), CMS bài học, giám sát APM Sentry/Prometheus, và tuân thủ pháp lý Nghị định 13/2023/NĐ-CP & Nghị định 123/2020/NĐ-CP.",
+      "color": "cyan",
+      "order": 10
     }
   ],
   "stories": [
@@ -3932,6 +3939,1491 @@ export const VIETNAMESE_PRONUNCIATION_PROJECT = {
       ],
       "notes": "### 🎯 FULLSTACK QUALITY AUDIT & IMPLEMENTATION EVIDENCE (12/12 GATES PASS)\n- **Status**: Completed & Verified ✅\n- **Pure Backend Architecture**: Automated 3-Day Grace Period State Machine, Daily 08:00 Expiring Subscription Alerts (10% renewal promo), Overdue Free-Tier Downgrade & Immutable Audit Trail.\n- **Grace Period Engine**: `vietphonics-app/src/lib/billing/subscriptionGracePeriod.js` (State transition evaluator: active -> grace_period -> expired, expiring alert detector (<3 days, promo `RENEW10` 10%), automated cron scanner).\n- **Database Tables**: `subscription_audit_logs` & `subscription_notifications` in SQLite `server/db.js` with WAL mode.\n- **Backend API**: `POST /api/v1/billing/subscription/check-expiring-cron`, `GET /api/v1/billing/subscription/status/:userId`, `GET /api/v1/billing/subscription/audit-logs/:userId` in `server/index.js`.\n- **Automated Tests**: `vietphonics-app/tests/subscription_grace_period.test.js` (7/7 tests passing covering steady state, grace transition, overdue downgrade, audit logging, and Express endpoints).",
       "createdAt": "2026-10-03T08:34:10.829Z"
+    },
+    {
+      "id": "USER-106",
+      "epicId": "epic-backend-infrastructure",
+      "title": "Email Sign-Up & Verification: Đăng Ký Bằng Email & Xác Minh Kích Hoạt Tài Khoản",
+      "persona": "Người học Việt Nam không dùng tài khoản Google (hoặc muốn tách email học tập riêng)",
+      "action": "đăng ký tài khoản bằng email + mật khẩu và xác minh email qua liên kết/mã OTP trước khi dùng các tính năng trả phí",
+      "value": "có tài khoản an toàn, khôi phục được, và hệ thống đảm bảo mỗi email là thật để gửi hoá đơn, báo cáo tuần và thông báo bảo mật",
+      "priority": "must",
+      "status": "backlog",
+      "size": "L",
+      "points": 8,
+      "acceptanceCriteria": [
+        {
+          "id": "ac-user-106-signup-happy",
+          "given": "Khách truy cập nhập email hợp lệ, mật khẩu ≥ 10 ký tự (có chữ và số) và tick đồng ý Điều khoản (LEG-101)",
+          "when": "Bấm \"Tạo tài khoản\"",
+          "then": "Server tạo user trạng thái `pending_verification`, băm mật khẩu bằng Argon2id (m=64MB, t=3) hoặc bcrypt cost ≥ 12, gửi email xác minh trong ≤ 60 giây và hiển thị màn hình \"Kiểm tra hộp thư\" bằng tiếng Việt.",
+          "completed": false
+        },
+        {
+          "id": "ac-user-106-verify-link",
+          "given": "Người dùng mở liên kết xác minh trong email",
+          "when": "Token còn hạn (≤ 24 giờ) và chưa được dùng",
+          "then": "Tài khoản chuyển sang `active`, token bị vô hiệu hoá (single-use), người dùng được đăng nhập và chuyển thẳng tới bài chẩn đoán 3 phút (ELSA-102).",
+          "completed": false
+        },
+        {
+          "id": "ac-user-106-expired",
+          "given": "Liên kết đã hết hạn hoặc đã dùng",
+          "when": "Người dùng mở liên kết",
+          "then": "Hiển thị \"Liên kết đã hết hạn\" kèm nút \"Gửi lại email\"; gửi lại bị giới hạn 3 lần/giờ/email.",
+          "completed": false
+        },
+        {
+          "id": "ac-user-106-duplicate",
+          "given": "Email đã tồn tại trong hệ thống",
+          "when": "Có người đăng ký lại bằng email đó",
+          "then": "Giao diện trả cùng một thông báo trung tính như khi thành công (chống dò email — user enumeration); chủ email nhận thư \"Bạn đã có tài khoản, đăng nhập tại đây\".",
+          "completed": false
+        },
+        {
+          "id": "ac-user-106-unverified-gate",
+          "given": "Tài khoản chưa xác minh",
+          "when": "Người dùng cố mở trang thanh toán Pro",
+          "then": "API trả 403 `EMAIL_NOT_VERIFIED`; UI hiện banner yêu cầu xác minh. Free tier vẫn được luyện tối đa quota Free.",
+          "completed": false
+        },
+        {
+          "id": "ac-user-106-abuse",
+          "given": "Bot gửi hàng loạt yêu cầu đăng ký",
+          "when": "Vượt 5 lần đăng ký/IP/10 phút",
+          "then": "Server trả 429 và yêu cầu Cloudflare Turnstile/CAPTCHA; email dùng một lần (disposable) bị từ chối theo blocklist.",
+          "completed": false
+        }
+      ],
+      "technicalTasks": [
+        {
+          "id": "t-user-106-db",
+          "title": "Thêm cột `email_verified_at`, `status` vào `users`; bảng `email_verification_tokens` (token_hash SHA-256, expires_at, used_at)",
+          "category": "Database",
+          "completed": false
+        },
+        {
+          "id": "t-user-106-api",
+          "title": "API POST /api/v1/auth/register, POST /api/v1/auth/verify-email, POST /api/v1/auth/resend-verification",
+          "category": "Backend",
+          "completed": false
+        },
+        {
+          "id": "t-user-106-mail",
+          "title": "Tích hợp nhà cung cấp email (Resend/SES) + template tiếng Việt, cấu hình SPF/DKIM/DMARC",
+          "category": "DevOps",
+          "completed": false
+        },
+        {
+          "id": "t-user-106-fe",
+          "title": "Form đăng ký có kiểm tra độ mạnh mật khẩu, màn hình \"Kiểm tra hộp thư\", trạng thái lỗi/hết hạn",
+          "category": "Frontend",
+          "completed": false
+        },
+        {
+          "id": "t-user-106-qa",
+          "title": "Integration test: đăng ký → xác minh → token tái sử dụng bị từ chối; test enumeration & rate limit",
+          "category": "QA",
+          "completed": false
+        }
+      ],
+      "notes": "### 📋 Gate applicability\n- **Áp dụng**: A, B, C, D, E, F (🔴 F1, F3, F7, F8), K, L (L6 consent khi đăng ký)\n- **Bổ sung cho**: USER-101 (đăng nhập Google) — checklist Mục 15 đánh dấu ⚠️ do thiếu AC xác minh email.\n- **Phụ thuộc**: LEG-101 (checkbox đồng ý điều khoản), OPS-104 (gửi email).\n- **Definition of Done**: Test tích hợp xanh trên CI, email đến hộp thư Gmail/Outlook không vào spam.",
+      "createdAt": "2026-10-04T06:58:45.214Z"
+    },
+    {
+      "id": "USER-103",
+      "epicId": "epic-backend-infrastructure",
+      "title": "Forgot & Reset Password: Quên Mật Khẩu & Đặt Lại An Toàn Qua Email",
+      "persona": "Học viên trả phí quên mật khẩu khi chuyển sang thiết bị mới",
+      "action": "yêu cầu liên kết đặt lại mật khẩu qua email và đặt mật khẩu mới",
+      "value": "lấy lại quyền truy cập trong vòng 2 phút mà không cần liên hệ hỗ trợ, đồng thời không mở ra lỗ hổng chiếm tài khoản",
+      "priority": "must",
+      "status": "backlog",
+      "size": "M",
+      "points": 5,
+      "acceptanceCriteria": [
+        {
+          "id": "ac-user-103-request",
+          "given": "Người dùng nhập email ở màn \"Quên mật khẩu\"",
+          "when": "Bấm \"Gửi liên kết\"",
+          "then": "Luôn hiện cùng thông báo \"Nếu email tồn tại, bạn sẽ nhận được liên kết\" (chống dò email); nếu email tồn tại, gửi liên kết trong ≤ 60 giây.",
+          "completed": false
+        },
+        {
+          "id": "ac-user-103-token",
+          "given": "Liên kết đặt lại được sinh ra",
+          "when": "Server lưu token",
+          "then": "Token ngẫu nhiên ≥ 32 byte, chỉ lưu bản băm SHA-256, hết hạn sau 30 phút và chỉ dùng được 1 lần; yêu cầu mới làm vô hiệu token cũ.",
+          "completed": false
+        },
+        {
+          "id": "ac-user-103-reset",
+          "given": "Người dùng mở liên kết còn hạn và nhập mật khẩu mới hợp lệ",
+          "when": "Bấm \"Đặt lại\"",
+          "then": "Mật khẩu được băm lại bằng Argon2id/bcrypt, **toàn bộ phiên và refresh token khác bị thu hồi**, gửi email thông báo \"Mật khẩu của bạn vừa được thay đổi\" kèm liên kết khoá tài khoản nếu không phải bạn.",
+          "completed": false
+        },
+        {
+          "id": "ac-user-103-throttle",
+          "given": "Kẻ tấn công spam yêu cầu đặt lại",
+          "when": "Vượt 3 yêu cầu/email/giờ hoặc 10 yêu cầu/IP/giờ",
+          "then": "Server trả 429 với `Retry-After`, không gửi thêm email, ghi log bảo mật.",
+          "completed": false
+        },
+        {
+          "id": "ac-user-103-google-only",
+          "given": "Tài khoản chỉ đăng nhập bằng Google (không có mật khẩu)",
+          "when": "Yêu cầu đặt lại mật khẩu",
+          "then": "Email gửi đi hướng dẫn \"Tài khoản của bạn đăng nhập bằng Google\" thay vì liên kết đặt lại.",
+          "completed": false
+        }
+      ],
+      "technicalTasks": [
+        {
+          "id": "t-user-103-db",
+          "title": "Bảng `password_reset_tokens` (user_id, token_hash, expires_at, used_at, ip)",
+          "category": "Database",
+          "completed": false
+        },
+        {
+          "id": "t-user-103-api",
+          "title": "API POST /api/v1/auth/forgot-password và POST /api/v1/auth/reset-password; thu hồi session sau reset",
+          "category": "Backend",
+          "completed": false
+        },
+        {
+          "id": "t-user-103-fe",
+          "title": "Màn \"Quên mật khẩu\" + \"Đặt mật khẩu mới\" với đồng hồ đếm hết hạn & trạng thái lỗi tiếng Việt",
+          "category": "Frontend",
+          "completed": false
+        },
+        {
+          "id": "t-user-103-qa",
+          "title": "Test: token hết hạn, token dùng lại, token cũ sau khi yêu cầu mới, session bị thu hồi",
+          "category": "QA",
+          "completed": false
+        }
+      ],
+      "notes": "### 📋 Gate applicability\n- **Áp dụng**: A, B, C, D, E, F (🔴 F3, F6, F7, F8), K (K6 luồng lỗi)\n- **Phụ thuộc**: USER-106 (tài khoản email), OPS-104 (gửi email).",
+      "createdAt": "2026-10-04T06:58:45.214Z"
+    },
+    {
+      "id": "USER-104",
+      "epicId": "epic-backend-infrastructure",
+      "title": "Profile & Active Device Management: Quản Lý Hồ Sơ & Thiết Bị Đăng Nhập (Tối Đa 2 Phiên Đồng Thời)",
+      "persona": "Học viên Pro dùng cả điện thoại và laptop, lo ngại bị chia sẻ tài khoản trái phép",
+      "action": "chỉnh sửa hồ sơ (tên, vùng miền giọng, mục tiêu học) và xem/đăng xuất từ xa các thiết bị đang đăng nhập",
+      "value": "kiểm soát bảo mật tài khoản của mình, đồng thời giúp doanh nghiệp hạn chế chia sẻ tài khoản Pro làm thất thoát doanh thu",
+      "priority": "must",
+      "status": "backlog",
+      "size": "L",
+      "points": 8,
+      "acceptanceCriteria": [
+        {
+          "id": "ac-user-104-edit-profile",
+          "given": "Học viên mở trang \"Hồ sơ\"",
+          "when": "Thay đổi tên hiển thị, vùng miền (Bắc/Trung/Nam), mục tiêu (IELTS/Công việc/Giao tiếp) và lưu",
+          "then": "Server validate (tên 2–50 ký tự, enum hợp lệ), lưu trong ≤ 200ms P95; thay đổi vùng miền kích hoạt hiệu chỉnh lại hồ sơ L1 (ELSA-102).",
+          "completed": false
+        },
+        {
+          "id": "ac-user-104-device-list",
+          "given": "Học viên mở tab \"Thiết bị\"",
+          "when": "Trang tải xong",
+          "then": "Hiển thị danh sách phiên: loại thiết bị, trình duyệt, thành phố ước tính (theo IP), thời điểm hoạt động cuối; phiên hiện tại được đánh dấu \"Thiết bị này\".",
+          "completed": false
+        },
+        {
+          "id": "ac-user-104-revoke",
+          "given": "Có phiên lạ trong danh sách",
+          "when": "Bấm \"Đăng xuất thiết bị này\"",
+          "then": "Refresh token của phiên bị thu hồi ngay; access token hết hiệu lực trong ≤ 15 phút (TTL) hoặc ngay lập tức nếu kiểm tra denylist Redis.",
+          "completed": false
+        },
+        {
+          "id": "ac-user-104-limit-pro",
+          "given": "Tài khoản đã có 2 phiên đang hoạt động (Free: 1 thiết bị luyện cùng lúc, Pro: 2)",
+          "when": "Đăng nhập trên thiết bị thứ 3",
+          "then": "Hiển thị hộp thoại chọn phiên cần đăng xuất; không tự động huỷ phiên cũ khi chưa có xác nhận.",
+          "completed": false
+        },
+        {
+          "id": "ac-user-104-change-email",
+          "given": "Học viên đổi email",
+          "when": "Gửi yêu cầu đổi",
+          "then": "Yêu cầu nhập lại mật khẩu, gửi xác minh tới email mới và thông báo tới email cũ; email chỉ đổi sau khi xác minh.",
+          "completed": false
+        }
+      ],
+      "technicalTasks": [
+        {
+          "id": "t-user-104-db",
+          "title": "Bảng `user_sessions` (id, user_id, refresh_token_hash, user_agent, ip, last_seen_at, revoked_at) + index (user_id, revoked_at)",
+          "category": "Database",
+          "completed": false
+        },
+        {
+          "id": "t-user-104-api",
+          "title": "API GET/PATCH /api/v1/me, GET /api/v1/me/sessions, DELETE /api/v1/me/sessions/:id",
+          "category": "Backend",
+          "completed": false
+        },
+        {
+          "id": "t-user-104-limit",
+          "title": "Middleware kiểm tra số phiên theo gói (entitlement từ subscription, không tin client)",
+          "category": "Backend",
+          "completed": false
+        },
+        {
+          "id": "t-user-104-fe",
+          "title": "Trang Hồ sơ + tab Thiết bị, hộp thoại giới hạn phiên",
+          "category": "Frontend",
+          "completed": false
+        },
+        {
+          "id": "t-user-104-qa",
+          "title": "Test: đăng nhập thiết bị thứ 3, thu hồi phiên, token bị thu hồi gọi API trả 401",
+          "category": "QA",
+          "completed": false
+        }
+      ],
+      "notes": "### 📋 Gate applicability\n- **Áp dụng**: A–F, G (G12 entitlement phía server), K\n- **Rủi ro**: Định vị IP chỉ mang tính ước tính — ghi rõ \"Vị trí gần đúng\" trên UI.",
+      "createdAt": "2026-10-04T06:58:45.214Z"
+    },
+    {
+      "id": "USER-105",
+      "epicId": "epic-backend-infrastructure",
+      "title": "Account Deletion & Personal Data Export (Decree 13/2023/NĐ-CP): Xoá Tài Khoản & Xuất Dữ Liệu Cá Nhân",
+      "persona": "Học viên muốn thực hiện quyền của chủ thể dữ liệu theo Nghị định 13/2023/NĐ-CP",
+      "action": "tải về toàn bộ dữ liệu cá nhân của mình và yêu cầu xoá vĩnh viễn tài khoản, bản ghi âm giọng nói",
+      "value": "tin tưởng rằng giọng nói và dữ liệu học tập của mình được tôn trọng; doanh nghiệp tuân thủ pháp luật và tránh rủi ro xử phạt",
+      "priority": "must",
+      "status": "backlog",
+      "size": "L",
+      "points": 8,
+      "acceptanceCriteria": [
+        {
+          "id": "ac-user-105-export",
+          "given": "Học viên bấm \"Tải dữ liệu của tôi\" ở trang Quyền riêng tư",
+          "when": "Yêu cầu được xử lý bất đồng bộ",
+          "then": "Trong ≤ 72 giờ (mục tiêu ≤ 15 phút) người dùng nhận email kèm liên kết tải file ZIP gồm JSON (hồ sơ, lịch sử điểm, giao dịch, consent) + bản ghi âm còn lưu; liên kết ký (signed URL) hết hạn sau 24 giờ.",
+          "completed": false
+        },
+        {
+          "id": "ac-user-105-delete-confirm",
+          "given": "Học viên bấm \"Xoá tài khoản\"",
+          "when": "Nhập lại mật khẩu (hoặc xác thực Google lại) và gõ chữ \"XOÁ\"",
+          "then": "Tài khoản chuyển sang `pending_deletion`, đăng xuất mọi thiết bị, gửi email xác nhận với liên kết \"Huỷ yêu cầu xoá\" có hiệu lực 7 ngày.",
+          "completed": false
+        },
+        {
+          "id": "ac-user-105-purge",
+          "given": "Hết 7 ngày ân hạn mà không huỷ",
+          "when": "Job xoá chạy",
+          "then": "Xoá vĩnh viễn hồ sơ, điểm âm vị, bản ghi âm trên R2/S3, voice clone (ADV-101); chỉ giữ dữ liệu giao dịch đã ẩn danh hoá theo nghĩa vụ kế toán/thuế (≥ 10 năm, không gắn danh tính).",
+          "completed": false
+        },
+        {
+          "id": "ac-user-105-active-sub",
+          "given": "Học viên còn gói Pro đang hiệu lực",
+          "when": "Yêu cầu xoá tài khoản",
+          "then": "UI cảnh báo rõ số ngày Pro còn lại sẽ mất và chính sách hoàn tiền (PAY-106); tự động huỷ gia hạn.",
+          "completed": false
+        },
+        {
+          "id": "ac-user-105-audit",
+          "given": "Bất kỳ yêu cầu export/xoá nào",
+          "when": "Được tạo hoặc hoàn tất",
+          "then": "Ghi audit log (ai, khi nào, loại yêu cầu, kết quả) bất biến, giữ tối thiểu 2 năm để chứng minh tuân thủ.",
+          "completed": false
+        }
+      ],
+      "technicalTasks": [
+        {
+          "id": "t-user-105-db",
+          "title": "Bảng `data_requests` (type export/delete, status, requested_at, completed_at) + `audit_log`",
+          "category": "Database",
+          "completed": false
+        },
+        {
+          "id": "t-user-105-worker",
+          "title": "Worker xuất dữ liệu ZIP & worker xoá vĩnh viễn (DB + object storage + backup retention policy)",
+          "category": "Backend",
+          "completed": false
+        },
+        {
+          "id": "t-user-105-api",
+          "title": "API POST /api/v1/me/export, POST /api/v1/me/delete, POST /api/v1/me/delete/cancel",
+          "category": "Backend",
+          "completed": false
+        },
+        {
+          "id": "t-user-105-fe",
+          "title": "Trang \"Quyền riêng tư & Dữ liệu\" với luồng xác nhận 2 bước",
+          "category": "Frontend",
+          "completed": false
+        },
+        {
+          "id": "t-user-105-qa",
+          "title": "Test: sau purge không còn bản ghi gắn user_id ở mọi bảng & bucket; export chứa đủ dữ liệu",
+          "category": "QA",
+          "completed": false
+        }
+      ],
+      "notes": "### 📋 Gate applicability\n- **Áp dụng**: A–F, K, **L (🔴 L8 — NĐ 13/2023)**\n- **Lưu ý pháp lý**: Cần luật sư/DPO rà soát thời hạn lưu dữ liệu giao dịch và nội dung thông báo trước khi phát hành.\n- **Phụ thuộc**: LEG-101, PAY-106, ARCH-104 (lưu trữ audio).",
+      "createdAt": "2026-10-04T06:58:45.214Z"
+    },
+    {
+      "id": "PAY-105",
+      "epicId": "epic-backend-infrastructure",
+      "title": "E-Wallet & Card Payments (MoMo, ZaloPay, VNPay, Stripe): Thanh Toán Qua Ví Điện Tử & Thẻ",
+      "persona": "Người học muốn trả phí Pro bằng ví MoMo/ZaloPay hoặc thẻ Visa/Mastercard thay vì chuyển khoản VietQR",
+      "action": "chọn phương thức thanh toán ưa thích tại trang checkout và hoàn tất giao dịch trong một luồng liền mạch",
+      "value": "giảm tỉ lệ bỏ giỏ ở bước thanh toán; doanh nghiệp tăng chuyển đổi và hỗ trợ gia hạn tự động bằng thẻ",
+      "priority": "should",
+      "status": "backlog",
+      "size": "XL",
+      "points": 13,
+      "acceptanceCriteria": [
+        {
+          "id": "ac-pay-105-methods",
+          "given": "Người dùng ở trang checkout gói Pro",
+          "when": "Trang tải xong",
+          "then": "Hiển thị VietQR (PAY-101), MoMo, ZaloPay, VNPay, Thẻ quốc tế (Stripe); giá luôn hiển thị bằng VND đã gồm VAT, giống hệt nhau giữa các kênh.",
+          "completed": false
+        },
+        {
+          "id": "ac-pay-105-redirect",
+          "given": "Người dùng chọn MoMo/VNPay/ZaloPay",
+          "when": "Bấm \"Thanh toán\"",
+          "then": "Server tạo order với `order_id` duy nhất, ký request bằng HMAC-SHA256 theo tài liệu cổng, chuyển hướng tới cổng; số tiền lấy từ bảng giá phía server, **không** nhận từ client.",
+          "completed": false
+        },
+        {
+          "id": "ac-pay-105-ipn",
+          "given": "Cổng thanh toán gọi IPN/webhook",
+          "when": "Chữ ký hợp lệ và số tiền khớp order",
+          "then": "Kích hoạt Pro trong ≤ 5 giây, idempotent theo `transaction_id` (IPN gửi trùng không cộng ngày Pro lần 2); chữ ký sai → 400 và log cảnh báo.",
+          "completed": false
+        },
+        {
+          "id": "ac-pay-105-return-pending",
+          "given": "Người dùng quay lại trang return trước khi IPN đến",
+          "when": "Trang return hiển thị",
+          "then": "Hiện trạng thái \"Đang xác nhận thanh toán\" và polling tối đa 2 phút; **không** kích hoạt Pro dựa trên query string của return URL.",
+          "completed": false
+        },
+        {
+          "id": "ac-pay-105-stripe-recurring",
+          "given": "Người dùng trả bằng thẻ qua Stripe",
+          "when": "Chọn gia hạn tự động",
+          "then": "Tạo Stripe Subscription, hỗ trợ 3-D Secure; webhook `invoice.payment_failed` kích hoạt grace period 3 ngày và email nhắc.",
+          "completed": false
+        },
+        {
+          "id": "ac-pay-105-failure",
+          "given": "Giao dịch thất bại/huỷ",
+          "when": "Cổng trả mã lỗi",
+          "then": "Hiển thị thông báo tiếng Việt dễ hiểu theo từng mã lỗi phổ biến và nút \"Thử phương thức khác\"; order chuyển `failed`.",
+          "completed": false
+        }
+      ],
+      "technicalTasks": [
+        {
+          "id": "t-pay-105-adapter",
+          "title": "Lớp PaymentProvider adapter thống nhất (createOrder, verifyWebhook, refund) cho MoMo/ZaloPay/VNPay/Stripe",
+          "category": "Backend",
+          "completed": false
+        },
+        {
+          "id": "t-pay-105-db",
+          "title": "Bảng `payment_orders`, `payment_events` (raw payload, signature_valid, processed_at) với unique (provider, transaction_id)",
+          "category": "Database",
+          "completed": false
+        },
+        {
+          "id": "t-pay-105-fe",
+          "title": "UI chọn phương thức + trang trạng thái thanh toán",
+          "category": "Frontend",
+          "completed": false
+        },
+        {
+          "id": "t-pay-105-secrets",
+          "title": "Quản lý secret key từng cổng theo môi trường (sandbox/production)",
+          "category": "DevOps",
+          "completed": false
+        },
+        {
+          "id": "t-pay-105-qa",
+          "title": "Integration test với sandbox từng cổng: thành công, thất bại, IPN trùng, chữ ký sai, sai số tiền",
+          "category": "QA",
+          "completed": false
+        }
+      ],
+      "notes": "### 📋 Gate applicability\n- **Áp dụng**: A–F, **G (🔴 G2, G3, G4, G5, G12)**, J, K (K6 webhook trùng), L\n- **Phụ thuộc**: PAY-101, ARCH-103 (reconciler đối soát), PAY-107 (hoá đơn điện tử sau thanh toán).\n- **Ghi chú**: Cần hợp đồng merchant với từng cổng — tiến độ phụ thuộc thủ tục pháp lý doanh nghiệp.",
+      "createdAt": "2026-10-04T06:58:45.214Z"
+    },
+    {
+      "id": "PAY-106",
+      "epicId": "epic-backend-infrastructure",
+      "title": "Billing History, Receipts & Refund Requests: Lịch Sử Giao Dịch, Biên Lai PDF & Yêu Cầu Hoàn Tiền",
+      "persona": "Học viên Pro cần xem lại các khoản đã trả và muốn được hoàn tiền nếu không hài lòng trong 7 ngày đầu",
+      "action": "xem lịch sử giao dịch, tải biên lai PDF và gửi yêu cầu hoàn tiền theo chính sách",
+      "value": "minh bạch tài chính tạo niềm tin để trả phí; doanh nghiệp giảm tranh chấp/chargeback và khối lượng ticket hỗ trợ",
+      "priority": "must",
+      "status": "backlog",
+      "size": "L",
+      "points": 8,
+      "acceptanceCriteria": [
+        {
+          "id": "ac-pay-106-history",
+          "given": "Học viên mở \"Thanh toán & Hoá đơn\"",
+          "when": "Trang tải xong",
+          "then": "Hiển thị bảng giao dịch: ngày, gói, phương thức, số tiền VND, trạng thái (thành công/thất bại/đã hoàn), phân trang 20 dòng; chỉ thấy giao dịch của chính mình (kiểm tra quyền phía server).",
+          "completed": false
+        },
+        {
+          "id": "ac-pay-106-receipt",
+          "given": "Giao dịch thành công",
+          "when": "Bấm \"Tải biên lai\"",
+          "then": "Sinh PDF tiếng Việt có mã giao dịch, thông tin người bán, VAT, trong ≤ 3 giây; nếu đã có hoá đơn điện tử (PAY-107) thì hiển thị thêm liên kết tra cứu.",
+          "completed": false
+        },
+        {
+          "id": "ac-pay-106-refund-eligible",
+          "given": "Giao dịch đầu tiên trong ≤ 7 ngày và đã dùng < 30 lượt chấm điểm Pro",
+          "when": "Học viên gửi yêu cầu hoàn tiền kèm lý do",
+          "then": "Yêu cầu tự động duyệt, gọi API refund của cổng (hoặc tạo lệnh chuyển khoản thủ công cho VietQR), thu hồi Pro ngay khi hoàn tất, gửi email xác nhận.",
+          "completed": false
+        },
+        {
+          "id": "ac-pay-106-refund-review",
+          "given": "Yêu cầu không thoả điều kiện tự động",
+          "when": "Gửi yêu cầu",
+          "then": "Chuyển sang hàng chờ admin (OPS-101) với SLA phản hồi ≤ 2 ngày làm việc; người dùng thấy trạng thái \"Đang xem xét\".",
+          "completed": false
+        },
+        {
+          "id": "ac-pay-106-no-double",
+          "given": "Một giao dịch đã được hoàn",
+          "when": "Gửi yêu cầu hoàn lần nữa",
+          "then": "Server từ chối với lỗi `ALREADY_REFUNDED`; mỗi giao dịch chỉ có tối đa 1 refund (ràng buộc unique DB).",
+          "completed": false
+        }
+      ],
+      "technicalTasks": [
+        {
+          "id": "t-pay-106-db",
+          "title": "Bảng `refund_requests` (payment_id unique, reason, status, decided_by, provider_refund_id)",
+          "category": "Database",
+          "completed": false
+        },
+        {
+          "id": "t-pay-106-api",
+          "title": "API GET /api/v1/billing/transactions, GET /api/v1/billing/transactions/:id/receipt.pdf, POST /api/v1/billing/refunds",
+          "category": "Backend",
+          "completed": false
+        },
+        {
+          "id": "t-pay-106-pdf",
+          "title": "Dịch vụ render PDF biên lai (font tiếng Việt Unicode đầy đủ)",
+          "category": "Backend",
+          "completed": false
+        },
+        {
+          "id": "t-pay-106-fe",
+          "title": "Trang Thanh toán & Hoá đơn + form yêu cầu hoàn tiền",
+          "category": "Frontend",
+          "completed": false
+        },
+        {
+          "id": "t-pay-106-qa",
+          "title": "Unit test logic đủ điều kiện hoàn tiền; integration test refund sandbox; test IDOR (xem giao dịch người khác)",
+          "category": "QA",
+          "completed": false
+        }
+      ],
+      "notes": "### 📋 Gate applicability\n- **Áp dụng**: A–F, **G (G7 hoàn tiền, G9 lịch sử)**, K, L (L6 chính sách hoàn tiền)\n- **Phụ thuộc**: PAY-101, PAY-105, LEG-101 (Chính sách hoàn tiền công khai).",
+      "createdAt": "2026-10-04T06:58:45.214Z"
+    },
+    {
+      "id": "PAY-107",
+      "epicId": "epic-backend-infrastructure",
+      "title": "Automated E-Invoice Issuance (Decree 123/2020/NĐ-CP): Tự Động Xuất Hoá Đơn Điện Tử",
+      "persona": "Kế toán doanh nghiệp VietPhonics và học viên (cá nhân hoặc công ty) cần hoá đơn VAT hợp lệ",
+      "action": "tự động phát hành hoá đơn điện tử có mã của cơ quan thuế ngay sau mỗi giao dịch thành công",
+      "value": "doanh nghiệp tuân thủ Nghị định 123/2020 và Thông tư 78/2021; khách hàng doanh nghiệp được hoàn chi phí đào tạo",
+      "priority": "must",
+      "status": "backlog",
+      "size": "L",
+      "points": 8,
+      "acceptanceCriteria": [
+        {
+          "id": "ac-pay-107-company-info",
+          "given": "Học viên muốn hoá đơn công ty",
+          "when": "Nhập MST, tên công ty, địa chỉ ở bước checkout",
+          "then": "Validate định dạng MST (10 hoặc 13 số) và tra cứu tên doanh nghiệp nếu nhà cung cấp hỗ trợ; thông tin được lưu cho lần sau.",
+          "completed": false
+        },
+        {
+          "id": "ac-pay-107-issue",
+          "given": "Thanh toán được xác nhận (webhook)",
+          "when": "Job hoá đơn chạy",
+          "then": "Gọi API nhà cung cấp hoá đơn điện tử (VNPT/Viettel/MISA meInvoice…) phát hành hoá đơn có mã CQT trong ≤ 10 phút; lưu số hoá đơn, ký hiệu, mã tra cứu.",
+          "completed": false
+        },
+        {
+          "id": "ac-pay-107-deliver",
+          "given": "Hoá đơn phát hành thành công",
+          "when": "Hoàn tất",
+          "then": "Gửi email kèm PDF/XML hoá đơn và hiển thị trong lịch sử giao dịch (PAY-106).",
+          "completed": false
+        },
+        {
+          "id": "ac-pay-107-retry",
+          "given": "API nhà cung cấp lỗi hoặc timeout",
+          "when": "Phát hành thất bại",
+          "then": "Retry exponential backoff tối đa 5 lần trong 24 giờ; sau đó chuyển hàng chờ xử lý tay ở trang admin và cảnh báo kế toán.",
+          "completed": false
+        },
+        {
+          "id": "ac-pay-107-refund-adjust",
+          "given": "Giao dịch đã có hoá đơn được hoàn tiền",
+          "when": "Refund hoàn tất",
+          "then": "Tạo yêu cầu hoá đơn điều chỉnh/thay thế theo đúng quy định, không xoá hoá đơn gốc.",
+          "completed": false
+        }
+      ],
+      "technicalTasks": [
+        {
+          "id": "t-pay-107-adapter",
+          "title": "Adapter tích hợp API nhà cung cấp hoá đơn điện tử (sandbox → production)",
+          "category": "Backend",
+          "completed": false
+        },
+        {
+          "id": "t-pay-107-db",
+          "title": "Bảng `invoices` (payment_id, buyer_type, tax_code, invoice_no, serial, lookup_code, status, xml_url)",
+          "category": "Database",
+          "completed": false
+        },
+        {
+          "id": "t-pay-107-fe",
+          "title": "Form thông tin xuất hoá đơn ở checkout + hiển thị hoá đơn",
+          "category": "Frontend",
+          "completed": false
+        },
+        {
+          "id": "t-pay-107-qa",
+          "title": "Test sandbox: cá nhân, doanh nghiệp, lỗi API, điều chỉnh khi hoàn tiền",
+          "category": "QA",
+          "completed": false
+        }
+      ],
+      "notes": "### 📋 Gate applicability\n- **Áp dụng**: A–E, **G (G8 hoá đơn điện tử)**, K, L\n- **Lưu ý**: Cần xác nhận với kế toán thuế về thuế suất VAT áp dụng cho dịch vụ giáo dục trực tuyến và mẫu hoá đơn.",
+      "createdAt": "2026-10-04T06:58:45.214Z"
+    },
+    {
+      "id": "PAY-108",
+      "epicId": "epic-backend-infrastructure",
+      "title": "Discount Coupons & 7-Day Pro Free Trial: Mã Giảm Giá & Dùng Thử Gói Pro 7 Ngày",
+      "persona": "Người dùng Free còn phân vân trước khi trả phí, và đội marketing chạy chiến dịch khuyến mãi",
+      "action": "kích hoạt dùng thử Pro 7 ngày (một lần duy nhất) và nhập mã giảm giá tại checkout",
+      "value": "người dùng trải nghiệm giá trị thật trước khi trả tiền; doanh nghiệp tăng tỉ lệ chuyển đổi Free → Pro và đo lường hiệu quả chiến dịch",
+      "priority": "should",
+      "status": "backlog",
+      "size": "L",
+      "points": 8,
+      "acceptanceCriteria": [
+        {
+          "id": "ac-pay-108-trial-start",
+          "given": "Tài khoản đã xác minh email, chưa từng dùng thử hoặc trả phí",
+          "when": "Bấm \"Dùng thử Pro 7 ngày\"",
+          "then": "Server cấp entitlement Pro với `trial_ends_at = now + 7 ngày`, không yêu cầu thẻ; UI hiện đếm ngược số ngày còn lại.",
+          "completed": false
+        },
+        {
+          "id": "ac-pay-108-trial-once",
+          "given": "Người dùng đã dùng thử trước đó",
+          "when": "Cố kích hoạt lại (kể cả tạo tài khoản mới cùng thiết bị/email alias)",
+          "then": "Server từ chối `TRIAL_ALREADY_USED`; chống lạm dụng bằng chuẩn hoá email (bỏ dấu chấm/+alias Gmail) và device fingerprint.",
+          "completed": false
+        },
+        {
+          "id": "ac-pay-108-trial-expire",
+          "given": "Hết thời gian dùng thử",
+          "when": "Job hết hạn chạy (hoặc kiểm tra khi gọi API)",
+          "then": "Entitlement trở về Free ngay lập tức, dữ liệu học tập giữ nguyên; email nhắc 2 ngày trước và vào ngày hết hạn với ưu đãi chuyển đổi.",
+          "completed": false
+        },
+        {
+          "id": "ac-pay-108-coupon-apply",
+          "given": "Người dùng nhập mã giảm giá hợp lệ",
+          "when": "Bấm \"Áp dụng\"",
+          "then": "Server kiểm tra hạn dùng, số lượt còn lại, gói áp dụng, giới hạn 1 lần/người; trả về giá sau giảm (VND, làm tròn đến 1.000đ) và giá này được khoá vào order.",
+          "completed": false
+        },
+        {
+          "id": "ac-pay-108-coupon-invalid",
+          "given": "Mã hết hạn/hết lượt/sai",
+          "when": "Áp dụng",
+          "then": "Hiển thị lý do cụ thể bằng tiếng Việt; giới hạn 10 lần thử mã/giờ/người để chống dò mã.",
+          "completed": false
+        },
+        {
+          "id": "ac-pay-108-coupon-race",
+          "given": "2 người cùng dùng lượt cuối của mã giới hạn",
+          "when": "Thanh toán đồng thời",
+          "then": "Chỉ 1 order được giữ lượt (cập nhật nguyên tử `used_count < max_uses`); người còn lại được báo mã đã hết.",
+          "completed": false
+        }
+      ],
+      "technicalTasks": [
+        {
+          "id": "t-pay-108-db",
+          "title": "Bảng `coupons` (code, type percent/fixed, value, max_uses, used_count, valid_from/to, plan_ids) và `coupon_redemptions`; cột `trial_used_at` trên users",
+          "category": "Database",
+          "completed": false
+        },
+        {
+          "id": "t-pay-108-api",
+          "title": "API POST /api/v1/billing/trial, POST /api/v1/billing/coupons/validate; tích hợp giá giảm vào createOrder",
+          "category": "Backend",
+          "completed": false
+        },
+        {
+          "id": "t-pay-108-fe",
+          "title": "Banner dùng thử, đếm ngược, ô nhập mã giảm giá ở checkout",
+          "category": "Frontend",
+          "completed": false
+        },
+        {
+          "id": "t-pay-108-admin",
+          "title": "CRUD mã giảm giá trong trang admin (OPS-101)",
+          "category": "Backend",
+          "completed": false
+        },
+        {
+          "id": "t-pay-108-qa",
+          "title": "Unit test tính giá; test race condition lượt cuối; test hết hạn trial",
+          "category": "QA",
+          "completed": false
+        }
+      ],
+      "notes": "### 📋 Gate applicability\n- **Áp dụng**: A–F, **G (G6 dùng thử, G10 mã giảm giá, G12 entitlement server)**, H, K, L (L10 funnel)\n- **Phụ thuộc**: PAY-103 (bảng giá), USER-106 (xác minh email), OPS-104 (email nhắc).",
+      "createdAt": "2026-10-04T06:58:45.214Z"
+    },
+    {
+      "id": "PROG-101",
+      "epicId": "epic-retention",
+      "title": "Progress Over Time Charts (7/30/90 Days): Biểu Đồ Tiến Độ Theo Thời Gian Cho Từng Kỹ Năng",
+      "persona": "Học viên Pro luyện đều mỗi ngày và muốn thấy bằng chứng mình đang tiến bộ",
+      "action": "xem biểu đồ điểm theo thời gian cho từng nhóm kỹ năng (âm cuối, nguyên âm, trọng âm, ngữ điệu) với các khoảng 7/30/90 ngày",
+      "value": "có động lực duy trì thói quen khi thấy tiến bộ cụ thể; doanh nghiệp giảm churn khi học viên nhận thấy giá trị gói trả phí",
+      "priority": "must",
+      "status": "backlog",
+      "size": "L",
+      "points": 8,
+      "acceptanceCriteria": [
+        {
+          "id": "ac-prog-101-chart",
+          "given": "Học viên có ≥ 3 ngày luyện tập",
+          "when": "Mở trang Tiến độ (`ProgressAnalyticsView.jsx`) và chọn khoảng 30 ngày",
+          "then": "Hiển thị biểu đồ đường điểm trung bình theo ngày cho từng kỹ năng, dữ liệu lấy từ API server (không phải localStorage), tải ≤ 200ms P95 nhờ bảng tổng hợp theo ngày.",
+          "completed": false
+        },
+        {
+          "id": "ac-prog-101-filter",
+          "given": "Biểu đồ đang hiển thị",
+          "when": "Chuyển 7 ↔ 30 ↔ 90 ngày hoặc bật/tắt từng kỹ năng",
+          "then": "Biểu đồ cập nhật không tải lại trang; ngày không luyện hiển thị khoảng trống (không nội suy giả thành điểm).",
+          "completed": false
+        },
+        {
+          "id": "ac-prog-101-empty",
+          "given": "Học viên mới có < 3 ngày dữ liệu",
+          "when": "Mở trang",
+          "then": "Hiển thị trạng thái trống tiếng Việt \"Luyện thêm X ngày để xem xu hướng\" kèm nút vào bài luyện hôm nay.",
+          "completed": false
+        },
+        {
+          "id": "ac-prog-101-entitlement",
+          "given": "Người dùng Free",
+          "when": "Chọn khoảng 30 hoặc 90 ngày",
+          "then": "Free chỉ xem 7 ngày; 30/90 ngày hiển thị khoá kèm CTA nâng cấp — kiểm tra entitlement tại API (Free gọi range=90 nhận 403).",
+          "completed": false
+        },
+        {
+          "id": "ac-prog-101-a11y",
+          "given": "Người dùng dùng trình đọc màn hình hoặc màn hình 360px",
+          "when": "Xem biểu đồ",
+          "then": "Có bảng dữ liệu thay thế (aria) và biểu đồ responsive, không cuộn ngang.",
+          "completed": false
+        }
+      ],
+      "technicalTasks": [
+        {
+          "id": "t-prog-101-db",
+          "title": "Bảng tổng hợp `daily_skill_scores` (user_id, date, skill, avg_score, attempts) cập nhật bởi job/trigger sau mỗi lượt chấm",
+          "category": "Database",
+          "completed": false
+        },
+        {
+          "id": "t-prog-101-api",
+          "title": "API GET /api/v1/progress/timeseries?range=7|30|90&skills=… có kiểm tra entitlement",
+          "category": "Backend",
+          "completed": false
+        },
+        {
+          "id": "t-prog-101-fe",
+          "title": "Refactor `ProgressAnalyticsView.jsx` dùng dữ liệu API, bộ lọc khoảng thời gian & kỹ năng, trạng thái trống/lỗi/đang tải",
+          "category": "Frontend",
+          "completed": false
+        },
+        {
+          "id": "t-prog-101-qa",
+          "title": "Unit test hàm tổng hợp; E2E kiểm tra Free bị khoá 90 ngày",
+          "category": "QA",
+          "completed": false
+        }
+      ],
+      "notes": "### 📋 Gate applicability\n- **Áp dụng**: A–E, G (G12), **H (H2 biểu đồ theo thời gian, H5 dữ liệu server)**, J (J1), K\n- **Bối cảnh**: Checklist Mục 15 đánh dấu ⚠️ — đã có `ProgressAnalyticsView.jsx` nhưng chưa có story riêng & chưa dùng dữ liệu server.",
+      "createdAt": "2026-10-04T06:58:45.214Z"
+    },
+    {
+      "id": "PROG-102",
+      "epicId": "epic-retention",
+      "title": "Before vs After Audio Comparison: So Sánh Giọng Nói \"Ngày Đầu Tiên\" Và \"Hôm Nay\"",
+      "persona": "Học viên đã luyện 30 ngày, khó tự nhận ra mình tiến bộ vì thay đổi diễn ra từ từ",
+      "action": "nghe lại bản ghi câu chuẩn của ngày đầu tiên và bản ghi mới nhất cạnh nhau, kèm chênh lệch điểm từng âm vị",
+      "value": "cảm nhận rõ tiến bộ bằng chính tai mình — \"khoảnh khắc wow\" tạo động lực gia hạn và chia sẻ",
+      "priority": "should",
+      "status": "backlog",
+      "size": "M",
+      "points": 5,
+      "acceptanceCriteria": [
+        {
+          "id": "ac-prog-102-baseline",
+          "given": "Học viên hoàn thành bài chẩn đoán đầu vào (ELSA-102) và đồng ý lưu bản ghi (LEG-101)",
+          "when": "Bài chẩn đoán kết thúc",
+          "then": "Hệ thống lưu 5 câu chuẩn làm \"baseline\" trên object storage (mã hoá at-rest), gắn nhãn ngày ghi.",
+          "completed": false
+        },
+        {
+          "id": "ac-prog-102-reprompt",
+          "given": "Đã qua 14 / 30 / 60 ngày kể từ baseline",
+          "when": "Học viên mở app",
+          "then": "Gợi ý \"Đọc lại 5 câu ngày đầu\" (≤ 2 phút); bản ghi mới được chấm bằng cùng phiên bản mô hình để so sánh công bằng.",
+          "completed": false
+        },
+        {
+          "id": "ac-prog-102-compare",
+          "given": "Có cả bản baseline và bản mới",
+          "when": "Mở thẻ \"Trước & Sau\"",
+          "then": "Hai trình phát audio cạnh nhau + bảng chênh lệch điểm từng âm vị (vd /θ/ 42 → 78, +36), các âm cải thiện tô xanh, âm giảm tô cam.",
+          "completed": false
+        },
+        {
+          "id": "ac-prog-102-model-change",
+          "given": "Mô hình chấm điểm đã nâng cấp phiên bản giữa hai lần ghi",
+          "when": "Hiển thị so sánh",
+          "then": "Chấm lại bản baseline bằng mô hình mới (hoặc ghi chú rõ \"điểm có thể không so sánh trực tiếp\") — không hiển thị chênh lệch gây hiểu lầm.",
+          "completed": false
+        },
+        {
+          "id": "ac-prog-102-no-consent",
+          "given": "Học viên không đồng ý lưu bản ghi âm",
+          "when": "Mở thẻ",
+          "then": "Chỉ hiển thị so sánh điểm số, ẩn trình phát audio kèm giải thích.",
+          "completed": false
+        }
+      ],
+      "technicalTasks": [
+        {
+          "id": "t-prog-102-db",
+          "title": "Bảng `baseline_recordings` (user_id, sentence_id, audio_key, model_version, score_json, recorded_at)",
+          "category": "Database",
+          "completed": false
+        },
+        {
+          "id": "t-prog-102-api",
+          "title": "API GET /api/v1/progress/before-after (trả signed URL audio TTL 10 phút)",
+          "category": "Backend",
+          "completed": false
+        },
+        {
+          "id": "t-prog-102-fe",
+          "title": "Thẻ \"Trước & Sau\" với 2 audio player, bảng delta âm vị",
+          "category": "Frontend",
+          "completed": false
+        },
+        {
+          "id": "t-prog-102-qa",
+          "title": "Test: thiếu consent, khác model_version, signed URL hết hạn",
+          "category": "QA",
+          "completed": false
+        }
+      ],
+      "notes": "### 📋 Gate applicability\n- **Áp dụng**: A–E, F (signed URL), **H (H4 so sánh trước/sau)**, I (I5 nhất quán mô hình), K, **L (🔴 L7 consent lưu giọng nói)**\n- **Phụ thuộc**: ELSA-102, LEG-101, ARCH-104.",
+      "createdAt": "2026-10-04T06:58:45.214Z"
+    },
+    {
+      "id": "PROG-103",
+      "epicId": "epic-retention",
+      "title": "Automated Weekly Progress Report: Báo Cáo Tiến Độ Hằng Tuần Qua Email & Trong Ứng Dụng",
+      "persona": "Học viên bận rộn (dân IT, sinh viên ôn IELTS) không vào app mỗi ngày",
+      "action": "nhận báo cáo tóm tắt mỗi tuần: số phút luyện, streak, âm cải thiện nhiều nhất, 3 âm cần ưu tiên tuần tới",
+      "value": "được nhắc nhở nhẹ nhàng và có kế hoạch rõ ràng; doanh nghiệp tăng tỉ lệ quay lại (re-engagement) hằng tuần",
+      "priority": "should",
+      "status": "backlog",
+      "size": "M",
+      "points": 5,
+      "acceptanceCriteria": [
+        {
+          "id": "ac-prog-103-generate",
+          "given": "Đến 19:00 Chủ nhật theo múi giờ Asia/Ho_Chi_Minh",
+          "when": "Job báo cáo tuần chạy",
+          "then": "Sinh báo cáo cho mọi user có hoạt động trong 4 tuần qua và đang bật tuỳ chọn; xử lý theo lô, hoàn tất 5,000 user trong ≤ 30 phút mà không ảnh hưởng P95 API.",
+          "completed": false
+        },
+        {
+          "id": "ac-prog-103-content",
+          "given": "Báo cáo được sinh",
+          "when": "Học viên mở email hoặc thẻ trong app",
+          "then": "Gồm: tổng phút luyện & so với tuần trước, streak, top 3 âm cải thiện, 3 âm yếu nhất (từ SM-2 error bank) và nút \"Bắt đầu bài tuần mới\" deep-link.",
+          "completed": false
+        },
+        {
+          "id": "ac-prog-103-inactive",
+          "given": "Học viên không luyện tuần này",
+          "when": "Báo cáo sinh ra",
+          "then": "Nội dung chuyển sang dạng khích lệ (\"Chỉ 5 phút để giữ phong độ\") thay vì hiện số 0; không gửi quá 3 tuần liên tiếp nếu vẫn không hoạt động.",
+          "completed": false
+        },
+        {
+          "id": "ac-prog-103-unsubscribe",
+          "given": "Học viên không muốn nhận email",
+          "when": "Bấm \"Huỷ nhận\" trong email (1 click) hoặc tắt trong Cài đặt",
+          "then": "Ngừng gửi ngay lập tức; tuỳ chọn được tôn trọng bởi OPS-104.",
+          "completed": false
+        },
+        {
+          "id": "ac-prog-103-pro",
+          "given": "Người dùng Free",
+          "when": "Nhận báo cáo",
+          "then": "Free nhận bản tóm tắt cơ bản; Pro nhận thêm phân tích chi tiết từng âm và ước tính IELTS (ghi rõ \"ước tính\").",
+          "completed": false
+        }
+      ],
+      "technicalTasks": [
+        {
+          "id": "t-prog-103-job",
+          "title": "Cron job + queue sinh báo cáo theo lô (batch 200 user) từ `daily_skill_scores`",
+          "category": "Backend",
+          "completed": false
+        },
+        {
+          "id": "t-prog-103-template",
+          "title": "Template email HTML tiếng Việt responsive + thẻ báo cáo trong app",
+          "category": "Frontend",
+          "completed": false
+        },
+        {
+          "id": "t-prog-103-db",
+          "title": "Bảng `weekly_reports` (user_id, week_start, payload_json, sent_at, opened_at)",
+          "category": "Database",
+          "completed": false
+        },
+        {
+          "id": "t-prog-103-qa",
+          "title": "Test múi giờ, user không hoạt động, unsubscribe, hiệu năng 5,000 user",
+          "category": "QA",
+          "completed": false
+        }
+      ],
+      "notes": "### 📋 Gate applicability\n- **Áp dụng**: A–E, **H (H6 báo cáo định kỳ)**, J (job không ảnh hưởng API), K, L (L10 analytics)\n- **Phụ thuộc**: PROG-101 (bảng tổng hợp), OPS-104 (gửi email & tuỳ chọn), ELSA-402 (SM-2).",
+      "createdAt": "2026-10-04T06:58:45.214Z"
+    },
+    {
+      "id": "OPS-101",
+      "epicId": "epic-operations-compliance",
+      "title": "Executive Admin Dashboard & Subscription Console: Bảng Điều Khiển Quản Trị Hệ Thống Toàn Diện",
+      "persona": "Quản trị viên hệ thống (Admin/Superadmin) và Trưởng bộ phận kinh doanh VietPhonics",
+      "action": "đăng nhập vào trang quản trị bảo mật (/admin), theo dõi chỉ số kinh doanh thời gian thực (MRR, Churn rate, active Pro count), tra cứu học viên và can thiệp hạn ngạch/gói Pro",
+      "value": "vận hành sản phẩm chuyên nghiệp, phát hiện sớm các bất thường về thanh toán hoặc lạm dụng, và hỗ trợ kỹ thuật khách hàng kịp thời",
+      "priority": "must",
+      "status": "backlog",
+      "size": "XL",
+      "points": 13,
+      "acceptanceCriteria": [
+        {
+          "id": "ac-ops-101-auth",
+          "given": "Truy cập đường dẫn quản trị `/admin`",
+          "when": "Chưa đăng nhập hoặc tài khoản không có quyền `admin` / `superadmin`",
+          "then": "API từ chối với 403 Forbidden, chuyển hướng về trang đăng nhập; phiên admin yêu cầu xác thực 2 lớp (MFA/TOTP) và hết hạn sau 15 phút không hoạt động.",
+          "completed": false
+        },
+        {
+          "id": "ac-ops-101-kpi-metrics",
+          "given": "Quản trị viên mở bảng điều khiển chính",
+          "when": "Trang tải xong trong ≤ 300ms P95",
+          "then": "Hiển thị các chỉ số kinh doanh theo thời gian thực: Doanh thu định kỳ tháng (MRR bằng VND), Số thuê bao Pro đang hoạt động, DAU/MAU, Tỉ lệ chuyển đổi dùng thử → trả phí, Tỉ lệ rời bỏ (Churn Rate 30 ngày).",
+          "completed": false
+        },
+        {
+          "id": "ac-ops-101-user-lookup",
+          "given": "Cần kiểm tra phản ánh của khách hàng",
+          "when": "Tìm kiếm theo email, User ID hoặc mã giao dịch VietQR",
+          "then": "Hiển thị chi tiết hồ sơ: trạng thái gói, ngày kích hoạt/hết hạn, lịch sử nộp bài gần nhất, danh sách phiên đăng nhập (USER-104), và hạn ngạch quota trong ngày.",
+          "completed": false
+        },
+        {
+          "id": "ac-ops-101-manual-actions",
+          "given": "Khách hàng gặp lỗi thanh toán hoặc sự cố hệ thống cần đền bù",
+          "when": "Admin bấm \"Cấp bù Pro 30 ngày\" hoặc \"Reset Quota\"",
+          "then": "Hệ thống yêu cầu nhập lý do can thiệp, cập nhật tức thì vào DB và ghi vết vào `admin_audit_logs` (ai làm, can thiệp user nào, lý do gì, IP nào) không thể sửa/xoá.",
+          "completed": false
+        },
+        {
+          "id": "ac-ops-101-masking",
+          "given": "Admin hoặc nhân viên hỗ trợ xem danh sách khách hàng",
+          "when": "Hiển thị dữ liệu cá nhân",
+          "then": "Mật khẩu không bao giờ hiển thị; các thông tin nhạy cảm (token, số thẻ cuối, mã số thuế) được che dấu (masked) theo nguyên tắc đặc quyền tối thiểu (least privilege).",
+          "completed": false
+        }
+      ],
+      "technicalTasks": [
+        {
+          "id": "t-ops-101-db",
+          "title": "Bảng `admin_audit_logs` (admin_id, target_user_id, action, reason, ip, created_at) với index theo admin_id và created_at",
+          "category": "Database",
+          "completed": false
+        },
+        {
+          "id": "t-ops-101-api",
+          "title": "API GET /api/v1/admin/metrics, GET /api/v1/admin/users, POST /api/v1/admin/users/:id/override-quota, POST /api/v1/admin/users/:id/grant-pro",
+          "category": "Backend",
+          "completed": false
+        },
+        {
+          "id": "t-ops-101-fe",
+          "title": "Giao diện Admin Dashboard responsive, bảng tra cứu user có bộ lọc & phân trang, modal xác nhận kèm nhập lý do",
+          "category": "Frontend",
+          "completed": false
+        },
+        {
+          "id": "t-ops-101-sec",
+          "title": "Middleware phân quyền RBAC nghiêm ngặt + MFA TOTP + rate limit riêng cho route /admin",
+          "category": "Backend",
+          "completed": false
+        },
+        {
+          "id": "t-ops-101-qa",
+          "title": "Test phân quyền (user thường gọi API admin bị 403), test audit log đầy đủ mọi thao tác ghi đè",
+          "category": "QA",
+          "completed": false
+        }
+      ],
+      "notes": "### 📋 Gate applicability\n- **Áp dụng**: A, B, C, D, E, F (🔴 F1, F6, F7), G, K, **L (🔴 L2 metrics, L3 log)**\n- **Phụ thuộc**: USER-101, PAY-101, PAY-105, USER-104.\n- **Bối cảnh**: Checklist Mục 15 đánh dấu ❌ — thiếu trang admin cho user, doanh thu và nội dung.",
+      "createdAt": "2026-10-04T06:58:45.214Z"
+    },
+    {
+      "id": "OPS-102",
+      "epicId": "epic-operations-compliance",
+      "title": "Real-Time APM Monitoring & Incident Alerting: Hệ Thống Giám Sát Sức Khỏe APM & Cảnh Báo Lỗi Thời Gian Thực",
+      "persona": "Kỹ sư DevOps / SRE chịu trách nhiệm cam kết Uptime ≥ 99.5% và độ trễ P95 ≤ 2s cho 5,000 học viên",
+      "action": "tích hợp Sentry theo dõi lỗi frontend/backend, cấu hình Prometheus thu thập số liệu tải và thiết lập bot cảnh báo sự cố tức thời qua Telegram/Slack",
+      "value": "phát hiện và khắc phục sự cố nghiêm trọng trong ≤ 5 phút trước khi học viên kịp phàn nàn, đảm bảo dịch vụ thông suốt",
+      "priority": "must",
+      "status": "backlog",
+      "size": "L",
+      "points": 8,
+      "acceptanceCriteria": [
+        {
+          "id": "ac-ops-102-sentry-fe-be",
+          "given": "Xảy ra lỗi ngoại lệ không xử lý (uncaught exception) ở frontend React hoặc backend API",
+          "when": "Lỗi phát sinh",
+          "then": "Sentry bắt lỗi tự động trong ≤ 5 giây kèm breadcrumbs, stack trace, mã người dùng ẩn danh (không lộ PII), tag môi trường (production/staging) và phiên bản release.",
+          "completed": false
+        },
+        {
+          "id": "ac-ops-102-prometheus-metrics",
+          "given": "Hệ thống đang phục vụ lưu lượng",
+          "when": "Prometheus định kỳ cào endpoint `/metrics` mỗi 15 giây",
+          "then": "Thu thập đầy đủ các chỉ số cốt lõi: HTTP P95 latency (J1), Tỉ lệ lỗi 5xx (J3), Queue depth BullMQ của worker AI (ARCH-102), GPU worker latency, và kết nối DB PgBouncer.",
+          "completed": false
+        },
+        {
+          "id": "ac-ops-102-alert-rules",
+          "given": "Hệ thống vượt ngưỡng an toàn (P95 > 2s trong 3 phút, lỗi 5xx > 1%, queue depth > 100 tác vụ)",
+          "when": "Alertmanager đánh giá quy tắc cảnh báo",
+          "then": "Tự động kích hoạt thông báo khẩn cấp (severity: critical) đến kênh Slack `#alerts-production` và Telegram Bot On-Call trong ≤ 60 giây.",
+          "completed": false
+        },
+        {
+          "id": "ac-ops-102-healthchecks",
+          "given": "Bộ cân bằng tải hoặc Kubernetes probe thăm dò",
+          "when": "Gọi GET `/health` và GET `/ready`",
+          "then": "Endpoint `/health` trả 200 trong ≤ 10ms nếu máy chủ sống; `/ready` kiểm tra kết nối DB, Redis, R2 và trả 503 nếu một trong các thành phần cốt lõi bị mất kết nối.",
+          "completed": false
+        },
+        {
+          "id": "ac-ops-102-log-retention",
+          "given": "Hệ thống ghi log ứng dụng",
+          "when": "Lưu trữ log tập trung (Loki/CloudWatch)",
+          "then": "Log có cấu trúc JSON, chứa requestId, duy trì lưu trữ an toàn tối thiểu 14 ngày (Gate L3) và tự động lọc bỏ thông tin thẻ/mật khẩu.",
+          "completed": false
+        }
+      ],
+      "technicalTasks": [
+        {
+          "id": "t-ops-102-sentry",
+          "title": "Cài đặt `@sentry/react` và `@sentry/node`, cấu hình source maps và lọc PII",
+          "category": "DevOps",
+          "completed": false
+        },
+        {
+          "id": "t-ops-102-prom",
+          "title": "Cấu hình `prom-client` xuất endpoint `/metrics` với histogram độ trễ API và gauge queue depth",
+          "category": "Backend",
+          "completed": false
+        },
+        {
+          "id": "t-ops-102-bot",
+          "title": "Xây dựng Webhook bot gửi tin nhắn cảnh báo định dạng Markdown đẹp vào Telegram & Slack",
+          "category": "DevOps",
+          "completed": false
+        },
+        {
+          "id": "t-ops-102-probes",
+          "title": "Viết endpoint GET /health và GET /ready kiểm tra DB/Redis trong server/index.js",
+          "category": "Backend",
+          "completed": false
+        },
+        {
+          "id": "t-ops-102-qa",
+          "title": "Kiểm thử kịch bản giả lập lỗi 500 hàng loạt và kiểm tra bot Telegram nhận cảnh báo trong 60 giây",
+          "category": "QA",
+          "completed": false
+        }
+      ],
+      "notes": "### 📋 Gate applicability\n- **Áp dụng**: A, B, D, **J (J1-J4 ngưỡng hiệu năng)**, K, **L (🔴 L1 Sentry, L2 metrics & alert, L3 log 14 ngày)**\n- **Phụ thuộc**: ARCH-102 (BullMQ queue), ARCH-101 (PostgreSQL DB).",
+      "createdAt": "2026-10-04T06:58:45.214Z"
+    },
+    {
+      "id": "OPS-103",
+      "epicId": "epic-operations-compliance",
+      "title": "Admin Content Management System (CMS) for Lessons & Sentences: CMS Quản Trị Danh Mục Bài Học, Cặp Âm & Câu Luyện",
+      "persona": "Chuyên gia sư phạm ngôn ngữ (Content Lead) phụ trách xây dựng và cập nhật ngân hàng câu luyện tiếng Anh",
+      "action": "truy cập giao diện CMS quản trị (/admin/content), tạo mới/chỉnh sửa bài học, nhập câu luyện kèm phiên âm IPA chuẩn xác và tải lên audio mẫu",
+      "value": "đội ngũ nội dung có thể làm giàu kho bài tập liên tục (đạt 1,000+ câu) mà không cần lập trình viên sửa mã nguồn hay deploy lại web",
+      "priority": "should",
+      "status": "backlog",
+      "size": "L",
+      "points": 8,
+      "acceptanceCriteria": [
+        {
+          "id": "ac-ops-103-crud-sentence",
+          "given": "Chuyên gia nội dung tạo câu luyện mới",
+          "when": "Nhập văn bản tiếng Anh, cấp độ CEFR (A1-C1), chủ đề (IT Standup, IELTS, Daily)",
+          "then": "Giao diện tự động gợi ý phiên âm IPA chuẩn General American; cho phép biên tập chỉnh sửa vị trí trọng âm và âm vị mục tiêu.",
+          "completed": false
+        },
+        {
+          "id": "ac-ops-103-ipa-validator",
+          "given": "Người dùng nhập phiên âm IPA cho câu luyện",
+          "when": "Bấm \"Lưu\"",
+          "then": "Hệ thống kiểm tra tính hợp lệ của chuỗi ký tự IPA theo chuẩn Unicode, cảnh báo nếu ký tự IPA không tương ứng với các từ trong câu, ngăn ngừa nhập sai ký hiệu âm vị.",
+          "completed": false
+        },
+        {
+          "id": "ac-ops-103-audio-upload",
+          "given": "Tải lên file âm thanh bản xứ mẫu (WAV/MP3/M4A)",
+          "when": "File được tải lên",
+          "then": "Server tự động chuẩn hoá âm thanh (AAC 64kbps, 16kHz, cắt khoảng lặng đầu cuối), lưu lên Cloudflare R2 và sinh URL CDN công khai.",
+          "completed": false
+        },
+        {
+          "id": "ac-ops-103-draft-publish",
+          "given": "Biên tập viên hoàn thành bài học",
+          "when": "Đổi trạng thái từ `draft` sang `published`",
+          "then": "Chỉ bài học `published` mới được trả về qua API cho học viên; bài học cập nhật có hiệu lực ngay lập tức sau khi xóa cache CDN/Redis.",
+          "completed": false
+        },
+        {
+          "id": "ac-ops-103-csv-import",
+          "given": "Cần nhập hàng loạt 100 câu luyện mới",
+          "when": "Tải lên file CSV theo mẫu quy định",
+          "then": "Hệ thống kiểm tra cú pháp từng dòng, trả về báo cáo lỗi cụ thể dòng nào sai IPA/thiếu trường và chỉ nạp những dòng hợp lệ trong một giao dịch an toàn.",
+          "completed": false
+        }
+      ],
+      "technicalTasks": [
+        {
+          "id": "t-ops-103-db",
+          "title": "Bảng `lessons`, `target_sentences`, `minimal_pairs` kèm trạng thái draft/published, version và created_by",
+          "category": "Database",
+          "completed": false
+        },
+        {
+          "id": "t-ops-103-api",
+          "title": "API RESTful CRUD /api/v1/admin/lessons, /api/v1/admin/sentences, POST /api/v1/admin/sentences/bulk-import",
+          "category": "Backend",
+          "completed": false
+        },
+        {
+          "id": "t-ops-103-fe",
+          "title": "Giao diện CMS quản trị với bộ soạn thảo câu luyện, widget kiểm tra IPA thời gian thực, audio player xem trước",
+          "category": "Frontend",
+          "completed": false
+        },
+        {
+          "id": "t-ops-103-storage",
+          "title": "Đường ống xử lý audio tải lên R2 qua presigned URL và vô hiệu hoá cache CDN tự động",
+          "category": "DevOps",
+          "completed": false
+        },
+        {
+          "id": "t-ops-103-qa",
+          "title": "Test nhập CSV sai format bị từ chối; test câu draft không xuất hiện trong danh sách học viên",
+          "category": "QA",
+          "completed": false
+        }
+      ],
+      "notes": "### 📋 Gate applicability\n- **Áp dụng**: A, B, C, D, E, K, **L (CMS quản lý nội dung)**\n- **Phụ thuộc**: PRON-201 (cặp âm tối thiểu), ELSA-205 (câu luyện đích), ARCH-104 (lưu trữ R2).",
+      "createdAt": "2026-10-04T06:58:45.214Z"
+    },
+    {
+      "id": "OPS-104",
+      "epicId": "epic-operations-compliance",
+      "title": "Multi-Channel Automated Notification Hub: Trung Tâm Thông Báo Đa Kênh Tự Động (Email & In-App)",
+      "persona": "Học viên cần được nhắc nhở đúng lúc để giữ chuỗi streak và không bỏ lỡ thông báo tài khoản quan trọng",
+      "action": "nhận thông báo chuông tức thời trên thanh menu ứng dụng, nhận email nhắc nhở học tập cá nhân hoá và quản lý tuỳ chọn nhận tin",
+      "value": "tăng tỉ lệ quay lại ứng dụng hàng ngày thêm 35%, giảm tỉ lệ quên gia hạn gói Pro và tạo kênh liên lạc chính thức với người học",
+      "priority": "should",
+      "status": "backlog",
+      "size": "M",
+      "points": 5,
+      "acceptanceCriteria": [
+        {
+          "id": "ac-ops-104-inapp-bell",
+          "given": "Học viên có thông báo mới (mở khóa danh hiệu, đạt chuỗi streak 7 ngày, gói Pro sắp hết hạn)",
+          "when": "Đang sử dụng ứng dụng web",
+          "then": "Biểu tượng chuông hiển thị huy hiệu số thông báo đỏ; nhấp vào mở dropdown danh sách với trạng thái đã đọc/chưa đọc; hỗ trợ đánh dấu \"Đã đọc tất cả\".",
+          "completed": false
+        },
+        {
+          "id": "ac-ops-104-streak-reminder",
+          "given": "Học viên chưa hoàn thành mục tiêu ngày vào lúc 20:30 tối (GMT+7)",
+          "when": "Worker kiểm tra điều kiện",
+          "then": "Tự động gửi thông báo push/email nhắc nhở: \"Chỉ còn 3 tiếng để giữ chuỗi Streak 5 ngày của bạn!\"; không gửi nếu người dùng đã hoàn thành bài tập hôm nay.",
+          "completed": false
+        },
+        {
+          "id": "ac-ops-104-sub-renewal-alert",
+          "given": "Gói Pro còn 3 ngày và 1 ngày trước khi hết hạn",
+          "when": "Hệ thống quét lịch thuê bao",
+          "then": "Gửi email và in-app alert thông báo gia hạn kèm liên kết thanh toán ưu đãi 1-click.",
+          "completed": false
+        },
+        {
+          "id": "ac-ops-104-preferences",
+          "given": "Học viên vào trang Cài Đặt Thông Báo",
+          "when": "Thay đổi tuỳ chọn",
+          "then": "Cho phép bật/tắt riêng biệt: \"Nhắc nhở Streak hằng ngày\", \"Báo cáo tuần\", \"Thông báo khuyến mãi\"; luôn gửi email bảo mật bắt buộc (đổi mật khẩu, biên lai thanh toán).",
+          "completed": false
+        },
+        {
+          "id": "ac-ops-104-rate-limit",
+          "given": "Nhiều sự kiện xảy ra cùng ngày",
+          "when": "Hệ thống gửi thông báo",
+          "then": "Áp dụng giới hạn: tối đa 2 email tiếp thị/nhắc nhở mỗi ngày trên một người dùng để tránh làm phiền (spam fatigue).",
+          "completed": false
+        }
+      ],
+      "technicalTasks": [
+        {
+          "id": "t-ops-104-db",
+          "title": "Bảng `in_app_notifications` (id, user_id, title, message, type, read_at, action_url, created_at) + cột `notification_prefs` JSONB trên users",
+          "category": "Database",
+          "completed": false
+        },
+        {
+          "id": "t-ops-104-api",
+          "title": "API GET /api/v1/me/notifications, PATCH /api/v1/me/notifications/:id/read, PATCH /api/v1/me/notifications/read-all, GET/PUT /api/v1/me/notification-preferences",
+          "category": "Backend",
+          "completed": false
+        },
+        {
+          "id": "t-ops-104-fe",
+          "title": "Dropdown chuông thông báo trên Header, trang cài đặt tuỳ chọn nhận tin responsive",
+          "category": "Frontend",
+          "completed": false
+        },
+        {
+          "id": "t-ops-104-worker",
+          "title": "Cron job BullMQ quét streak chưa hoàn thành và thuê bao sắp hết hạn gửi email qua Resend/SES",
+          "category": "Backend",
+          "completed": false
+        },
+        {
+          "id": "t-ops-104-qa",
+          "title": "Test: tắt thông báo streak thì không nhận email lúc 20:30; test đánh dấu đã đọc cập nhật UI ngay",
+          "category": "QA",
+          "completed": false
+        }
+      ],
+      "notes": "### 📋 Gate applicability\n- **Áp dụng**: A, B, C, D, E, K, **L (L4 thông báo, L9 chăm sóc khách hàng)**\n- **Phụ thuộc**: ELSA-601 (Streak), PAY-103 (Gói Pro), PROG-103 (Báo cáo tuần).",
+      "createdAt": "2026-10-04T06:58:45.214Z"
+    },
+    {
+      "id": "LEG-101",
+      "epicId": "epic-operations-compliance",
+      "title": "Terms of Service, Privacy Policy & Explicit Voice Biometric Consent: Điều Khoản Dịch Vụ, Chính Sách Bảo Mật & Đồng Ý Thu Âm Giọng Nói",
+      "persona": "Người dùng Việt Nam quan tâm đến quyền riêng tư và Cơ quan thanh tra pháp lý về bảo vệ dữ liệu cá nhân",
+      "action": "đọc Điều khoản dịch vụ, Chính sách bảo mật và xác nhận hộp thoại đồng ý thu âm giọng nói có giải thích mục đích AI trước khi bắt đầu luyện tập",
+      "value": "bảo vệ pháp lý cho doanh nghiệp, tuân thủ nghiêm ngặt Nghị định 13/2023/NĐ-CP về dữ liệu sinh trắc học và tạo dựng niềm tin tuyệt đối với người học",
+      "priority": "must",
+      "status": "backlog",
+      "size": "M",
+      "points": 5,
+      "acceptanceCriteria": [
+        {
+          "id": "ac-leg-101-public-pages",
+          "given": "Khách truy cập vào các đường dẫn `/terms`, `/privacy`, `/refund-policy`",
+          "when": "Trang tải xong",
+          "then": "Hiển thị đầy đủ nội dung bằng tiếng Việt rõ ràng, chuẩn ngữ pháp: Điều khoản sử dụng, Chính sách bảo vệ dữ liệu cá nhân theo NĐ 13/2023, Chính sách hoàn tiền 7 ngày; nêu rõ tên đơn vị chủ quản, địa chỉ, mã số thuế và email liên hệ.",
+          "completed": false
+        },
+        {
+          "id": "ac-leg-101-signup-consent",
+          "given": "Người dùng đăng ký tài khoản (USER-101, USER-106)",
+          "when": "Ở form đăng ký",
+          "then": "Có checkbox bắt buộc: \"Tôi đồng ý với Điều khoản dịch vụ và Chính sách bảo mật\"; ghi nhận phiên bản điều khoản và thời điểm đồng ý vào cơ sở dữ liệu.",
+          "completed": false
+        },
+        {
+          "id": "ac-leg-101-voice-biometric-modal",
+          "given": "Lần đầu tiên người dùng vào tính năng thu âm mic",
+          "when": "Trước khi trình duyệt xin quyền micro",
+          "then": "Hiển thị hộp thoại giải thích rõ ràng bằng tiếng Việt: \"VietPhonics sử dụng giọng nói của bạn để phân tích phát âm bằng AI. Bạn có quyền xoá dữ liệu giọng nói bất cứ lúc nào trong mục Cài đặt\"; người dùng phải bấm \"Tôi đồng ý\" mới được mở mic.",
+          "completed": false
+        },
+        {
+          "id": "ac-leg-101-opt-out-model-training",
+          "given": "Người dùng vào trang Cài Đặt Quyền Riêng Tư",
+          "when": "Xem mục đào tạo mô hình",
+          "then": "Có nút gạt: \"Cho phép sử dụng bản ghi âm ẩn danh để cải thiện mô hình AI\" (mặc định bật, người dùng có quyền tắt bất kỳ lúc nào mà không bị khoá tính năng học).",
+          "completed": false
+        },
+        {
+          "id": "ac-leg-101-policy-update",
+          "given": "Doanh nghiệp cập nhật Điều khoản hoặc Chính sách bảo mật",
+          "when": "Người dùng đăng nhập lần tiếp theo",
+          "then": "Hiển thị modal thông báo thay đổi và yêu cầu xác nhận phiên bản mới (v1.1) trước khi tiếp tục sử dụng ứng dụng.",
+          "completed": false
+        }
+      ],
+      "technicalTasks": [
+        {
+          "id": "t-leg-101-db",
+          "title": "Bảng `user_consents` (id, user_id, policy_type, policy_version, consented_at, ip_address, user_agent)",
+          "category": "Database",
+          "completed": false
+        },
+        {
+          "id": "t-leg-101-pages",
+          "title": "Xây dựng các trang tĩnh `/terms`, `/privacy`, `/refund-policy` có định dạng văn bản pháp lý chuyên nghiệp",
+          "category": "Frontend",
+          "completed": false
+        },
+        {
+          "id": "t-leg-101-modal",
+          "title": "Tạo component VoiceBiometricConsentModal hiển thị trước khi kích hoạt Web Audio API mic stream",
+          "category": "Frontend",
+          "completed": false
+        },
+        {
+          "id": "t-leg-101-api",
+          "title": "API POST /api/v1/legal/consent ghi nhận lịch sử đồng ý và GET /api/v1/legal/consent-status",
+          "category": "Backend",
+          "completed": false
+        },
+        {
+          "id": "t-leg-101-qa",
+          "title": "Test: từ chối modal giọng nói thì không khởi tạo mic; người dùng tắt opt-out đào tạo thì cờ `train_opt_in: false` được lưu",
+          "category": "QA",
+          "completed": false
+        }
+      ],
+      "notes": "### 📋 Gate applicability\n- **Áp dụng**: A, B, C, D, E, **F (F8 audit log)**, K, **L (🔴 L6 văn bản pháp lý tiếng Việt, L7 consent thu âm rõ ràng, L8 NĐ 13/2023)**\n- **Phụ thuộc**: USER-101, USER-106, PRON-101 (Microphone stream).",
+      "createdAt": "2026-10-04T06:58:45.214Z"
+    },
+    {
+      "id": "AIQ-101",
+      "epicId": "epic-advanced-ai-lab",
+      "title": "Vietnamese L1 Pronunciation Benchmark Dataset & Accuracy Report: Bộ Dữ Liệu Đánh Giá Giọng Việt 3 Miền & Báo Cáo Độ Chính Xác Tương Quan",
+      "persona": "Nhà khoa học dữ liệu Speech AI (Speech Scientist) và Trưởng bộ phận sản phẩm VietPhonics",
+      "action": "xây dựng tập dữ liệu kiểm chuẩn 200+ mẫu âm thanh giọng đọc tiếng Anh của người Việt 3 miền (Bắc/Trung/Nam) có dán nhãn chuyên gia ngữ âm, chạy benchmark tự động và xuất báo cáo hệ số tương quan r ≥ 0.85",
+      "value": "chứng minh tính chính xác khoa học của thuật toán AI chấm điểm, đảm bảo không có thiên vị phương ngữ (bias) và tạo cơ sở khoa học để tự tin thu phí",
+      "priority": "must",
+      "status": "backlog",
+      "size": "XL",
+      "points": 13,
+      "acceptanceCriteria": [
+        {
+          "id": "ac-aiq-101-dataset-curation",
+          "given": "Thu thập tập dữ liệu kiểm chuẩn",
+          "when": "Xây dựng kho dữ liệu 200+ bản ghi âm WAV 16kHz",
+          "then": "Bao phủ đều 3 miền: Miền Bắc (70 mẫu), Miền Trung (60 mẫu), Miền Nam (70 mẫu); gồm cả người mới bắt đầu (A1-A2) và người trung cấp (B1-B2) đọc 50 câu chứa toàn bộ âm vị khó của người Việt.",
+          "completed": false
+        },
+        {
+          "id": "ac-aiq-101-human-labels",
+          "given": "Dán nhãn chuẩn mực (Ground Truth)",
+          "when": "Mỗi bản ghi được chấm độc lập bởi 2 chuyên gia ngữ âm học / giám khảo IELTS",
+          "then": "Điểm số mức âm vị 0–100, ghi rõ nhãn lỗi (nhầm âm, nuốt âm cuối, sai trọng âm); độ đồng thuận liên chuyên gia đạt Cohen’s Kappa κ ≥ 0.80.",
+          "completed": false
+        },
+        {
+          "id": "ac-aiq-101-eval-script",
+          "given": "Chạy script đánh giá tự động `npm run eval:benchmark`",
+          "when": "Script nạp toàn bộ 200 file âm thanh qua pipeline AI VietPhonics",
+          "then": "Tính toán sai số tuyệt đối trung bình (MAE) và hệ số tương quan tuyến tính Pearson r giữa điểm AI và điểm trung bình của chuyên gia con người.",
+          "completed": false
+        },
+        {
+          "id": "ac-aiq-101-thresholds",
+          "given": "Kết quả benchmark hoàn tất",
+          "when": "Đánh giá chỉ số chất lượng Gate I3",
+          "then": "Hệ số tương quan tổng thể đạt r ≥ 0.85; MAE ≤ 7.0 điểm; độ chênh lệch sai số giữa 3 miền Bắc - Trung - Nam ≤ 4.5% (không thiên vị vùng miền).",
+          "completed": false
+        },
+        {
+          "id": "ac-aiq-101-public-report",
+          "given": "Xuất báo cáo khoa học định dạng Markdown & PDF",
+          "when": "Báo cáo được tạo",
+          "then": "Công khai phương pháp luận, ma trận nhầm lẫn (confusion matrix) cho 10 âm vị thách thức nhất (/θ/, /ð/, /dʒ/, /tʃ/, final /s, z, t, d/) để làm bằng chứng chất lượng cho Gate I.",
+          "completed": false
+        }
+      ],
+      "technicalTasks": [
+        {
+          "id": "t-aiq-101-corpus",
+          "title": "Tổ chức kho dữ liệu mẫu âm thanh chuẩn tại `data/benchmark/` kèm metadata JSON phân loại vùng miền và trình độ",
+          "category": "QA/AI",
+          "completed": false
+        },
+        {
+          "id": "t-aiq-101-labels",
+          "title": "Xây dựng file `ground_truth_labels.json` chứa điểm số dán nhãn của các chuyên gia ngữ âm học",
+          "category": "Content/AI",
+          "completed": false
+        },
+        {
+          "id": "t-aiq-101-script",
+          "title": "Viết công cụ CLI `scripts/run_ai_benchmark.js` nạp file, gọi hàm scoring, tính toán Pearson r, MAE và xuất bảng số liệu",
+          "category": "AI/Scale",
+          "completed": false
+        },
+        {
+          "id": "t-aiq-101-ci",
+          "title": "Tích hợp bài test regression benchmark vào CI: cảnh báo đỏ nếu PR mới làm giảm Pearson r xuống dưới 0.82",
+          "category": "DevOps",
+          "completed": false
+        },
+        {
+          "id": "t-aiq-101-doc",
+          "title": "Soạn thảo tài liệu báo cáo nghiên cứu kỹ thuật `docs/AI_PRONUNCIATION_ACCURACY_BENCHMARK.md`",
+          "category": "Content",
+          "completed": false
+        }
+      ],
+      "notes": "### 📋 Gate applicability\n- **Áp dụng**: A, B, **I (🔴 I3 chứng minh độ chính xác CAPT, I4 hiệu chỉnh L1 3 miền)**, **K (K5 test giọng thật 3 miền)**\n- **Phụ thuộc**: ELSA-201 (Forced alignment), PRON-203 (Chấm điểm âm vị), VN-101..105 (Hiệu chỉnh giọng Việt).",
+      "createdAt": "2026-10-04T06:58:45.214Z"
+    },
+    {
+      "id": "SCL-101",
+      "epicId": "epic-backend-infrastructure",
+      "title": "Load & Stress Testing Suite for 1,500 Concurrent Sessions: Kịch Bản Kiểm Thử Tải 1,500 Phiên Đồng Thời",
+      "persona": "Kỹ sư Kiểm thử Hiệu năng (Performance QA) và Kỹ sư Hạ tầng Đám mây",
+      "action": "viết kịch bản kiểm thử tải k6 / Artillery mô phỏng 1,500 phiên người dùng đồng thời trong 30 phút, kiểm tra độ bền máy chủ API và hàng đợi GPU",
+      "value": "chứng minh hệ thống chịu tải an toàn gấp 3 lần quy mô 5,000 học viên trả phí, không sập nguồn, không rò rỉ RAM và giữ P95 ≤ 2s",
+      "priority": "must",
+      "status": "backlog",
+      "size": "L",
+      "points": 8,
+      "acceptanceCriteria": [
+        {
+          "id": "ac-scl-101-k6-scenario",
+          "given": "Kịch bản k6 mô phỏng hành vi học viên thật trong giờ cao điểm tối (20:00–21:30)",
+          "when": "1,500 Virtual Users (VUs) đồng thời",
+          "then": "Phân bổ hành vi: 50% luyện âm vị nộp file audio, 25% xem dashboard tiến độ & bảng xếp hạng, 15% làm bài chẩn đoán, 10% thanh toán checkout.",
+          "completed": false
+        },
+        {
+          "id": "ac-scl-101-ramp-up",
+          "given": "Tiến trình kiểm thử bắt đầu",
+          "when": "Ramp up từ 0 lên 1,500 VUs trong 5 phút, giữ tải đỉnh 20 phút, hạ tải 5 phút",
+          "then": "Hệ thống tự động điều chỉnh mở rộng worker; không có tiến trình nào bị crashed hoặc restart đột ngột.",
+          "completed": false
+        },
+        {
+          "id": "ac-scl-101-threshold-api",
+          "given": "Dưới áp lực 1,500 phiên đồng thời (≈ 150 requests/giây)",
+          "when": "Đo lường độ trễ các API thông thường (đọc profile, dashboard, bài học)",
+          "then": "Độ trễ P95 ≤ 200ms (Gate J1), P99 ≤ 500ms; không có timeout kết nối cơ sở dữ liệu.",
+          "completed": false
+        },
+        {
+          "id": "ac-scl-101-threshold-audio",
+          "given": "Dưới lưu lượng nộp bài 15–30 file âm thanh/giây",
+          "when": "Đo lường thời gian xử lý chấm điểm end-to-end (ingest → queue → scoring → response)",
+          "then": "Độ trễ P95 ≤ 2.0 giây (Gate J2); hàng đợi Redis không bị tràn bộ nhớ.",
+          "completed": false
+        },
+        {
+          "id": "ac-scl-101-error-rate",
+          "given": "Trong suốt 30 phút kiểm thử tải",
+          "when": "Tổng kết toàn bộ 250,000+ requests gửi lên",
+          "then": "Tỉ lệ lỗi HTTP 5xx < 0.5% (Gate J3); Uptime đạt 100% trong phiên test (Gate J4); xuất báo cáo HTML và JSON chi tiết.",
+          "completed": false
+        }
+      ],
+      "technicalTasks": [
+        {
+          "id": "t-scl-101-script",
+          "title": "Viết kịch bản k6 `tests/load/k6_peak_concurrency_1500.js` với custom metrics, thresholds và sinh dữ liệu audio giả lập",
+          "category": "QA",
+          "completed": false
+        },
+        {
+          "id": "t-scl-101-setup",
+          "title": "Cấu hình môi trường Staging đồng nhất phần cứng với Production để chạy load test",
+          "category": "DevOps",
+          "completed": false
+        },
+        {
+          "id": "t-scl-101-monitor",
+          "title": "Ghi nhận biểu đồ tiêu thụ CPU, RAM máy chủ, kết nối DB pool và I/O mạng trong suốt quá trình test",
+          "category": "DevOps",
+          "completed": false
+        },
+        {
+          "id": "t-scl-101-report",
+          "title": "Phân tích kết quả chạy, lập tài liệu báo cáo kiểm chuẩn hiệu năng `docs/LOAD_TEST_REPORT_1500_CONCURRENCY.md`",
+          "category": "QA",
+          "completed": false
+        },
+        {
+          "id": "t-scl-101-ci",
+          "title": "Tích hợp smoke load test nhẹ (50 VUs) vào quy trình CI/CD trước khi release phiên bản lớn",
+          "category": "DevOps",
+          "completed": false
+        }
+      ],
+      "notes": "### 📋 Gate applicability\n- **Áp dụng**: A, B, **J (🔴 J1 P95 ≤ 200ms, J2 audio P95 ≤ 2s, J3 5xx < 0.5%, J4 uptime, J5 load test 1,500 phiên)**, **K (K1-K8)**\n- **Phụ thuộc**: ARCH-101 (Connection pool), ARCH-102 (GPU worker queue), ARCH-103 (Caching & Redis).",
+      "createdAt": "2026-10-04T06:58:45.214Z"
     }
   ]
 };
