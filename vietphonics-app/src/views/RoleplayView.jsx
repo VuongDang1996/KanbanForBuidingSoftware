@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { useRecorder } from '../lib/audio/useRecorder';
+import PostRoleplayScorecard from '../components/roleplay/PostRoleplayScorecard';
+import IeltsMockExaminer from '../components/roleplay/IeltsMockExaminer';
 
 export default function RoleplayView() {
   const { incrementStreak } = useApp();
   const [showViSub, setShowViSub] = useState(true);
   const [isSlowAi, setIsSlowAi] = useState(false);
   const [hasRecordedUser, setHasRecordedUser] = useState(true);
+  const [showScorecard, setShowScorecard] = useState(false);
+  const [showIeltsMock, setShowIeltsMock] = useState(false);
 
   const { isRecording, start, stop } = useRecorder({ autoAnalyze: true });
 
@@ -88,11 +92,22 @@ export default function RoleplayView() {
                   </h1>
                 </div>
               </div>
-              <div className="flex items-center gap-space-xs shrink-0 bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-full shadow-inner">
-                <span className="w-2 h-2 rounded-full bg-rose-600 animate-ping"></span>
-                <span className="font-label-mono text-label-mono text-slate-600">
-                  L1 Lọc Âm: <span className="text-rose-600 font-bold">Ending Stops /t/, /d/, /kt/</span>
-                </span>
+              <div className="flex items-center gap-space-xs shrink-0 flex-wrap">
+                <button
+                  onClick={() => setShowIeltsMock(true)}
+                  className="px-3 py-1.5 rounded-lg bg-rose-600 hover:bg-rose-700 text-white font-label-mono text-[11px] font-semibold flex items-center gap-1 transition-colors cursor-pointer shadow-xs"
+                  type="button"
+                  data-testid="open-ielts-mock-examiner"
+                >
+                  <span className="material-symbols-outlined text-sm">school</span>
+                  <span>Thi Thử IELTS Speaking (VN-104)</span>
+                </button>
+                <div className="flex items-center gap-space-xs bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-full shadow-inner">
+                  <span className="w-2 h-2 rounded-full bg-rose-600 animate-ping"></span>
+                  <span className="font-label-mono text-label-mono text-slate-600">
+                    L1 Lọc Âm: <span className="text-rose-600 font-bold">Ending Stops /t/, /d/, /kt/</span>
+                  </span>
+                </div>
               </div>
             </div>
 
@@ -569,19 +584,32 @@ export default function RoleplayView() {
                 </button>
               </div>
 
-              {/* L1 Muscle Tip */}
-              <div className="p-space-sm rounded-lg bg-indigo-50/70 border border-indigo-100 flex items-start gap-2">
-                <span className="material-symbols-outlined text-indigo-600 text-base mt-0.5">tips_and_updates</span>
-                <div className="flex flex-col text-[12px] leading-relaxed text-slate-600">
-                  <strong className="text-slate-800">Mẹo cơ miệng cho người Việt:</strong> Đuôi{' '}
-                  <code className="bg-white px-1 py-0.5 rounded text-indigo-700 font-mono">-ed</code> sau âm vô thanh{' '}
-                  <code className="bg-white px-1 py-0.5 rounded text-indigo-700 font-mono">/k/</code> (như block) phải bật thành gió{' '}
-                  <code className="bg-white px-1 py-0.5 rounded text-indigo-700 font-mono">/t/</code> sắc gọn. Chặn hơi đầu lưỡi vào chân răng trên rồi nhả dứt khoát.
-                </div>
-              </div>
+              {/* Trigger ELSA-302 Full Post-Roleplay Scorecard */}
+              <button
+                onClick={() => setShowScorecard(true)}
+                className="w-full py-2.5 px-3 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-label-mono text-[12px] flex items-center justify-center gap-1.5 transition-colors font-semibold shadow-sm cursor-pointer mt-2"
+                type="button"
+                data-testid="open-post-roleplay-scorecard"
+              >
+                <span className="material-symbols-outlined text-base">assessment</span>
+                <span>Xem Báo Cáo Đánh Giá Chi Tiết (ELSA-302)</span>
+              </button>
             </div>
           </div>
         </div>
+
+        {/* ELSA-302 Post-Roleplay Comprehensive Scorecard Modal */}
+        <PostRoleplayScorecard
+          isOpen={showScorecard}
+          onClose={() => setShowScorecard(false)}
+          sessionId="it_scrum_04"
+        />
+
+        {/* VN-104 IELTS Speaking Part 2 Mock Examiner Modal */}
+        <IeltsMockExaminer
+          isOpen={showIeltsMock}
+          onClose={() => setShowIeltsMock(false)}
+        />
       </section>
     </div>
   );

@@ -2551,6 +2551,602 @@ app.get('/api/v1/roleplay/session/latest', (req, res) => {
   }
 });
 
+/**
+ * ELSA-302: Post-Roleplay Comprehensive Scorecard Endpoints
+ */
+import { calculateRoleplayScorecard } from '../src/lib/scoring/roleplayScorecard.js';
+
+// POST generate and persist post-roleplay comprehensive scorecard
+app.post('/api/v1/roleplay/scorecard/generate', (req, res) => {
+  try {
+    const userId = req.headers['x-user-id'] || req.body.userId || 'default_user';
+    const {
+      sessionId,
+      pronunciationScore,
+      fluencyScore,
+      grammarScore,
+      vocabularyScore,
+      objectiveScore,
+      transcriptTurns,
+      detectedErrors
+    } = req.body;
+
+    const scorecard = calculateRoleplayScorecard({
+      sessionId: sessionId || 'session_default',
+      pronunciationScore,
+      fluencyScore,
+      grammarScore,
+      vocabularyScore,
+      objectiveScore,
+      transcriptTurns,
+      detectedErrors
+    });
+
+    const now = new Date().toISOString();
+    const recordId = `scd-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
+
+    db.prepare(`
+      INSERT INTO roleplay_scorecard_records (
+        id, user_id, session_id, overall_score, rank_badge, pronunciation_score,
+        fluency_score, grammar_score, vocabulary_score, objective_score,
+        weak_words_json, transcript_json, created_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `).run(
+      recordId,
+      userId,
+      scorecard.sessionId,
+      scorecard.overallScore,
+      scorecard.rankBadge,
+      scorecard.pillars.pronunciation.score,
+      scorecard.pillars.fluency.score,
+      scorecard.pillars.grammar.score,
+      scorecard.pillars.vocabulary.score,
+      scorecard.pillars.objectives.score,
+      JSON.stringify(scorecard.weakWords),
+      JSON.stringify(scorecard.transcript),
+      now
+    );
+
+    res.json({
+      success: true,
+      recordId,
+      scorecardId: recordId,
+      userId,
+      scorecard,
+      createdAt: now
+    });
+  } catch (err) {
+    console.error('Error in POST roleplay/scorecard/generate:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// GET latest roleplay scorecard for user
+app.get('/api/v1/roleplay/scorecard/latest', (req, res) => {
+  try {
+    const userId = req.headers['x-user-id'] || 'default_user';
+    const row = db.prepare('SELECT * FROM roleplay_scorecard_records WHERE user_id = ? ORDER BY created_at DESC LIMIT 1').get(userId);
+
+    if (!row) {
+      return res.json({ success: true, scorecard: null });
+    }
+
+    const weakWords = JSON.parse(row.weak_words_json || '[]');
+    const transcript = JSON.parse(row.transcript_json || '[]');
+
+    const scorecard = calculateRoleplayScorecard({
+      sessionId: row.session_id,
+      pronunciationScore: row.pronunciation_score,
+      fluencyScore: row.fluency_score,
+      grammarScore: row.grammar_score,
+      vocabularyScore: row.vocabulary_score,
+      objectiveScore: row.objective_score,
+      transcriptTurns: transcript,
+      detectedErrors: weakWords
+    });
+
+    res.json({
+      success: true,
+      recordId: row.id,
+      userId: row.user_id,
+      scorecard,
+      createdAt: row.created_at
+    });
+  } catch (err) {
+    console.error('Error in GET roleplay/scorecard/latest:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// POST save weak word from scorecard into error bank
+app.post('/api/v1/roleplay/scorecard/save-error', (req, res) => {
+  try {
+    const userId = req.headers['x-user-id'] || req.body.userId || 'default_user';
+    const { word, ipa, issue, correctiveTip } = req.body;
+
+    if (!word || typeof word !== 'string' || !word.trim()) {
+      return res.status(400).json({
+        success: false,
+        error: 'Missing required field: word'
+      });
+    }
+
+    const now = new Date().toISOString();
+    res.json({
+      success: true,
+      userId,
+      savedWord: {
+        word: word.trim(),
+        ipa: ipa || '',
+        issue: issue || '',
+        correctiveTip: correctiveTip || '',
+        intervalDays: 1,
+        repetition: 0,
+        savedAt: now
+      },
+      message: `Đã lưu từ "${word.trim()}" vào Ngân Hàng Lỗi (Error Bank) để ôn tập Spaced Repetition!`
+    });
+  } catch (err) {
+    console.error('Error in POST roleplay/scorecard/save-error:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+/**
+ * VN-104: IELTS Speaking Part 1 & 2 AI Mock Examiner Endpoints
+ */
+import { getIeltsCueCards, getIeltsCueCardById, evaluateIeltsMockPart2 } from '../src/lib/scoring/ieltsMockExaminer.js';
+
+// GET all IELTS Cue Cards
+app.get('/api/v1/ielts/cue-cards', (req, res) => {
+  try {
+    const cards = getIeltsCueCards();
+    res.json({ success: true, cueCards: cards });
+  } catch (err) {
+    console.error('Error in GET /api/v1/ielts/cue-cards:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// GET single cue card
+app.get('/api/v1/ielts/cue-cards/:id', (req, res) => {
+  try {
+    const card = getIeltsCueCardById(req.params.id);
+    res.json({ success: true, cueCard: card });
+  } catch (err) {
+    console.error('Error in GET /api/v1/ielts/cue-cards/:id:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// POST evaluate Part 2 speech & record to SQLite
+app.post('/api/v1/ielts/mock-eval', (req, res) => {
+  try {
+    const userId = req.headers['x-user-id'] || req.body.userId || 'default_user';
+    const { topicId, transcript, prepNotes, speechDurationSec } = req.body;
+
+    if (!transcript || typeof transcript !== 'string' || !transcript.trim()) {
+      return res.status(400).json({
+        success: false,
+        error: 'Missing required field: transcript'
+      });
+    }
+
+    const evalResult = evaluateIeltsMockPart2({
+      topicId: topicId || 'tech_difficult_01',
+      transcript,
+      prepNotes: prepNotes || '',
+      speechDurationSec: Number(speechDurationSec) || 110
+    });
+
+    const recordId = `ielts-mock-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
+    const now = new Date().toISOString();
+
+    db.prepare(`
+      INSERT INTO ielts_mock_examiner_records (
+        id, user_id, topic_id, topic_title, part_type, prep_notes, transcript,
+        duration_sec, fc_band, lr_band, gra_band, pr_band, overall_band,
+        past_tense_errors_json, feedback_json, created_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `).run(
+      recordId,
+      userId,
+      evalResult.topicId,
+      evalResult.topicTitle,
+      2,
+      evalResult.prepNotes,
+      evalResult.transcript,
+      evalResult.speechDurationSec,
+      evalResult.criteria.fc.band,
+      evalResult.criteria.lr.band,
+      evalResult.criteria.gra.band,
+      evalResult.criteria.pr.band,
+      evalResult.overallBand,
+      JSON.stringify(evalResult.criteria.gra.pastTenseErrors),
+      JSON.stringify(evalResult),
+      now
+    );
+
+    res.json({
+      success: true,
+      recordId,
+      mockId: recordId,
+      userId,
+      evaluation: evalResult,
+      createdAt: now
+    });
+  } catch (err) {
+    console.error('Error in POST /api/v1/ielts/mock-eval:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// GET latest IELTS mock exam for user
+app.get('/api/v1/ielts/mock/latest', (req, res) => {
+  try {
+    const userId = req.headers['x-user-id'] || 'default_user';
+    const row = db.prepare('SELECT * FROM ielts_mock_examiner_records WHERE user_id = ? ORDER BY created_at DESC LIMIT 1').get(userId);
+
+    if (!row) {
+      return res.json({ success: true, evaluation: null });
+    }
+
+    res.json({
+      success: true,
+      recordId: row.id,
+      userId: row.user_id,
+      topicId: row.topic_id,
+      topicTitle: row.topic_title,
+      overallBand: row.overall_band,
+      criteriaBands: {
+        fc: row.fc_band,
+        lr: row.lr_band,
+        gra: row.gra_band,
+        pr: row.pr_band
+      },
+      evaluation: JSON.parse(row.feedback_json),
+      createdAt: row.created_at
+    });
+  } catch (err) {
+    console.error('Error in GET /api/v1/ielts/mock/latest:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+/**
+ * GAME-101: Multi-Tier Level Progression & 4-World Map Engine Endpoints
+ */
+import { getGameWorlds, getGameWorldById, evaluateStageCompletion } from '../src/lib/scoring/gameLevelMap.js';
+
+// GET all 4 worlds and their stages
+app.get('/api/v1/game/world-map', (req, res) => {
+  try {
+    const worlds = getGameWorlds();
+    res.json({ success: true, worlds });
+  } catch (err) {
+    console.error('Error in GET /api/v1/game/world-map:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// GET single world details
+app.get('/api/v1/game/world-map/:worldId', (req, res) => {
+  try {
+    const world = getGameWorldById(req.params.worldId);
+    res.json({ success: true, world });
+  } catch (err) {
+    console.error('Error in GET /api/v1/game/world-map/:worldId:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// POST evaluate stage completion & save progress
+app.post('/api/v1/game/stage-complete', (req, res) => {
+  try {
+    const userId = req.headers['x-user-id'] || req.body.userId || 'default_user';
+    const { worldId, stageId, score, currentTotalStars } = req.body;
+
+    if (score === undefined || score === null || isNaN(Number(score))) {
+      return res.status(400).json({
+        success: false,
+        error: 'Missing or invalid field: score'
+      });
+    }
+
+    const result = evaluateStageCompletion({
+      worldId: worldId || 'world_1',
+      stageId: stageId || 'stage_1_1',
+      score: Number(score),
+      currentTotalStars: Number(currentTotalStars) || 0
+    });
+
+    const recordId = `game-stage-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
+    const now = new Date().toISOString();
+
+    db.prepare(`
+      INSERT INTO game_world_progress_records (
+        id, user_id, world_id, stage_id, score, stars, gem_reward,
+        next_stage_id, next_world_unlocked, feedback_text, created_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `).run(
+      recordId,
+      userId,
+      result.worldId,
+      result.stageId,
+      result.score,
+      result.stars,
+      result.gemReward,
+      result.nextStageId,
+      result.nextWorldUnlocked ? 1 : 0,
+      result.feedbackText,
+      now
+    );
+
+    res.json({
+      success: true,
+      recordId,
+      userId,
+      progression: result,
+      createdAt: now
+    });
+  } catch (err) {
+    console.error('Error in POST /api/v1/game/stage-complete:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// GET latest game progress for user
+app.get('/api/v1/game/progress/latest', (req, res) => {
+  try {
+    const userId = req.headers['x-user-id'] || 'default_user';
+    const row = db.prepare('SELECT * FROM game_world_progress_records WHERE user_id = ? ORDER BY created_at DESC LIMIT 1').get(userId);
+
+    if (!row) {
+      return res.json({ success: true, progress: null });
+    }
+
+    res.json({
+      success: true,
+      recordId: row.id,
+      userId: row.user_id,
+      worldId: row.world_id,
+      stageId: row.stage_id,
+      score: row.score,
+      stars: row.stars,
+      gemReward: row.gem_reward,
+      nextStageId: row.next_stage_id,
+      nextWorldUnlocked: Boolean(row.next_world_unlocked),
+      feedbackText: row.feedback_text,
+      createdAt: row.created_at
+    });
+  } catch (err) {
+    console.error('Error in GET /api/v1/game/progress/latest:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+/**
+ * GAME-102: Dual Voice Controller: Real-Time Web Speech & Fallback Simulation Endpoints
+ */
+import { getVoiceSpells, getVoiceSpellById, evaluateVoiceSpell, calculateDecibelFromRms } from '../src/lib/audio/gameVoiceController.js';
+
+// GET available voice combat spells
+app.get('/api/v1/game/voice-commands', (req, res) => {
+  try {
+    const spells = getVoiceSpells();
+    res.json({ success: true, spells });
+  } catch (err) {
+    console.error('Error in GET /api/v1/game/voice-commands:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// POST cast voice spell (real mic or simulator fallback)
+app.post('/api/v1/game/voice-action', (req, res) => {
+  try {
+    const userId = req.headers['x-user-id'] || req.body.userId || 'default_user';
+    const { spellId, spokenWord, isSimulated, currentCombo, latencyMs } = req.body;
+
+    const evalResult = evaluateVoiceSpell({
+      targetSpellId: spellId || 'spell_six',
+      spokenWord: spokenWord || '',
+      isSimulated: Boolean(isSimulated),
+      currentCombo: Number(currentCombo) || 0,
+      latencyMs: Number(latencyMs) || 18
+    });
+
+    const recordId = `game-voice-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
+    const now = new Date().toISOString();
+
+    db.prepare(`
+      INSERT INTO game_voice_session_records (
+        id, user_id, spell_id, spell_name, target_word, spoken_word,
+        is_simulated, hit_type, damage, new_combo, latency_ms, feedback_text, created_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `).run(
+      recordId,
+      userId,
+      evalResult.spellId,
+      evalResult.spellName,
+      evalResult.targetWord,
+      evalResult.spokenWord,
+      evalResult.isSimulated ? 1 : 0,
+      evalResult.hitType,
+      evalResult.damage,
+      evalResult.newCombo,
+      evalResult.latencyMs,
+      evalResult.feedbackText,
+      now
+    );
+
+    res.json({
+      success: true,
+      recordId,
+      userId,
+      action: evalResult,
+      createdAt: now
+    });
+  } catch (err) {
+    console.error('Error in POST /api/v1/game/voice-action:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// GET latest voice action for user
+app.get('/api/v1/game/voice/latest', (req, res) => {
+  try {
+    const userId = req.headers['x-user-id'] || 'default_user';
+    const row = db.prepare('SELECT * FROM game_voice_session_records WHERE user_id = ? ORDER BY created_at DESC LIMIT 1').get(userId);
+
+    if (!row) {
+      return res.json({ success: true, action: null });
+    }
+
+    res.json({
+      success: true,
+      recordId: row.id,
+      userId: row.user_id,
+      spellId: row.spell_id,
+      spellName: row.spell_name,
+      targetWord: row.target_word,
+      spokenWord: row.spoken_word,
+      isSimulated: Boolean(row.is_simulated),
+      hitType: row.hit_type,
+      damage: row.damage,
+      newCombo: row.new_combo,
+      latencyMs: row.latency_ms,
+      feedbackText: row.feedback_text,
+      createdAt: row.created_at
+    });
+  } catch (err) {
+    console.error('Error in GET /api/v1/game/voice/latest:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+/**
+ * GAME-103: Auditory Discrimination Boss Arenas & Turn-Based Minimal Pair Counter-Spells Endpoints
+ */
+import { getBossEncounters, getBossEncounterById, evaluateBossTurn } from '../src/lib/scoring/bossArena.js';
+
+// GET all boss encounters
+app.get('/api/v1/game/boss-arenas', (req, res) => {
+  try {
+    const bosses = getBossEncounters();
+    res.json({ success: true, bosses });
+  } catch (err) {
+    console.error('Error in GET /api/v1/game/boss-arenas:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// GET single boss encounter details
+app.get('/api/v1/game/boss-arenas/:bossId', (req, res) => {
+  try {
+    const boss = getBossEncounterById(req.params.bossId);
+    res.json({ success: true, boss });
+  } catch (err) {
+    console.error('Error in GET /api/v1/game/boss-arenas/:bossId:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// POST turn action in boss fight
+app.post('/api/v1/game/boss-turn', (req, res) => {
+  try {
+    const userId = req.headers['x-user-id'] || req.body.userId || 'default_user';
+    const { bossId, turnIndex, selectedOptionIndex, currentBossHp, currentPlayerHp, timeTakenSec } = req.body;
+
+    if (selectedOptionIndex === undefined || selectedOptionIndex === null) {
+      return res.status(400).json({
+        success: false,
+        error: 'Missing required field: selectedOptionIndex'
+      });
+    }
+
+    const evalResult = evaluateBossTurn({
+      bossId: bossId || 'boss_titan_t',
+      turnIndex: Number(turnIndex) || 1,
+      selectedOptionIndex: Number(selectedOptionIndex),
+      currentBossHp: Number(currentBossHp) || 100,
+      currentPlayerHp: Number(currentPlayerHp) || 100,
+      timeTakenSec: Number(timeTakenSec) || 2.0
+    });
+
+    const recordId = `boss-turn-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
+    const now = new Date().toISOString();
+
+    db.prepare(`
+      INSERT INTO game_boss_battle_records (
+        id, user_id, boss_id, boss_name, turn_index, target_word, selected_word,
+        is_correct, is_timeout, boss_hp_left, player_hp_left, damage_dealt,
+        damage_taken, magnifier_tip, created_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `).run(
+      recordId,
+      userId,
+      evalResult.bossId,
+      evalResult.bossName,
+      evalResult.turnIndex,
+      evalResult.targetWord,
+      evalResult.selectedWord,
+      evalResult.isCorrect ? 1 : 0,
+      evalResult.isTimeout ? 1 : 0,
+      evalResult.newBossHp,
+      evalResult.newPlayerHp,
+      evalResult.damageDealt,
+      evalResult.damageTaken,
+      evalResult.magnifierTip,
+      now
+    );
+
+    res.json({
+      success: true,
+      recordId,
+      userId,
+      turnResult: evalResult,
+      createdAt: now
+    });
+  } catch (err) {
+    console.error('Error in POST /api/v1/game/boss-turn:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// GET latest boss fight turn record
+app.get('/api/v1/game/boss/latest', (req, res) => {
+  try {
+    const userId = req.headers['x-user-id'] || 'default_user';
+    const row = db.prepare('SELECT * FROM game_boss_battle_records WHERE user_id = ? ORDER BY created_at DESC LIMIT 1').get(userId);
+
+    if (!row) {
+      return res.json({ success: true, turnResult: null });
+    }
+
+    res.json({
+      success: true,
+      recordId: row.id,
+      userId: row.user_id,
+      bossId: row.boss_id,
+      bossName: row.boss_name,
+      turnIndex: row.turn_index,
+      targetWord: row.target_word,
+      selectedWord: row.selected_word,
+      isCorrect: Boolean(row.is_correct),
+      isTimeout: Boolean(row.is_timeout),
+      bossHpLeft: row.boss_hp_left,
+      playerHpLeft: row.player_hp_left,
+      damageDealt: row.damage_dealt,
+      damageTaken: row.damage_taken,
+      magnifierTip: row.magnifier_tip,
+      createdAt: row.created_at
+    });
+  } catch (err) {
+    console.error('Error in GET /api/v1/game/boss/latest:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 // Start listening only if run directly as main entrypoint
 const isMain = process.argv[1] && (process.argv[1].includes('server/index.js') || process.argv[1].includes('server\\index.js'));
 if (isMain && process.env.NODE_ENV !== 'test') {

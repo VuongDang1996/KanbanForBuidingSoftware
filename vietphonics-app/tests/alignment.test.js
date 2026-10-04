@@ -1,5 +1,6 @@
 import { test, describe, before, after } from 'node:test';
 import assert from 'node:assert/strict';
+import http from 'node:http';
 import app from '../server/index.js';
 import { db } from '../server/db.js';
 import {
@@ -10,15 +11,15 @@ import {
   VIETNAMESE_PHONETIC_TRAPS
 } from '../src/lib/scoring/phonemeAlignment.js';
 
-let server;
-const PORT = 3851; // Dedicated test port for alignment
-
 describe('ELSA-201: Real-Time Phoneme Error Heatmap with Forced Alignment Tests', () => {
+  let server;
+  const PORT = 3851; // Dedicated test port for alignment
   const sampleSentence = 'Six months ago, she baked fresh bread for breakfast.';
 
   before(async () => {
     await new Promise((resolve) => {
-      server = app.listen(PORT, resolve);
+      server = http.createServer(app);
+      server.listen(PORT, resolve);
     });
   });
 

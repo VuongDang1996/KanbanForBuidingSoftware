@@ -1,9 +1,14 @@
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { useRecorder } from '../lib/audio/useRecorder';
+import WorldMapStageSelect from '../components/game/WorldMapStageSelect';
+import VoiceControllerHUD from '../components/game/VoiceControllerHUD';
+import BossArenaBattle from '../components/game/BossArenaBattle';
 
 export default function Game3dView() {
   const { incrementStreak } = useApp();
+  const [showWorldMap, setShowWorldMap] = useState(false);
+  const [showBossArena, setShowBossArena] = useState(false);
   const [bossHp, setBossHp] = useState(1250);
   const maxBossHp = 3000;
   const [combo, setCombo] = useState(4);
@@ -55,6 +60,32 @@ export default function Game3dView() {
     });
   };
 
+  const handleVoiceSpellCast = (action) => {
+    if (action.hitType === 'critical' || action.hitType === 'normal') {
+      setIsSurging(true);
+      const newHp = Math.max(0, bossHp - action.damage);
+      setBossHp(newHp);
+      setCombo(action.newCombo);
+      setCombatFeedback({
+        type: action.hitType,
+        damage: action.damage,
+        text: action.feedbackText,
+        emoji: action.hitType === 'critical' ? '💥' : '⚔️'
+      });
+      incrementStreak();
+      setTimeout(() => setIsSurging(false), 1200);
+    } else {
+      setIsSurging(false);
+      setCombo(0);
+      setCombatFeedback({
+        type: 'miss',
+        damage: 0,
+        text: action.feedbackText,
+        emoji: '🛡️'
+      });
+    }
+  };
+
   const handleMicToggle = async () => {
     if (isRecording) {
       await stop();
@@ -98,6 +129,26 @@ export default function Game3dView() {
               <span>Thung Lũng Âm Đuôi</span>
               <span className="text-slate-300 font-normal">•</span>
               <span className="text-rose-600">Ải 3: Trùm Golem Đá Vụn</span>
+            </div>
+            <div className="flex items-center gap-2 mt-1 flex-wrap justify-center">
+              <button
+                onClick={() => setShowWorldMap(true)}
+                className="px-3 py-1 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-label-mono text-[11px] font-semibold flex items-center gap-1.5 transition-colors cursor-pointer shadow-xs"
+                type="button"
+                data-testid="open-world-map"
+              >
+                <span className="material-symbols-outlined text-sm">map</span>
+                <span>Bản Đồ 4 Thế Giới (GAME-101)</span>
+              </button>
+              <button
+                onClick={() => setShowBossArena(true)}
+                className="px-3 py-1 rounded-lg bg-rose-600 hover:bg-rose-700 text-white font-label-mono text-[11px] font-semibold flex items-center gap-1.5 transition-colors cursor-pointer shadow-xs"
+                type="button"
+                data-testid="open-boss-arena"
+              >
+                <span className="material-symbols-outlined text-sm">swords</span>
+                <span>Đấu Trường Trùm Minimal Pair (GAME-103)</span>
+              </button>
             </div>
           </div>
 
@@ -319,6 +370,15 @@ export default function Game3dView() {
           </div>
         </div>
 
+        {/* GAME-102 Real-time Dual Voice Controller HUD */}
+        <div className="w-full mt-space-md">
+          <VoiceControllerHUD
+            activeSpellId="spell_six"
+            onSpellCast={handleVoiceSpellCast}
+            currentCombo={combo}
+          />
+        </div>
+
         {/* DUAL INPUT CONTROLS DOCK */}
         <div className="w-full mt-space-md grid grid-cols-1 lg:grid-cols-12 gap-space-md">
           {/* Primary Voice Recording Trigger */}
@@ -485,6 +545,18 @@ export default function Game3dView() {
             </div>
           </div>
         </div>
+
+        {/* GAME-101 4-World Map Stage Progression Modal */}
+        <WorldMapStageSelect
+          isOpen={showWorldMap}
+          onClose={() => setShowWorldMap(false)}
+        />
+
+        {/* GAME-103 Auditory Discrimination Boss Arena Modal */}
+        <BossArenaBattle
+          isOpen={showBossArena}
+          onClose={() => setShowBossArena(false)}
+        />
       </main>
     </div>
   );

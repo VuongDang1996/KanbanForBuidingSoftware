@@ -321,6 +321,89 @@ export function initAppDatabase() {
       is_blocker_resolved INTEGER NOT NULL,
       created_at TEXT NOT NULL
     );
+
+    CREATE TABLE IF NOT EXISTS roleplay_scorecard_records (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL,
+      session_id TEXT NOT NULL,
+      overall_score INTEGER NOT NULL,
+      rank_badge TEXT NOT NULL,
+      pronunciation_score INTEGER NOT NULL,
+      fluency_score INTEGER NOT NULL,
+      grammar_score INTEGER NOT NULL,
+      vocabulary_score INTEGER NOT NULL,
+      objective_score INTEGER NOT NULL,
+      weak_words_json TEXT NOT NULL,
+      transcript_json TEXT NOT NULL,
+      created_at TEXT NOT NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS ielts_mock_examiner_records (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL,
+      topic_id TEXT NOT NULL,
+      topic_title TEXT NOT NULL,
+      part_type INTEGER NOT NULL DEFAULT 2,
+      prep_notes TEXT NOT NULL,
+      transcript TEXT NOT NULL,
+      duration_sec INTEGER NOT NULL,
+      fc_band REAL NOT NULL,
+      lr_band REAL NOT NULL,
+      gra_band REAL NOT NULL,
+      pr_band REAL NOT NULL,
+      overall_band REAL NOT NULL,
+      past_tense_errors_json TEXT NOT NULL,
+      feedback_json TEXT NOT NULL,
+      created_at TEXT NOT NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS game_world_progress_records (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL,
+      world_id TEXT NOT NULL,
+      stage_id TEXT NOT NULL,
+      score INTEGER NOT NULL,
+      stars INTEGER NOT NULL,
+      gem_reward INTEGER NOT NULL,
+      next_stage_id TEXT,
+      next_world_unlocked INTEGER NOT NULL,
+      feedback_text TEXT NOT NULL,
+      created_at TEXT NOT NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS game_voice_session_records (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL,
+      spell_id TEXT NOT NULL,
+      spell_name TEXT NOT NULL,
+      target_word TEXT NOT NULL,
+      spoken_word TEXT NOT NULL,
+      is_simulated INTEGER NOT NULL,
+      hit_type TEXT NOT NULL,
+      damage INTEGER NOT NULL,
+      new_combo INTEGER NOT NULL,
+      latency_ms INTEGER NOT NULL,
+      feedback_text TEXT NOT NULL,
+      created_at TEXT NOT NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS game_boss_battle_records (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL,
+      boss_id TEXT NOT NULL,
+      boss_name TEXT NOT NULL,
+      turn_index INTEGER NOT NULL,
+      target_word TEXT NOT NULL,
+      selected_word TEXT NOT NULL,
+      is_correct INTEGER NOT NULL,
+      is_timeout INTEGER NOT NULL,
+      boss_hp_left INTEGER NOT NULL,
+      player_hp_left INTEGER NOT NULL,
+      damage_dealt INTEGER NOT NULL,
+      damage_taken INTEGER NOT NULL,
+      magnifier_tip TEXT NOT NULL,
+      created_at TEXT NOT NULL
+    );
   `);
 
   // Seed default penalty weights for 3 regions
