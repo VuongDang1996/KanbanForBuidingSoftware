@@ -41,10 +41,11 @@ export function AppProvider({ children }) {
   const [streak, setStreak] = useState(14);
   const [shields, setShields] = useState(2);
   const [isPro, setIsPro] = useState(false);
-  const [gopScore, setGopScore] = useState(76);
   const [showDiagnosticModal, setShowDiagnosticModal] = useState(false);
   const [showStreakModal, setShowStreakModal] = useState(false);
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+  const [showAccountModal, setShowAccountModal] = useState(false);
+  const [accountModalTab, setAccountModalTab] = useState('register');
 
   // Load dialect profile from backend server on mount
   useEffect(() => {
@@ -174,6 +175,10 @@ export function AppProvider({ children }) {
         setShowStreakModal,
         showUpgradeModal,
         setShowUpgradeModal,
+        showAccountModal,
+        setShowAccountModal,
+        accountModalTab,
+        setAccountModalTab,
         currentPracticeItem,
         setCurrentPracticeItem,
         triggerPractice,

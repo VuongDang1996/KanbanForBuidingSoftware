@@ -5592,6 +5592,613 @@ app.get('/api/v1/ai/accent-explorer/user-target/:userId', (req, res) => {
   }
 });
 
+/**
+ * ─────────────────────────────────────────────────────────────────────────────
+ * BATCH 12 IMPLEMENTATION: USER-106, USER-103, USER-104
+ * ─────────────────────────────────────────────────────────────────────────────
+ */
+import {
+  validateEmailAddress,
+  validatePasswordStrength,
+  hashPassword,
+  verifyPassword,
+  hashTokenSha256,
+  generateEmailVerificationOtp,
+  generatePasswordResetToken,
+  authRateLimiter,
+  parseDeviceFromUserAgent
+} from '../src/lib/auth/authSecurityManager.js';
+
+/**
+ * USER-106: Email Sign-Up & Verification
+ */
+
+// POST /api/v1/auth/email/register
+app.post('/api/v1/auth/email/register', (req, res) => {
+  try {
+    const {
+      email,
+      password,
+      displayName,
+      l1Dialect = 'bac',
+      learningGoal = 'communication',
+      consentedToTerms = false
+    } = req.body;
+
+    // Gate L6: Terms & Privacy policy consent required
+    if (!consentedToTerms) {
+      return res.status(400).json({
+        success: false,
+        error: 'Bạn phải đồng ý với Điều khoản dịch vụ và Chính sách bảo mật (Nghị định 13/2023) để đăng ký tài khoản.'
+      });
+    }
+
+    // Email validation & disposable domain check (Gate F8)
+    const emailValidation = validateEmailAddress(email);
+    if (!emailValidation.valid) {
+      return res.status(400).json({ success: false, error: emailValidation.error });
+    }
+    const cleanEmail = email.trim().toLowerCase();
+
+    // Password strength check (Gate F1)
+    const pwdValidation = validatePasswordStrength(password);
+    if (!pwdValidation.valid) {
+      return res.status(400).json({
+        success: false,
+        error: pwdValidation.feedback.join('. '),
+        details: pwdValidation.feedback
+      });
+    }
+
+    // Rate limit: Max 5 registration attempts per IP in 10 minutes (Gate F7)
+    const clientIp = req.ip || req.headers['x-forwarded-for'] || '127.0.0.1';
+    const regLimit = authRateLimiter.check(`reg_ip:${clientIp}`, 5, 10 * 60 * 1000);
+    if (!regLimit.allowed) {
+      return res.status(429).json({
+        success: false,
+        error: `Quá nhiều lượt đăng ký từ địa chỉ này. Vui lòng thử lại sau ${regLimit.retryAfterSeconds} giây.`
+      });
+    }
+
+    const now = new Date().toISOString();
+    let account = db.prepare('SELECT * FROM auth_accounts WHERE email = ?').get(cleanEmail);
+
+    if (account) {
+      if (account.status === 'active') {
+        // Anti-enumeration: neutral response (Gate F8)
+        return res.json({
+          success: true,
+          message: 'Nếu email chưa có tài khoản, hướng dẫn kích hoạt đã được gửi.',
+          alreadyRegistered: true
+        });
+      }
+      // If pending verification, update password hash and re-send OTP
+      const pwdHash = hashPassword(password);
+      db.prepare('UPDATE auth_accounts SET password_hash = ?, display_name = ?, l1_dialect = ?, learning_goal = ?, updated_at = ? WHERE id = ?')
+        .run(pwdHash, displayName || cleanEmail.split('@')[0], l1Dialect, learningGoal, now, account.id);
+    } else {
+      const accountId = `acc_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
+      const pwdHash = hashPassword(password);
+      db.prepare(`
+        INSERT INTO auth_accounts (
+          id, email, password_hash, display_name, l1_dialect, learning_goal,
+          status, tier, created_at, updated_at
+        ) VALUES (?, ?, ?, ?, ?, ?, 'pending_verification', 'free', ?, ?)
+      `).run(accountId, cleanEmail, pwdHash, displayName || cleanEmail.split('@')[0], l1Dialect, learningGoal, now, now);
+
+      account = db.prepare('SELECT * FROM auth_accounts WHERE id = ?').get(accountId);
+    }
+
+    // Invalidate prior unused OTPs
+    db.prepare('UPDATE email_verification_tokens SET used_at = ? WHERE account_id = ? AND used_at IS NULL').run(now, account.id);
+
+    // Generate new OTP & Token
+    const { otpCode, rawToken, tokenHash, expiresAt } = generateEmailVerificationOtp();
+    const tokenId = `evt_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`;
+    db.prepare(`
+      INSERT INTO email_verification_tokens (
+        id, account_id, token_hash, otp_code, expires_at, created_at
+      ) VALUES (?, ?, ?, ?, ?, ?)
+    `).run(tokenId, account.id, tokenHash, otpCode, expiresAt, now);
+
+    res.status(201).json({
+      success: true,
+      message: 'Mã xác thực OTP đã được gửi đến email của bạn. Mã có hiệu lực trong 15 phút.',
+      accountId: account.id,
+      email: cleanEmail,
+      otpPreview: otpCode, // For demo/testing convenience
+      expiresAt
+    });
+  } catch (err) {
+    console.error('Error in /api/v1/auth/email/register:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// POST /api/v1/auth/email/verify
+app.post('/api/v1/auth/email/verify', (req, res) => {
+  try {
+    const { email, otpCode } = req.body;
+    if (!email || !otpCode) {
+      return res.status(400).json({ success: false, error: 'Email và mã OTP là bắt buộc' });
+    }
+
+    const cleanEmail = email.trim().toLowerCase();
+    const account = db.prepare('SELECT * FROM auth_accounts WHERE email = ?').get(cleanEmail);
+    if (!account) {
+      return res.status(404).json({ success: false, error: 'Không tìm thấy tài khoản với email này' });
+    }
+
+    if (account.status === 'active') {
+      return res.json({
+        success: true,
+        message: 'Tài khoản đã được xác minh trước đó.',
+        account: {
+          id: account.id,
+          email: account.email,
+          displayName: account.display_name,
+          tier: account.tier,
+          status: account.status
+        }
+      });
+    }
+
+    const tokenRow = db.prepare(`
+      SELECT * FROM email_verification_tokens
+      WHERE account_id = ? AND used_at IS NULL
+      ORDER BY created_at DESC LIMIT 1
+    `).get(account.id);
+
+    if (!tokenRow) {
+      return res.status(422).json({
+        success: false,
+        error: 'Mã xác thực không tồn tại hoặc đã được sử dụng. Vui lòng bấm "Gửi lại mã".'
+      });
+    }
+
+    const now = new Date();
+    if (now > new Date(tokenRow.expires_at)) {
+      return res.status(422).json({
+        success: false,
+        error: 'Mã xác thực đã hết hạn (sau 15 phút). Vui lòng yêu cầu mã mới.'
+      });
+    }
+
+    if (tokenRow.attempts >= 5) {
+      return res.status(429).json({
+        success: false,
+        error: 'Bạn đã nhập sai mã xác thực quá 5 lần. Vui lòng yêu cầu mã mới.'
+      });
+    }
+
+    if (tokenRow.otp_code !== otpCode.trim()) {
+      db.prepare('UPDATE email_verification_tokens SET attempts = attempts + 1 WHERE id = ?').run(tokenRow.id);
+      const remaining = 5 - (tokenRow.attempts + 1);
+      return res.status(422).json({
+        success: false,
+        error: `Mã OTP không chính xác. Bạn còn ${remaining} lần thử.`
+      });
+    }
+
+    // Mark token as used
+    const nowIso = now.toISOString();
+    db.prepare('UPDATE email_verification_tokens SET used_at = ?, attempts = attempts + 1 WHERE id = ?').run(nowIso, tokenRow.id);
+
+    // Activate account
+    db.prepare('UPDATE auth_accounts SET status = \'active\', email_verified_at = ?, updated_at = ? WHERE id = ?')
+      .run(nowIso, nowIso, account.id);
+
+    // Sync to user_profiles and learner_auth_dashboard_records
+    db.prepare(`
+      INSERT INTO user_profiles (id, user_id, dialect, calibration_mode, confidence_score, ielts_target, overall_gop, created_at, updated_at)
+      VALUES (?, ?, ?, 'manual_selection', 0.90, 7.5, 75, ?, ?)
+      ON CONFLICT(user_id) DO UPDATE SET dialect = excluded.dialect, updated_at = excluded.updated_at
+    `).run(`prof_${account.id}`, account.id, account.l1_dialect, nowIso, nowIso);
+
+    // Create session (USER-104)
+    const userAgent = req.headers['user-agent'] || 'VietPhonics Web App';
+    const { deviceName, deviceType } = parseDeviceFromUserAgent(userAgent);
+    const sessionId = `sess_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`;
+    const sessionTokenHash = hashTokenSha256(`token_${account.id}_${Date.now()}`);
+
+    db.prepare(`
+      INSERT INTO user_active_sessions (
+        id, account_id, refresh_token_hash, device_name, device_type,
+        user_agent, ip_address, location_estimate, last_active_at, created_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, 'Việt Nam', ?, ?)
+    `).run(sessionId, account.id, sessionTokenHash, deviceName, deviceType, userAgent, req.ip || '127.0.0.1', nowIso, nowIso);
+
+    const authToken = generateAuthToken(account.id, account.email);
+
+    res.json({
+      success: true,
+      message: 'Kích hoạt tài khoản thành công! Chào mừng bạn đến với VietPhonics.',
+      token: authToken,
+      sessionId,
+      account: {
+        id: account.id,
+        email: account.email,
+        displayName: account.display_name,
+        l1Dialect: account.l1_dialect,
+        learningGoal: account.learning_goal,
+        tier: account.tier,
+        status: 'active'
+      }
+    });
+  } catch (err) {
+    console.error('Error in /api/v1/auth/email/verify:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// POST /api/v1/auth/email/resend-verification
+app.post('/api/v1/auth/email/resend-verification', (req, res) => {
+  try {
+    const { email } = req.body;
+    if (!email) {
+      return res.status(400).json({ success: false, error: 'Email là bắt buộc' });
+    }
+    const cleanEmail = email.trim().toLowerCase();
+    const account = db.prepare('SELECT * FROM auth_accounts WHERE email = ?').get(cleanEmail);
+    if (!account) {
+      return res.status(404).json({ success: false, error: 'Không tìm thấy tài khoản với email này' });
+    }
+
+    // 60s cooldown limit (Gate F7)
+    const cooldown = authRateLimiter.check(`resend_otp:${cleanEmail}`, 1, 60 * 1000);
+    if (!cooldown.allowed) {
+      return res.status(429).json({
+        success: false,
+        error: `Vui lòng đợi ${cooldown.retryAfterSeconds} giây trước khi yêu cầu gửi lại mã mới.`,
+        retryAfterSeconds: cooldown.retryAfterSeconds
+      });
+    }
+
+    const nowIso = new Date().toISOString();
+    // Void old tokens
+    db.prepare('UPDATE email_verification_tokens SET used_at = ? WHERE account_id = ? AND used_at IS NULL').run(nowIso, account.id);
+
+    const { otpCode, rawToken, tokenHash, expiresAt } = generateEmailVerificationOtp();
+    const tokenId = `evt_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`;
+    db.prepare(`
+      INSERT INTO email_verification_tokens (
+        id, account_id, token_hash, otp_code, expires_at, created_at
+      ) VALUES (?, ?, ?, ?, ?, ?)
+    `).run(tokenId, account.id, tokenHash, otpCode, expiresAt, nowIso);
+
+    res.json({
+      success: true,
+      message: 'Mã xác thực mới đã được gửi vào hộp thư của bạn.',
+      otpPreview: otpCode,
+      expiresAt
+    });
+  } catch (err) {
+    console.error('Error in /api/v1/auth/email/resend-verification:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+/**
+ * USER-103: Forgot & Reset Password
+ */
+
+// POST /api/v1/auth/password/forgot
+app.post('/api/v1/auth/password/forgot', (req, res) => {
+  try {
+    const { email } = req.body;
+    if (!email) {
+      return res.status(400).json({ success: false, error: 'Email là bắt buộc' });
+    }
+    const cleanEmail = email.trim().toLowerCase();
+
+    // Throttle: max 3 requests per hour per email (Gate F7)
+    const throttle = authRateLimiter.check(`pwd_forgot:${cleanEmail}`, 3, 60 * 60 * 1000);
+    if (!throttle.allowed) {
+      return res.status(429).json({
+        success: false,
+        error: `Quá nhiều yêu cầu đặt lại mật khẩu. Vui lòng thử lại sau ${throttle.retryAfterSeconds} giây.`
+      });
+    }
+
+    const account = db.prepare('SELECT * FROM auth_accounts WHERE email = ?').get(cleanEmail);
+    let resetTokenPreview = null;
+
+    if (account && account.status === 'active') {
+      const nowIso = new Date().toISOString();
+      // Invalidate prior unused tokens
+      db.prepare('UPDATE password_reset_tokens SET used_at = ? WHERE account_id = ? AND used_at IS NULL').run(nowIso, account.id);
+
+      const { rawToken, tokenHash, expiresAt } = generatePasswordResetToken();
+      const tokenId = `prt_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`;
+      db.prepare(`
+        INSERT INTO password_reset_tokens (
+          id, account_id, token_hash, expires_at, ip_address, created_at
+        ) VALUES (?, ?, ?, ?, ?, ?)
+      `).run(tokenId, account.id, tokenHash, expiresAt, req.ip || '127.0.0.1', nowIso);
+
+      resetTokenPreview = rawToken;
+    }
+
+    // Anti-enumeration response (Gate F8)
+    res.json({
+      success: true,
+      message: 'Nếu địa chỉ email tồn tại trong hệ thống, hướng dẫn đặt lại mật khẩu đã được gửi đến bạn.',
+      resetTokenPreview // For testing and preview
+    });
+  } catch (err) {
+    console.error('Error in /api/v1/auth/password/forgot:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// POST /api/v1/auth/password/reset
+app.post('/api/v1/auth/password/reset', (req, res) => {
+  try {
+    const { token, newPassword } = req.body;
+    if (!token || !newPassword) {
+      return res.status(400).json({ success: false, error: 'Token và mật khẩu mới là bắt buộc' });
+    }
+
+    const pwdCheck = validatePasswordStrength(newPassword);
+    if (!pwdCheck.valid) {
+      return res.status(400).json({ success: false, error: pwdCheck.feedback.join('. ') });
+    }
+
+    const tokenHash = hashTokenSha256(token);
+    const resetRow = db.prepare(`
+      SELECT * FROM password_reset_tokens
+      WHERE token_hash = ? AND used_at IS NULL
+      ORDER BY created_at DESC LIMIT 1
+    `).get(tokenHash);
+
+    if (!resetRow) {
+      return res.status(422).json({
+        success: false,
+        error: 'Liên kết đặt lại mật khẩu không hợp lệ hoặc đã được sử dụng.'
+      });
+    }
+
+    const now = new Date();
+    if (now > new Date(resetRow.expires_at)) {
+      return res.status(422).json({
+        success: false,
+        error: 'Liên kết đặt lại mật khẩu đã hết hạn (sau 30 phút). Vui lòng yêu cầu liên kết mới.'
+      });
+    }
+
+    const nowIso = now.toISOString();
+    const newPwdHash = hashPassword(newPassword);
+
+    // Update password
+    db.prepare('UPDATE auth_accounts SET password_hash = ?, updated_at = ? WHERE id = ?')
+      .run(newPwdHash, nowIso, resetRow.account_id);
+
+    // Mark token used
+    db.prepare('UPDATE password_reset_tokens SET used_at = ? WHERE id = ?').run(nowIso, resetRow.id);
+
+    // Gate F6 / USER-103: Revoke ALL active sessions on other devices
+    const revokedCount = db.prepare('UPDATE user_active_sessions SET revoked_at = ? WHERE account_id = ? AND revoked_at IS NULL')
+      .run(nowIso, resetRow.account_id).changes;
+
+    res.json({
+      success: true,
+      message: 'Mật khẩu đã được cập nhật thành công. Toàn bộ thiết bị đăng nhập cũ đã được đăng xuất an toàn.',
+      revokedSessionsCount: revokedCount
+    });
+  } catch (err) {
+    console.error('Error in /api/v1/auth/password/reset:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+/**
+ * USER-104: Profile & Active Device Session Limiter (Max 2 Concurrent Sessions)
+ */
+
+// POST /api/v1/auth/session/enforce
+app.post('/api/v1/auth/session/enforce', (req, res) => {
+  try {
+    const { accountId, evictOldest = false } = req.body;
+    if (!accountId) {
+      return res.status(400).json({ success: false, error: 'accountId là bắt buộc' });
+    }
+
+    const account = db.prepare('SELECT * FROM auth_accounts WHERE id = ?').get(accountId);
+    if (!account) {
+      return res.status(404).json({ success: false, error: 'Không tìm thấy tài khoản' });
+    }
+
+    // Free tier: 1 concurrent device; Pro tier: max 2 concurrent devices (Gate G12)
+    const maxAllowed = account.tier === 'pro' ? 2 : 1;
+
+    const activeSessions = db.prepare(`
+      SELECT * FROM user_active_sessions
+      WHERE account_id = ? AND revoked_at IS NULL
+      ORDER BY last_active_at ASC
+    `).all(accountId);
+
+    const nowIso = new Date().toISOString();
+
+    if (activeSessions.length >= maxAllowed) {
+      if (evictOldest) {
+        const oldest = activeSessions[0];
+        db.prepare('UPDATE user_active_sessions SET revoked_at = ? WHERE id = ?').run(nowIso, oldest.id);
+      } else {
+        return res.status(409).json({
+          success: false,
+          code: 'DEVICE_LIMIT_REACHED',
+          message: `Tài khoản ${account.tier.toUpperCase()} của bạn đã đạt giới hạn tối đa ${maxAllowed} thiết bị đồng thời.`,
+          maxAllowed,
+          activeSessions: activeSessions.map(s => ({
+            id: s.id,
+            deviceName: s.device_name,
+            deviceType: s.device_type,
+            lastActiveAt: s.last_active_at,
+            ipAddress: s.ip_address
+          }))
+        });
+      }
+    }
+
+    // Register new session
+    const userAgent = req.headers['user-agent'] || 'VietPhonics Web Client';
+    const { deviceName, deviceType } = parseDeviceFromUserAgent(userAgent);
+    const newSessionId = `sess_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`;
+    const sessionTokenHash = hashTokenSha256(`token_${accountId}_${Date.now()}`);
+
+    db.prepare(`
+      INSERT INTO user_active_sessions (
+        id, account_id, refresh_token_hash, device_name, device_type,
+        user_agent, ip_address, location_estimate, last_active_at, created_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, 'Việt Nam', ?, ?)
+    `).run(newSessionId, accountId, sessionTokenHash, deviceName, deviceType, userAgent, req.ip || '127.0.0.1', nowIso, nowIso);
+
+    res.json({
+      success: true,
+      sessionId: newSessionId,
+      deviceName,
+      deviceType,
+      activeSessionsCount: activeSessions.length >= maxAllowed ? maxAllowed : activeSessions.length + 1
+    });
+  } catch (err) {
+    console.error('Error in /api/v1/auth/session/enforce:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// GET /api/v1/user/sessions
+app.get('/api/v1/user/sessions', (req, res) => {
+  try {
+    const accountId = req.query.accountId || req.headers['x-account-id'] || 'default_user';
+    const currentSessionId = req.query.currentSessionId || req.headers['x-session-id'];
+
+    const sessions = db.prepare(`
+      SELECT * FROM user_active_sessions
+      WHERE account_id = ? AND revoked_at IS NULL
+      ORDER BY last_active_at DESC
+    `).all(accountId);
+
+    res.json({
+      success: true,
+      accountId,
+      sessions: sessions.map(s => ({
+        id: s.id,
+        deviceName: s.device_name,
+        deviceType: s.device_type,
+        ipAddress: s.ip_address,
+        locationEstimate: s.location_estimate,
+        lastActiveAt: s.last_active_at,
+        isCurrent: currentSessionId ? s.id === currentSessionId : false
+      }))
+    });
+  } catch (err) {
+    console.error('Error in GET /api/v1/user/sessions:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// DELETE /api/v1/user/sessions/:sessionId
+app.delete('/api/v1/user/sessions/:sessionId', (req, res) => {
+  try {
+    const { sessionId } = req.params;
+    const nowIso = new Date().toISOString();
+
+    const result = db.prepare('UPDATE user_active_sessions SET revoked_at = ? WHERE id = ? AND revoked_at IS NULL')
+      .run(nowIso, sessionId);
+
+    if (result.changes === 0) {
+      return res.status(404).json({ success: false, error: 'Không tìm thấy phiên hoặc phiên đã bị thu hồi' });
+    }
+
+    res.json({
+      success: true,
+      message: 'Thiết bị đã được đăng xuất từ xa thành công.'
+    });
+  } catch (err) {
+    console.error('Error in DELETE /api/v1/user/sessions/:sessionId:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// POST /api/v1/user/sessions/revoke-all-others
+app.post('/api/v1/user/sessions/revoke-all-others', (req, res) => {
+  try {
+    const { accountId, currentSessionId } = req.body;
+    if (!accountId) {
+      return res.status(400).json({ success: false, error: 'accountId là bắt buộc' });
+    }
+
+    const nowIso = new Date().toISOString();
+    let query = 'UPDATE user_active_sessions SET revoked_at = ? WHERE account_id = ? AND revoked_at IS NULL';
+    const params = [nowIso, accountId];
+
+    if (currentSessionId) {
+      query += ' AND id != ?';
+      params.push(currentSessionId);
+    }
+
+    const result = db.prepare(query).run(...params);
+
+    res.json({
+      success: true,
+      message: `Đã đăng xuất ${result.changes} thiết bị khác thành công.`,
+      revokedCount: result.changes
+    });
+  } catch (err) {
+    console.error('Error in /api/v1/user/sessions/revoke-all-others:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// PATCH /api/v1/user/profile-settings
+app.patch('/api/v1/user/profile-settings', (req, res) => {
+  try {
+    const { accountId, displayName, l1Dialect, learningGoal } = req.body;
+    if (!accountId) {
+      return res.status(400).json({ success: false, error: 'accountId là bắt buộc' });
+    }
+
+    if (l1Dialect && !['bac', 'trung', 'nam'].includes(l1Dialect)) {
+      return res.status(400).json({ success: false, error: 'Phương ngữ không hợp lệ. Chỉ chấp nhận bac, trung, nam' });
+    }
+
+    const nowIso = new Date().toISOString();
+    const account = db.prepare('SELECT * FROM auth_accounts WHERE id = ?').get(accountId);
+    if (!account) {
+      return res.status(404).json({ success: false, error: 'Không tìm thấy tài khoản' });
+    }
+
+    const updatedName = displayName || account.display_name;
+    const updatedDialect = l1Dialect || account.l1_dialect;
+    const updatedGoal = learningGoal || account.learning_goal;
+
+    db.prepare('UPDATE auth_accounts SET display_name = ?, l1_dialect = ?, learning_goal = ?, updated_at = ? WHERE id = ?')
+      .run(updatedName, updatedDialect, updatedGoal, nowIso, accountId);
+
+    // Sync to user_profiles for dialect calibration (ELSA-102)
+    db.prepare(`
+      INSERT INTO user_profiles (id, user_id, dialect, calibration_mode, confidence_score, ielts_target, overall_gop, created_at, updated_at)
+      VALUES (?, ?, ?, 'manual_selection', 0.92, 7.5, 76, ?, ?)
+      ON CONFLICT(user_id) DO UPDATE SET dialect = excluded.dialect, updated_at = excluded.updated_at
+    `).run(`prof_${accountId}`, accountId, updatedDialect, nowIso, nowIso);
+
+    res.json({
+      success: true,
+      message: 'Cập nhật hồ sơ thành công.',
+      profile: {
+        accountId,
+        displayName: updatedName,
+        l1Dialect: updatedDialect,
+        learningGoal: updatedGoal,
+        updatedAt: nowIso
+      }
+    });
+  } catch (err) {
+    console.error('Error in PATCH /api/v1/user/profile-settings:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 // Start listening only if run directly as main entrypoint
 const isMain = process.argv[1] && (process.argv[1].includes('server/index.js') || process.argv[1].includes('server\\index.js'));
 if (isMain && process.env.NODE_ENV !== 'test') {

@@ -778,6 +778,67 @@ export function initAppDatabase() {
       proximity_score INTEGER NOT NULL DEFAULT 75,
       updated_at TEXT NOT NULL
     );
+
+    /* USER-106, USER-103, USER-104: Secure Accounts, Email Verification, Password Reset & Active Sessions */
+    CREATE TABLE IF NOT EXISTS auth_accounts (
+      id TEXT PRIMARY KEY,
+      email TEXT UNIQUE NOT NULL,
+      password_hash TEXT NOT NULL,
+      display_name TEXT NOT NULL,
+      l1_dialect TEXT NOT NULL DEFAULT 'bac',
+      learning_goal TEXT NOT NULL DEFAULT 'communication',
+      status TEXT NOT NULL DEFAULT 'pending_verification',
+      tier TEXT NOT NULL DEFAULT 'free',
+      email_verified_at TEXT,
+      trial_used_at TEXT,
+      created_at TEXT NOT NULL,
+      updated_at TEXT NOT NULL
+    );
+    CREATE INDEX IF NOT EXISTS idx_auth_accounts_email ON auth_accounts(email);
+    CREATE INDEX IF NOT EXISTS idx_auth_accounts_status ON auth_accounts(status);
+
+    CREATE TABLE IF NOT EXISTS email_verification_tokens (
+      id TEXT PRIMARY KEY,
+      account_id TEXT NOT NULL,
+      token_hash TEXT NOT NULL,
+      otp_code TEXT NOT NULL,
+      expires_at TEXT NOT NULL,
+      used_at TEXT,
+      attempts INTEGER NOT NULL DEFAULT 0,
+      created_at TEXT NOT NULL,
+      FOREIGN KEY(account_id) REFERENCES auth_accounts(id) ON DELETE CASCADE
+    );
+    CREATE INDEX IF NOT EXISTS idx_email_verify_acc ON email_verification_tokens(account_id);
+    CREATE INDEX IF NOT EXISTS idx_email_verify_hash ON email_verification_tokens(token_hash);
+
+    CREATE TABLE IF NOT EXISTS password_reset_tokens (
+      id TEXT PRIMARY KEY,
+      account_id TEXT NOT NULL,
+      token_hash TEXT NOT NULL,
+      expires_at TEXT NOT NULL,
+      used_at TEXT,
+      ip_address TEXT,
+      created_at TEXT NOT NULL,
+      FOREIGN KEY(account_id) REFERENCES auth_accounts(id) ON DELETE CASCADE
+    );
+    CREATE INDEX IF NOT EXISTS idx_pwd_reset_acc ON password_reset_tokens(account_id);
+    CREATE INDEX IF NOT EXISTS idx_pwd_reset_hash ON password_reset_tokens(token_hash);
+
+    CREATE TABLE IF NOT EXISTS user_active_sessions (
+      id TEXT PRIMARY KEY,
+      account_id TEXT NOT NULL,
+      refresh_token_hash TEXT NOT NULL,
+      device_name TEXT NOT NULL,
+      device_type TEXT NOT NULL DEFAULT 'desktop',
+      user_agent TEXT,
+      ip_address TEXT,
+      location_estimate TEXT DEFAULT 'Việt Nam',
+      last_active_at TEXT NOT NULL,
+      revoked_at TEXT,
+      created_at TEXT NOT NULL,
+      FOREIGN KEY(account_id) REFERENCES auth_accounts(id) ON DELETE CASCADE
+    );
+    CREATE INDEX IF NOT EXISTS idx_user_sessions_acc_revoked ON user_active_sessions(account_id, revoked_at);
   `);
 
   // Seed default penalty weights for 3 regions

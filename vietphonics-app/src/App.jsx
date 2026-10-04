@@ -5,6 +5,7 @@ import StreakModal from './components/StreakModal';
 import StreakSavedModal from './components/gamification/StreakSavedModal';
 import DiagnosticModal from './components/DiagnosticModal';
 import UpgradeModal from './components/UpgradeModal';
+import AccountSecurityModal from './components/AccountSecurityModal';
 
 import DashboardView from './views/DashboardView';
 import PracticeStudioView from './views/PracticeStudioView';
@@ -18,7 +19,12 @@ import MasteryLabView from './views/MasteryLabView';
 import AdvancedAiLabView from './views/AdvancedAiLabView';
 
 function MainContent() {
-  const { activeTab } = useApp();
+  const {
+    activeTab,
+    showAccountModal,
+    setShowAccountModal,
+    accountModalTab
+  } = useApp();
 
   const renderActiveView = () => {
     switch (activeTab) {
@@ -60,6 +66,11 @@ function MainContent() {
       <StreakSavedModal />
       <DiagnosticModal />
       <UpgradeModal />
+      <AccountSecurityModal
+        isOpen={showAccountModal}
+        onClose={() => setShowAccountModal(false)}
+        initialTab={accountModalTab}
+      />
 
       {/* Acoustic Precision Footer */}
       <footer className="w-full bg-white border-t border-slate-200/80 py-6 px-4 text-center mt-12 text-xs text-slate-500 font-mono">
