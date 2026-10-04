@@ -19,11 +19,14 @@ import {
   Sparkles,
   DollarSign,
   Activity,
-  BookOpen
+  BookOpen,
+  Zap
 } from 'lucide-react';
 
 import ApmMonitoringPanel from './ApmMonitoringPanel';
 import CmsSentencesPanel from './CmsSentencesPanel';
+import AiBenchmarkReportPanel from './AiBenchmarkReportPanel';
+import StressTestBenchmarkingPanel from './StressTestBenchmarkingPanel';
 
 export default function ExecutiveAdminDashboardModal({ isOpen, onClose }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -321,6 +324,30 @@ export default function ExecutiveAdminDashboardModal({ isOpen, onClose }) {
               >
                 <BookOpen className="w-4 h-4 text-indigo-400" />
                 <span>CMS Nội Dung &amp; IPA (OPS-103)</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setActiveTab('aiq')}
+                className={`pb-3 px-3 border-b-2 font-semibold transition cursor-pointer flex items-center gap-1.5 ${
+                  activeTab === 'aiq'
+                    ? 'border-rose-500 text-rose-400 font-bold'
+                    : 'border-transparent text-slate-400 hover:text-slate-200'
+                }`}
+              >
+                <Sparkles className="w-4 h-4 text-rose-400" />
+                <span>Kiểm Chuẩn AI (AIQ-101)</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setActiveTab('scl')}
+                className={`pb-3 px-3 border-b-2 font-semibold transition cursor-pointer flex items-center gap-1.5 ${
+                  activeTab === 'scl'
+                    ? 'border-rose-500 text-rose-400 font-bold'
+                    : 'border-transparent text-slate-400 hover:text-slate-200'
+                }`}
+              >
+                <Zap className="w-4 h-4 text-cyan-400" />
+                <span>Tải 1,500 VUs (SCL-101)</span>
               </button>
             </div>
 
@@ -667,6 +694,20 @@ export default function ExecutiveAdminDashboardModal({ isOpen, onClose }) {
               {activeTab === 'cms' && (
                 <div className="bg-slate-950/40 p-4 rounded-xl border border-slate-800">
                   <CmsSentencesPanel />
+                </div>
+              )}
+
+              {/* TAB 7: AI BENCHMARKING (AIQ-101) */}
+              {activeTab === 'aiq' && (
+                <div className="bg-slate-950/40 p-4 rounded-xl border border-slate-800">
+                  <AiBenchmarkReportPanel />
+                </div>
+              )}
+
+              {/* TAB 8: STRESS TEST 1,500 VUs (SCL-101) */}
+              {activeTab === 'scl' && (
+                <div className="bg-slate-950/40 p-4 rounded-xl border border-slate-800">
+                  <StressTestBenchmarkingPanel />
                 </div>
               )}
             </div>

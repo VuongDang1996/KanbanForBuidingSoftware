@@ -152,6 +152,14 @@ export default function UpgradeModal() {
                   </button>
                 </div>
               </div>
+
+              {/* PAY-105: Provider Transparency Notice */}
+              <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-200 text-[11px] text-slate-500 text-left flex items-start gap-2">
+                <span className="material-symbols-outlined text-sm text-emerald-600 shrink-0 mt-0.5">verified</span>
+                <div>
+                  <span className="font-semibold text-slate-700">VietQR Napas 24/7:</span> Cổng thanh toán chính thức (miễn 100% phí giao dịch). Các cổng ví điện tử & thẻ quốc tế (MoMo, VNPay, Stripe) được tạm hoãn nhằm tối ưu chi phí học phí cho người học.
+                </div>
+              </div>
             </div>
 
             {/* Confirmation CTA */}
