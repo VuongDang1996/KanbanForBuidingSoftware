@@ -1229,7 +1229,7 @@ app.get('/api/v1/anatomy/calibration/latest', (req, res) => {
 import { evaluateMouthSnapshot, getBenchmarkMetrics } from '../src/lib/anatomy/mirrorComparisonEngine.js';
 
 // POST analyze mouth snapshot from webcam mirror
-app.post('/api/v1/anatomy/mirror-analyze', (req, res) => {
+app.post('/api/v1/anatomy/mirror-analyze', async (req, res) => {
   try {
     const userId = req.headers['x-user-id'] || req.body.userId || 'default_user';
     const { phoneme, clientMetrics, thumbnailData } = req.body;
@@ -1266,8 +1266,43 @@ app.post('/api/v1/anatomy/mirror-analyze', (req, res) => {
       });
     }
 
-    // 3. Evaluate geometric features against 2D anatomy benchmark
-    const evaluation = evaluateMouthSnapshot(phoneme, clientMetrics || {});
+    // 3. High-Precision AI Landmark Extraction via Python MediaPipe 1.0 Microservice
+    let effectiveMetrics = clientMetrics || {};
+    let aiProvider = 'client_canvas_vision';
+
+    if (thumbnailData) {
+      try {
+        const pyRes = await fetch('http://127.0.0.1:5005/api/v1/ai/analyze-mouth', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            imageData: thumbnailData,
+            phoneme
+          }),
+          signal: AbortSignal.timeout(3000)
+        });
+
+        if (pyRes.ok) {
+          const pyData = await pyRes.json();
+          if (pyData && pyData.success && pyData.face_detected) {
+            effectiveMetrics = {
+              jawApertureMm: pyData.jaw_aperture_mm,
+              lipWidthHeightRatio: pyData.lip_width_height_ratio,
+              teethGapMm: pyData.teeth_gap_mm,
+              tongueProtrusionDetected: Boolean(pyData.tongue_detected),
+              landmarkBox: pyData.landmark_box,
+              provider: pyData.provider
+            };
+            aiProvider = pyData.provider || 'python_mediapipe_1_0';
+          }
+        }
+      } catch (pyErr) {
+        // Fallback to client metrics if Python service is busy or offline
+      }
+    }
+
+    // Evaluate geometric features against 2D anatomy benchmark
+    const evaluation = evaluateMouthSnapshot(phoneme, effectiveMetrics);
 
     // 4. Update usage quota for Free users
     let newUsageCount = currentUsageCount + 1;
@@ -1311,6 +1346,7 @@ app.post('/api/v1/anatomy/mirror-analyze', (req, res) => {
       status: evaluation.status,
       metrics: evaluation.metrics,
       feedback: evaluation.feedback,
+      provider: aiProvider,
       quota: {
         tier: isPro ? 'pro' : 'free',
         usedToday: newUsageCount,

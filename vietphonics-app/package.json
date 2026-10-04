@@ -4,9 +4,10 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "concurrently -k -n \"api,web\" -c \"magenta,cyan\" \"npm run server\" \"npm run web\"",
+    "dev": "concurrently -k -n \"api,web,ai\" -c \"magenta,cyan,yellow\" \"npm run server\" \"npm run web\" \"npm run ai\"",
     "web": "vite --port 5174",
     "server": "node --watch server/index.js",
+    "ai": "python ai_engine/mouth_mesh_service.py",
     "test": "node --test-concurrency=1 --test tests/**/*.test.js",
     "build": "vite build",
     "preview": "vite preview --port 5174"
