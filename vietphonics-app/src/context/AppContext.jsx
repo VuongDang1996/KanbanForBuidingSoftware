@@ -1,8 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { DIALECTS } from '../constants/dialects.js';
 
-export { DIALECTS };
-
 const AppContext = createContext(null);
 
 export function AppProvider({ children }) {
