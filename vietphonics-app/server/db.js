@@ -166,6 +166,32 @@ export function initAppDatabase() {
       created_at TEXT NOT NULL
     );
 
+    -- PRON-212: Webcam Mirror Snapshot & Articulatory Feature Comparison
+    CREATE TABLE IF NOT EXISTS anatomy_mirror_snapshots (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL,
+      phoneme TEXT NOT NULL,
+      lip_width_ratio REAL NOT NULL,
+      jaw_aperture_mm REAL NOT NULL,
+      teeth_gap_mm REAL NOT NULL,
+      tongue_detected INTEGER NOT NULL DEFAULT 0,
+      similarity_score INTEGER NOT NULL,
+      delta_aperture_mm REAL NOT NULL,
+      l1_error_flag TEXT,
+      feedback_vietnamese TEXT NOT NULL,
+      thumbnail_data TEXT,
+      created_at TEXT NOT NULL
+    );
+
+    CREATE INDEX IF NOT EXISTS idx_mirror_user_phoneme ON anatomy_mirror_snapshots(user_id, phoneme, created_at DESC);
+
+    CREATE TABLE IF NOT EXISTS user_mirror_daily_usage (
+      user_id TEXT NOT NULL,
+      usage_date TEXT NOT NULL,
+      count INTEGER NOT NULL DEFAULT 1,
+      PRIMARY KEY (user_id, usage_date)
+    );
+
     CREATE TABLE IF NOT EXISTS dictation_exercise_records (
       id TEXT PRIMARY KEY,
       user_id TEXT NOT NULL,

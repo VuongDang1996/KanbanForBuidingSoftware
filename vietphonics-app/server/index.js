@@ -1224,6 +1224,179 @@ app.get('/api/v1/anatomy/calibration/latest', (req, res) => {
 });
 
 /**
+ * PRON-212: Webcam Mirror Snapshot & Articulatory Feature Comparison Endpoints
+ */
+import { evaluateMouthSnapshot, getBenchmarkMetrics } from '../src/lib/anatomy/mirrorComparisonEngine.js';
+
+// POST analyze mouth snapshot from webcam mirror
+app.post('/api/v1/anatomy/mirror-analyze', (req, res) => {
+  try {
+    const userId = req.headers['x-user-id'] || req.body.userId || 'default_user';
+    const { phoneme, clientMetrics, thumbnailData } = req.body;
+
+    if (!phoneme) {
+      return res.status(400).json({
+        success: false,
+        error: 'Missing required field: phoneme'
+      });
+    }
+
+    // 1. Check user tier from user_profiles or active subscription
+    const userProfile = db.prepare('SELECT * FROM user_profiles WHERE user_id = ?').get(userId);
+    const subRecord = db.prepare("SELECT * FROM arch_subscriptions WHERE user_id = ? AND status = 'active'").get(userId);
+    const isPro = Boolean(subRecord || userProfile?.tier === 'pro');
+
+    const todayDate = new Date().toISOString().split('T')[0];
+    let usageRow = db.prepare('SELECT count FROM user_mirror_daily_usage WHERE user_id = ? AND usage_date = ?').get(userId, todayDate);
+    const currentUsageCount = usageRow ? usageRow.count : 0;
+
+    // 2. Free tier quota enforcement (Gate G: 3 free analyses per day)
+    const FREE_LIMIT = 3;
+    if (!isPro && currentUsageCount >= FREE_LIMIT) {
+      return res.status(403).json({
+        success: false,
+        code: 'QUOTA_EXCEEDED',
+        error: `Bạn đã đạt giới hạn ${FREE_LIMIT} lượt soi gương/ngày cho tài khoản Free. Hãy nâng cấp Pro để mở khóa không giới hạn.`,
+        resetAt: `${todayDate}T23:59:59Z`,
+        quota: {
+          tier: 'free',
+          usedToday: currentUsageCount,
+          remainingToday: 0
+        }
+      });
+    }
+
+    // 3. Evaluate geometric features against 2D anatomy benchmark
+    const evaluation = evaluateMouthSnapshot(phoneme, clientMetrics || {});
+
+    // 4. Update usage quota for Free users
+    let newUsageCount = currentUsageCount + 1;
+    if (usageRow) {
+      db.prepare('UPDATE user_mirror_daily_usage SET count = count + 1 WHERE user_id = ? AND usage_date = ?').run(userId, todayDate);
+    } else {
+      db.prepare('INSERT INTO user_mirror_daily_usage (user_id, usage_date, count) VALUES (?, ?, 1)').run(userId, todayDate);
+    }
+
+    // 5. Persist snapshot record in SQLite (Gate E)
+    const now = new Date().toISOString();
+    const recordId = `snap_ant_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
+
+    db.prepare(`
+      INSERT INTO anatomy_mirror_snapshots (
+        id, user_id, phoneme, lip_width_ratio, jaw_aperture_mm, teeth_gap_mm,
+        tongue_detected, similarity_score, delta_aperture_mm, l1_error_flag,
+        feedback_vietnamese, thumbnail_data, created_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `).run(
+      recordId,
+      userId,
+      evaluation.phoneme,
+      evaluation.metrics.userRatio,
+      evaluation.metrics.userApertureMm,
+      evaluation.metrics.userTeethGapMm,
+      evaluation.metrics.interdentalTongueDetected ? 1 : 0,
+      evaluation.similarityScore,
+      evaluation.metrics.apertureDeltaMm,
+      evaluation.feedback.l1ErrorFlag,
+      evaluation.feedback.actionAdvice,
+      thumbnailData || null,
+      now
+    );
+
+    res.json({
+      success: true,
+      snapshotId: recordId,
+      phoneme: evaluation.phoneme,
+      score: evaluation.similarityScore,
+      status: evaluation.status,
+      metrics: evaluation.metrics,
+      feedback: evaluation.feedback,
+      quota: {
+        tier: isPro ? 'pro' : 'free',
+        usedToday: newUsageCount,
+        remainingToday: isPro ? 999 : Math.max(0, FREE_LIMIT - newUsageCount)
+      },
+      createdAt: now
+    });
+  } catch (err) {
+    console.error('Error in POST anatomy/mirror-analyze:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// GET mirror analysis history for user
+app.get('/api/v1/anatomy/mirror-history/:userId', (req, res) => {
+  try {
+    const { userId } = req.params;
+    const phoneme = req.query.phoneme;
+    const limit = Math.min(Number(req.query.limit) || 10, 50);
+
+    let rows;
+    if (phoneme) {
+      rows = db.prepare(`
+        SELECT * FROM anatomy_mirror_snapshots
+        WHERE user_id = ? AND phoneme = ?
+        ORDER BY created_at DESC LIMIT ?
+      `).all(userId, phoneme, limit);
+    } else {
+      rows = db.prepare(`
+        SELECT * FROM anatomy_mirror_snapshots
+        WHERE user_id = ?
+        ORDER BY created_at DESC LIMIT ?
+      `).all(userId, limit);
+    }
+
+    res.json({
+      success: true,
+      records: rows.map((r) => ({
+        id: r.id,
+        userId: r.user_id,
+        phoneme: r.phoneme,
+        lipWidthRatio: r.lip_width_ratio,
+        jawApertureMm: r.jaw_aperture_mm,
+        teethGapMm: r.teeth_gap_mm,
+        tongueDetected: Boolean(r.tongue_detected),
+        similarityScore: r.similarity_score,
+        deltaApertureMm: r.delta_aperture_mm,
+        l1ErrorFlag: r.l1_error_flag,
+        feedback: r.feedback_vietnamese,
+        createdAt: r.created_at
+      }))
+    });
+  } catch (err) {
+    console.error('Error in GET anatomy/mirror-history:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// GET user mirror daily quota status
+app.get('/api/v1/anatomy/mirror-quota/:userId', (req, res) => {
+  try {
+    const { userId } = req.params;
+    const todayDate = new Date().toISOString().split('T')[0];
+
+    const subRecord = db.prepare("SELECT * FROM arch_subscriptions WHERE user_id = ? AND status = 'active'").get(userId);
+    const userProfile = db.prepare('SELECT * FROM user_profiles WHERE user_id = ?').get(userId);
+    const isPro = Boolean(subRecord || userProfile?.tier === 'pro');
+
+    const usageRow = db.prepare('SELECT count FROM user_mirror_daily_usage WHERE user_id = ? AND usage_date = ?').get(userId, todayDate);
+    const usedToday = usageRow ? usageRow.count : 0;
+    const FREE_LIMIT = 3;
+
+    res.json({
+      success: true,
+      tier: isPro ? 'pro' : 'free',
+      usedToday,
+      remainingToday: isPro ? 999 : Math.max(0, FREE_LIMIT - usedToday),
+      limit: isPro ? 999 : FREE_LIMIT
+    });
+  } catch (err) {
+    console.error('Error in GET anatomy/mirror-quota:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+/**
  * PRON-202: Phonemic Audio Dictation & Gap-Fill Exercises Endpoints
  */
 import { DICTATION_EXERCISES, evaluateDictationSubmission } from '../src/lib/scoring/audioDictation.js';
