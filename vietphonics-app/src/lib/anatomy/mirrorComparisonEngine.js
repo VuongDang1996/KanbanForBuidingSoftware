@@ -164,6 +164,306 @@ export const PHONEME_BENCHMARK_PROFILES = {
     tongueInterdentalRequired: false,
     coronalType: 'bilabial',
     sampleWord: 'man'
+  },
+
+  // Alveolar Stops & Fricatives (/t/, /d/, /s/, /z/, /n/, /l/)
+  '/t/': {
+    phoneme: '/t/',
+    name: 'Voiceless Alveolar Plosive',
+    targetApertureMm: 4.5,
+    targetWidthHeightRatio: 2.3,
+    targetTeethGapMm: 2.0,
+    tongueInterdentalRequired: false,
+    coronalType: 'alveolar',
+    sampleWord: 'tea'
+  },
+  '/d/': {
+    phoneme: '/d/',
+    name: 'Voiced Alveolar Plosive',
+    targetApertureMm: 4.5,
+    targetWidthHeightRatio: 2.3,
+    targetTeethGapMm: 2.0,
+    tongueInterdentalRequired: false,
+    coronalType: 'alveolar',
+    sampleWord: 'dog'
+  },
+  '/s/': {
+    phoneme: '/s/',
+    name: 'Voiceless Alveolar Fricative',
+    targetApertureMm: 3.5,
+    targetWidthHeightRatio: 2.35,
+    targetTeethGapMm: 1.5,
+    tongueInterdentalRequired: false,
+    coronalType: 'alveolar',
+    sampleWord: 'see'
+  },
+  '/z/': {
+    phoneme: '/z/',
+    name: 'Voiced Alveolar Fricative',
+    targetApertureMm: 3.5,
+    targetWidthHeightRatio: 2.35,
+    targetTeethGapMm: 1.5,
+    tongueInterdentalRequired: false,
+    coronalType: 'alveolar',
+    sampleWord: 'zoo'
+  },
+  '/n/': {
+    phoneme: '/n/',
+    name: 'Voiced Alveolar Nasal',
+    targetApertureMm: 4.0,
+    targetWidthHeightRatio: 2.3,
+    targetTeethGapMm: 2.0,
+    tongueInterdentalRequired: false,
+    coronalType: 'alveolar',
+    sampleWord: 'no'
+  },
+  '/l/': {
+    phoneme: '/l/',
+    name: 'Voiced Alveolar Lateral Approximant',
+    targetApertureMm: 5.0,
+    targetWidthHeightRatio: 2.2,
+    targetTeethGapMm: 2.5,
+    tongueInterdentalRequired: false,
+    coronalType: 'alveolar',
+    sampleWord: 'leg'
+  },
+
+  // Velar & Glottal Consonants (/k/, /g/, /ŋ/, /h/)
+  '/k/': {
+    phoneme: '/k/',
+    name: 'Voiceless Velar Plosive',
+    targetApertureMm: 11.0,
+    targetWidthHeightRatio: 2.1,
+    targetTeethGapMm: 6.5,
+    tongueInterdentalRequired: false,
+    coronalType: 'velar',
+    sampleWord: 'cat'
+  },
+  '/g/': {
+    phoneme: '/g/',
+    name: 'Voiced Velar Plosive',
+    targetApertureMm: 11.0,
+    targetWidthHeightRatio: 2.1,
+    targetTeethGapMm: 6.5,
+    tongueInterdentalRequired: false,
+    coronalType: 'velar',
+    sampleWord: 'go'
+  },
+  '/ŋ/': {
+    phoneme: '/ŋ/',
+    name: 'Voiced Velar Nasal',
+    targetApertureMm: 9.0,
+    targetWidthHeightRatio: 2.1,
+    targetTeethGapMm: 5.0,
+    tongueInterdentalRequired: false,
+    coronalType: 'velar',
+    sampleWord: 'sing'
+  },
+  '/h/': {
+    phoneme: '/h/',
+    name: 'Voiceless Glottal Fricative',
+    targetApertureMm: 12.0,
+    targetWidthHeightRatio: 2.0,
+    targetTeethGapMm: 6.0,
+    tongueInterdentalRequired: false,
+    coronalType: 'neutral',
+    sampleWord: 'hat'
+  },
+
+  // Affricates & Approximants (/tʃ/, /dʒ/, /r/, /j/)
+  '/tʃ/': {
+    phoneme: '/tʃ/',
+    name: 'Voiceless Postalveolar Affricate',
+    targetApertureMm: 6.5,
+    targetWidthHeightRatio: 1.3,
+    targetTeethGapMm: 2.5,
+    tongueInterdentalRequired: false,
+    coronalType: 'round',
+    sampleWord: 'chair'
+  },
+  '/dʒ/': {
+    phoneme: '/dʒ/',
+    name: 'Voiced Postalveolar Affricate',
+    targetApertureMm: 6.5,
+    targetWidthHeightRatio: 1.3,
+    targetTeethGapMm: 2.5,
+    tongueInterdentalRequired: false,
+    coronalType: 'round',
+    sampleWord: 'jump'
+  },
+  '/r/': {
+    phoneme: '/r/',
+    name: 'Voiced Post-Alveolar Approximant',
+    targetApertureMm: 6.0,
+    targetWidthHeightRatio: 1.35,
+    targetTeethGapMm: 2.8,
+    tongueInterdentalRequired: false,
+    coronalType: 'round',
+    sampleWord: 'red'
+  },
+  '/j/': {
+    phoneme: '/j/',
+    name: 'Voiced Palatal Approximant',
+    targetApertureMm: 6.0,
+    targetWidthHeightRatio: 2.7,
+    targetTeethGapMm: 2.5,
+    tongueInterdentalRequired: false,
+    coronalType: 'spread',
+    sampleWord: 'yes'
+  },
+
+  // Additional Vowels (/e/, /ʌ/, /ɒ/, /ɔː/, /ʊ/, /ɜː/, /ə/)
+  '/e/': {
+    phoneme: '/e/',
+    name: 'Close-Mid Front Unrounded Vowel',
+    targetApertureMm: 12.0,
+    targetWidthHeightRatio: 2.6,
+    targetTeethGapMm: 4.5,
+    tongueInterdentalRequired: false,
+    coronalType: 'spread',
+    sampleWord: 'bed'
+  },
+  '/ʌ/': {
+    phoneme: '/ʌ/',
+    name: 'Open-Mid Back Unrounded Vowel',
+    targetApertureMm: 18.0,
+    targetWidthHeightRatio: 1.85,
+    targetTeethGapMm: 9.0,
+    tongueInterdentalRequired: false,
+    coronalType: 'open',
+    sampleWord: 'cup'
+  },
+  '/ɒ/': {
+    phoneme: '/ɒ/',
+    name: 'Open Back Rounded Vowel',
+    targetApertureMm: 22.0,
+    targetWidthHeightRatio: 1.4,
+    targetTeethGapMm: 12.0,
+    tongueInterdentalRequired: false,
+    coronalType: 'round',
+    sampleWord: 'hot'
+  },
+  '/ɔː/': {
+    phoneme: '/ɔː/',
+    name: 'Open-Mid Back Rounded Vowel',
+    targetApertureMm: 16.0,
+    targetWidthHeightRatio: 1.25,
+    targetTeethGapMm: 8.0,
+    tongueInterdentalRequired: false,
+    coronalType: 'round',
+    sampleWord: 'door'
+  },
+  '/ʊ/': {
+    phoneme: '/ʊ/',
+    name: 'Near-Close Near-Back Vowel',
+    targetApertureMm: 8.0,
+    targetWidthHeightRatio: 1.3,
+    targetTeethGapMm: 3.5,
+    tongueInterdentalRequired: false,
+    coronalType: 'round',
+    sampleWord: 'book'
+  },
+  '/ɜː/': {
+    phoneme: '/ɜː/',
+    name: 'Open-Mid Central Unrounded Vowel',
+    targetApertureMm: 12.0,
+    targetWidthHeightRatio: 2.1,
+    targetTeethGapMm: 5.0,
+    tongueInterdentalRequired: false,
+    coronalType: 'neutral',
+    sampleWord: 'bird'
+  },
+  '/ə/': {
+    phoneme: '/ə/',
+    name: 'Mid Central Vowel (Schwa)',
+    targetApertureMm: 10.0,
+    targetWidthHeightRatio: 2.2,
+    targetTeethGapMm: 4.0,
+    tongueInterdentalRequired: false,
+    coronalType: 'neutral',
+    sampleWord: 'about'
+  },
+
+  // 8 Diphthongs (/eɪ/, /aɪ/, /ɔɪ/, /aʊ/, /əʊ/, /ɪə/, /eə/, /ʊə/)
+  '/eɪ/': {
+    phoneme: '/eɪ/',
+    name: 'Closing Diphthong',
+    targetApertureMm: 10.0,
+    targetWidthHeightRatio: 2.7,
+    targetTeethGapMm: 4.0,
+    tongueInterdentalRequired: false,
+    coronalType: 'spread',
+    sampleWord: 'say'
+  },
+  '/aɪ/': {
+    phoneme: '/aɪ/',
+    name: 'Closing Diphthong',
+    targetApertureMm: 18.0,
+    targetWidthHeightRatio: 2.3,
+    targetTeethGapMm: 8.0,
+    tongueInterdentalRequired: false,
+    coronalType: 'spread',
+    sampleWord: 'my'
+  },
+  '/ɔɪ/': {
+    phoneme: '/ɔɪ/',
+    name: 'Closing Diphthong',
+    targetApertureMm: 15.0,
+    targetWidthHeightRatio: 1.8,
+    targetTeethGapMm: 6.0,
+    tongueInterdentalRequired: false,
+    coronalType: 'round',
+    sampleWord: 'boy'
+  },
+  '/aʊ/': {
+    phoneme: '/aʊ/',
+    name: 'Closing Diphthong',
+    targetApertureMm: 19.0,
+    targetWidthHeightRatio: 1.5,
+    targetTeethGapMm: 9.0,
+    tongueInterdentalRequired: false,
+    coronalType: 'round',
+    sampleWord: 'now'
+  },
+  '/əʊ/': {
+    phoneme: '/əʊ/',
+    name: 'Closing Diphthong',
+    targetApertureMm: 11.0,
+    targetWidthHeightRatio: 1.35,
+    targetTeethGapMm: 4.5,
+    tongueInterdentalRequired: false,
+    coronalType: 'round',
+    sampleWord: 'go'
+  },
+  '/ɪə/': {
+    phoneme: '/ɪə/',
+    name: 'Centring Diphthong',
+    targetApertureMm: 9.0,
+    targetWidthHeightRatio: 2.5,
+    targetTeethGapMm: 3.5,
+    tongueInterdentalRequired: false,
+    coronalType: 'spread',
+    sampleWord: 'near'
+  },
+  '/eə/': {
+    phoneme: '/eə/',
+    name: 'Centring Diphthong',
+    targetApertureMm: 14.0,
+    targetWidthHeightRatio: 2.4,
+    targetTeethGapMm: 6.0,
+    tongueInterdentalRequired: false,
+    coronalType: 'spread',
+    sampleWord: 'hair'
+  },
+  '/ʊə/': {
+    phoneme: '/ʊə/',
+    name: 'Centring Diphthong',
+    targetApertureMm: 9.0,
+    targetWidthHeightRatio: 1.45,
+    targetTeethGapMm: 4.0,
+    tongueInterdentalRequired: false,
+    coronalType: 'round',
+    sampleWord: 'tour'
   }
 };
 
