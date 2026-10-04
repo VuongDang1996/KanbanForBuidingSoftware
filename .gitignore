@@ -24,5 +24,7 @@ dist-ssr
 *.sw?
 
 # SQLite temporary WAL/SHM locks
+*.db-wal
+*.db-shm
 data/*.db-wal
 data/*.db-shm

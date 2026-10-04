@@ -839,6 +839,82 @@ export function initAppDatabase() {
       FOREIGN KEY(account_id) REFERENCES auth_accounts(id) ON DELETE CASCADE
     );
     CREATE INDEX IF NOT EXISTS idx_user_sessions_acc_revoked ON user_active_sessions(account_id, revoked_at);
+
+    -- USER-105: Personal Data Exports & Account Deletion Requests (Decree 13/2023/NĐ-CP)
+    CREATE TABLE IF NOT EXISTS user_data_exports (
+      id TEXT PRIMARY KEY,
+      account_id TEXT NOT NULL,
+      export_status TEXT NOT NULL DEFAULT 'completed',
+      export_data_json TEXT NOT NULL,
+      download_url TEXT NOT NULL,
+      expires_at TEXT NOT NULL,
+      created_at TEXT NOT NULL,
+      FOREIGN KEY(account_id) REFERENCES auth_accounts(id) ON DELETE CASCADE
+    );
+    CREATE INDEX IF NOT EXISTS idx_user_data_exports_acc ON user_data_exports(account_id);
+
+    CREATE TABLE IF NOT EXISTS account_deletion_requests (
+      id TEXT PRIMARY KEY,
+      account_id TEXT NOT NULL,
+      status TEXT NOT NULL DEFAULT 'pending_deletion',
+      cancel_token_hash TEXT NOT NULL,
+      requested_at TEXT NOT NULL,
+      grace_period_ends_at TEXT NOT NULL,
+      canceled_at TEXT,
+      purged_at TEXT,
+      reason TEXT,
+      FOREIGN KEY(account_id) REFERENCES auth_accounts(id) ON DELETE CASCADE
+    );
+    CREATE INDEX IF NOT EXISTS idx_account_deletion_req_acc ON account_deletion_requests(account_id, status);
+
+    CREATE TABLE IF NOT EXISTS audit_compliance_logs (
+      id TEXT PRIMARY KEY,
+      account_id TEXT NOT NULL,
+      event_type TEXT NOT NULL,
+      details_json TEXT,
+      ip_address TEXT,
+      created_at TEXT NOT NULL
+    );
+    CREATE INDEX IF NOT EXISTS idx_audit_compliance_acc ON audit_compliance_logs(account_id, created_at);
+
+    -- PROG-101: Daily Skill Progress History (7/30/90 Days)
+    CREATE TABLE IF NOT EXISTS daily_skill_progress_history (
+      id TEXT PRIMARY KEY,
+      account_id TEXT NOT NULL,
+      practice_date TEXT NOT NULL,
+      ending_sounds_score REAL NOT NULL,
+      vowels_score REAL NOT NULL,
+      stress_score REAL NOT NULL,
+      intonation_score REAL NOT NULL,
+      overall_gop REAL NOT NULL,
+      practice_minutes INTEGER DEFAULT 10,
+      words_practiced INTEGER DEFAULT 18,
+      created_at TEXT NOT NULL,
+      UNIQUE(account_id, practice_date)
+    );
+    CREATE INDEX IF NOT EXISTS idx_daily_progress_acc_date ON daily_skill_progress_history(account_id, practice_date);
+
+    -- PROG-102: Before vs After Audio Comparison (Day 1 Baseline vs Latest)
+    CREATE TABLE IF NOT EXISTS baseline_comparison_records (
+      id TEXT PRIMARY KEY,
+      account_id TEXT NOT NULL,
+      sentence_id TEXT NOT NULL,
+      sentence_text TEXT NOT NULL,
+      baseline_date TEXT NOT NULL,
+      baseline_overall_gop REAL NOT NULL,
+      baseline_audio_url TEXT,
+      baseline_phoneme_scores_json TEXT NOT NULL,
+      latest_date TEXT NOT NULL,
+      latest_overall_gop REAL NOT NULL,
+      latest_audio_url TEXT,
+      latest_phoneme_scores_json TEXT NOT NULL,
+      model_version TEXT NOT NULL DEFAULT 'Acoustic_GOP_v5.1',
+      voice_consent_granted INTEGER NOT NULL DEFAULT 1,
+      created_at TEXT NOT NULL,
+      updated_at TEXT NOT NULL,
+      UNIQUE(account_id, sentence_id)
+    );
+    CREATE INDEX IF NOT EXISTS idx_baseline_comp_acc ON baseline_comparison_records(account_id);
   `);
 
   // Seed default penalty weights for 3 regions
@@ -885,6 +961,16 @@ export function initAppDatabase() {
       }),
       now
     );
+  }
+
+  // Seed default auth account if not exists
+  const existingAuth = db.prepare("SELECT * FROM auth_accounts WHERE id = 'default_user'").get();
+  if (!existingAuth) {
+    const now = new Date().toISOString();
+    db.prepare(`
+      INSERT INTO auth_accounts (id, email, password_hash, display_name, l1_dialect, learning_goal, status, tier, email_verified_at, created_at, updated_at)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `).run('default_user', 'learner@vietphonics.vn', 'pbkdf2:demo', 'Đặng Vương', 'bac', 'communication', 'active', 'pro', now, now, now);
   }
 
   // Seed default demo user profile if not exists
@@ -952,6 +1038,89 @@ export function initAppDatabase() {
       INSERT INTO arch_phoneme_scores (id, user_id, phoneme_symbol, score, duration_ms, audio_r2_url, created_at)
       VALUES (?, ?, ?, ?, ?, ?, ?)
     `).run('ps_arch_001', 'usr_arch_default', '/ks/', 92.5, 340, 'https://r2.vietphonics.vn/audio/sample_ks.wav', now);
+  }
+
+  // Seed default 30-day skill progress history for demo user (PROG-101)
+  const existingHistory = db.prepare("SELECT COUNT(*) as cnt FROM daily_skill_progress_history WHERE account_id = 'default_user'").get();
+  if (existingHistory.cnt === 0) {
+    const insertHistory = db.prepare(`
+      INSERT OR IGNORE INTO daily_skill_progress_history (
+        id, account_id, practice_date, ending_sounds_score, vowels_score, stress_score, intonation_score, overall_gop, practice_minutes, words_practiced, created_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `);
+
+    const nowMs = Date.now();
+    for (let dayOffset = 30; dayOffset >= 0; dayOffset--) {
+      // Create 2-3 rest days to test gap-day handling (AC 2)
+      if (dayOffset === 22 || dayOffset === 11 || dayOffset === 4) continue;
+
+      const dateStr = new Date(nowMs - dayOffset * 86400000).toISOString().split('T')[0];
+      const progressFactor = (30 - dayOffset) / 30; // 0 to 1
+
+      // Progression curves
+      const endingSounds = Math.min(96, Math.round(52 + progressFactor * 34 + (Math.sin(dayOffset) * 3)));
+      const vowels = Math.min(95, Math.round(60 + progressFactor * 26 + (Math.cos(dayOffset) * 2)));
+      const stress = Math.min(94, Math.round(55 + progressFactor * 28 + (Math.sin(dayOffset * 2) * 3)));
+      const intonation = Math.min(92, Math.round(50 + progressFactor * 25 + (Math.cos(dayOffset * 3) * 2)));
+      const overallGop = Math.round((endingSounds * 0.35) + (vowels * 0.25) + (stress * 0.2) + (intonation * 0.2));
+
+      insertHistory.run(
+        `prog-hist-${dateStr}`,
+        'default_user',
+        dateStr,
+        endingSounds,
+        vowels,
+        stress,
+        intonation,
+        overallGop,
+        10 + (dayOffset % 5),
+        18,
+        new Date().toISOString()
+      );
+    }
+  }
+
+  // Seed default Before vs After comparison baseline (PROG-102)
+  const existingBaseline = db.prepare("SELECT COUNT(*) as cnt FROM baseline_comparison_records WHERE account_id = 'default_user'").get();
+  if (existingBaseline.cnt === 0) {
+    const thirtyDaysAgo = new Date(Date.now() - 30 * 86400000).toISOString();
+    const today = new Date().toISOString();
+
+    db.prepare(`
+      INSERT OR IGNORE INTO baseline_comparison_records (
+        id, account_id, sentence_id, sentence_text,
+        baseline_date, baseline_overall_gop, baseline_audio_url, baseline_phoneme_scores_json,
+        latest_date, latest_overall_gop, latest_audio_url, latest_phoneme_scores_json,
+        model_version, voice_consent_granted, created_at, updated_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `).run(
+      'baseline-rec-001',
+      'default_user',
+      'sent_focus_01',
+      'Six months ago, she baked fresh bread for breakfast on the street.',
+      thirtyDaysAgo,
+      58,
+      'https://r2.vietphonics.vn/audio/baseline_day1_six_months.mp3',
+      JSON.stringify([
+        { phoneme: '/θ/', score: 42, note: 'Rụt cuống lưỡi quá sớm tạo âm tắc /t/' },
+        { phoneme: '/ks/', score: 48, note: 'Rụng mất cụm xát đuôi /ks/ trong "Six"' },
+        { phoneme: '/kt/', score: 56, note: 'Bỏ âm bật /t/ trong "baked"' },
+        { phoneme: '/st/', score: 60, note: 'Nuốt cụm /st/ trong "street"' }
+      ]),
+      today,
+      84,
+      'https://r2.vietphonics.vn/audio/latest_day30_six_months.mp3',
+      JSON.stringify([
+        { phoneme: '/θ/', score: 78, note: 'Đầu lưỡi kẹp nhẹ giữa 2 răng chuẩn xác (+36)' },
+        { phoneme: '/ks/', score: 84, note: 'Bật rõ âm xát /s/ đuôi (+36)' },
+        { phoneme: '/kt/', score: 82, note: 'Đã giải phóng xung âm bật vô thanh (+26)' },
+        { phoneme: '/st/', score: 90, note: 'Biên độ dao động và thời gian nén hơi chuẩn (+30)' }
+      ]),
+      'Acoustic_GOP_v5.1',
+      1,
+      today,
+      today
+    );
   }
 }
 

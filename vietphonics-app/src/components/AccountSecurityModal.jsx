@@ -13,7 +13,11 @@ import {
   Clock,
   RefreshCw,
   X,
-  KeyRound
+  KeyRound,
+  Download,
+  Trash2,
+  FileDown,
+  ShieldAlert
 } from 'lucide-react';
 import { validatePasswordStrength } from '../lib/auth/passwordValidation';
 import { useApp } from '../context/AppContext';
@@ -59,6 +63,15 @@ export default function AccountSecurityModal({
   const [profileGoal, setProfileGoal] = useState('communication');
   const [loadingSessions, setLoadingSessions] = useState(false);
 
+  // USER-105 States (Decree 13/2023/NĐ-CP - Data Portability & Erasure)
+  const [exportLoading, setExportLoading] = useState(false);
+  const [exportResult, setExportResult] = useState(null);
+  const [deleteConfirmText, setDeleteConfirmText] = useState('');
+  const [deletePassword, setDeletePassword] = useState('');
+  const [deleteReason, setDeleteReason] = useState('Không còn nhu cầu sử dụng');
+  const [deletionStatus, setDeletionStatus] = useState(null);
+  const [deleteLoading, setDeleteLoading] = useState(false);
+
   // Shared status & message
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
@@ -82,10 +95,12 @@ export default function AccountSecurityModal({
     return () => clearInterval(timer);
   }, [otpCooldown]);
 
-  // Load sessions when devices tab is opened
+  // Load sessions or privacy status when tab is opened
   useEffect(() => {
     if (activeTab === 'devices' && isOpen) {
       fetchSessions();
+    } else if (activeTab === 'privacy' && isOpen) {
+      fetchDeletionStatus();
     }
   }, [activeTab, isOpen]);
 
@@ -342,6 +357,108 @@ export default function AccountSecurityModal({
     }
   };
 
+  // 8. Fetch Deletion Status (USER-105)
+  const fetchDeletionStatus = async () => {
+    try {
+      const accountId = currentUser?.id || 'default_user';
+      const res = await fetch(`http://localhost:3002/api/v1/user/account-delete-status/${accountId}`);
+      const data = await res.json();
+      if (data.success) {
+        setDeletionStatus(data);
+      }
+    } catch (err) {
+      console.error('Failed to fetch deletion status:', err);
+    }
+  };
+
+  // 9. Export Personal Data (USER-105)
+  const handleExportData = async () => {
+    try {
+      setExportLoading(true);
+      setErrorMsg('');
+      setSuccessMsg('');
+      const accountId = currentUser?.id || 'default_user';
+      const res = await fetch('http://localhost:3002/api/v1/user/data-export', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ accountId })
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || 'Trích xuất dữ liệu thất bại.');
+      }
+      setExportResult(data);
+      setSuccessMsg(data.message || 'Trích xuất dữ liệu cá nhân thành công!');
+    } catch (err) {
+      setErrorMsg(err.message || 'Lỗi khi trích xuất dữ liệu');
+    } finally {
+      setExportLoading(false);
+    }
+  };
+
+  // 10. Request Permanent Account Deletion (USER-105)
+  const handleRequestDeletion = async (e) => {
+    e.preventDefault();
+    setErrorMsg('');
+    setSuccessMsg('');
+    if (deleteConfirmText.trim().toUpperCase() !== 'XOÁ') {
+      setErrorMsg('Vui lòng nhập chính xác từ "XOÁ" để tiếp tục.');
+      return;
+    }
+    try {
+      setDeleteLoading(true);
+      const accountId = currentUser?.id || 'default_user';
+      const res = await fetch('http://localhost:3002/api/v1/user/account-delete-request', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          accountId,
+          confirmationText: deleteConfirmText,
+          password: deletePassword,
+          reason: deleteReason
+        })
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || 'Yêu cầu xoá tài khoản thất bại.');
+      }
+      setSuccessMsg(data.message);
+      await fetchDeletionStatus();
+      setDeleteConfirmText('');
+    } catch (err) {
+      setErrorMsg(err.message || 'Lỗi yêu cầu xoá tài khoản');
+    } finally {
+      setDeleteLoading(false);
+    }
+  };
+
+  // 11. Cancel Account Deletion (USER-105)
+  const handleCancelDeletion = async () => {
+    try {
+      setLoading(true);
+      setErrorMsg('');
+      const accountId = currentUser?.id || 'default_user';
+      const res = await fetch('http://localhost:3002/api/v1/user/account-delete-cancel', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          accountId,
+          cancelToken: deletionStatus?.cancelToken
+        })
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || 'Huỷ yêu cầu xoá thất bại.');
+      }
+      setSuccessMsg(data.message);
+      await fetchDeletionStatus();
+    } catch (err) {
+      setErrorMsg(err.message || 'Lỗi huỷ yêu cầu xoá');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -407,6 +524,16 @@ export default function AccountSecurityModal({
             }`}
           >
             Hồ Sơ &amp; Thiết Bị (Max 2)
+          </button>
+          <button
+            onClick={() => { setActiveTab('privacy'); setErrorMsg(''); setSuccessMsg(''); }}
+            className={`pb-3 px-3 text-sm font-medium border-b-2 transition whitespace-nowrap ${
+              activeTab === 'privacy'
+                ? 'border-indigo-500 text-indigo-400'
+                : 'border-transparent text-slate-400 hover:text-slate-200'
+            }`}
+          >
+            Dữ Liệu &amp; Xoá (NĐ 13)
           </button>
         </div>
 
@@ -866,6 +993,152 @@ export default function AccountSecurityModal({
                       </div>
                     ))}
                   </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* TAB 4: QUYỀN DỮ LIỆU & XOÁ TÀI KHOẢN (USER-105 / NĐ 13/2023/NĐ-CP) */}
+          {activeTab === 'privacy' && (
+            <div className="space-y-6">
+              {/* Section 1: Data Portability */}
+              <div className="p-4 rounded-xl bg-slate-950/60 border border-slate-800 space-y-3">
+                <div className="flex items-center gap-2 text-indigo-400">
+                  <FileDown className="w-4 h-4 shrink-0" />
+                  <h4 className="text-xs font-semibold text-slate-200 uppercase tracking-wider">
+                    1. Trích Xuất Dữ Liệu Cá Nhân (Data Portability)
+                  </h4>
+                </div>
+                <p className="text-xs text-slate-400 leading-relaxed">
+                  Theo Điều 9 &amp; 14 Nghị định 13/2023/NĐ-CP, bạn có toàn quyền trích xuất dữ liệu học tập cá nhân, bao gồm: hồ sơ người dùng, ma trận điểm âm học 44 IPA, lịch sử chuỗi ngày luyện tập và liên kết các bản ghi âm đối chiếu.
+                </p>
+
+                <div className="pt-1">
+                  <button
+                    type="button"
+                    onClick={handleExportData}
+                    disabled={exportLoading}
+                    className="py-2 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-xs flex items-center gap-2 transition disabled:opacity-50"
+                  >
+                    <Download className="w-3.5 h-3.5" />
+                    {exportLoading ? 'Đang trích xuất dữ liệu...' : 'Tạo Bản Trích Xuất Dữ Liệu (JSON)'}
+                  </button>
+                </div>
+
+                {exportResult && (
+                  <div className="p-3.5 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-xs space-y-2 mt-2">
+                    <div className="flex items-center justify-between text-indigo-300 font-medium">
+                      <span>✓ Đã đóng gói dữ liệu thành công</span>
+                      <span className="text-[10px] text-slate-400">Thời hạn tải: 24 giờ</span>
+                    </div>
+                    <div className="text-[11px] text-slate-400 grid grid-cols-3 gap-2 py-1">
+                      <div>Âm IPA: <span className="text-white font-semibold">{exportResult.exportSummary?.totalPhonemes}</span></div>
+                      <div>Ngày tiến độ: <span className="text-white font-semibold">{exportResult.exportSummary?.totalProgressDays}</span></div>
+                      <div>Bản ghi âm: <span className="text-white font-semibold">{exportResult.exportSummary?.totalBaselineAudios}</span></div>
+                    </div>
+                    <div className="pt-1 flex items-center gap-2">
+                      <a
+                        href={exportResult.downloadUrl}
+                        download={`vietphonics-data-${currentUser?.id || 'learner'}.json`}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-1.5 py-1.5 px-3 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold transition"
+                      >
+                        <Download className="w-3.5 h-3.5" /> Tải Xuống File JSON
+                      </a>
+                      <span className="text-[11px] text-slate-400">
+                        Hết hạn vào: {new Date(exportResult.expiresAt).toLocaleTimeString('vi-VN')} {new Date(exportResult.expiresAt).toLocaleDateString('vi-VN')}
+                      </span>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Section 2: Account Erasure & Grace Period */}
+              <div className="p-4 rounded-xl bg-slate-950/60 border border-rose-900/30 space-y-3">
+                <div className="flex items-center gap-2 text-rose-400">
+                  <ShieldAlert className="w-4 h-4 shrink-0" />
+                  <h4 className="text-xs font-semibold text-rose-300 uppercase tracking-wider">
+                    2. Quyền Được Quên &amp; Xoá Vĩnh Viễn Tài Khoản
+                  </h4>
+                </div>
+
+                <p className="text-xs text-slate-400 leading-relaxed">
+                  Khi xác nhận xoá tài khoản, hệ thống kích hoạt <strong className="text-slate-300">thời gian ân hạn 7 ngày</strong>. Trong 7 ngày này, bạn có thể đăng nhập hoặc nhấn nút huỷ để khôi phục tài khoản nguyên vẹn. Sau 7 ngày, toàn bộ mẫu ghi âm giọng nói, lịch sử GOP âm vị và hồ sơ sẽ bị xoá vĩnh viễn không thể khôi phục.
+                </p>
+
+                <div className="p-3 rounded-lg bg-amber-500/10 border border-amber-500/20 text-[11px] text-amber-300 leading-relaxed">
+                  ⚖️ <strong>Tuân thủ quy định Kế toán Việt Nam:</strong> Theo quy định pháp luật về kế toán và thuế (Khoản 2 Điều 13 Nghị định 13), chứng từ thanh toán và mã hóa đơn VietQR liên quan sẽ được ẩn danh hoá (anonymized) và bảo lưu 10 năm theo luật định.
+                </div>
+
+                {/* State: Pending Deletion */}
+                {deletionStatus?.isPendingDeletion ? (
+                  <div className="p-4 rounded-xl bg-rose-500/10 border border-rose-500/30 space-y-3">
+                    <div className="flex items-center gap-2 text-rose-300 font-semibold text-xs">
+                      <AlertTriangle className="w-4 h-4 shrink-0 text-rose-400" />
+                      <span>Tài khoản đang trong quá trình chờ xoá vĩnh viễn</span>
+                    </div>
+                    <div className="text-xs text-slate-300 space-y-1">
+                      <p>
+                        Thời gian ân hạn còn lại: <span className="font-bold text-rose-400">{deletionStatus.daysRemaining} ngày</span>.
+                      </p>
+                      <p className="text-[11px] text-slate-400">
+                        Hạn chót dọn dẹp hệ thống: {new Date(deletionStatus.gracePeriodEndsAt).toLocaleString('vi-VN')}
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={handleCancelDeletion}
+                      disabled={loading}
+                      className="py-2 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-medium text-xs flex items-center gap-2 transition disabled:opacity-50"
+                    >
+                      <CheckCircle2 className="w-3.5 h-3.5" />
+                      {loading ? 'Đang xử lý...' : 'Huỷ Yêu Cầu Xoá — Khôi Phục Tài Khoản'}
+                    </button>
+                  </div>
+                ) : (
+                  /* State: Request Deletion Form */
+                  <form onSubmit={handleRequestDeletion} className="space-y-3 pt-2">
+                    <div>
+                      <label className="block text-[11px] text-slate-400 mb-1">
+                        Lý do bạn rời đi (tuỳ chọn)
+                      </label>
+                      <select
+                        value={deleteReason}
+                        onChange={(e) => setDeleteReason(e.target.value)}
+                        className="w-full bg-slate-900 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-white"
+                      >
+                        <option value="Không còn nhu cầu sử dụng">Không còn nhu cầu sử dụng</option>
+                        <option value="Đã đạt được mục tiêu phát âm">Đã đạt được mục tiêu phát âm</option>
+                        <option value="Ứng dụng chưa phù hợp với giọng địa phương của tôi">Ứng dụng chưa phù hợp với giọng địa phương của tôi</option>
+                        <option value="Muốn xoá dữ liệu cá nhân theo NĐ 13">Muốn xoá dữ liệu cá nhân theo NĐ 13</option>
+                        <option value="Lý do khác">Lý do khác</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-[11px] text-rose-400 mb-1 font-medium">
+                        Để xác nhận, vui lòng nhập chính xác từ <span className="bg-rose-950 px-1 py-0.5 rounded font-mono font-bold text-white">XOÁ</span> vào ô bên dưới:
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        value={deleteConfirmText}
+                        onChange={(e) => setDeleteConfirmText(e.target.value)}
+                        placeholder="Nhập XOÁ để xác nhận"
+                        className="w-full bg-slate-950 border border-rose-900/60 rounded-xl px-3 py-2 text-xs font-semibold text-rose-200 placeholder-slate-600 focus:outline-none focus:border-rose-500"
+                      />
+                    </div>
+
+                    <button
+                      type="submit"
+                      disabled={deleteLoading || deleteConfirmText.trim().toUpperCase() !== 'XOÁ'}
+                      className="py-2 px-4 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-medium text-xs flex items-center gap-2 transition disabled:opacity-40 disabled:cursor-not-allowed"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                      {deleteLoading ? 'Đang gửi yêu cầu...' : 'Yêu Cầu Xoá Tài Khoản (Ân Hạn 7 Ngày)'}
+                    </button>
+                  </form>
                 )}
               </div>
             </div>

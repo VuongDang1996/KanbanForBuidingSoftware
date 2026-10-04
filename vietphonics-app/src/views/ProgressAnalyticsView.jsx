@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import IpaMatrixGrid from '../components/phonemes/IpaMatrixGrid';
+import HistoryTimeseriesChart from '../components/progress/HistoryTimeseriesChart';
+import BeforeAfterComparisonCard from '../components/progress/BeforeAfterComparisonCard';
 
 export default function ProgressAnalyticsView() {
   const { setActiveTab } = useApp();
@@ -402,110 +404,11 @@ export default function ProgressAnalyticsView() {
           </div>
         </div>
 
-        {/* MODULE 3: Weekly Speaking Volume & Accuracy Trend (7-Day Mixed Chart Card) */}
-        <div className="bg-white rounded-xl p-6 lg:p-8 shadow-sm space-y-6 border border-slate-200">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="p-2 rounded-lg bg-sky-50 text-sky-700">
-                  <span className="material-symbols-outlined text-xl">analytics</span>
-                </span>
-                <h2 className="font-headline-sm text-headline-sm text-slate-900 font-bold">
-                  Xu Hướng Thời Lượng &amp; Độ Chính Xác (7 Ngày)
-                </h2>
-              </div>
-              <p className="font-body-sm text-body-sm text-slate-500 mt-1">
-                Biểu đồ kết hợp thời lượng luyện tập (cột màu) và đường độ chuẩn GOP (cyan line)
-              </p>
-            </div>
-            <div className="flex items-center gap-4 font-label-mono text-label-mono">
-              <div className="flex items-center gap-2">
-                <span className="w-3.5 h-3.5 rounded bg-slate-200"></span>
-                <span className="text-slate-600">Thời lượng (Phút)</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="w-3.5 h-1 rounded bg-sky-600"></span>
-                <span className="text-slate-600">GOP Chính xác (%)</span>
-              </div>
-            </div>
-          </div>
+        {/* MODULE 3: PROG-101 Server-Persisted Historical Timeseries Chart (7/30/90 Days) */}
+        <HistoryTimeseriesChart accountId="default_user" />
 
-          {/* Mixed Chart Container */}
-          <div className="w-full overflow-x-auto">
-            <div className="min-w-[620px] relative h-64 flex flex-col justify-end pt-6 pb-2">
-              <div className="absolute inset-0 flex flex-col justify-between pointer-events-none pb-8 pt-4">
-                <div className="w-full border-b border-slate-100 flex justify-end">
-                  <span className="font-label-mono text-[10px] text-slate-300">80% / 30m</span>
-                </div>
-                <div className="w-full border-b border-slate-100 flex justify-end">
-                  <span className="font-label-mono text-[10px] text-slate-300">70% / 20m</span>
-                </div>
-                <div className="w-full border-b border-slate-100 flex justify-end">
-                  <span className="font-label-mono text-[10px] text-slate-300">60% / 10m</span>
-                </div>
-                <div className="w-full border-b border-slate-100 flex justify-end">
-                  <span className="font-label-mono text-[10px] text-slate-300">0% / 0m</span>
-                </div>
-              </div>
-
-              {/* SVG Overlaid Line for Accuracy Trend */}
-              <svg className="absolute inset-0 w-full h-48 pointer-events-none z-10" preserveAspectRatio="none" viewBox="0 0 700 200">
-                <defs>
-                  <linearGradient id="cyanLineGrad" x1="0%" x2="100%" y1="0%" y2="0%">
-                    <stop offset="0%" stopColor="#0284c7"></stop>
-                    <stop offset="100%" stopColor="#38bdf8"></stop>
-                  </linearGradient>
-                </defs>
-                <path
-                  d="M 50 120 C 100 118, 110 115, 150 115 C 200 115, 210 98, 250 98 C 300 98, 310 104, 350 104 C 400 104, 410 86, 450 86 C 500 86, 510 80, 550 80 C 600 80, 610 74, 650 74"
-                  fill="none"
-                  stroke="url(#cyanLineGrad)"
-                  strokeLinecap="round"
-                  strokeWidth="4"
-                ></path>
-                <circle cx="50" cy="120" fill="#ffffff" r="5" stroke="#0284c7" strokeWidth="3"></circle>
-                <circle cx="150" cy="115" fill="#ffffff" r="5" stroke="#0284c7" strokeWidth="3"></circle>
-                <circle cx="250" cy="98" fill="#ffffff" r="5" stroke="#0284c7" strokeWidth="3"></circle>
-                <circle cx="350" cy="104" fill="#ffffff" r="5" stroke="#0284c7" strokeWidth="3"></circle>
-                <circle cx="450" cy="86" fill="#ffffff" r="5" stroke="#0284c7" strokeWidth="3"></circle>
-                <circle cx="550" cy="80" fill="#ffffff" r="5" stroke="#0284c7" strokeWidth="3"></circle>
-                <circle cx="650" cy="74" fill="#0284c7" r="6" stroke="#ffffff" strokeWidth="2"></circle>
-              </svg>
-
-              {/* 7 Columns */}
-              <div className="grid grid-cols-7 gap-2 sm:gap-6 h-48 items-end relative z-0 px-2 sm:px-6">
-                <div className="flex flex-col items-center group cursor-pointer h-full justify-end">
-                  <div className="w-10 sm:w-14 bg-slate-200 hover:bg-sky-200 transition-colors rounded-t-lg" style={{ height: '40%' }}></div>
-                  <span className="mt-2 font-label-mono text-label-mono text-slate-500 font-semibold">T2</span>
-                </div>
-                <div className="flex flex-col items-center group cursor-pointer h-full justify-end">
-                  <div className="w-10 sm:w-14 bg-slate-200 hover:bg-sky-200 transition-colors rounded-t-lg" style={{ height: '50%' }}></div>
-                  <span className="mt-2 font-label-mono text-label-mono text-slate-500 font-semibold">T3</span>
-                </div>
-                <div className="flex flex-col items-center group cursor-pointer h-full justify-end">
-                  <div className="w-10 sm:w-14 bg-slate-200 hover:bg-sky-200 transition-colors rounded-t-lg" style={{ height: '66%' }}></div>
-                  <span className="mt-2 font-label-mono text-label-mono text-slate-500 font-semibold">T4</span>
-                </div>
-                <div className="flex flex-col items-center group cursor-pointer h-full justify-end">
-                  <div className="w-10 sm:w-14 bg-slate-200 hover:bg-sky-200 transition-colors rounded-t-lg" style={{ height: '33%' }}></div>
-                  <span className="mt-2 font-label-mono text-label-mono text-slate-500 font-semibold">T5</span>
-                </div>
-                <div className="flex flex-col items-center group cursor-pointer h-full justify-end">
-                  <div className="w-10 sm:w-14 bg-slate-200 hover:bg-sky-200 transition-colors rounded-t-lg" style={{ height: '83%' }}></div>
-                  <span className="mt-2 font-label-mono text-label-mono text-slate-500 font-semibold">T6</span>
-                </div>
-                <div className="flex flex-col items-center group cursor-pointer h-full justify-end">
-                  <div className="w-10 sm:w-14 bg-slate-300 hover:bg-sky-200 transition-colors rounded-t-lg" style={{ height: '100%' }}></div>
-                  <span className="mt-2 font-label-mono text-label-mono text-slate-500 font-semibold">T7</span>
-                </div>
-                <div className="flex flex-col items-center group cursor-pointer h-full justify-end">
-                  <div className="w-10 sm:w-14 bg-rose-200 hover:bg-rose-300 transition-colors rounded-t-lg" style={{ height: '60%' }}></div>
-                  <span className="mt-2 font-label-mono text-label-mono text-rose-600 font-bold">CN (Nay)</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        {/* MODULE 3B: PROG-102 Before vs After Audio Comparison (Day 1 Baseline vs Today) */}
+        <BeforeAfterComparisonCard accountId="default_user" />
 
         {/* MODULE 4 & 5: IPA 44 Heatmap Matrix & Urgent Focus Cards */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
